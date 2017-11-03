@@ -1,0 +1,97 @@
+csource,guild,metacyc
+Water,Water,
+alpha-Cyclodextrin,Polymers,
+Dextrin,Polymers,
+Glycogen,Polymers,
+Tween 40,Polymers,
+Tween 80,Polymers,
+N-Acetyl-D-Galactosamine,Carbohydrates,PWY-7077
+N-Acetyl-D-Glucosamine,Carbohydrates,PWY-7586
+Adonitol,Carbohydrates,RIBITOLUTIL-PWY
+L-Arabinose,Carbohydrates,ARABCAT-PWY;PWY-5515;PWY-5517;PWY-7295
+D-Arabitol,Carbohydrates,DARABITOLUTIL-PWY
+D-Cellobiose,Carbohydrates,
+i-Erythritol,Carbohydrates,PWY-7789;PWY-7788
+D-Fructose,Carbohydrates,PWY0-1314
+L-Fucose,Carbohydrates,FUCCAT-PWY
+D-Galactose,Carbohydrates,PWY-6317;PWY-6693;GALDEG-PWY;PWY66-422
+Gentiobiose,Carbohydrates,
+alpha-D-Glucose,Carbohydrates,GLYCOLYSIS;ANAGLYCOLYSIS-PWY;P341-PWY;NPGLUCAT-PWY;PWY-2221;ENTNER-DOUDOROFF-PWY
+m-Inositol,Carbohydrates,P562-PWY;PWY-7241
+alpha-D-Lactose,Carbohydrates,LACTOSEUTIL-PWY;BGALACT-PWY;LACTOSECAT-PWY
+Lactulose,Carbohydrates,
+Maltose,Carbohydrates,MALTOSECAT-PWY
+D-Mannitol,Carbohydrates,PWY-3861;MANNIDEG-PWY
+D-Mannose,Carbohydrates,MANNCAT-PWY
+D-Melibiose,Carbohydrates,PWY0-1301
+beta-Methyl-D-Glucoside,Carbohydrates,
+D-Psicose,Carbohydrates,
+D-Raffinose,Carbohydrates,
+L-Rhamnose,Carbohydrates,PWY-6714;RHAMCAT-PWY;PWY-6713
+D-Sorbitol,Carbohydrates,PWY-4101;SORBDEG-PWY
+Sucrose,Carbohydrates,SUCUTIL-PWY;SUCROSEUTIL2-PWY;PWY-3801;PWY-621;PWY66-373;PWY-5384
+D-Trehalose,Carbohydrates,TREDEGLOW-PWY;PWY-2723;PWY0-1182;PWY-2721;PWY0-1466;PWY-2722
+Turanose,Carbohydrates,
+Xylitol,Carbohydrates,LARABITOLUTIL-PWY
+Methyl Pyruvate,Carbohydrates,
+Mono-Methyl-Succinate,Carbohydrates,
+Acetic Acid,Carboxylic acids,
+Cis-Aconitic Acid,Carboxylic acids,
+Citric Acid,Carboxylic acids,
+Formic Acid,Carboxylic acids,
+D-Galactonic Acid Lactone,Carboxylic acids,
+D-Galacturonic Acid,Carboxylic acids,
+D-Gluconic Acid,Carboxylic acids,
+D-Glucosaminic Acid,Carboxylic acids,
+D-Glucuronic Acid,Carboxylic acids,
+alpha-Hydroxy Butyric Acid,Carboxylic acids,
+beta-Hydroxy Butyric Acid,Carboxylic acids,
+gamma-Hydroxy Butyric Acid,Carboxylic acids,
+p-Hydroxy Phenylacetic Acid,Carboxylic acids,
+Itaconic Acid,Carboxylic acids,
+alpha-Keto Butyric Acid,Carboxylic acids,
+alpha-Keto Glutaric Acid,Carboxylic acids,
+alpha-Keto Valeric Acid,Carboxylic acids,
+D-L-Lactic Acid,Carboxylic acids,
+Malonic Acid,Carboxylic acids,
+Propionic Acid,Carboxylic acids,
+Quinic Acid,Carboxylic acids,
+D-Saccharic Acid,Carboxylic acids,
+Sebacic Acid,Carboxylic acids,
+Succinic Acid,Carboxylic acids,
+Bromo Succinic Acid,Miscellaneous,
+Succinamic Acid,Amines/amides,
+Glucuronamide,Amines/amides,
+L-Alaninamide,Amines/amides,
+D-Alanine,Amino acids,
+L-Alanine,Amino acids,
+L-Alanylglycine,Amino acids,
+L-Asparagine,Amino acids,
+L-Aspartic Acid,Amino acids,
+L-Glutamic Acid,Amino acids,
+Glycyl-L-Aspartic Acid,Amino acids,
+Glycyl-L-Glutamic Acid,Amino acids,
+L-Histidine,Amino acids,
+Hydroxy-L-Proline,Amino acids,
+L-Leucine,Amino acids,
+L-Ornithine,Amino acids,
+L-Phenylalanine,Amino acids,
+L-Proline,Amino acids,
+L-Pyroglutamic Acid,Amino acids,
+D-Serine,Amino acids,
+L-Serine,Amino acids,
+L-Threonine,Amino acids,
+D-L-Carnitine,Amino acids,
+gamma-Amino Butyric Acid,Amino acids,
+Urocanic Acid,Miscellaneous,
+Inosine,Miscellaneous,
+Uridine,Miscellaneous,
+Thymidine,Miscellaneous,
+Phenyethylamine,Amines/amides,
+Putrescine,Amines/amides,
+2-Aminoethanol,Amines/amides,
+2-3-Butanediol,Miscellaneous,
+Glycerol,Miscellaneous,
+D-L-alpha-Glycerol Phosphate,Miscellaneous,
+Glucose-1-Phosphate,Miscellaneous,
+Glucose-6-Phosphate,Miscellaneous,
