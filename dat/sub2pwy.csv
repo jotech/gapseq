@@ -1,44 +1,44 @@
-csource,altname,exid,guild,metacyc
-Water,,,Water,
+name,altname,exid,guild,metacyc
+Water,h2o,EX_h2o(e),Water,
 alpha-Cyclodextrin,,,Polymers,
 Dextrin,,,Polymers,
 Glycogen,,,Polymers,
 Tween 40,,,Polymers,
 Tween 80,,,Polymers,
-N-Acetyl-D-Galactosamine,,EX_acgal(e),Carbohydrates,PWY-7077
+N-Acetyl-D-Galactosamine,N-acetylgalactosamine,EX_acgal(e),Carbohydrates,PWY-7077
 N-Acetyl-D-Glucosamine,,EX_acgam(e),Carbohydrates,PWY-7586
 Adonitol,,,Carbohydrates,RIBITOLUTIL-PWY
 L-Arabinose,,EX_arab_L(e),Carbohydrates,ARABCAT-PWY;PWY-5515;PWY-5517;PWY-7295
 D-Arabitol,,EX_abt_D(e),Carbohydrates,DARABITOLUTIL-PWY
-D-Cellobiose,,EX_cellb(e),Carbohydrates,
+D-Cellobiose,cellobiose,EX_cellb(e),Carbohydrates,
 i-Erythritol,,,Carbohydrates,PWY-7789;PWY-7788
-D-Fructose,,EX_fru(e),Carbohydrates,PWY0-1314
-L-Fucose,,EX_fuc_L(e),Carbohydrates,FUCCAT-PWY
-D-Galactose,,EX_gal(e),Carbohydrates,PWY-6317;PWY-6693;GALDEG-PWY;PWY66-422;PWY-3821
+D-Fructose,fructose,EX_fru(e),Carbohydrates,PWY0-1314
+L-Fucose,fucose,EX_fuc_L(e),Carbohydrates,FUCCAT-PWY
+D-Galactose,galactose,EX_gal(e),Carbohydrates,PWY-6317;PWY-6693;GALDEG-PWY;PWY66-422;PWY-3821
 Gentiobiose,,,Carbohydrates,
 alpha-D-Glucose,glucose,EX_glc(e),Carbohydrates,GLYCOLYSIS;ANAGLYCOLYSIS-PWY;P341-PWY;NPGLUCAT-PWY;PWY-2221;ENTNER-DOUDOROFF-PWY
 m-Inositol,,EX_inost(e),Carbohydrates,P562-PWY;PWY-7241
-alpha-D-Lactose,,EX_lcts(e),Carbohydrates,LACTOSEUTIL-PWY;BGALACT-PWY;LACTOSECAT-PWY
+alpha-D-Lactose,lactose,EX_lcts(e),Carbohydrates,LACTOSEUTIL-PWY;BGALACT-PWY;LACTOSECAT-PWY
 Lactulose,,,Carbohydrates,
 Maltose,,EX_malt(e),Carbohydrates,MALTOSECAT-PWY
-D-Mannitol,,EX_mnl(e),Carbohydrates,PWY-3861;MANNIDEG-PWY
-D-Mannose,,EX_man(e),Carbohydrates,MANNCAT-PWY
-D-Melibiose,,EX_melib(e),Carbohydrates,PWY0-1301
+D-Mannitol,mannitol,EX_mnl(e),Carbohydrates,PWY-3861;MANNIDEG-PWY
+D-Mannose,mannose,EX_man(e),Carbohydrates,MANNCAT-PWY
+D-Melibiose,melibiose,EX_melib(e),Carbohydrates,PWY0-1301
 beta-Methyl-D-Glucoside,,,Carbohydrates,
 D-Psicose,,,Carbohydrates,
-D-Raffinose,,EX_raffin(e),Carbohydrates,
-L-Rhamnose,,EX_rmn(e),Carbohydrates,PWY-6714;RHAMCAT-PWY;PWY-6713
+D-Raffinose,raffinose,EX_raffin(e),Carbohydrates,
+L-Rhamnose,rhamnose,EX_rmn(e),Carbohydrates,PWY-6714;RHAMCAT-PWY;PWY-6713
 D-Sorbitol,,EX_sbt-d(e),Carbohydrates,PWY-4101;SORBDEG-PWY
 Sucrose,,EX_sucr(e),Carbohydrates,SUCUTIL-PWY;SUCROSEUTIL2-PWY;PWY-3801;PWY-621;PWY66-373;PWY-5384
-D-Trehalose,,EX_tre(e),Carbohydrates,TREDEGLOW-PWY;PWY-2723;PWY0-1182;PWY-2721;PWY0-1466;PWY-2722
+D-Trehalose,trehalose,EX_tre(e),Carbohydrates,TREDEGLOW-PWY;PWY-2723;PWY0-1182;PWY-2721;PWY0-1466;PWY-2722
 Turanose,,EX_tur(e),Carbohydrates,
 Xylitol,,EX_xylt(e),Carbohydrates,LARABITOLUTIL-PWY
 Methyl Pyruvate,,EX_pyr(e),Carbohydrates,
-Mono-Methyl-Succinate,,EX_succ(e),Carbohydrates,
-Acetic Acid,,,Carboxylic acids,
+Mono-Methyl-Succinate,,,Carbohydrates,
+Acetic Acid,acetate,EX_ac(e),Carboxylic acids,
 Cis-Aconitic Acid,,,Carboxylic acids,
-Citric Acid,,,Carboxylic acids,
-Formic Acid,,,Carboxylic acids,
+Citric Acid,citrate,EX_cit(e),Carboxylic acids,
+Formic Acid,formate,EX_for(e),Carboxylic acids,
 D-Galactonic Acid Lactone,,,Carboxylic acids,
 D-Galacturonic Acid,,,Carboxylic acids,
 D-Gluconic Acid,,,Carboxylic acids,
@@ -58,7 +58,7 @@ Propionic Acid,,,Carboxylic acids,
 Quinic Acid,,,Carboxylic acids,
 D-Saccharic Acid,,,Carboxylic acids,
 Sebacic Acid,,,Carboxylic acids,
-Succinic Acid,,,Carboxylic acids,
+Succinic Acid,succinate,EX_succ(e),Carboxylic acids,
 Bromo Succinic Acid,,,Miscellaneous,
 Succinamic Acid,,,Amines/amides,
 Glucuronamide,,,Amines/amides,
@@ -95,3 +95,31 @@ Glycerol,,,Miscellaneous,
 D-L-alpha-Glycerol Phosphate,,,Miscellaneous,
 Glucose-1-Phosphate,,,Miscellaneous,
 Glucose-6-Phosphate,,,Miscellaneous,
+Acetoin,,EX_actn_R(e),,
+Butanediol,,EX_btd_RR(e),,
+Butanol,,EX_btoh(e),,
+Butyrate,,EX_but(e),,
+Cholesterol,,EX_chsterol(e),,
+D-Arabinose,,EX_arab_D(e),,
+D-glucosamine,,EX_gam(e),,
+D-Lactate,,EX_lac_D(e),,
+Ethanol,,EX_etoh(e),,
+Galacturonate,,EX_galur(e),,
+Gluconate,,EX_glcn(e),,
+Glucuronate,,EX_glcur(e),,
+Glycerol,,EX_glyc(e),,
+Hydrogen,,EX_h2(e),,
+Hydrogen sulfide,,EX_h2s(e),,
+Indole,,EX_indole(e),,
+Isobutyrate,,EX_isobut(e),,
+Isovalerate,,EX_isoval(e),,
+L-Lactate,,EX_lac_L(e),,
+Lyxose,,EX_lyx_L(e),,
+Matohextrin,,EX_malthx(e),,
+Methane,,EX_ch4(e),,
+N-Acetylneuraminate,,EX_acnam(e),,
+Phenylacetate,,EX_4hphac(e),,
+Propionate,,EX_ppa(e),,
+Ribose,,EX_rib_D(e),,
+Salicin,,EX_salcn(e),,
+Xylose,,EX_xyl_D(e),,
