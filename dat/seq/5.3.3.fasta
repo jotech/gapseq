@@ -1,6 +1,9 @@
 >P14174 Macrophage migration inhibitory factor (MIF) (EC 5.3.2.1) (Glycosylation-inhibiting factor) (GIF) (L-dopachrome isomerase) (L-dopachrome tautomerase) (EC 5.3.3.12) (Phenylpyruvate tautomerase)
 MPMFIVNTNVPRASVPDGFLSELTQQLAQATGKPPQYIAVHVVPDQLMAFGGSSEPCALC
 SLHSIGKIGGAQNRSYSKLLCGLLAERLRISPDRVYINYYDMNAANVGWNNSTFA
+>P30904 Macrophage migration inhibitory factor (MIF) (EC 5.3.2.1) (Glutathione-binding 13 kDa protein) (L-dopachrome isomerase) (L-dopachrome tautomerase) (EC 5.3.3.12) (Phenylpyruvate tautomerase)
+MPMFIVNTNVPRASVPEGFLSELTQQLAQATGKPAQYIAVHVVPDQLMTFSGTSDPCALC
+SLHSIGKIGGAQNRNYSKLLCGLLSDRLHISPDRVYINYYDMNAANVGWNGSTFA
 >P22071 3 beta-hydroxysteroid dehydrogenase/Delta 5-->4-isomerase type 1 (3 beta-hydroxysteroid dehydrogenase/Delta 5-->4-isomerase type I) (3-beta-HSD I) [Includes: 3-beta-hydroxy-Delta(5)-steroid dehydrogenase (EC 1.1.1.145) (3-beta-hydroxy-5-ene steroid dehydrogenase) (Progesterone reductase); Steroid Delta-isomerase (EC 5.3.3.1) (Delta-5-3-ketosteroid isomerase)]
 MPGWSCLVTGAGGFVGQRIIRMLVQEKELQEVRALDKVFRPETKEEFSKLQTKAKVTMLE
 GDILDAQYLRRACQGISVVIHTAAVIDVSHVLPRQTILDVNLKGTQNILEACVEASVPAF
@@ -39,9 +42,6 @@ TCALRPTYIYGEGGPFLSASINEALNNNGILSSVGKFSTVNPVYVGNVAWAHILALRALR
 DPKKAPSVRGQFYYISDDTPHQSYDNLNYILSKEFGLRLDSRWSLPLTLMYWIGFLLEVV
 SFLLSPIYSYQPPFNRHTVTLSNSVFTFSYKKAQRDLAYKPLYSWEEAKQKTVEWVGSLV
 DRHKETLKSKTQ
->P30904 Macrophage migration inhibitory factor (MIF) (EC 5.3.2.1) (Glutathione-binding 13 kDa protein) (L-dopachrome isomerase) (L-dopachrome tautomerase) (EC 5.3.3.12) (Phenylpyruvate tautomerase)
-MPMFIVNTNVPRASVPEGFLSELTQQLAQATGKPAQYIAVHVVPDQLMTFSGTSDPCALC
-SLHSIGKIGGAQNRNYSKLLCGLLSDRLHISPDRVYINYYDMNAANVGWNGSTFA
 >P61615 Isopentenyl-diphosphate delta-isomerase (IPP isomerase) (EC 5.3.3.2) (Isopentenyl diphosphate:dimethylallyl diphosphate isomerase) (Isopentenyl pyrophosphate isomerase) (Type 2 isopentenyl diphosphate isomerase) (IDI-2)
 MPDIVNRKVEHVEIAAFENVDGLSSSTFLNDVILVHQGFPGISFSEINTKTKFFRKEISV
 PVMVTGMTGGRNELGRINKIIAEVAEKFGIPMGVGSQRVAIEKAEARESFAIVRKVAPTI
