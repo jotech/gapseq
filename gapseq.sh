@@ -1,17 +1,36 @@
 #!/bin/bash
 
-#[ $# -ne 2 ] && { echo "Usage: $0 file.fasta model.sbml"; exit 1; }
+# TODO: dbhit: handle when $ec has more then one number
+# TODO: handle incomplete/unspecific ecs from metacyc (e.g. get ec from kegg, update maually or get genes from metacyc)
+
 
 # paths and variables
-#fasta=$2
-fasta=~/uni/dat/seq/Celegans_Microbiome/genomes/all/MYb71.fasta
-csource="Galactose"
+fasta=$2
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
-pwydb=$dir/dat/pwt2rea.csv
 seqpath=$dir/dat/seq/
 bitcutoff=50 # cutoff blast: min bit score
-readb=$dir/dat/vmh_reactions.csv
+metaPwy=$dir/dat/meta_pwy.tbl
+metaRea=$dir/dat/meta_rea.tbl
+reaDB1=$dir/dat/vmh_reactions.csv
+reaDB2=$dir/dat/bigg_reactions.tbl
+brenda=$dir/dat/brenda_ec.csv
+
+
+# set databases
+[ "$1" == "all" ]       && pwyKey=Pathways
+[ "$1" == "amino" ]     && pwyKey=Amino-Acid-Biosynthesis
+[ "$1" == "nucl" ]      && pwyKey=Nucleotide-Biosynthesis
+[ "$1" == "cofactor" ]  && pwyKey=Cofactor-Biosynthesis
+[ "$1" == "carbo" ]     && pwyKey=Carbohydrates-Degradation
+[ "$1" == "polyamine" ] && pwyKey=Polyamine-Biosynthesis
+
+# USAGE
+#[ $# -ne 2 ] && { echo "Usage: $0 file.fasta model.sbml"; exit 1; }
+( [ $# -ne 2 ] || [ -z $pwyKey ] ) && { echo "Usage: $0 database (amino,nucl,cofactor,carbo,polyamine) file.fasta"; exit 1; }
+
+pwyDB=$(cat $metaPwy | grep -w $pwyKey)
+[ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
 
 
 # tmp working directory
@@ -21,54 +40,95 @@ cd $(mktemp -d)
 # create blast database
 makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
 
-hit=$(grep -w $csource $pwydb)
 
-cand="" #list of candidate reactions to be added
-echo Check for carbon source: $csource
-for i in `seq 1 $(echo "$hit" | wc -l)`
+cand=""     #list of candidate reactions to be added
+bestCand="" # list of candidates from (almost) complete pathways
+bestPwy=""  # list of found pathways
+
+echo Checking for reaction from: $1 $pwyKey
+for i in `seq 1 $(echo "$pwyDB" | wc -l)`
 do
+    pwyCand="" # candidate reaction of current pathway
     count=0
     countex=0
     countdb=0
-    pwy=$(echo "$hit" | awk -v i=$i 'NR==i {print $3}')
-    ecs=$(echo "$hit" | awk -v i=$i 'NR==i {print $4}')
-    reaids=$(echo "$hit" | awk -v i=$i 'NR==i {print $5}')
-    echo -e '\n'Checking for pathway $pwy
-    for ec in $(echo $ecs | tr "," "\n")
+    vague=0
+    line=$(echo "$pwyDB" | awk -v i=$i 'NR==i')
+    pwy=$(echo "$line" | awk -F "\t" '{print $1}')
+    name=$(echo "$line" | awk -F "\t" '{print $2}')
+    ecs=$(echo "$line" | awk -F "\t" '{print $7}')
+    reaids=$(echo "$line" | awk -F "\t" '{print $6}')
+    echo -e '\n'Checking for pathway $pwy $name
+    for j in `seq 1 $(echo $ecs | tr "," "\n"i | wc -l)`
+    #for ec in $(echo $ecs | tr "," "\n")
     do 
-        re="([0-9]+.[0-9]+.[0-9]+.[0-9])"
+        ec=$(echo $ecs | awk -v j=$j -F ',' '{print $j}')
+        rea=$(echo $reaids | awk -v j=$j -F ',' '{print $j}')
+        re="([0-9]+.[0-9]+.[0-9]+.[0-9]+)"
         test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
         if [ -n "$test" ]; then
             ((count++))
             query=$seqpath$ec.fasta
-            out=$pwy-$ec.blast
-            rea=$(echo $reaids | tr "," "\n" | awk -v j=$count 'NR==j {print $1}')
-            tblastn -db orgdb -query $query -outfmt '6 qseqid sseqid pident evalue bitscore stitle' >$out 
-            if [ -s $out ]; then
-                bhit=$(cat $out | awk -v bitcutoff=$bitcutoff '$5>=bitcutoff {print $1}' | wc -l)
-                if [ $bhit -gt 0 ]; then
-                    echo -e '\t'Found reaction: $rea $ec
-                    dbhit=$(grep -w $ec $readb | awk -F ',' '{print $1}')
-                    if [ -n "$dbhit" ]; then
-                        echo -e '\t'Candidate reaction found for import: $dbhit
-                        cand="$cand$dbhit "
-                        ((countdb++))
+            if [ -s $query ]; then
+                out=$pwy-$ec.blast
+                tblastn -db orgdb -query $query -outfmt '6 qseqid sseqid pident evalue bitscore stitle' >$out 
+                if [ -s $out ]; then
+                    bhit=$(cat $out | awk -v bitcutoff=$bitcutoff '$5>=bitcutoff {print $1}' | wc -l)
+                    if [ $bhit -gt 0 ]; then
+                        echo -e '\t'Blast hit: $rea $ec
+                        
+                        
+                        kegg=$(grep -wF $rea $metaRea | awk -F "\t" {'print $5'})
+                        # search in vmh db by EC
+                        altec=$(grep $ec $brenda | grep -P "([0-9]+.[0-9]+.[0-9]+.[0-9]+)" -o | grep -v $ec)
+                        # search in vmh db by kegg identifier 
+                        dbhit=$(grep -wF $ec $reaDB1 | awk -F ',' '{print $1}')
+                        [ -n "$kegg" ]  && [ -z "$dbhit" ]&& dbhit=$(grep -wF $kegg $reaDB1 | awk -F ',' '{print $1}')
+                        # search in vmh db by alternative EC
+                        [ -n "$altec" ] && [ -z "$dbhit" ]  && dbhit=$(grep -wF $altec $reaDB1 | awk -F ',' '{print $1}')
+                        # search in bigg db by metacyc id
+                        [ -z "$dbhit" ]  && dbhit=$(grep -wF $rea $reaDB2 | awk '{print $1}')
+                        if [ -n "$dbhit" ]; then
+                            echo -e '\t\t'Candidate reaction for import: $dbhit
+                            pwyCand="$pwyCand$dbhit " # remember candidate reaction
+                            ((countdb++))
+                        else
+                            echo -e '\t\t'No candidate reaction found for import: $rea $ec
+                        fi
+                        ((countex++))
                     else
-                        echo -e '\t'No candidate reaction found for import: $rea $ec
+                        echo -e '\t'No significant blast hits found for reaction: $rea $ec
                     fi
-                    ((countex++))
                 else
-                    echo -e '\t'No significant blast hits found for reaction: $rea $ec
+                    echo -e '\t'No blast hits found for reaction: $rea $ec
                 fi
             else
-                echo -e '\t'No blast hits found for reaction: $rea $ec
+                echo -e '\t'No sequence data found for $rea $ec ..skipping..
+               ((vague++))
             fi
         else
-            echo -e '\t'EC number too unspecific: $ec ..skipping..
+            #TODO: if unspecific should the reaction still be added?
+            echo -e '\t'EC number too unspecific: $rea $ec ..skipping..
+            ((vague++))
         fi
     done
-    echo -e '\t'Pathway completness: $countex/$count
-    echo -e '\t'Candidate reactions found in db: $countdb
+    echo -e Pathway completness: $countex/$count with $vague reactions of unclear state
+    echo -e Hits with candidate reactions in database: $countdb/$count
+    cand="$cand$pwyCand "
+    if [ $count -ne 0 ] && [ $(echo "scale=2; $countex/$count>=0.9" | bc) -ne 0 ]; then
+        bestCand="$bestCand$pwyCand " # save candidates from almost complete (>=90%) pathways
+        bestPwy="$bestPwy$name\n"
+    fi
 done
+
+cand=$(echo $cand | tr ' ' '\n' | sort | uniq | tr '\n' ' ') # remove duplicates
 echo -e '\n'Total candidate reactions:
 echo $cand
+
+echo -e '\n'Pathways found:
+echo -e $bestPwy
+
+bestCand=$(echo $bestCand | tr ' ' '\n' | sort | uniq | tr '\n' ' ') # remove duplicates
+echo -e '\n'Candidate reactions from complete pathways:
+echo -e $bestCand
+
