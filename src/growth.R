@@ -15,16 +15,19 @@ findrBiomass <- function(model, keys=c("biom")){
   return(rbio)
 }
 
-auxotrophy <- function(model, checkNoEx=FALSE){
+auxotrophy <- function(model, checkNoEx=FALSE, rmMetals=FALSE, useNames=FALSE){
+  metals <- c("EX_so4(e)", "EX_ca2(e)", "EX_cu2(e)", "EX_fe2(e)", "EX_zn2(e)", "EX_fe3(e)", "EX_mg2(e)", "EX_k(e)", "EX_cl(e)", "EX_mn2(e)", "EX_cobalt2(e)",
+              "EX_cpd00048_e0", "EX_cpd00063_e0", "EX_cpd10516_e0", "EX_cpd00058_e0", "EX_cpd00034_e0", "EX_cpd00254_e0", "EX_cpd00205_e0", "EX_cpd00099_e0","EX_cpd00030_e0")
   idx <- findrBiomass(model)
   met <- met_id(model)[which(Matrix::rowSums(S(model)[,idx, drop=F]) < 0)] # get metabolites from biomass reactions
   ex  <- findExchReact(model)
   idx <- match(gsub("\\[.*\\]","",met), gsub("\\[.*\\]","",ex@met_id), nomatch=0) # remove comparment tag
   
-  mex <- ex@react_id[idx] # components from biomass which have exchange reaction => test with fva
-  fva <- fluxVar(model, percentage=10, react = mex) 
-  max <- maxSol(fva, "lp_obj")
-  aux <- mex[which(max < 0)]
+  mex   <- ex@react_id[idx] # components from biomass which have exchange reaction => test with fva
+  mname <- react_name(model)[ex@react_pos[idx]]
+  fva   <- fluxVar(model, percentage=10, react = mex) 
+  max   <- maxSol(fva, "lp_obj")
+  if (useNames) aux   <- mname[which(max < 0)] else aux <- mex[which(max < 0)]
   
   if(checkNoEx){
     noex<- met[is.na(idx)] # components from biomass which have no exchange reaction => test if could be produced by metabolic model
@@ -39,6 +42,7 @@ auxotrophy <- function(model, checkNoEx=FALSE){
       aux <- c(aux, aux2[which(aux2==FALSE)])
     })
   }
+  if(rmMetals) aux <- setdiff(aux, metals)
   print(paste(length(aux), "auxotrophies found"))
   return(aux)
 }
@@ -71,50 +75,85 @@ csource <- function(model, cs=cs){
 
 
 # check for essential substances needed to growth
-getEssentials <- function(model, limit=10){
+getEssentials <- function(model, minus=NULL, limit=10){
   ex <- sybil::findExchReact(model)  
   var_r <- sybil::fluxVar(model, react=ex@react_id, percentage=limit)
   ex_max <- sybil::maxSol(var_r, "lp_obj")
   min_id  <- ex@react_id[which(ex_max<0)]
-
-  return(min_id)
+  
+  if(length(minus)==0) return(min_id)
+  else return(setdiff(min_id, minus))
 }
 
 
-#model <- models$myb71
-model <- test
-ub <- model@uppbnd
-ex <- findExchReact(model)
-#ess <- min_id
-lpobject <- sybil::sysBiolAlg(model, algorithm="fba")
+trimMedium <- function(model, medium=NULL, limit=10){
+  ex <- sybil::findExchReact(model)
+  if(is.null(medium)) medium <- ex@react_id
+  med <- intersect(ex@react_id, medium)
+  lb <- model@lowbnd
+  lb[ex@react_pos] <- 0
+  idx <- match(med, react_id(model))
+  lb[idx] <- -100
+  model@lowbnd <- lb
+  
+  var_r <- sybil::fluxVar(model, react=med, percentage=limit)
+  ex_max <- sybil::maxSol(var_r, "lp_obj")
+  not_essential  <- med[which(!round(ex_max,6)<0)]
+  
+  return(c(not_essential, setdiff(medium,ex@react_id)))
+}
+
+trimMediumRand <- function(model, medium=NULL){
+  ex <- sybil::findExchReact(model)  
+  if(is.null(medium)) medium <- ex@react_id
+  med <- intersect(ex@react_id, medium)
+  lb <- model@lowbnd
+  ub <- model@uppbnd
+  lpobject <- sybil::sysBiolAlg(model, algorithm="fba")
+  
+  medium_new <- med
+  for(i in 1:100){
+    lb[ex@react_pos] <- 0
+    idx   <- match(medium_new, react_id(model))
+    rmIdx <- sample(1:length(idx),1)
+    rmMet <- medium_new[rmIdx]
+    idx   <- idx[-rmIdx]
+    lb[idx] <- -100
+    sol <- optimizeProb(lpobject, react=1:length(lb), ub=ub, lb=lb)
+    if(round(sol$obj,6)>0){
+      medium_new <- setdiff(medium_new, rmMet)
+    }
+  }
+  return(c(setdiff(med, medium_new), setdiff(medium,ex@react_id)))
+}
 
 
-ess <- c(min_id, "EX_glc(e)", "EX_glu_L(e)", "EX_xan(e)", "EX_btn(e)", "EX_urea(e)", "EX_gam(e)", "EX_q8(e)", "EX_o2(e)", "EX_cobalt2(e)",
-         "EX_q8(e)", "EX_leu_L(e)", "EX_bhb(e)", "EX_ser_L(e)", "EX_pro_L(e)", "EX_alahis(e)", "EX_no2(e)", "EX_tre(e)", "EX_hxan(e)",
-         "EX_metala(e)", "EX_alahis(e)", "EX_tsul(e)", "EX_fum(e)", "EX_fru(e)", "EX_glyc3p(e)", "EX_bhb(e)", "EX_metala(e)")
+check_growth <- function(model, medium=NULL, printShadow=F, printExchanges=F){
+  ex <- findExchReact(model)
+  if(is.null(medium)) medium <- ex@react_id
+  lpobject <- sybil::sysBiolAlg(model, algorithm="fba")
+  ub <- model@uppbnd
+  lb <- model@lowbnd
+  
+  #ess <- c(min_id, "EX_glc(e)", "EX_glu_L(e)", "EX_xan(e)", "EX_btn(e)", "EX_urea(e)", "EX_gam(e)", "EX_q8(e)", "EX_o2(e)", "EX_cobalt2(e)",
+  #         "EX_q8(e)", "EX_leu_L(e)", "EX_bhb(e)", "EX_ser_L(e)", "EX_pro_L(e)", "EX_alahis(e)", "EX_no2(e)", "EX_tre(e)", "EX_hxan(e)",
+  #         "EX_metala(e)", "EX_alahis(e)", "EX_tsul(e)", "EX_fum(e)", "EX_fru(e)", "EX_glyc3p(e)", "EX_bhb(e)", "EX_metala(e)")
 
-lb <- model@lowbnd
-lb[ex@react_pos] <- 0
-ess <- c("EX_cu2(e)","EX_zn2(e)","EX_fe3(e)","EX_mg2(e)","EX_k(e)", "EX_mn2(e)","EX_cobalt2(e)", "EX_cl(e)","EX_so4(e)","EX_ca2(e)",
-         "EX_thm(e)", "EX_mqn7(e)","EX_glyc3p(e)","EX_gam(e)", "EX_xan(e)",
-         #"EX_ribflv(e)","EX_ile_L(e)","EX_val_L(e)","EX_lys_L(e)","EX_spmd(e)","EX_glytyr(e)","EX_glyphe(e)","EX_btn(e)",
-         "EX_ocdca(e)", "EX_lanost(e)"#,
-         #"EX_glc(e)", "EX_o2(e)"
-         )
-
-#ess <- c()
-
-idx <- match(ess, react_id(model))
-lb[idx] <- -100
-#model@lowbnd <- lb
-#sol <- optimizeProb(model, retOptSol=F)
-sol <- optimizeProb(lpobject, react=1:length(lb), ub=ub, lb=lb)
-message("state:",sol$stat, "\tr=", sol$obj)
-
-names(sol$fluxes) <- react_id(model)
-sol$fluxes[ex@react_pos][which(round(sol$fluxes[ex@react_pos],3)<0)]
-sol$fluxes[idx]
-#setdiff(names(sol$fluxes[ex@react_pos][which(round(sol$fluxes[ex@react_pos],3)<0)]), ess)
-
-shadow <- getRowsDualGLPK(lpobject@problem@oobj); names(shadow) <- react_id(model)
-head(sort(shadow[ex@react_pos]),20)
+  lb[ex@react_pos] <- 0
+  idx <- match(medium, react_id(model))
+  lb[idx] <- -100
+  sol <- optimizeProb(lpobject, react=1:length(lb), ub=ub, lb=lb)
+  message("state:",sol$stat, "\tr=", round(sol$obj,6))
+  
+  if(printExchanges){
+    names(sol$fluxes) <- react_id(model)
+    sol$fluxes[ex@react_pos][which(round(sol$fluxes[ex@react_pos],3)<0)]
+    sol$fluxes[idx]
+  }
+  
+  if(printShadow){ # TODO: not working length(shadow) != length(react_id) wtf??
+    shadow <- getRowsDualGLPK(lpobject@problem@oobj); names(shadow) <- react_id(model)
+    print(head(sort(shadow[ex@react_pos]),20))
+  }
+  
+}

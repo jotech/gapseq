@@ -5,6 +5,7 @@
 
 
 # paths and variables
+sbml=$3
 fasta=$2
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
@@ -24,18 +25,27 @@ brenda=$dir/dat/brenda_ec.csv
 [ "$1" == "cofactor" ]  && pwyKey=Cofactor-Biosynthesis
 [ "$1" == "carbo" ]     && pwyKey=Carbohydrates-Degradation
 [ "$1" == "polyamine" ] && pwyKey=Polyamine-Biosynthesis
+[ "$1" == "fatty" ]     && pwyKey=Fatty-acid-biosynthesis
+[ "$1" == "core" ]      && pwyKey="Amino-Acid-Biosynthesis|Nucleotide-Biosynthesis|Cofactor-Biosynthesis|Carbohydrates-Degradation|Polyamine-Biosynthesis|Fatty-acid-biosynthesis"
+
+[ -z $pwyKey ] && pwyKey=$1
 
 # USAGE
 #[ $# -ne 2 ] && { echo "Usage: $0 file.fasta model.sbml"; exit 1; }
-( [ $# -ne 2 ] || [ -z $pwyKey ] ) && { echo "Usage: $0 database (amino,nucl,cofactor,carbo,polyamine) file.fasta"; exit 1; }
+( [ $# -ne 3 ] ) && { echo "Usage: $0 database (amino,nucl,cofactor,carbo,polyamine) file.fasta model.sbml"; exit 1; }
 
-pwyDB=$(cat $metaPwy | grep -w $pwyKey)
+pwyDB=$(cat $metaPwy | grep -wE $pwyKey)
 [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
 
 
 # tmp working directory
 cd $(mktemp -d)
 #cd /tmp/tmp.VMnit0ThVM 
+
+
+# try to read sbml file and save as r object
+$dir/src/sbml_read.R $sbml
+
 
 # create blast database
 makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
@@ -58,7 +68,7 @@ do
     name=$(echo "$line" | awk -F "\t" '{print $2}')
     ecs=$(echo "$line" | awk -F "\t" '{print $7}')
     reaids=$(echo "$line" | awk -F "\t" '{print $6}')
-    echo -e '\n'Checking for pathway $pwy $name
+    echo -e '\n'$i. Checking for pathway $pwy $name
     for j in `seq 1 $(echo $ecs | tr "," "\n"i | wc -l)`
     #for ec in $(echo $ecs | tr "," "\n")
     do 
@@ -85,7 +95,7 @@ do
                         dbhit=$(grep -wF $ec $reaDB1 | awk -F ',' '{print $1}')
                         [ -n "$kegg" ]  && [ -z "$dbhit" ]&& dbhit=$(grep -wF $kegg $reaDB1 | awk -F ',' '{print $1}')
                         # search in vmh db by alternative EC
-                        [ -n "$altec" ] && [ -z "$dbhit" ]  && dbhit=$(grep -wF $altec $reaDB1 | awk -F ',' '{print $1}')
+                        [ -n "$altec" ] && [ -z "$dbhit" ]  && dbhit=$(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}') # take care of multiple EC numbers
                         # search in bigg db by metacyc id
                         [ -z "$dbhit" ]  && dbhit=$(grep -wF $rea $reaDB2 | awk '{print $1}')
                         if [ -n "$dbhit" ]; then
@@ -132,3 +142,7 @@ bestCand=$(echo $bestCand | tr ' ' '\n' | sort | uniq | tr '\n' ' ') # remove du
 echo -e '\n'Candidate reactions from complete pathways:
 echo -e $bestCand
 
+# add reactions and write new sbml model
+echo $bestCand > newReactions.lst
+echo ""
+$dir/src/sbml_write.R newReactions.lst $dir
