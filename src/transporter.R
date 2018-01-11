@@ -46,29 +46,11 @@ find_transporter <- function(model, fasta){
 # blastdb blast results obtained by transporter_blast()
 # refdb agora database used as template for transporter insertion. 
 transporter_add <- function(model, orgID, blastdb, refdb, cutoff_bits=50, cutoff_ident=70, verbose=TRUE){
- 
-  blastdb <- data.table(blastdb)[org==orgID & Bits>=cutoff_bits & Perc.Ident>=cutoff_ident]
-  if(nrow(blastdb)==0){
-    warning(paste("No significant transporter hit found for", model@mod_desc))
-    return(model)
-  }
-  refdb <- data.table(refdb)
-  class <- get_TransporterClasses()
-  
-  # summary blast hits per external metabolite
-  uniMets <- unique(blastdb$exname)
-  dfMets <- data.frame()
-  for(i in seq_along(uniMets)){
-    met <- uniMets[i]
-    trtypes <- paste(unique(blastdb[exname==met]$name), sep=",")
-    tc <- unique(blastdb[exname==met]$tc)
-    trtype <-  names(class)[as.integer(str_extract(tc, "."))] # get transporter type by first digit of TC number
-    dfMets <- rbind(dfMets, data.frame(met=met, table(trtype)))
-  }
-  if(verbose) print(dfMets)
-  
   # TODO: check for organism
   
+  refdb <- data.table(refdb)
+  class <- get_TransporterClasses()
+ 
   # add exchange reaction if not available
   # TODO: only add exchange if transporter is found ?!?
   exex     <- findExchReact(model)@react_id
@@ -103,15 +85,39 @@ transporter_add <- function(model, orgID, blastdb, refdb, cutoff_bits=50, cutoff
     lb    <- rep(-1000, length(met))
     ids   <- paste0("EX_", gsub("\\[","(",gsub("\\]",")",met))) # set default exchange layout
     model <- addMultiReact(model, ids=ids, mets=met, Scoefs=rep(-1, length(met)), lb=lb)
-    # add pseudo transporter for compounds with diffusion 
-    hit   <- match(diffex[misseddiff], refdb$tr)
-    idx   <- hit[which(!is.na(hit))]
-    if(length(idx)>0) {
-      ids   <- unname(diffex[idx])
-      rstr  <- refdb$rea[idx]
-      model <- addReactByString(model, ids=ids, react_str=rstr)
-    }
   }
+  # add pseudo transporter for compounds with diffusion 
+  misseddiff <- setdiff(unname(diffex), model@react_id)
+  hit   <- match(misseddiff, refdb$tr)
+  idx   <- hit[which(!is.na(hit))]
+  if(length(idx)>0) {
+      ids   <- as.character(refdb$tr[idx])
+      rstr  <- as.character(refdb$rea[idx])
+      rname <- as.character(refdb$name[idx])
+      if(verbose) cat("Add pseudo transporter for compounds with diffusion:", paste(ids,collapse=","),"\n")
+      model <- addReactByString(model, ids=ids, react_str=rstr, reactName=rname)
+  }
+
+  
+  blastdb <- data.table(blastdb)[org==orgID & Bits>=cutoff_bits & Perc.Ident>=cutoff_ident]
+  if(nrow(blastdb)==0){
+    warning(paste("No significant transporter hit found for", model@mod_desc))
+    return(model)
+  }
+  
+
+  # summary blast hits per external metabolite
+  uniMets <- unique(blastdb$exname)
+  dfMets <- data.frame()
+  for(i in seq_along(uniMets)){
+    met <- uniMets[i]
+    trtypes <- paste(unique(blastdb[exname==met]$name), sep=",")
+    tc <- unique(blastdb[exname==met]$tc)
+    trtype <-  names(class)[as.integer(str_extract(tc, "."))] # get transporter type by first digit of TC number
+    dfMets <- rbind(dfMets, data.frame(met=met, table(trtype)))
+  }
+  if(verbose) print(dfMets)
+  
   
   # try to associate hits with agora transporter
   uniHit <- unique(blastdb$tc)
@@ -151,16 +157,17 @@ transporter_add <- function(model, orgID, blastdb, refdb, cutoff_bits=50, cutoff
   
   # missed metabolites (transporter sequence found for metabolite but no hit in agora db)
   missed <- setdiff(unlist(str_split(dfMets$met, ";")), unlist(str_split(dfhits$met[!is.na(dfhits$rid)], ";")))
-  if(verbose) cat("Missed metabolites:", paste(missed,collapse=","), "\n")
+  if(verbose & length(missed)>0) cat("Missed metabolites:", paste(missed,collapse=","), "\n")
   
   # reactions to be added
-  r2add <- c(unname(diffex[misseddiff, drop=F]), setdiff(unique(dfhits$rid[!is.na(dfhits$rid)]), react_id(model))) # diffusion + found reactions
-  if(verbose) cat("Reactions which will be added:\n", paste(r2add,collapse=","),"\n")
+  r2add <- setdiff(unique(dfhits$rid[!is.na(dfhits$rid)]), react_id(model)) # found reactions
+  if(verbose & length(r2add)>0) cat("Reactions which will be added:\n", paste(r2add,collapse=","),"\n")
   
   # add reactions
   hit <- match(r2add, refdb$tr)
+  if(length(is.na(hit))>0) cat("Not found in reference database:", paste(r2add[which(is.na(hit))]), "\n")
   idx <- which(!is.na(hit))
-  model <- addReactByString(model, ids=r2add[idx], react_str=refdb$rea[hit[idx]])
+  model <- addReactByString(model, ids=r2add[idx], react_str=as.character(refdb$rea[hit[idx]]))
 
   return(model)  
 }
@@ -187,9 +194,11 @@ transporter_blast <- function(fasta, orgID, rel_transporter){
   idx <- match(rel_transporter$fullname, names(query))
   query <- query[idx]
   
+  sink("/dev/null") # win: sink("NUL")
   setwd(tempdir())
   makeblastdb(fasta, dbtype = "nucl", args="-out mydb")
   blastdb <- blast(db="./mydb", type="tblastn")
+  sink() 
   
   cores=detectCores(); cl <- makeCluster(cores); registerDoParallel(cl)
   distJ <- distJob(length(query), cores)

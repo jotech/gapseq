@@ -2,11 +2,13 @@
 
 # TODO: dbhit: handle when $ec has more then one number
 # TODO: handle incomplete/unspecific ecs from metacyc (e.g. get ec from kegg, update maually or get genes from metacyc)
+# TODO: advanced handling of parameters/arguments (argv), e.g. output file)
 
 
 # paths and variables
-sbml=$3
-fasta=$2
+sbml=$(readlink -f $3)
+fasta=$(readlink -f $2)
+curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
 seqpath=$dir/dat/seq/
@@ -146,3 +148,6 @@ echo -e $bestCand
 echo $bestCand > newReactions.lst
 echo ""
 $dir/src/sbml_write.R newReactions.lst $dir
+modelold=$(basename $sbml)
+modelnew="${modelold%.*}G.xml"
+cp modelnew.xml $curdir/$modelnew

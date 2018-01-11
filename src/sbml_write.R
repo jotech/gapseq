@@ -1,5 +1,7 @@
 #!/usr/bin/Rscript
 
+# TODO: writeSBML with notes/attributes
+
 library(methods)
 library(sybil, quietly=T)
 library(data.table, quietly=T)
@@ -58,6 +60,8 @@ addReactions <- function(model, candidates){
 
 cat("Already in the model: ", intersect(mod@react_id,reactions),"\n")
 newmod <- addReactions(mod, reactions)
-react_attr(newmod)[,1] <- factor(react_attr(newmod)[,1]) # needed to get factor in data.table otherwise export will fail
+#if(ncol(react_attr(newmod))>0 && !is.factor(react_attr(newmod)[,1])){
+#    react_attr(newmod)[,1] <- factor(react_attr(newmod)[,1]) # needed to get factor in data.table otherwise export will fail
+#}
 saveRDS(newmod, "./newmod.RDS")
-cat(sybilSBML::writeSBML(newmod, filename="modelnew.xml"), "\n\n")
+cat(sybilSBML::writeSBML(newmod, filename="modelnew.xml", printNotes=F), "\n\n") # react_attr notes causing problems
