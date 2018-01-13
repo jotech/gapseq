@@ -1,5 +1,96 @@
 library(sybil)
 
+findCarbonSource <- function(mod){
+  library(igraph)
+  #data("Ec_core")
+  #mod <- Ec_core
+  myb71_med <- c("EX_cu2(e)","EX_zn2(e)","EX_fe3(e)","EX_pi(e)","EX_mg2(e)","EX_k(e)", "EX_mn2(e)","EX_cobalt2(e)", "EX_cl(e)","EX_so4(e)","EX_ca2(e)",
+                 "EX_glc(e)", "EX_o2(e)",
+                 "EX_thm(e)", "EX_mqn7(e)",
+                 #"EX_pyr(e)", 
+                 "EX_gam(e)", 
+                 "EX_xan(e)", "EX_lanost(e)")
+  mod <- set_diet(myb71_new, myb71_med)
+  check_growth(mod)
+  
+  sol <- optimizeProb(mod, retOptSol=F)
+  tol <- 1e-03
+  nzf <- which(abs(sol$fluxes)>tol) # non zero fluxes
+  nM  <- length(mod@met_id)
+  ignore <- mod@met_id[tail(sort(rowSums(as.matrix(abs(S(mod)))), index.return=T)$ix,10)]
+  mBio <- which(S(mod)[,findrBiomass(mod)]!=0)
+  ex   <- findExchReact(mod)
+  mEx  <- ex@met_pos; fEx  <- round(sol$fluxes[ex@react_pos], -log10(tol))
+  
+  g <- make_empty_graph(n = nM, directed = TRUE)
+  g <- set_vertex_attr(g,name="id",value=mod@met_id)
+  g <- set_vertex_attr(g,name="type",value="internal")
+  g <- set_vertex_attr(g,name="type",index=mBio,value="biomass")
+  g <- set_vertex_attr(g,name="type",index=mEx[which(fEx<0)],value="uptake")
+  g <- set_vertex_attr(g,name="type",index=mEx[which(fEx>0)],value="production")
+  for(i in nzf){
+    idx <- which(S(mod)[,i]!=0)
+    sig <- ifelse(sol$fluxes[i]>0,1,-1) # negative fluxes swap educt and product
+    idxE <- which(sig*S(mod)[,i] < 0) # educts
+    idxP <- which(sig*S(mod)[,i] > 0) # products
+    if(length(idxE)==0 | length(idxP)==0) next
+    comb <- expand.grid(idxE,idxP) # combinatorics
+    for(j in 1:nrow(comb)){
+      edu <- comb$Var1[j]
+      pro <- comb$Var2[j]
+      g <- add_edges(g, edges=c(edu,pro), weight=abs(sol$fluxes[i]), reaction=mod@react_id[i])
+    }
+    
+  }
+  
+  g <- delete.vertices(g, which(vertex_attr(g, "id") %in% ignore)) # delete some substances (h2o, h, ...)
+  g <- delete.vertices(g, which(degree(g) == 0)) # delete isolates
+  
+  idxL <- as.numeric(V(g)); names(idxL) <- vertex_attr(g,"id")
+  labV <- ifelse(vertex_attr(g, "type")=="internal", NA, vertex_attr(g, "id"))
+  sizeV<- ifelse(vertex_attr(g, "type")=="internal", 0, 15)
+  colV <- ifelse(!vertex_attr(g, "type") %in% c("production","uptake"), "yellow", ifelse(vertex_attr(g, "type")=="production", "green", "red"))
+  plot(g, vertex.label=labV, vertex.size=sizeV, vertex.label.cex=0.6, vertex.color=colV, edge.arrow.size=0.5)
+  
+  # influence of uptake substances
+  vEx  <- V(g)[vertex_attr(g, "type") == "uptake"]
+  vBio <- V(g)[vertex_attr(g, "type") == "biomass"]
+  dist <- distances(g, v=vEx, to = vBio, mode="out")
+  rownames(dist) <- vertex_attr(g, "id")[vEx]; colnames(dist) <- vertex_attr(g, "id")[vBio]
+  dist[dist==Inf] <- 0; dist <- round(dist,1); dist
+  sort(rowSums(dist, na.rm = T))
+  sort(rowMeans(dist, na.rm = T))
+  dist[which(rownames(dist) %in% c("glc_D[e]", "gam[e]")),]
+  
+  # path from uptake substance to biomass
+  idxB <- idxL["gam6p[c]"]
+  idxS <- idxL["glc_D[e]"]
+  path <- all_shortest_paths(g, from=idxS, to=idxB, mode="out")
+  vertex_attr(g, "id")[path$res[[1]]]
+  printReaction(mod,react=edge_attr(g, "reaction")[path$res[[1]]])
+  
+  # neighborhood of a substance
+  idxL[neighbors(g, idxL["glc_D[e]"], mode="out")]
+  incident(g, idxL["glc_D[e]"])
+  edge_attr(g,"reaction", index = incident(g, idxL["glc_D[e]"]))
+  edge_attr(g,"weight", index = incident(g, idxL["glc_D[e]"]))
+  
+  # plot neighborhood of a substance
+  gsub <- subgraph.edges(g, eids=incident(g, idxL["glc_D[e]"]))
+  plot(gsub, 
+       edge.label=paste(edge_attr(gsub,"reaction"),round(edge_attr(gsub,"weight"),1)), edge.label.cex=0.7,
+       vertex.label=vertex_attr(gsub,"id"))
+}
+
+
+set_diet <- function(model, diet, lb=-1000){
+  ex <- findExchReact(model)
+  lowbnd(model)[ex@react_pos] <- 0
+  idx <- match(diet, ex@react_id)
+  lowbnd(model)[ex@react_pos[idx]] <- lb
+  return(model)
+}
+
 
 findrBiomass <- function(model, keys=c("biom")){
   ex_pos <- sybil::findExchReact(model)@react_pos
@@ -44,7 +135,7 @@ auxotrophy <- function(model, checkNoEx=FALSE, rmMetals=FALSE, useNames=FALSE){
   }
   if(rmMetals) aux <- setdiff(aux, metals)
   print(paste(length(aux), "auxotrophies found"))
-  return(aux)
+  return(sort(aux))
 }
 
 cs <- c("EX_glc(e)", "EX_fru(e)", "EX_malt(e)", "EX_malthx(e)", "EX_man(e)", "EX_acgam(e)", "EX_gam(e)", "EX_rib_D(e)", "EX_sucr(e)", "EX_gal(e)", 
@@ -75,18 +166,21 @@ csource <- function(model, cs=cs){
 
 
 # check for essential substances needed to growth
-getEssentials <- function(model, minus=NULL, limit=10){
+getEssentials <- function(model, ignore=NULL, limit=10, useNames=F){
   ex <- sybil::findExchReact(model)  
   var_r <- sybil::fluxVar(model, react=ex@react_id, percentage=limit)
   ex_max <- sybil::maxSol(var_r, "lp_obj")
-  min_id  <- ex@react_id[which(ex_max<0)]
   
-  if(length(minus)==0) return(min_id)
-  else return(setdiff(min_id, minus))
+  if(useNames) min_id <- sort(model@react_name[ex@react_pos[which(ex_max<0)]])
+    else min_id  <- sort(ex@react_id[which(ex_max<0)])
+  
+  print(paste(length(min_id), "essential substances found"))
+  if(length(ignore)==0) return(min_id)
+  else return(setdiff(min_id, ignore))
 }
 
 
-trimMedium <- function(model, medium=NULL, limit=10){
+trimMedium <- function(model, medium=NULL, limit=10, useNames=F){
   ex <- sybil::findExchReact(model)
   if(is.null(medium)) medium <- ex@react_id
   med <- intersect(ex@react_id, medium)
@@ -97,8 +191,12 @@ trimMedium <- function(model, medium=NULL, limit=10){
   model@lowbnd <- lb
   
   var_r <- sybil::fluxVar(model, react=med, percentage=limit)
+  plot(var_r)
+  if( all(round(var_r@lp_obj,3)==0) ) warning("all fva solutions are almost zero..")
   ex_max <- sybil::maxSol(var_r, "lp_obj")
+  
   not_essential  <- med[which(!round(ex_max,6)<0)]
+  if(useNames) not_essential <- model@react_name[match(not_essential, model@react_id)]
   
   return(c(not_essential, setdiff(medium,ex@react_id)))
 }
@@ -128,9 +226,12 @@ trimMediumRand <- function(model, medium=NULL){
 }
 
 
-check_growth <- function(model, medium=NULL, printShadow=F, printExchanges=F){
+check_growth <- function(model, medium=NULL, uptake=-100, printShadow=F, printExchanges=F, returnSol=F){
   ex <- findExchReact(model)
-  if(is.null(medium)) medium <- ex@react_id
+  if(is.null(medium)){
+    medium <- ex@react_id[which(ex@lowbnd < 0)]
+    uptake <- ex@lowbnd[which(ex@lowbnd < 0)]
+  } 
   lpobject <- sybil::sysBiolAlg(model, algorithm="fba")
   ub <- model@uppbnd
   lb <- model@lowbnd
@@ -141,19 +242,24 @@ check_growth <- function(model, medium=NULL, printShadow=F, printExchanges=F){
 
   lb[ex@react_pos] <- 0
   idx <- match(medium, react_id(model))
-  lb[idx] <- -100
+  lb[idx] <- uptake
   sol <- optimizeProb(lpobject, react=1:length(lb), ub=ub, lb=lb)
   message("state:",sol$stat, "\tr=", round(sol$obj,6))
   
   if(printExchanges){
     names(sol$fluxes) <- react_id(model)
     sol$fluxes[ex@react_pos][which(round(sol$fluxes[ex@react_pos],3)<0)]
-    sol$fluxes[idx]
+    print(sort(round(sol$fluxes[idx],1)))
   }
   
   if(printShadow){ # TODO: not working length(shadow) != length(react_id) wtf??
     shadow <- getRowsDualGLPK(lpobject@problem@oobj); names(shadow) <- react_id(model)
     print(head(sort(shadow[ex@react_pos]),20))
   }
-  
+  if(returnSol) return(sol)
+}
+
+id2names <- function(mod, ids){
+  idx <- match(ids, mod@react_id)
+  return(mod@react_name[idx])
 }

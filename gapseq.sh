@@ -17,7 +17,9 @@ metaPwy=$dir/dat/meta_pwy.tbl
 metaRea=$dir/dat/meta_rea.tbl
 reaDB1=$dir/dat/vmh_reactions.csv
 reaDB2=$dir/dat/bigg_reactions.tbl
+reaDB3=$dir/dat/seed_reactions.tsv
 brenda=$dir/dat/brenda_ec.csv
+seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases.tsv
 
 
 # set databases
@@ -91,15 +93,23 @@ do
                         
                         
                         kegg=$(grep -wF $rea $metaRea | awk -F "\t" {'print $5'})
-                        # search in vmh db by EC
                         altec=$(grep $ec $brenda | grep -P "([0-9]+.[0-9]+.[0-9]+.[0-9]+)" -o | grep -v $ec)
-                        # search in vmh db by kegg identifier 
-                        dbhit=$(grep -wF $ec $reaDB1 | awk -F ',' '{print $1}')
-                        [ -n "$kegg" ]  && [ -z "$dbhit" ]&& dbhit=$(grep -wF $kegg $reaDB1 | awk -F ',' '{print $1}')
-                        # search in vmh db by alternative EC
-                        [ -n "$altec" ] && [ -z "$dbhit" ]  && dbhit=$(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}') # take care of multiple EC numbers
-                        # search in bigg db by metacyc id
-                        [ -z "$dbhit" ]  && dbhit=$(grep -wF $rea $reaDB2 | awk '{print $1}')
+                        
+                        # 1) search in vmh/seed db by EC
+                        #dbhit=$(grep -wF $ec $reaDB1 | awk -F ',' '{print $1}')
+                        dbhit=$(grep -wF $ec $seedEC | awk '{print $1}' | tr '|' '\n')
+
+                        # 2) search in vmh/seed db by kegg identifier 
+                        #[ -n "$kegg" ]  && [ -z "$dbhit" ]&& dbhit=$(grep -wF $kegg $reaDB1 | awk -F ',' '{print $1}')
+                        [ -n "$kegg" ]  && [ -z "$dbhit" ]&& dbhit=$(grep -wF $kegg $reaDB3 | awk '{print $1}')
+
+                        # 3) search in vmh db by alternative EC
+                        #[ -n "$altec" ] && [ -z "$dbhit" ]  && dbhit=$(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}') # take care of multiple EC numbers
+                        [ -n "$altec" ] && [ -z "$dbhit" ]  && dbhit=$(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB3 | awk '{print $1}') # take care of multiple EC numbers
+                        
+                        # 4) search in bigg db by metacyc id (does only make sense for vmh/bigg namespace)
+                        #[ -z "$dbhit" ]  && dbhit=$(grep -wF $rea $reaDB2 | awk '{print $1}')
+                        
                         if [ -n "$dbhit" ]; then
                             echo -e '\t\t'Candidate reaction for import: $dbhit
                             pwyCand="$pwyCand$dbhit " # remember candidate reaction
