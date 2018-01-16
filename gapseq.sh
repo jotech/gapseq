@@ -6,7 +6,6 @@
 
 
 # paths and variables
-sbml=$(readlink -f $3)
 fasta=$(readlink -f $2)
 curdir=$(pwd)
 path=$(readlink -f "$0")
@@ -19,7 +18,7 @@ reaDB1=$dir/dat/vmh_reactions.csv
 reaDB2=$dir/dat/bigg_reactions.tbl
 reaDB3=$dir/dat/seed_reactions.tsv
 brenda=$dir/dat/brenda_ec.csv
-seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases.tsv
+seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique.tsv
 
 
 # set databases
@@ -36,7 +35,8 @@ seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases.tsv
 
 # USAGE
 #[ $# -ne 2 ] && { echo "Usage: $0 file.fasta model.sbml"; exit 1; }
-( [ $# -ne 3 ] ) && { echo "Usage: $0 database (amino,nucl,cofactor,carbo,polyamine) file.fasta model.sbml"; exit 1; }
+( [ $# -lt 2 ] || [ $# -gt 3 ] ) && { echo "Usage: $0 database (amino,nucl,cofactor,carbo,polyamine) file.fasta [model.sbml]"; exit 1; }
+( [ $# -eq 3 ] ) && { withSbml=true; sbml=$(readlink -f $3); }
 
 pwyDB=$(cat $metaPwy | grep -wE $pwyKey)
 [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
@@ -48,7 +48,9 @@ cd $(mktemp -d)
 
 
 # try to read sbml file and save as r object
-$dir/src/sbml_read.R $sbml
+if [ "$withSbml" = true ] ; then
+    $dir/src/sbml_read.R $sbml
+fi
 
 
 # create blast database
@@ -156,8 +158,12 @@ echo -e $bestCand
 
 # add reactions and write new sbml model
 echo $bestCand > newReactions.lst
-echo ""
-$dir/src/sbml_write.R newReactions.lst $dir
-modelold=$(basename $sbml)
-modelnew="${modelold%.*}G.xml"
-cp modelnew.xml $curdir/$modelnew
+cp newReactions.lst $curdir/
+if [ "$withSbml" = true ] ; then
+    echo ""
+    $dir/src/sbml_write.R newReactions.lst $dir
+    modelold=$(basename $sbml)
+    modelnew="${modelold%.*}G.xml"
+    cp modelnew.xml $curdir/$modelnew
+fi
+
