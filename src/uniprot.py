@@ -34,9 +34,9 @@ for index,row in pwydf.iterrows():
         continue
     ec_list = row["reaEc"].split(",")
     for ec in ec_list:
-        results = u.search(ec+"+and+reviewed:yes", columns="id,entry name, protein names, sequence") # uniprot swissprot db (reviewed)
+        results = u.search(ec+"+and+reviewed:yes", columns="id,entry name, protein names, sequence", limit=20) # uniprot swissprot db (reviewed)
         if len(results) == 0:
-            results = u.search(ec, columns="id,entry name, protein names, sequence") # uniprot trembl db (unreviewed) limit=10
+            results = u.search(ec, columns="id,entry name, protein names, sequence", limit=20) # uniprot trembl db (unreviewed) limit=10
         if len(results) == 0:
             print("No entry found for:", row["name"],row["id"], ec)
             continue

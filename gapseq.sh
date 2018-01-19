@@ -17,6 +17,7 @@ metaRea=$dir/dat/meta_rea.tbl
 reaDB1=$dir/dat/vmh_reactions.csv
 reaDB2=$dir/dat/bigg_reactions.tbl
 reaDB3=$dir/dat/seed_reactions.tsv
+reaDB4=$dir/dat/mnxref_seed.tsv
 brenda=$dir/dat/brenda_ec.csv
 seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique.tsv
 
@@ -26,10 +27,13 @@ seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique.tsv
 [ "$1" == "amino" ]     && pwyKey=Amino-Acid-Biosynthesis
 [ "$1" == "nucl" ]      && pwyKey=Nucleotide-Biosynthesis
 [ "$1" == "cofactor" ]  && pwyKey=Cofactor-Biosynthesis
-[ "$1" == "carbo" ]     && pwyKey=Carbohydrates-Degradation
+[ "$1" == "carbo" ]     && pwyKey=CARBO-BIOSYNTHESIS
+[ "$1" == "carbo-deg" ]     && pwyKey=Carbohydrates-Degradation
 [ "$1" == "polyamine" ] && pwyKey=Polyamine-Biosynthesis
 [ "$1" == "fatty" ]     && pwyKey=Fatty-acid-biosynthesis
-[ "$1" == "core" ]      && pwyKey="Amino-Acid-Biosynthesis|Nucleotide-Biosynthesis|Cofactor-Biosynthesis|Carbohydrates-Degradation|Polyamine-Biosynthesis|Fatty-acid-biosynthesis"
+[ "$1" == "energy" ]     && pwyKey=Energy-Metabolism
+[ "$1" == "terpenoid" ]     && pwyKey=Terpenoid-Biosynthesis
+[ "$1" == "core" ]      && pwyKey="Amino-Acid-Biosynthesis|Nucleotide-Biosynthesis|Cofactor-Biosynthesis|Carbohydrates-Degradation|CARBO-BIOSYNTHESIS|Polyamine-Biosynthesis|Fatty-acid-biosynthesis|Energy-Metabolism|Terpenoid-Biosynthesis"
 
 [ -z $pwyKey ] && pwyKey=$1
 
@@ -61,8 +65,10 @@ cand=""     #list of candidate reactions to be added
 bestCand="" # list of candidates from (almost) complete pathways
 bestPwy=""  # list of found pathways
 
+pwyNr=$(echo "$pwyDB" | wc -l)
 echo Checking for reaction from: $1 $pwyKey
-for i in `seq 1 $(echo "$pwyDB" | wc -l)`
+echo Number of pathways to be considered: $pwyNr
+for i in `seq 1 $pwyNr`
 do
     pwyCand="" # candidate reaction of current pathway
     count=0
@@ -74,7 +80,7 @@ do
     name=$(echo "$line" | awk -F "\t" '{print $2}')
     ecs=$(echo "$line" | awk -F "\t" '{print $7}')
     reaids=$(echo "$line" | awk -F "\t" '{print $6}')
-    echo -e '\n'$i. Checking for pathway $pwy $name
+    echo -e '\n'$i/$pwyNr: Checking for pathway $pwy $name
     for j in `seq 1 $(echo $ecs | tr "," "\n"i | wc -l)`
     #for ec in $(echo $ecs | tr "," "\n")
     do 
@@ -97,22 +103,26 @@ do
                         kegg=$(grep -wF $rea $metaRea | awk -F "\t" {'print $5'})
                         altec=$(grep $ec $brenda | grep -P "([0-9]+.[0-9]+.[0-9]+.[0-9]+)" -o | grep -v $ec)
                         
-                        # 1) search in vmh/seed db by EC
+                        # 1) search in reaction db by EC
                         #dbhit=$(grep -wF $ec $reaDB1 | awk -F ',' '{print $1}')
                         dbhit=$(grep -wF $ec $seedEC | awk '{print $1}' | tr '|' '\n')
+                        dbhit="$dbhit $(grep -wF $ec $reaDB4 | awk -F '\t' '{print $4}')"
 
-                        # 2) search in vmh/seed db by kegg identifier 
-                        #[ -n "$kegg" ]  && [ -z "$dbhit" ]&& dbhit=$(grep -wF $kegg $reaDB1 | awk -F ',' '{print $1}')
-                        [ -n "$kegg" ]  && [ -z "$dbhit" ]&& dbhit=$(grep -wF $kegg $reaDB3 | awk '{print $1}')
+                        # 2) search in reaction db by kegg identifier 
+                        #[ -n "$kegg" ]  && [ -z "$dbhit" ] && dbhit=$(grep -wF $kegg $reaDB1 | awk -F ',' '{print $1}')
+                        [ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB3 | awk -F '\t' '$18 == "OK" {print $1}' )" # only consider reactions which are OK
+                        [ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')"
 
-                        # 3) search in vmh db by alternative EC
+                        # 3) search in reaction db by alternative EC
                         #[ -n "$altec" ] && [ -z "$dbhit" ]  && dbhit=$(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}') # take care of multiple EC numbers
-                        [ -n "$altec" ] && [ -z "$dbhit" ]  && dbhit=$(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB3 | awk '{print $1}') # take care of multiple EC numbers
+                        [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $seedEC | awk '{print $1}' | tr '|' '\n')" # take care of multiple EC numbers
+                        [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')" # take care of multiple EC numbers
                         
                         # 4) search in bigg db by metacyc id (does only make sense for vmh/bigg namespace)
                         #[ -z "$dbhit" ]  && dbhit=$(grep -wF $rea $reaDB2 | awk '{print $1}')
                         
                         if [ -n "$dbhit" ]; then
+                            dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
                             echo -e '\t\t'Candidate reaction for import: $dbhit
                             pwyCand="$pwyCand$dbhit " # remember candidate reaction
                             ((countdb++))
@@ -145,19 +155,20 @@ do
     fi
 done
 
-cand=$(echo $cand | tr ' ' '\n' | sort | uniq | tr '\n' ' ') # remove duplicates
+cand="$(echo $cand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
 echo -e '\n'Total candidate reactions:
 echo $cand
 
 echo -e '\n'Pathways found:
 echo -e $bestPwy
 
-bestCand=$(echo $bestCand | tr ' ' '\n' | sort | uniq | tr '\n' ' ') # remove duplicates
+bestCand="$(echo $bestCand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
 echo -e '\n'Candidate reactions from complete pathways:
 echo -e $bestCand
 
 # add reactions and write new sbml model
 echo $bestCand > newReactions.lst
+#echo $cand > newReactions.lst
 cp newReactions.lst $curdir/
 if [ "$withSbml" = true ] ; then
     echo ""
