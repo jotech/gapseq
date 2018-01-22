@@ -33,6 +33,7 @@ seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique.tsv
 [ "$1" == "fatty" ]     && pwyKey=Fatty-acid-biosynthesis
 [ "$1" == "energy" ]     && pwyKey=Energy-Metabolism
 [ "$1" == "terpenoid" ]     && pwyKey=Terpenoid-Biosynthesis
+[ "$1" == "degradation" ]     && pwyKey=Degradation
 [ "$1" == "core" ]      && pwyKey="Amino-Acid-Biosynthesis|Nucleotide-Biosynthesis|Cofactor-Biosynthesis|Carbohydrates-Degradation|CARBO-BIOSYNTHESIS|Polyamine-Biosynthesis|Fatty-acid-biosynthesis|Energy-Metabolism|Terpenoid-Biosynthesis"
 
 [ -z $pwyKey ] && pwyKey=$1
@@ -91,6 +92,9 @@ do
         if [ -n "$test" ]; then
             ((count++))
             query=$seqpath$ec.fasta
+            if [ ! -f $query ]; then
+                python2 $dir/src/uniprot.py "$ec" # if sequence data not available then download from uniprot
+            fi
             if [ -s $query ]; then
                 out=$pwy-$ec.blast
                 tblastn -db orgdb -query $query -outfmt '6 qseqid sseqid pident evalue bitscore stitle' >$out 
@@ -104,22 +108,22 @@ do
                         altec=$(grep $ec $brenda | grep -P "([0-9]+.[0-9]+.[0-9]+.[0-9]+)" -o | grep -v $ec)
                         
                         # 1) search in reaction db by EC
-                        #dbhit=$(grep -wF $ec $reaDB1 | awk -F ',' '{print $1}')
-                        dbhit=$(grep -wF $ec $seedEC | awk '{print $1}' | tr '|' '\n')
-                        dbhit="$dbhit $(grep -wF $ec $reaDB4 | awk -F '\t' '{print $4}')"
+                        dbhit=$(grep -wF $ec $reaDB1 | awk -F ',' '{print $1}')
+                        #dbhit=$(grep -wF $ec $seedEC | awk '{print $1}' | tr '|' '\n')
+                        #dbhit="$dbhit $(grep -wF $ec $reaDB4 | awk -F '\t' '{print $4}')"
 
                         # 2) search in reaction db by kegg identifier 
-                        #[ -n "$kegg" ]  && [ -z "$dbhit" ] && dbhit=$(grep -wF $kegg $reaDB1 | awk -F ',' '{print $1}')
-                        [ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB3 | awk -F '\t' '$18 == "OK" {print $1}' )" # only consider reactions which are OK
-                        [ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')"
+                        [ -n "$kegg" ]  && dbhit="$dbhit $(grep -wE "$(echo $kegg |tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')"
+                        #[ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB3 | awk -F '\t' '$18 == "OK" {print $1}' )" # only consider reactions which are OK
+                        #[ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')"
 
                         # 3) search in reaction db by alternative EC
-                        #[ -n "$altec" ] && [ -z "$dbhit" ]  && dbhit=$(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}') # take care of multiple EC numbers
-                        [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $seedEC | awk '{print $1}' | tr '|' '\n')" # take care of multiple EC numbers
-                        [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')" # take care of multiple EC numbers
+                        [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')" # take care of multiple EC numbers
+                        #[ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $seedEC | awk '{print $1}' | tr '|' '\n')" # take care of multiple EC numbers
+                        #[ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')" # take care of multiple EC numbers
                         
                         # 4) search in bigg db by metacyc id (does only make sense for vmh/bigg namespace)
-                        #[ -z "$dbhit" ]  && dbhit=$(grep -wF $rea $reaDB2 | awk '{print $1}')
+                        dbhit="$dbhit $(grep -wF $rea $reaDB2 | awk '{print $1}')"
                         
                         if [ -n "$dbhit" ]; then
                             dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
