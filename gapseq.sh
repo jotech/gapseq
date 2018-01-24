@@ -2,11 +2,25 @@
 
 # TODO: dbhit: handle when $ec has more then one number
 # TODO: handle incomplete/unspecific ecs from metacyc (e.g. get ec from kegg, update maually or get genes from metacyc)
-# TODO: advanced handling of parameters/arguments (argv), e.g. output file)
+# TODO: if taxonomic range is not bacteria, then sequence data must be updated!
+
+
+usage()
+{
+    echo "Usage"
+    echo "$0 -p keyword -f fasta [-d database] [-f model.sbml] [-o output.sbml] [-t taxonomy]"
+    echo "  -p keywords such as pathways or susbstem (for example amino,nucl,cofactor,carbo,polyamine)"
+    echo "  -d database (vmh,seed)]"
+    echo "  -t taxonomic range (default: Bacteria)"
+exit 1
+}
+# USAGE
+#[ $# -ne 2 ] && { echo "Usage: $0 file.fasta model.sbml"; exit 1; }
+#( [ $# -lt 2 ] || [ $# -gt 3 ] ) && { usage; }
+#( [ $# -eq 3 ] ) && { withSbml=true; sbml=$(readlink -f $3); }
 
 
 # paths and variables
-fasta=$(readlink -f $2)
 curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
@@ -21,41 +35,120 @@ reaDB4=$dir/dat/mnxref_seed.tsv
 brenda=$dir/dat/brenda_ec.csv
 seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique.tsv
 
+pathways=""
+input_sbml=""
+output_sbml=""
+database="seed"
+verbose=0
+taxonomy="Bacteria"
+
+# tmp working directory
+cd $(mktemp -d)
+
+# A POSIX variable
+OPTIND=1         # Reset in case getopts has been used previously in the shell.
+
+while getopts "h?p:f:d:vi:o:t:" opt; do
+    case "$opt" in
+    h|\?)
+        usage
+        exit 0
+        ;;
+    p)  
+        pathways=$OPTARG
+        ;;
+    f)  
+        fasta=$(readlink -f $curdir/$OPTARG)
+        [ ! -s $fasta ] && { echo Invalid file $OPTARG; exit 0; }
+        ;;
+    d)  
+        database=$OPTARG
+        ;;
+    v)  
+        verbose=1
+        ;;
+    i)  
+        input_sbml=$(readlink -f $OPTARG)
+        $dir/src/sbml_read.R $input_sbml
+        ;;
+    t)  
+        taxonomy=$OPTARG
+        ;;
+    o)  
+        output_sbml=$(readlink -f $OPTARG)
+        ;;
+    esac
+done
+shift $((OPTIND-1))
+[ "$1" = "--" ] && shift
+
+
+# pathways and fasta file have to be provided
+( [ -z "$pathways" ] || [ -z "$fasta" ] ) && { usage; }
+
+# select pathway keys to be used in database search
+case $pathways in
+    all)
+        pwyKey=Pathways
+        ;;
+    amino)
+        pwyKey=Amino-Acid-Biosynthesis
+        ;;
+    nucl)
+        pwyKey=Nucleotide-Biosynthesis
+        ;;
+    cofactor)
+        pwyKey=Cofactor-Biosynthesis
+        ;;
+    carbo)
+        pwyKey=CARBO-BIOSYNTHESIS
+        ;;
+    carbo-deg)
+        pwyKey=Carbohydrates-Degradation
+        ;;
+    polyamine)
+        pwyKey=Polyamine-Biosynthesis
+        ;;
+    fatty)
+        pwyKey=Fatty-acid-biosynthesis
+        ;;
+    energy)
+        pwyKey=Energy-Metabolism
+        ;;
+    terpenoid)
+        pwyKey=Terpenoid-Biosynthesis
+        ;;
+    degradation)
+        pwyKey=Degradation
+        ;;
+    core)
+        pwyKey="Amino-Acid-Biosynthesis|Nucleotide-Biosynthesis|Cofactor-Biosynthesis|Carbohydrates-Degradation|CARBO-BIOSYNTHESIS|Polyamine-Biosynthesis|Fatty-acid-biosynthesis|Energy-Metabolism|Terpenoid-Biosynthesis"
+        ;;
+    *)
+        pwyKey=$pathways
+        ;;
+esac
+
 
 # set databases
-[ "$1" == "all" ]       && pwyKey=Pathways
-[ "$1" == "amino" ]     && pwyKey=Amino-Acid-Biosynthesis
-[ "$1" == "nucl" ]      && pwyKey=Nucleotide-Biosynthesis
-[ "$1" == "cofactor" ]  && pwyKey=Cofactor-Biosynthesis
-[ "$1" == "carbo" ]     && pwyKey=CARBO-BIOSYNTHESIS
-[ "$1" == "carbo-deg" ]     && pwyKey=Carbohydrates-Degradation
-[ "$1" == "polyamine" ] && pwyKey=Polyamine-Biosynthesis
-[ "$1" == "fatty" ]     && pwyKey=Fatty-acid-biosynthesis
-[ "$1" == "energy" ]     && pwyKey=Energy-Metabolism
-[ "$1" == "terpenoid" ]     && pwyKey=Terpenoid-Biosynthesis
-[ "$1" == "degradation" ]     && pwyKey=Degradation
-[ "$1" == "core" ]      && pwyKey="Amino-Acid-Biosynthesis|Nucleotide-Biosynthesis|Cofactor-Biosynthesis|Carbohydrates-Degradation|CARBO-BIOSYNTHESIS|Polyamine-Biosynthesis|Fatty-acid-biosynthesis|Energy-Metabolism|Terpenoid-Biosynthesis"
+#[ "$1" == "all" ]       && pwyKey=Pathways
+#[ "$1" == "amino" ]     && pwyKey=Amino-Acid-Biosynthesis
+#[ "$1" == "nucl" ]      && pwyKey=Nucleotide-Biosynthesis
+#[ "$1" == "cofactor" ]  && pwyKey=Cofactor-Biosynthesis
+#[ "$1" == "carbo" ]     && pwyKey=CARBO-BIOSYNTHESIS
+#[ "$1" == "carbo-deg" ]     && pwyKey=Carbohydrates-Degradation
+#[ "$1" == "polyamine" ] && pwyKey=Polyamine-Biosynthesis
+#[ "$1" == "fatty" ]     && pwyKey=Fatty-acid-biosynthesis
+#[ "$1" == "energy" ]     && pwyKey=Energy-Metabolism
+#[ "$1" == "terpenoid" ]     && pwyKey=Terpenoid-Biosynthesis
+#[ "$1" == "degradation" ]     && pwyKey=Degradation
+#[ "$1" == "core" ]      && pwyKey="Amino-Acid-Biosynthesis|Nucleotide-Biosynthesis|Cofactor-Biosynthesis|Carbohydrates-Degradation|CARBO-BIOSYNTHESIS|Polyamine-Biosynthesis|Fatty-acid-biosynthesis|Energy-Metabolism|Terpenoid-Biosynthesis"
+#[ -z $pwyKey ] && pwyKey=$1
 
-[ -z $pwyKey ] && pwyKey=$1
-
-# USAGE
-#[ $# -ne 2 ] && { echo "Usage: $0 file.fasta model.sbml"; exit 1; }
-( [ $# -lt 2 ] || [ $# -gt 3 ] ) && { echo "Usage: $0 database (amino,nucl,cofactor,carbo,polyamine) file.fasta [model.sbml]"; exit 1; }
-( [ $# -eq 3 ] ) && { withSbml=true; sbml=$(readlink -f $3); }
 
 pwyDB=$(cat $metaPwy | grep -wE $pwyKey)
 [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
 
-
-# tmp working directory
-cd $(mktemp -d)
-#cd /tmp/tmp.VMnit0ThVM 
-
-
-# try to read sbml file and save as r object
-if [ "$withSbml" = true ] ; then
-    $dir/src/sbml_read.R $sbml
-fi
 
 
 # create blast database
@@ -92,8 +185,8 @@ do
         if [ -n "$test" ]; then
             ((count++))
             query=$seqpath$ec.fasta
-            if [ ! -f $query ]; then
-                python2 $dir/src/uniprot.py "$ec" # if sequence data not available then download from uniprot
+            if [ ! -s $query ]; then
+                python2 $dir/src/uniprot.py "$ec" "$taxonomy" # if sequence data not available then download from uniprot
             fi
             if [ -s $query ]; then
                 out=$pwy-$ec.blast
@@ -108,22 +201,33 @@ do
                         altec=$(grep $ec $brenda | grep -P "([0-9]+.[0-9]+.[0-9]+.[0-9]+)" -o | grep -v $ec)
                         
                         # 1) search in reaction db by EC
-                        dbhit=$(grep -wF $ec $reaDB1 | awk -F ',' '{print $1}')
-                        #dbhit=$(grep -wF $ec $seedEC | awk '{print $1}' | tr '|' '\n')
-                        #dbhit="$dbhit $(grep -wF $ec $reaDB4 | awk -F '\t' '{print $4}')"
+                        if [ "$database" == "vmh" ]; then
+                            dbhit=$(grep -wF $ec $reaDB1 | awk -F ',' '{print $1}')
+                        elif [ "$database" == "seed" ]; then
+                            dbhit=$(grep -wF $ec $seedEC | awk '{print $1}' | tr '|' '\n')
+                            dbhit="$dbhit $(grep -wF $ec $reaDB4 | awk -F '\t' '{print $4}')"
+                        fi
 
                         # 2) search in reaction db by kegg identifier 
-                        [ -n "$kegg" ]  && dbhit="$dbhit $(grep -wE "$(echo $kegg |tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')"
-                        #[ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB3 | awk -F '\t' '$18 == "OK" {print $1}' )" # only consider reactions which are OK
-                        #[ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')"
+                        if [ "$database" == "vmh" ]; then
+                            [ -n "$kegg" ]  && dbhit="$dbhit $(grep -wE "$(echo $kegg |tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')"
+                        elif [ "$database" == "seed" ]; then
+                            [ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB3 | awk -F '\t' '$18 == "OK" {print $1}' )" # only consider reactions which are OK
+                            [ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')"
+                        fi
 
                         # 3) search in reaction db by alternative EC
-                        [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')" # take care of multiple EC numbers
-                        #[ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $seedEC | awk '{print $1}' | tr '|' '\n')" # take care of multiple EC numbers
-                        #[ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')" # take care of multiple EC numbers
+                        if [ "$database" == "vmh" ]; then
+                            [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')" # take care of multiple EC numbers
+                        elif [ "$database" == "seed" ]; then
+                            [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $seedEC | awk '{print $1}' | tr '|' '\n')" # take care of multiple EC numbers
+                            [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')" # take care of multiple EC numbers
+                        fi
                         
                         # 4) search in bigg db by metacyc id (does only make sense for vmh/bigg namespace)
-                        dbhit="$dbhit $(grep -wF $rea $reaDB2 | awk '{print $1}')"
+                        if [ "$database" == "vmh" ]; then
+                            dbhit="$dbhit $(grep -wF $rea $reaDB2 | awk '{print $1}')"
+                        fi
                         
                         if [ -n "$dbhit" ]; then
                             dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
@@ -170,11 +274,13 @@ bestCand="$(echo $bestCand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove 
 echo -e '\n'Candidate reactions from complete pathways:
 echo -e $bestCand
 
-# add reactions and write new sbml model
-echo $bestCand > newReactions.lst
-#echo $cand > newReactions.lst
+# export found reactions 
+#echo $bestCand > newReactions.lst
+echo $cand > newReactions.lst
 cp newReactions.lst $curdir/
-if [ "$withSbml" = true ] ; then
+
+# add reactions and write new sbml model
+if [ -n "$input_sbml" ] ; then # if there is an xml file
     echo ""
     $dir/src/sbml_write.R newReactions.lst $dir
     modelold=$(basename $sbml)
