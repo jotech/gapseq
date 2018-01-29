@@ -1,125 +1,124 @@
-name,altname,exid,guild,metacyc
-Water,h2o,EX_h2o(e),Water,
-alpha-Cyclodextrin,,,Polymers,
-Dextrin,,,Polymers,
-Glycogen,,,Polymers,
-Tween 40,,,Polymers,
-Tween 80,,,Polymers,
-N-Acetyl-D-Galactosamine,N-acetylgalactosamine,EX_acgal(e),Carbohydrates,PWY-7077
-N-Acetyl-D-Glucosamine,,EX_acgam(e),Carbohydrates,PWY-7586
-Adonitol,,,Carbohydrates,RIBITOLUTIL-PWY
-L-Arabinose,,EX_arab_L(e),Carbohydrates,ARABCAT-PWY;PWY-5515;PWY-5517;PWY-7295
-D-Arabitol,,EX_abt_D(e),Carbohydrates,DARABITOLUTIL-PWY
-D-Cellobiose,cellobiose,EX_cellb(e),Carbohydrates,
-i-Erythritol,,,Carbohydrates,PWY-7789;PWY-7788
-D-Fructose,fructose,EX_fru(e),Carbohydrates,PWY0-1314
-L-Fucose,fucose,EX_fuc_L(e),Carbohydrates,FUCCAT-PWY
-D-Galactose,galactose,EX_gal(e),Carbohydrates,PWY-6317;PWY-6693;GALDEG-PWY;PWY66-422;PWY-3821
-Gentiobiose,,,Carbohydrates,
-alpha-D-Glucose,glucose,EX_glc(e),Carbohydrates,GLYCOLYSIS;ANAGLYCOLYSIS-PWY;P341-PWY;NPGLUCAT-PWY;PWY-2221;ENTNER-DOUDOROFF-PWY
-m-Inositol,,EX_inost(e),Carbohydrates,P562-PWY;PWY-7241
-alpha-D-Lactose,lactose,EX_lcts(e),Carbohydrates,LACTOSEUTIL-PWY;BGALACT-PWY;LACTOSECAT-PWY
-Lactulose,,,Carbohydrates,
-Maltose,,EX_malt(e),Carbohydrates,MALTOSECAT-PWY
-D-Mannitol,mannitol,EX_mnl(e),Carbohydrates,PWY-3861;MANNIDEG-PWY
-D-Mannose,mannose,EX_man(e),Carbohydrates,MANNCAT-PWY
-D-Melibiose,melibiose,EX_melib(e),Carbohydrates,PWY0-1301
-beta-Methyl-D-Glucoside,,,Carbohydrates,
-D-Psicose,,,Carbohydrates,
-D-Raffinose,raffinose,EX_raffin(e),Carbohydrates,
-L-Rhamnose,rhamnose,EX_rmn(e),Carbohydrates,PWY-6714;RHAMCAT-PWY;PWY-6713
-D-Sorbitol,,EX_sbt-d(e),Carbohydrates,PWY-4101;SORBDEG-PWY
-Sucrose,,EX_sucr(e),Carbohydrates,SUCUTIL-PWY;SUCROSEUTIL2-PWY;PWY-3801;PWY-621;PWY66-373;PWY-5384
-D-Trehalose,trehalose,EX_tre(e),Carbohydrates,TREDEGLOW-PWY;PWY-2723;PWY0-1182;PWY-2721;PWY0-1466;PWY-2722
-Turanose,,EX_tur(e),Carbohydrates,
-Xylitol,,EX_xylt(e),Carbohydrates,LARABITOLUTIL-PWY
-Methyl Pyruvate,,EX_pyr(e),Carbohydrates,
-Mono-Methyl-Succinate,,,Carbohydrates,
-Acetic Acid,acetate,EX_ac(e),Carboxylic acids,
-Cis-Aconitic Acid,,,Carboxylic acids,
-Citric Acid,citrate,EX_cit(e),Carboxylic acids,
-Formic Acid,formate,EX_for(e),Carboxylic acids,
-D-Galactonic Acid Lactone,,,Carboxylic acids,
-D-Galacturonic Acid,,,Carboxylic acids,
-D-Gluconic Acid,,,Carboxylic acids,
-D-Glucosaminic Acid,,,Carboxylic acids,
-D-Glucuronic Acid,,,Carboxylic acids,
-alpha-Hydroxy Butyric Acid,,,Carboxylic acids,
-beta-Hydroxy Butyric Acid,,,Carboxylic acids,
-gamma-Hydroxy Butyric Acid,,,Carboxylic acids,
-p-Hydroxy Phenylacetic Acid,,,Carboxylic acids,
-Itaconic Acid,,,Carboxylic acids,
-alpha-Keto Butyric Acid,,,Carboxylic acids,
-alpha-Keto Glutaric Acid,,,Carboxylic acids,
-alpha-Keto Valeric Acid,,,Carboxylic acids,
-D-L-Lactic Acid,,,Carboxylic acids,
-Malonic Acid,,,Carboxylic acids,
-Propionic Acid,,,Carboxylic acids,
-Quinic Acid,,,Carboxylic acids,
-D-Saccharic Acid,,,Carboxylic acids,
-Sebacic Acid,,,Carboxylic acids,
-Succinic Acid,succinate,EX_succ(e),Carboxylic acids,
-Bromo Succinic Acid,,,Miscellaneous,
-Succinamic Acid,,,Amines/amides,
-Glucuronamide,,,Amines/amides,
-L-Alaninamide,,,Amines/amides,
-D-Alanine,,,Amino acids,
-L-Alanine,,,Amino acids,
-L-Alanylglycine,,,Amino acids,
-L-Asparagine,,,Amino acids,
-L-Aspartic Acid,,,Amino acids,
-L-Glutamic Acid,,,Amino acids,
-Glycyl-L-Aspartic Acid,,,Amino acids,
-Glycyl-L-Glutamic Acid,,,Amino acids,
-L-Histidine,,,Amino acids,
-Hydroxy-L-Proline,,,Amino acids,
-L-Leucine,,,Amino acids,
-L-Ornithine,,,Amino acids,
-L-Phenylalanine,,,Amino acids,
-L-Proline,,,Amino acids,
-L-Pyroglutamic Acid,,,Amino acids,
-D-Serine,,,Amino acids,
-L-Serine,,,Amino acids,
-L-Threonine,,,Amino acids,
-D-L-Carnitine,,,Amino acids,
-gamma-Amino Butyric Acid,,,Amino acids,
-Urocanic Acid,,,Miscellaneous,
-Inosine,,,Miscellaneous,
-Uridine,,,Miscellaneous,
-Thymidine,,,Miscellaneous,
-Phenyethylamine,,,Amines/amides,
-Putrescine,,,Amines/amides,
-2-Aminoethanol,,,Amines/amides,
-2-3-Butanediol,,,Miscellaneous,
-Glycerol,,,Miscellaneous,
-D-L-alpha-Glycerol Phosphate,,,Miscellaneous,
-Glucose-1-Phosphate,,,Miscellaneous,
-Glucose-6-Phosphate,,,Miscellaneous,
-Acetoin,,EX_actn_R(e),,
-Butanediol,,EX_btd_RR(e),,
-Butanol,,EX_btoh(e),,
-Butyrate,,EX_but(e),,
-Cholesterol,,EX_chsterol(e),,
-D-Arabinose,,EX_arab_D(e),,
-D-glucosamine,,EX_gam(e),,
-D-Lactate,,EX_lac_D(e),,
-Ethanol,,EX_etoh(e),,
-Galacturonate,,EX_galur(e),,
-Gluconate,,EX_glcn(e),,
-Glucuronate,,EX_glcur(e),,
-Glycerol,,EX_glyc(e),,
-Hydrogen,,EX_h2(e),,
-Hydrogen sulfide,,EX_h2s(e),,
-Indole,,EX_indole(e),,
-Isobutyrate,,EX_isobut(e),,
-Isovalerate,,EX_isoval(e),,
-L-Lactate,,EX_lac_L(e),,
-Lyxose,,EX_lyx_L(e),,
-Matohextrin,,EX_malthx(e),,
-Methane,,EX_ch4(e),,
-N-Acetylneuraminate,,EX_acnam(e),,
-Phenylacetate,,EX_4hphac(e),,
-Propionate,,EX_ppa(e),,
-Ribose,,EX_rib_D(e),,
-Salicin,,EX_salcn(e),,
-Xylose,,EX_xyl_D(e),,
+name,altname,exid,id,guild,metacyc,exid_seed,id_seed
+alpha-Cyclodextrin,,,,Polymers,,NA,NA
+Dextrin,,,,Polymers,,NA,NA
+Glycogen,,,,Polymers,,NA,NA
+Tween 40,,,,Polymers,,NA,NA
+Tween 80,,,,Polymers,,NA,NA
+N-Acetyl-D-Galactosamine,N-acetylgalactosamine,EX_acgal(e),acgal[e],Carbohydrates,PWY-7077,EX_cpd00832_e0,cpd00832[e0]
+N-Acetyl-D-Glucosamine,,EX_acgam(e),acgam[e],Carbohydrates,PWY-7586,EX_cpd00122_e0,cpd00122[e0]
+Adonitol,,,,Carbohydrates,RIBITOLUTIL-PWY,NA,NA
+L-Arabinose,arabinose,EX_arab_L(e),arab_L[e],Carbohydrates,ARABCAT-PWY;PWY-5515;PWY-5517;PWY-7295,EX_cpd00224_e0,cpd00224[e0]
+D-Arabitol,arabitol,EX_abt_D(e),abt_D[e],Carbohydrates,DARABITOLUTIL-PWY,NA,NA
+D-Cellobiose,cellobiose,EX_cellb(e),cellb[e],Carbohydrates,,EX_cpd00158_e0,cpd00158[e0]
+i-Erythritol,,,,Carbohydrates,PWY-7789;PWY-7788,NA,NA
+D-Fructose,fructose,EX_fru(e),fru[e],Carbohydrates,PWY0-1314,EX_cpd00082_e0,cpd00082[e0]
+L-Fucose,fucose,EX_fuc_L(e),fuc_L[e],Carbohydrates,FUCCAT-PWY,EX_cpd00751_e0,cpd00751[e0]
+D-Galactose,galactose,EX_gal(e),gal[e],Carbohydrates,PWY-6317;PWY-6693;GALDEG-PWY;PWY66-422;PWY-3821,EX_cpd00108_e0,cpd00108[e0]
+Gentiobiose,,,,Carbohydrates,,NA,NA
+alpha-D-Glucose,glucose,EX_glc(e),glc_D[e],Carbohydrates,GLYCOLYSIS;ANAGLYCOLYSIS-PWY;P341-PWY;NPGLUCAT-PWY;PWY-2221;ENTNER-DOUDOROFF-PWY,EX_cpd00027_e0,cpd00027[e0]
+m-Inositol,inositol,EX_inost(e),inost[e],Carbohydrates,P562-PWY;PWY-7241,EX_cpd00121_e0,cpd00121[e0]
+alpha-D-Lactose,lactose,EX_lcts(e),lcts[e],Carbohydrates,LACTOSEUTIL-PWY;BGALACT-PWY;LACTOSECAT-PWY,EX_cpd00208_e0,cpd00208[e0]
+Lactulose,,,,Carbohydrates,,NA,NA
+Maltose,maltose,EX_malt(e),malt[e],Carbohydrates,MALTOSECAT-PWY,EX_cpd00179_e0,cpd00179[e0]
+D-Mannitol,mannitol,EX_mnl(e),mnl[e],Carbohydrates,PWY-3861;MANNIDEG-PWY,EX_cpd00314_e0,cpd00314[e0]
+D-Mannose,mannose,EX_man(e),man[e],Carbohydrates,MANNCAT-PWY,EX_cpd00138_e0,cpd00138[e0]
+D-Melibiose,melibiose,EX_melib(e),melib[e],Carbohydrates,PWY0-1301,EX_cpd03198_e0,cpd03198[e0]
+beta-Methyl-D-Glucoside,,,,Carbohydrates,,NA,NA
+D-Psicose,,,,Carbohydrates,,NA,NA
+D-Raffinose,raffinose,EX_raffin(e),raffin[e],Carbohydrates,,EX_cpd00382_e0,cpd00382[e0]
+L-Rhamnose,rhamnose,EX_rmn(e),rmn[e],Carbohydrates,PWY-6714;RHAMCAT-PWY;PWY-6713,EX_cpd00396_e0,cpd00396[e0]
+D-Sorbitol,sorbitol,EX_sbt-d(e),sbt_D[e],Carbohydrates,PWY-4101;SORBDEG-PWY,EX_cpd00588_e0,cpd00588[e0]
+Sucrose,sucrose,EX_sucr(e),sucr[e],Carbohydrates,SUCUTIL-PWY;SUCROSEUTIL2-PWY;PWY-3801;PWY-621;PWY66-373;PWY-5384,EX_cpd00076_e0,cpd00076[e0]
+D-Trehalose,trehalose,EX_tre(e),tre[e],Carbohydrates,TREDEGLOW-PWY;PWY-2723;PWY0-1182;PWY-2721;PWY0-1466;PWY-2722,EX_cpd00794_e0,cpd00794[e0]
+Turanose,,EX_tur(e),tur[e],Carbohydrates,,EX_cpd20885_e0,cpd20885[e0]
+Xylitol,,EX_xylt(e),xylt[e],Carbohydrates,LARABITOLUTIL-PWY,EX_cpd00306_e0,cpd00306[e0]
+Methyl Pyruvate,pyruvate,EX_pyr(e),pyr[e],Carbohydrates,,EX_cpd00020_e0,cpd00020[e0]
+Mono-Methyl-Succinate,,,,Carbohydrates,,NA,NA
+Acetic Acid,acetate,EX_ac(e),ac[e],Carboxylic acids,,EX_cpd00029_e0,cpd00029[e0]
+Cis-Aconitic Acid,,,,Carboxylic acids,,NA,NA
+Citric Acid,citrate,EX_cit(e),cit[e],Carboxylic acids,,EX_cpd00137_e0,cpd00137[e0]
+Formic Acid,formate,EX_for(e),for[e],Carboxylic acids,,EX_cpd00047_e0,cpd00047[e0]
+D-Galactonic Acid Lactone,,,,Carboxylic acids,,NA,NA
+D-Galacturonic Acid,,,,Carboxylic acids,,NA,NA
+D-Gluconic Acid,,,,Carboxylic acids,,NA,NA
+D-Glucosaminic Acid,,,,Carboxylic acids,,NA,NA
+D-Glucuronic Acid,,,,Carboxylic acids,,NA,NA
+alpha-Hydroxy Butyric Acid,,,,Carboxylic acids,,NA,NA
+beta-Hydroxy Butyric Acid,,,,Carboxylic acids,,NA,NA
+gamma-Hydroxy Butyric Acid,,,,Carboxylic acids,,NA,NA
+p-Hydroxy Phenylacetic Acid,,,,Carboxylic acids,,NA,NA
+Itaconic Acid,,,,Carboxylic acids,,NA,NA
+alpha-Keto Butyric Acid,,,,Carboxylic acids,,NA,NA
+alpha-Keto Glutaric Acid,,,,Carboxylic acids,,NA,NA
+alpha-Keto Valeric Acid,,,,Carboxylic acids,,NA,NA
+D-L-Lactic Acid,,,,Carboxylic acids,,NA,NA
+Malonic Acid,,,,Carboxylic acids,,NA,NA
+Propionic Acid,,,,Carboxylic acids,,NA,NA
+Quinic Acid,,,,Carboxylic acids,,NA,NA
+D-Saccharic Acid,,,,Carboxylic acids,,NA,NA
+Sebacic Acid,,,,Carboxylic acids,,NA,NA
+Succinic Acid,succinate,EX_succ(e),succ[e],Carboxylic acids,,EX_cpd00036_e0,cpd00036[e0]
+Bromo Succinic Acid,,,,Miscellaneous,,NA,NA
+Succinamic Acid,,,,Amines/amides,,NA,NA
+Glucuronamide,,,,Amines/amides,,NA,NA
+L-Alaninamide,,,,Amines/amides,,NA,NA
+D-Alanine,,,,Amino acids,,NA,NA
+L-Alanine,,,,Amino acids,,NA,NA
+L-Alanylglycine,,,,Amino acids,,NA,NA
+L-Asparagine,,,,Amino acids,,NA,NA
+L-Aspartic Acid,,,,Amino acids,,NA,NA
+L-Glutamic Acid,,,,Amino acids,,NA,NA
+Glycyl-L-Aspartic Acid,,,,Amino acids,,NA,NA
+Glycyl-L-Glutamic Acid,,,,Amino acids,,NA,NA
+L-Histidine,,,,Amino acids,,NA,NA
+Hydroxy-L-Proline,,,,Amino acids,,NA,NA
+L-Leucine,,,,Amino acids,,NA,NA
+L-Ornithine,,,,Amino acids,,NA,NA
+L-Phenylalanine,,,,Amino acids,,NA,NA
+L-Proline,,,,Amino acids,,NA,NA
+L-Pyroglutamic Acid,,,,Amino acids,,NA,NA
+D-Serine,,,,Amino acids,,NA,NA
+L-Serine,,,,Amino acids,,NA,NA
+L-Threonine,,,,Amino acids,,NA,NA
+D-L-Carnitine,,,,Amino acids,,NA,NA
+gamma-Amino Butyric Acid,,,,Amino acids,,NA,NA
+Urocanic Acid,,,,Miscellaneous,,NA,NA
+Inosine,,,,Miscellaneous,,NA,NA
+Uridine,,,,Miscellaneous,,NA,NA
+Thymidine,,,,Miscellaneous,,NA,NA
+Phenyethylamine,,,,Amines/amides,,NA,NA
+Putrescine,,,,Amines/amides,,NA,NA
+2-Aminoethanol,,,,Amines/amides,,NA,NA
+2-3-Butanediol,,,,Miscellaneous,,NA,NA
+Glycerol,,,,Miscellaneous,,NA,NA
+D-L-alpha-Glycerol Phosphate,,,,Miscellaneous,,NA,NA
+Glucose-1-Phosphate,,,,Miscellaneous,,NA,NA
+Glucose-6-Phosphate,,,,Miscellaneous,,NA,NA
+Acetoin,,EX_actn_R(e),actn_R[e],,,EX_cpd00361_e0,cpd00361[e0]
+Butanediol,,EX_btd_RR(e),btd_RR[e],,,EX_cpd01947_e0,cpd01947[e0]
+Butanol,,EX_btoh(e),btoh[e],,,EX_cpd03662_e0,cpd03662[e0]
+Butyrate,,EX_but(e),but[e],,,EX_cpd00211_e0,cpd00211[e0]
+Cholesterol,,EX_chsterol(e),chsterol[e],,,EX_cpd00160_e0,cpd00160[e0]
+D-Arabinose,arabinose,EX_arab_D(e),arab_D[e],,,EX_cpd00185_e0,cpd00185[e0]
+D-glucosamine,glucosamine,EX_gam(e),gam[e],,,EX_cpd00276_e0,cpd00276[e0]
+D-Lactate,,EX_lac_D(e),lac_D[e],,,EX_cpd00221_e0,cpd00221[e0]
+Ethanol,,EX_etoh(e),etoh[e],,,EX_cpd00363_e0,cpd00363[e0]
+Galacturonate,,EX_galur(e),galur[e],,,EX_cpd00280_e0,cpd00280[e0]
+Gluconate,,EX_glcn(e),glcn[e],,,EX_cpd00222_e0,cpd00222[e0]
+Glucuronate,,EX_glcur(e),glcur[e],,,EX_cpd00164_e0,cpd00164[e0]
+Glycerol,,EX_glyc(e),glyc[e],,,EX_cpd00100_e0,cpd00100[e0]
+Hydrogen,,EX_h2(e),h2[e],,,EX_cpd11640_e0,cpd11640[e0]
+Hydrogen sulfide,,EX_h2s(e),h2s[e],,,EX_cpd00239_e0,cpd00239[e0]
+Indole,,EX_indole(e),indole[e],,,EX_cpd00359_e0,cpd00359[e0]
+Isobutyrate,,EX_isobut(e),isobut[e],,,EX_cpd01711_e0,cpd01711[e0]
+Isovalerate,,EX_isoval(e),isoval[e],,,NA,NA
+L-Lactate,,EX_lac_L(e),lac_L[e],,,EX_cpd00159_e0,cpd00159[e0]
+Lyxose,,EX_lyx_L(e),lyx_L[e],,,EX_cpd01067_e0,cpd01067[e0]
+Matohextrin,,EX_malthx(e),malthx[e],,,EX_cpd01329_e0,cpd01329[e0]
+Methane,,EX_ch4(e),ch4[e],,,EX_cpd01024_e0,cpd01024[e0]
+N-Acetylneuraminate,acetylneuraminate,EX_acnam(e),acnam[e],,,EX_cpd00232_e0,cpd00232[e0]
+Phenylacetate,,EX_4hphac(e),4hphac[e],,,EX_cpd00489_e0,cpd00489[e0]
+Propionate,,EX_ppa(e),ppa[e],,,EX_cpd00141_e0,cpd00141[e0]
+Ribose,,EX_rib_D(e),rib_D[e],,,EX_cpd00105_e0,cpd00105[e0]
+Salicin,,EX_salcn(e),salcn[e],,,EX_cpd01030_e0,cpd01030[e0]
+Xylose,,EX_xyl_D(e),xyl_D[e],,,EX_cpd00154_e0,cpd00154[e0]
