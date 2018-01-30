@@ -60,6 +60,8 @@ while getopts "h?p:f:d:vi:o:t:" opt; do
     f)  
         fasta=$(readlink -f $curdir/$OPTARG)
         [ ! -s $fasta ] && { echo Invalid file $OPTARG; exit 0; }
+        tmpvar=$(basename $fasta)
+        fastaID="${tmpvar%.*}"
         ;;
     d)  
         database=$OPTARG
@@ -277,7 +279,7 @@ echo -e $bestCand
 # export found reactions 
 #echo $bestCand > newReactions.lst
 echo $cand > newReactions.lst
-cp newReactions.lst $curdir/
+cp newReactions.lst $curdir/${fastaID}Reactions.lst
 
 # add reactions and write new sbml model
 if [ -n "$input_sbml" ] ; then # if there is an xml file
