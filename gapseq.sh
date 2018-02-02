@@ -8,7 +8,7 @@
 usage()
 {
     echo "Usage"
-    echo "$0 -p keyword -f fasta [-d database] [-f model.sbml] [-o output.sbml] [-t taxonomy]"
+    echo "$0 -p keyword [-d database] [-f model.sbml] [-o output.sbml] [-t taxonomy] file.fasta."
     echo "  -p keywords such as pathways or susbstem (for example amino,nucl,cofactor,carbo,polyamine)"
     echo "  -d database (vmh,seed)]"
     echo "  -t taxonomic range (default: Bacteria)"
@@ -25,7 +25,6 @@ curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
 seqpath=$dir/dat/seq/
-bitcutoff=50 # cutoff blast: min bit score
 metaPwy=$dir/dat/meta_pwy.tbl
 metaRea=$dir/dat/meta_rea.tbl
 reaDB1=$dir/dat/vmh_reactions.csv
@@ -41,14 +40,13 @@ output_sbml=""
 database="seed"
 verbose=0
 taxonomy="Bacteria"
-
-# tmp working directory
-cd $(mktemp -d)
+bitcutoff=50 # cutoff blast: min bit score
+identcutoff=0   # cutoff blast: min identity
 
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:f:d:vi:o:t:" opt; do
+while getopts "h?p:d:i:b:vs:o:t:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -57,21 +55,21 @@ while getopts "h?p:f:d:vi:o:t:" opt; do
     p)  
         pathways=$OPTARG
         ;;
-    f)  
-        fasta=$(readlink -f $curdir/$OPTARG)
-        [ ! -s $fasta ] && { echo Invalid file $OPTARG; exit 0; }
-        tmpvar=$(basename $fasta)
-        fastaID="${tmpvar%.*}"
-        ;;
     d)  
         database=$OPTARG
         ;;
     v)  
         verbose=1
         ;;
-    i)  
+    s)  
         input_sbml=$(readlink -f $OPTARG)
         $dir/src/sbml_read.R $input_sbml
+        ;;
+    b)
+        bitcutoff=$OPTARG
+        ;;
+    i)
+        identcutoff=$OPTARG
         ;;
     t)  
         taxonomy=$OPTARG
@@ -84,6 +82,14 @@ done
 shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
 
+# after parsing arguments, only fasta file shoud be there
+[ "$#" -ne 1 ] && { usage; }
+
+# get fasta file
+fasta=$(readlink -f "$1")
+[ ! -s $fasta ] && { echo Invalid file: $1; exit 0; }
+tmpvar=$(basename $fasta)
+fastaID="${tmpvar%.*}"
 
 # pathways and fasta file have to be provided
 ( [ -z "$pathways" ] || [ -z "$fasta" ] ) && { usage; }
@@ -152,6 +158,8 @@ pwyDB=$(cat $metaPwy | grep -wE $pwyKey)
 [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
 
 
+# tmp working directory
+cd $(mktemp -d)
 
 # create blast database
 makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
@@ -194,7 +202,7 @@ do
                 out=$pwy-$ec.blast
                 tblastn -db orgdb -query $query -outfmt '6 qseqid sseqid pident evalue bitscore stitle' >$out 
                 if [ -s $out ]; then
-                    bhit=$(cat $out | awk -v bitcutoff=$bitcutoff '$5>=bitcutoff {print $1}' | wc -l)
+                    bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff '{if ($3>=identcutoff && $5>=bitcutoff) print $1}' | wc -l)
                     if [ $bhit -gt 0 ]; then
                         echo -e '\t'Blast hit: $rea $ec
                         
