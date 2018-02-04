@@ -11,6 +11,10 @@ def only_missing_H(dic):
         return False
 
 def repair_mass_balance(model, delete_unbalanced=True, verbose=False):
+    import re
+    import pandas
+    seedmDB = pandas.read_csv("/home/jo/uni/gapseq/dat/seed_metabolites.tsv", sep="\t")
+
     mod = model.copy()
     Cwrong = 0
     Ccorrected = 0

@@ -16,7 +16,7 @@ if len(sys.argv) != 3:
 #seedrDB = pandas.read_csv("/home/jo/uni/gapseq/dat/seed_reactions.tsv", sep="\t")
 #seedmDB = pandas.read_csv("/home/jo/uni/gapseq/dat/seed_metabolites.tsv", sep="\t")
 
-mod = repair_mass_balance(read_sbml_model(sys.argv[1]), verbose=False)
+mod = gapfill_reference.repair_mass_balance(read_sbml_model(sys.argv[1]), verbose=False)
 with open(sys.argv[2]) as f:
     lines = f.read()
 newR = lines.rstrip("\n").split(" ") # remove linebreak at file end
@@ -25,7 +25,7 @@ newR = lines.rstrip("\n").split(" ") # remove linebreak at file end
 # Create reference model with reactions pool
 #
 
-refmod = get_reference(mod, newR, delete_unbalanced=True, verbose=False)
+refmod = gapfill_reference.get_reference(mod, newR, delete_unbalanced=True, verbose=False)
 
 
 # CORRECTION IN SEED DATABASE
