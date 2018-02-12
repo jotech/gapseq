@@ -4,3 +4,4 @@ Installation requirements
 - biopython
 - bioservices (python)
 - cobrapy
+- pandas

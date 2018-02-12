@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# TODO: dbhit: handle when $ec has more then one number
+# TODO: save dummy seq file for ec without uniprot hit (save nonsense requests)
 # TODO: handle incomplete/unspecific ecs from metacyc (e.g. get ec from kegg, update maually or get genes from metacyc)
 # TODO: if taxonomic range is not bacteria, then sequence data must be updated!
 
@@ -42,6 +42,7 @@ verbose=0
 taxonomy="Bacteria"
 bitcutoff=50 # cutoff blast: min bit score
 identcutoff=0   # cutoff blast: min identity
+covcutoff=75 # cutoff blast: min coverage
 
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
@@ -200,11 +201,14 @@ do
             fi
             if [ -s $query ]; then
                 out=$pwy-$ec.blast
-                tblastn -db orgdb -query $query -outfmt '6 qseqid sseqid pident evalue bitscore stitle' >$out 
+                tblastn -db orgdb -query $query -outfmt '6 qseqid sseqid pident evalue bitscore qcovs stitle' >$out 
                 if [ -s $out ]; then
-                    bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff '{if ($3>=identcutoff && $5>=bitcutoff) print $1}' | wc -l)
-                    if [ $bhit -gt 0 ]; then
-                        echo -e '\t'Blast hit: $rea $ec
+                    bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($3>=identcutoff && $5>=bitcutoff && $6>=covcutoff) print $0}')
+                    if [ -n "$bhit" ]; then
+                        bestIdentity=$(echo "$bhit" | sort -rgk 3,3 | head -1 | cut -f3)
+                        bestBitscore=$(echo "$bhit" | sort -rgk 3,3 | head -1 | cut -f5)
+                        bestCoverage=$(echo "$bhit" | sort -rgk 3,3 | head -1 | cut -f6)
+                        echo -e '\t'Blast hit: $rea $ec "(bit=$bestBitscore, id=$bestIdentity, cov=$bestCoverage)"
                         
                         
                         kegg=$(grep -wF $rea $metaRea | awk -F "\t" {'print $5'})
@@ -241,7 +245,7 @@ do
                         
                         if [ -n "$dbhit" ]; then
                             dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
-                            echo -e '\t\t'Candidate reaction for import: $dbhit
+                            echo -e '\t\t'Candidate reaction for import: `echo "$dbhit" | wc -w`
                             pwyCand="$pwyCand$dbhit " # remember candidate reaction
                             ((countdb++))
                         else
