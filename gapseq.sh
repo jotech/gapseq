@@ -4,14 +4,26 @@
 # TODO: handle incomplete/unspecific ecs from metacyc (e.g. get ec from kegg, update maually or get genes from metacyc)
 # TODO: if taxonomic range is not bacteria, then sequence data must be updated!
 
+pathways=""
+input_sbml=""
+output_sbml=""
+database="seed"
+verbose=0
+taxonomy="Bacteria"
+bitcutoff=50 # cutoff blast: min bit score
+identcutoff=0   # cutoff blast: min identity
+covcutoff=75 # cutoff blast: min coverage
 
 usage()
 {
     echo "Usage"
-    echo "$0 -p keyword [-d database] [-f model.sbml] [-o output.sbml] [-t taxonomy] file.fasta."
+    echo "$0 -p keyword [-d database] [-f model.sbml] [-t taxonomy] file.fasta."
     echo "  -p keywords such as pathways or susbstem (for example amino,nucl,cofactor,carbo,polyamine)"
-    echo "  -d database (vmh,seed)]"
-    echo "  -t taxonomic range (default: Bacteria)"
+    echo "  -d database: vmh or seed (default: $database)"
+    echo "  -t taxonomic range (default: $taxonomy)"
+    echo "  -b bit score cutoff for local alignment (default: $bitcutoff)"
+    echo "  -i identity cutoff for local alignment (default: $identcutoff)"
+    echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
 exit 1
 }
 # USAGE
@@ -34,20 +46,11 @@ reaDB4=$dir/dat/mnxref_seed.tsv
 brenda=$dir/dat/brenda_ec.csv
 seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique.tsv
 
-pathways=""
-input_sbml=""
-output_sbml=""
-database="seed"
-verbose=0
-taxonomy="Bacteria"
-bitcutoff=50 # cutoff blast: min bit score
-identcutoff=0   # cutoff blast: min identity
-covcutoff=75 # cutoff blast: min coverage
 
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:d:i:b:vs:o:t:" opt; do
+while getopts "h?p:d:i:b:c:vs:o:t:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -71,6 +74,9 @@ while getopts "h?p:d:i:b:vs:o:t:" opt; do
         ;;
     i)
         identcutoff=$OPTARG
+        ;;
+    c)
+        covcutoff=$OPTARG
         ;;
     t)  
         taxonomy=$OPTARG
