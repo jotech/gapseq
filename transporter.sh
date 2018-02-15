@@ -55,9 +55,9 @@ do
         exmet=$(cat $subDB | grep -w "$sub" | awk -F ',' '{if ($8 != "NA") print $8}')
         exid=$(cat $subDB | grep -w "$sub" | awk -F ',' '{if ($7 != "NA") print $7}')
         sublist="$sublist;$sub"
-        #echo $id $tc $sub $exmet $exid $descr
         i=$(echo $tc | head -c1) # get first character of TC number => transporter type
         type=${TC[$i]}
+        echo $id,$tc,$sub,$exmet,$exid,$type,$descr >> `echo "$sub" | tr '[:upper:]' '[:lower:]'`
         cat $seedDB | awk -F '\t' -v type="$type" -v exmet="$exmet" '{if($8==type && $3==exmet) print $0}' > tr_cand
         if [ -s tr_cand ]; then
             rea=$(cat tr_cand | awk -F '\t' '{print $1}')
@@ -77,9 +77,12 @@ echo ${sublist2:1} | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort | uniq > hi
 cat hit2
 
 echo -e "\nDo not found transport reactions in database for:"
-comm -23 hit1 hit2
+for sub in `comm -23 hit1 hit2`
+do
+    cat "$sub" | sort | awk -F ',' '{print $3, $6}' | uniq -u
+done
 
-echo -e "\n No transporter found for compounds (existing transporter/exchanges should be removed?):"
+echo -e "\nNo transporter found for compounds (existing transporter/exchanges should be removed?):"
 echo $allDBsubs | tr ';' '\n' | sort > hit3
 comm -13 hit1 hit3
 
