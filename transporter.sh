@@ -1,4 +1,5 @@
 #
+# TODO: use same cutoffs as in gapseq
 # TODO: update sub2pwy to contain more linked substances
 #
 
@@ -34,7 +35,7 @@ makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
 
 tblastn -db orgdb -query tcdbsmall.fasta -outfmt '6 qseqid sseqid pident evalue bitscore stitle' > out 
 
-IDtcdb=$(cat out | awk '{if ($5>=50 && $3>=50) print $1}' | awk -F "|" '{print $3}') 
+IDtcdb=$(cat out | awk '{if ($5>=50) print $1}' | awk -F "|" '{print $3}') 
 
 TC[1]="1.Channels and pores"
 TC[2]="2.Electrochemical potential-driven transporters"
@@ -45,7 +46,8 @@ TC[4]="4.Group translocators"
 for id in $IDtcdb
 do
     descr=$(grep $id tcdb_header | grep -P "(?<= ).*(?=OS)" -o) # extract description
-    tc=$(grep $id tcdb_header | grep -Pw "([0-9]+.[A-Z]+.[0-9]+.[0-9]+)" -o)
+    tc=$(grep $id tcdb_header | grep -Pw "([1-4].[A-Z]+.[0-9]+.[0-9]+)" -o) # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
+    [ -z "$tc" ] && continue
     [ -z "$descr" ] && descr=$(grep $id tcdb_header | grep -P "(?<= ).*(?= - )" -o)
     subl=$(echo "$descr" | grep -wEio "$key" | grep -if - redSubDB | awk -F ',' '{ if ($2 != "") print $2; else print $1}') # could be more then one hit (e.g. transporter with two substances)
     for sub in $subl
@@ -53,13 +55,13 @@ do
         exmet=$(cat $subDB | grep -w "$sub" | awk -F ',' '{if ($8 != "NA") print $8}')
         exid=$(cat $subDB | grep -w "$sub" | awk -F ',' '{if ($7 != "NA") print $7}')
         sublist="$sublist;$sub"
-        echo $id $tc $sub $exmet $exid $descr
+        #echo $id $tc $sub $exmet $exid $descr
         i=$(echo $tc | head -c1) # get first character of TC number => transporter type
         type=${TC[$i]}
         cat $seedDB | awk -F '\t' -v type="$type" -v exmet="$exmet" '{if($8==type && $3==exmet) print $0}' > tr_cand
         if [ -s tr_cand ]; then
             rea=$(cat tr_cand | awk -F '\t' '{print $1}')
-            echo -e "\t"Found: $rea
+            #echo -e "\t"Found: $rea
             cand="$cand $rea $exid"
             sublist2="$sublist2;$sub"
         fi
