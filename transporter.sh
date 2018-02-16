@@ -24,7 +24,6 @@ cd $(mktemp -d)
 grep -e ">" $tcdb > tcdb_header
 sed '1d' $subDB | awk -F ',' '{if ($8 != "NA") print $0}' > redSubDB
 key=$(cat redSubDB | awk -F ',' '{if ($2 != "") print $1"|"$2; else print $1}' | paste -s -d '|') # ignore substances without linked exchange reaction
-allsubs=$(cat redSubDB | awk -F ',' '{if ($2 != "") print $2; else print $1}' | paste -s -d ';') 
 grep -wEi "$key" tcdb_header | awk '{print substr($1,2)}' > hits
 #grep -wEi "arabinose" tcdb_header | awk '{print substr($1,2)}' > hits
 subhits=$(grep -wEio "$key" tcdb_header | sort | uniq | paste -s -d '|')
@@ -99,8 +98,9 @@ do
 done
 
 echo -e "\nNo transporter found for compounds (existing transporter/exchanges should be removed?):"
-echo $allDBsubs | tr ';' '\n' | sort > hit3
-comm -13 hit1 hit3
+echo $allDBsubs | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort > hit3
+cat hit1 | tr '\n' '|' | rev | cut -c 2- | rev | grep -f - -iE $subDB | cut -d ',' -f1,2 | tr '[:upper:]' '[:lower:]' | tr ',' '\n' | sort > hit4 # expand hits with substance alternative names to avoid false positive reporting
+comm -13 hit4 hit3
 
 cand="$(echo $cand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')"
 echo -e "\nReactions to be added:"
