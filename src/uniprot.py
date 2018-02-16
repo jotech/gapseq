@@ -17,11 +17,17 @@ import re
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 # usage
-if len(sys.argv) != 3:
-  print("usage:", sys.argv[0], Pathway/subsystem/EC, taxonomy)
+if len(sys.argv) < 3:
+  print("usage:", sys.argv[0], "Pathway/subsystem/EC, taxonomy [max_download]")
   print("Pathway/subsystem/EC: ID from metacyc hierarchy, pathway ID or EC number")
   print("Taxonomy: taxonomic range (default: Bacteria)")
+  print("max_download: How many sequences should be download (default: 20)")
   sys.exit(0)
+
+if len(sys.argv) == 4:
+    max_download = sys.argv[3]
+else: 
+    max_download = 20
 
 def identity(str1,str2):
     if not len(str1) == len(str2):
@@ -49,9 +55,10 @@ def mean_identity(records, newseq):
 
 
 def download_EC(ec):
-    results = u.search("ec:"+ec+"+and+reviewed:yes"+"+and+taxonomy:"+taxonomy, columns="id,entry name, protein names, sequence", limit=20) # uniprot swissprot db (reviewed)
-    if len(results) == 0:
-        results = u.search("ec:"+ec+"+and+taxonomy:"+taxonomy, columns="id,entry name, protein names, sequence", limit=20) # uniprot trembl db (unreviewed) limit=10
+    results = u.search("ec:"+ec+"+and+reviewed:yes"+"+and+taxonomy:"+taxonomy, columns="id,entry name, protein names, sequence", limit=max_download) # uniprot swissprot db (reviewed)
+    Nhits = len(results.split("\n")) - 2 # minus header & empty last line
+    if Nhits < 5: # if only some sequences found get more
+        results = u.search("ec:"+ec+"+and+taxonomy:"+taxonomy, columns="id,entry name, protein names, sequence", limit=max_download) # uniprot trembl db (unreviewed) limit=10
     if len(results) == 0:
         print "\t\tNo entry found for:", ec
         return
