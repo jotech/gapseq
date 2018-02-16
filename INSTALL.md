@@ -5,3 +5,4 @@ Installation requirements
 - bioservices (python)
 - cobrapy
 - pandas
+- exonerate

@@ -211,9 +211,9 @@ do
                 if [ -s $out ]; then
                     bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($3>=identcutoff && $5>=bitcutoff && $6>=covcutoff) print $0}')
                     if [ -n "$bhit" ]; then
-                        bestIdentity=$(echo "$bhit" | sort -rgk 3,3 | head -1 | cut -f3)
-                        bestBitscore=$(echo "$bhit" | sort -rgk 3,3 | head -1 | cut -f5)
-                        bestCoverage=$(echo "$bhit" | sort -rgk 3,3 | head -1 | cut -f6)
+                        bestIdentity=$(echo "$bhit" | sort -rgk 5,5 | head -1 | cut -f3)
+                        bestBitscore=$(echo "$bhit" | sort -rgk 5,5 | head -1 | cut -f5)
+                        bestCoverage=$(echo "$bhit" | sort -rgk 5,5 | head -1 | cut -f6)
                         echo -e '\t'Blast hit: $rea $ec "(bit=$bestBitscore, id=$bestIdentity, cov=$bestCoverage)"
                         
                         
@@ -259,7 +259,10 @@ do
                         fi
                         ((countex++))
                     else
-                        echo -e '\t'No significant blast hits found for reaction: $rea $ec
+                        someIdentity=$(cat $out | sort -rgk 3,3 | head -1 | cut -f3)
+                        someBitscore=$(cat $out | sort -rgk 5,5 | head -1 | cut -f5)
+                        someCoverage=$(cat $out | sort -rgk 6,6 | head -1 | cut -f6)
+                        echo -e '\t'No significant blast hits found: $rea $ec "\n\t\t(max: id=$someIdentity bit=$someBitscore cov=$someCoverage)"
                     fi
                 else
                     echo -e '\t'No blast hits found for reaction: $rea $ec
