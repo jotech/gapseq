@@ -94,19 +94,13 @@ GDNRALIAEVAGAMDIKVELSGGIRDDASLAAALATGCRRVNLGTAALETPEWVAKVIAE
 HGDKIAVGLDVRGTTLRGRGWTRDGGDLYETLARLDSEGCARYVVTDIAKDGTLEGPNLG
 LLRDVCAATDRPVVASGGVSSLDDLRAISLLVPEGVEGAIVGKALYAKAFTLEEALKAVA
 A
->Q82AA1 Phosphoribosyl isomerase A (1-(5-phosphoribosyl)-5-[(5-phosphoribosylamino)methylideneamino] imidazole-4-carboxamide isomerase) (EC 5.3.1.16) (N-(5'-phosphoribosyl)anthranilate isomerase) (PRAI) (EC 5.3.1.24) (Phosphoribosylformimino-5-aminoimidazole carboxamide ribotide isomerase)
-MASKLELLPAVDVRDGQAVRLVHGESGTETSYGSPLEAALAWQRSGAEWLHLVDLDAAFG
-TGDNRALIAEVAGAMDIKVELSGGIRDDDTLAAALATGCTRVNLGTAALETPEWVAKVIA
-EHGDKIAVGLDVRGTTLRGRGWTRDGGDLYETLERLNSEGCARYVVTDIAKDGTLQGPNL
-ELLRNVCAATDRPVVASGGVSSLDDLRAIAALVPLGVEGSIVGKALYAKAFTLEEALEAV
-AK
->A3Q127 Phosphoribosyl isomerase A (1-(5-phosphoribosyl)-5-[(5-phosphoribosylamino)methylideneamino] imidazole-4-carboxamide isomerase) (EC 5.3.1.16) (N-(5'-phosphoribosyl)anthranilate isomerase) (PRAI) (EC 5.3.1.24) (Phosphoribosylformimino-5-aminoimidazole carboxamide ribotide isomerase)
+>A1UHK4 Phosphoribosyl isomerase A (1-(5-phosphoribosyl)-5-[(5-phosphoribosylamino)methylideneamino] imidazole-4-carboxamide isomerase) (EC 5.3.1.16) (N-(5'-phosphoribosyl)anthranilate isomerase) (PRAI) (EC 5.3.1.24) (Phosphoribosylformimino-5-aminoimidazole carboxamide ribotide isomerase)
 MSEKRPLILLPAVDVVEGRAVRLVQGKAGSETEYGSALDAALGWQRDGAEWIHLVDLDAA
 FGRGSNRELLADVVGRLDVAVELSGGIRDDESLEAALATGCARVNIGTAALENPQWCAKV
 VAEFGDKVAVGLDVKIVDDQHRLRGRGWETDGGDLWEVLDRLDSEGCSRYVVTDVTKDGT
 LQGPNLDLLGRVADRTDAPVIASGGVSSLDDLRAIATLTDRGVEGAIVGKALYAGRFTLP
 EALAAMGQ
->A1UHK4 Phosphoribosyl isomerase A (1-(5-phosphoribosyl)-5-[(5-phosphoribosylamino)methylideneamino] imidazole-4-carboxamide isomerase) (EC 5.3.1.16) (N-(5'-phosphoribosyl)anthranilate isomerase) (PRAI) (EC 5.3.1.24) (Phosphoribosylformimino-5-aminoimidazole carboxamide ribotide isomerase)
+>A3Q127 Phosphoribosyl isomerase A (1-(5-phosphoribosyl)-5-[(5-phosphoribosylamino)methylideneamino] imidazole-4-carboxamide isomerase) (EC 5.3.1.16) (N-(5'-phosphoribosyl)anthranilate isomerase) (PRAI) (EC 5.3.1.24) (Phosphoribosylformimino-5-aminoimidazole carboxamide ribotide isomerase)
 MSEKRPLILLPAVDVVEGRAVRLVQGKAGSETEYGSALDAALGWQRDGAEWIHLVDLDAA
 FGRGSNRELLADVVGRLDVAVELSGGIRDDESLEAALATGCARVNIGTAALENPQWCAKV
 VAEFGDKVAVGLDVKIVDDQHRLRGRGWETDGGDLWEVLDRLDSEGCSRYVVTDVTKDGT
@@ -130,6 +124,12 @@ SNRELLAEVVGKLDVAVELSGGIRDDDSLAAALATGCARVNLGTAALENPQWCARMIAEH
 GEKVAVGLDVQIVGGKHRLRGRGWETDGGDLWEVLQRLDSEGCSRYVVTDVTKDGTLAGP
 NLELLAGVAGRTEAPVIASGGVSSLDDLRAIATLTGQGVEGAIVGKALYAGRFTLPQALT
 AVRE
+>Q82AA1 Phosphoribosyl isomerase A (1-(5-phosphoribosyl)-5-[(5-phosphoribosylamino)methylideneamino] imidazole-4-carboxamide isomerase) (EC 5.3.1.16) (N-(5'-phosphoribosyl)anthranilate isomerase) (PRAI) (EC 5.3.1.24) (Phosphoribosylformimino-5-aminoimidazole carboxamide ribotide isomerase)
+MASKLELLPAVDVRDGQAVRLVHGESGTETSYGSPLEAALAWQRSGAEWLHLVDLDAAFG
+TGDNRALIAEVAGAMDIKVELSGGIRDDDTLAAALATGCTRVNLGTAALETPEWVAKVIA
+EHGDKIAVGLDVRGTTLRGRGWTRDGGDLYETLERLNSEGCARYVVTDIAKDGTLQGPNL
+ELLRNVCAATDRPVVASGGVSSLDDLRAIAALVPLGVEGSIVGKALYAKAFTLEEALEAV
+AK
 >A0QHH8 Phosphoribosyl isomerase A (1-(5-phosphoribosyl)-5-[(5-phosphoribosylamino)methylideneamino] imidazole-4-carboxamide isomerase) (EC 5.3.1.16) (N-(5'-phosphoribosyl)anthranilate isomerase) (PRAI) (EC 5.3.1.24) (Phosphoribosylformimino-5-aminoimidazole carboxamide ribotide isomerase)
 MLILLPAVDVVDGRAVRLVQGKAGSETEYGSALDAALGWQRDGAEWIHLVDLDAAFGRGS
 NRELLAEVVGKLDVQVELSGGIRDDDSLAAALATGCARVNLGTAALENPQWCARAIGEHG

@@ -1,11 +1,11 @@
->P9WIL3 Aspartate 1-decarboxylase (EC 4.1.1.11) (Aspartate alpha-decarboxylase) [Cleaved into: Aspartate 1-decarboxylase beta chain; Aspartate 1-decarboxylase alpha chain]
-MLRTMLKSKIHRATVTCADLHYVGSVTIDADLMDAADLLEGEQVTIVDIDNGARLVTYAI
-TGERGSGVIGINGAAAHLVHPGDLVILIAYATMDDARARTYQPRIVFVDAYNKPIDMGHD
-PAFVPENAGELLDPRLGVG
 >P0A790 Aspartate 1-decarboxylase (EC 4.1.1.11) (Aspartate alpha-decarboxylase) [Cleaved into: Aspartate 1-decarboxylase beta chain; Aspartate 1-decarboxylase alpha chain]
 MIRTMLQGKLHRVKVTHADLHYEGSCAIDQDFLDAAGILENEAIDIWNVTNGKRFSTYAI
 AAERGSRIISVNGAAAHCASVGDIVIIASFVTMPDEEARTWRPNVAYFEGDNEMKRTAKA
 IPVQVA
+>P9WIL3 Aspartate 1-decarboxylase (EC 4.1.1.11) (Aspartate alpha-decarboxylase) [Cleaved into: Aspartate 1-decarboxylase beta chain; Aspartate 1-decarboxylase alpha chain]
+MLRTMLKSKIHRATVTCADLHYVGSVTIDADLMDAADLLEGEQVTIVDIDNGARLVTYAI
+TGERGSGVIGINGAAAHLVHPGDLVILIAYATMDDARARTYQPRIVFVDAYNKPIDMGHD
+PAFVPENAGELLDPRLGVG
 >A5U8S6 Aspartate 1-decarboxylase (EC 4.1.1.11) (Aspartate alpha-decarboxylase) [Cleaved into: Aspartate 1-decarboxylase beta chain; Aspartate 1-decarboxylase alpha chain]
 MLRTMLKSKIHRATVTCADLHYVGSVTIDADLMDAADLLEGEQVTIVDIDNGARLVTYAI
 TGERGSGVIGINGAAAHLVHPGDLVILIAYATMDDARARTYQPRIVFVDAYNKPIDMGHD
@@ -53,23 +53,22 @@ VDIDTDGRYSFAILDEADEPLVIPALVSGA
 >Q5NF56 Aspartate 1-decarboxylase (EC 4.1.1.11) (Aspartate alpha-decarboxylase) [Cleaved into: Aspartate 1-decarboxylase beta chain; Aspartate 1-decarboxylase alpha chain]
 MLISVLKSKISYATVTGKDLFYVGSITIDSEIMKQANIIENEKVQVVNLNNGERLETYVI
 KGEPNSKTIALNGPAARRCEIGDQLFIISYTQVDPTRENIKPKLVDLKTGD
->Q0S8D4 Aspartate 1-decarboxylase (EC 4.1.1.11) (Aspartate alpha-decarboxylase) [Cleaved into: Aspartate 1-decarboxylase beta chain; Aspartate 1-decarboxylase alpha chain]
-MFRTMMKSKIHRATVTHADLHYVGSVTVDQDLMDAADLLEGEQVCIVDIDNGARLETYVI
-AGERGSGVIGINGAAAHLVKPGDLVILIAYGVMNEQEVRDYEPRVVFVDAANSPIELGAD
-PAHAPEGSGLITPRMLSTLDAERESSLV
 >Q55382 Aspartate 1-decarboxylase (EC 4.1.1.11) (Aspartate alpha-decarboxylase) [Cleaved into: Aspartate 1-decarboxylase beta chain; Aspartate 1-decarboxylase alpha chain]
 MGSIRLMHAKLHRVCVTEANVNYVGSITIDPVMLERVGLLPLEEVDIINLSNGNRFSTYV
 LPGQAHSKEICPNGGAALLCQPGDRLIIFAYELCDRREVLQKGHQAKVLVTNESNETVDF
 YLQELIPKEDGVKFINNICSEAIPH
->Q5ZRF3 Aspartate 1-decarboxylase (EC 4.1.1.11) (Aspartate alpha-decarboxylase) [Cleaved into: Aspartate 1-decarboxylase beta chain; Aspartate 1-decarboxylase alpha chain]
-MAYRKMLKSKIHRACVTQADLDYEGSITISPELLKVANILPYEAVNVWNITAGTRFETYA
-ITGEKGSTDICVNGAAAHLVTPGDLVIIASFTQILEEDCAAHEPTVVFVDQFNRLKEIRP
-ERIGVKSRIPNPA
+>Q83EA4 Aspartate 1-decarboxylase (EC 4.1.1.11) (Aspartate alpha-decarboxylase) [Cleaved into: Aspartate 1-decarboxylase beta chain; Aspartate 1-decarboxylase alpha chain]
+MLISVLKSKISYATITQKELFYIGSITIDEAIMERAQLTINEQVQIVNLNNGERLETYVI
+PGKRNSNIIALNGPAARKGEIGDQLFILSYALIDPTQEKLDPVLVDLKLND
 >A0QNF3 Aspartate 1-decarboxylase (EC 4.1.1.11) (Aspartate alpha-decarboxylase) [Cleaved into: Aspartate 1-decarboxylase beta chain; Aspartate 1-decarboxylase alpha chain]
 MQRVLLASKIHRATVTQADLHYVGSITIDAELMAAADIVEGEQVHVVDITSGARLVTYAI
 TGTPGSGVIGINGAAAHLISPGNLVIIMSFVHLDEAERADHRANVVHVDADNHIVTIGSD
 PAQPVPGAADQLVGRV
->A1JJN6 Aspartate 1-decarboxylase (EC 4.1.1.11) (Aspartate alpha-decarboxylase) [Cleaved into: Aspartate 1-decarboxylase beta chain; Aspartate 1-decarboxylase alpha chain]
-MIRTMLQGKLHRVKVTQADLHYEGSCAIDQDFLEAAGILEYEAIDIYNVDNGQRFSTYAI
-AAERGSRIISVNGAAARCACVGDKLIICSYVQMSDADARLHHPKVAYFEGENQLQRKAKA
-VPVQVA
+>Q7UQU4 Aspartate 1-decarboxylase (EC 4.1.1.11) (Aspartate alpha-decarboxylase) [Cleaved into: Aspartate 1-decarboxylase beta chain; Aspartate 1-decarboxylase alpha chain]
+MVDTPYRKMLAAKIHRATVTGADVNYEGSLTVPPELLVAAKIHPYESLHVWNVTRGTRLE
+TYAIEGLPNSNDVCANGAAAHLIRPGDHVILAAYAMVPEADAATHKPRLIFVDDNNQLSH
+VGPEIAGPNLRSDSDDTHLVRSTEMTPDGQPLAEGC
+>Q5ZRF3 Aspartate 1-decarboxylase (EC 4.1.1.11) (Aspartate alpha-decarboxylase) [Cleaved into: Aspartate 1-decarboxylase beta chain; Aspartate 1-decarboxylase alpha chain]
+MAYRKMLKSKIHRACVTQADLDYEGSITISPELLKVANILPYEAVNVWNITAGTRFETYA
+ITGEKGSTDICVNGAAAHLVTPGDLVIIASFTQILEEDCAAHEPTVVFVDQFNRLKEIRP
+ERIGVKSRIPNPA
