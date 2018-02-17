@@ -8,6 +8,7 @@ import sys
 import re
 import os
 import gapfill_reference
+import seed_fix
 
 if len(sys.argv) != 3:
   print("usage:", sys.argv[0], "file.xml reaction.lst")
@@ -26,13 +27,19 @@ newR = lines.rstrip("\n").split(" ") # remove linebreak at file end
 #
 
 refmod = gapfill_reference.get_reference(mod, newR, delete_unbalanced=True, verbose=False)
+refmod = seed_fix.seed_fix(refmod, rmLoops=False)
+mod = seed_fix.seed_fix(mod)
 
 
-# CORRECTION IN SEED DATABASE
-if "rxn05115_c0" in refmod.reactions:
-    refmod.reactions.rxn05115_c0.upper_bound=1000 # wrong direction
-if "rxn03031_c0" in mod.reactions:
-    mod.reactions.rxn03031_c0.lower_bound=-1000 # bidirectional http://www.rhea-db.org/reaction?id=17325
+# Add some reactions, which have evidence by sequence and which are not covered by gapfilling
+NRea = len(mod.reactions)
+NeededReactions = ["rxn10122_c0", # respiratory complex I
+                   "rxn13689_c0", # respiratory complex III
+                   "rxn10043_c0"]  # respiratory complex IV
+for r in NeededReactions:
+    if r in refmod.reactions and r not in mod.reactions:
+        mod.add_reactions(refmod.reactions.get_by_id(r))
+print "Added needed reactions from reference:", len(mod.reactions) - NRea
 
 
 ignore = ["H", "Li", "Na", "Mg", "K", "Ca", "P", "Fe", "Cl", "Zn", "Mn", "Mo", "Se", "Co", "Cu", "Ni", "W", "H2O"]

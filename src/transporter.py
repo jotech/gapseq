@@ -7,6 +7,7 @@ import re
 from cobra.flux_analysis import gapfill
 from cobra.flux_analysis.gapfilling import GapFiller
 import os
+import seed_fix
 
 
 if len(sys.argv) != 3:
@@ -89,6 +90,7 @@ refmod = add_Exchanges(refmod, [ex for ex in newR if ex.startswith("EX_")])
 newmod = mod.copy()
 reallynew = [r for r in refmod.reactions if r not in mod.reactions]
 newmod.add_reactions(reallynew)
+newmod = seed_fix.seed_fix(newmod)
 print "added: ", len(newmod.reactions) - len(mod.reactions), "reactions"
 print "already in model:", ",".join(set(newR).difference(set([r.id.replace("_c0","") for r in reallynew])))
 
