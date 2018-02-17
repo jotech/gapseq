@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# TODO: limit pwy search to taxonomic scope
 # TODO: save dummy seq file for ec without uniprot hit (save nonsense requests)
 # TODO: handle incomplete/unspecific ecs from metacyc (e.g. get ec from kegg, update maually or get genes from metacyc)
 # TODO: if taxonomic range is not bacteria, then sequence data must be updated!
@@ -324,7 +325,7 @@ echo -e $bestCand
 # export found reactions 
 #echo $bestCand > newReactions.lst
 echo $cand > newReactions.lst
-cp newReactions.lst $curdir/${fastaID}Reactions.lst
+cp newReactions.lst $curdir/${fastaID}-$pathways-Reactions.lst
 
 # add reactions and write new sbml model
 if [ -n "$input_sbml" ] ; then # if there is an xml file
