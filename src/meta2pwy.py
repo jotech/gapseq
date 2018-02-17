@@ -29,7 +29,7 @@ def getReaInfos(pwy):
 
 
 ofile = open("./meta_pwy.csv", "w")
-ofile.write("id" + "\t" + "name" + "\t" + "altname" + "\t" + "hierarchy" + "\t" + "taxrange" + "\t" + "reaId" + "\t" + "reaEc" + "\n")
+ofile.write("id" + "\t" + "name" + "\t" + "altname" + "\t" + "hierarchy" + "\t" + "taxrange" + "\t" + "reaId" + "\t" + "reaEc" + "\t" + "keyRea" + "\n")
 for p in meta.all_pathways():
     pwy = meta[p]
     qry = "(get-instance-all-types '"+p+")"
@@ -45,6 +45,10 @@ for p in meta.all_pathways():
         taxrange = ",".join(pwy.taxonomic_range)
     else:
         taxrange = ""
-    ofile.write(p + "\t" + name + "\t" + altname + "\t" + hierarchy + "\t" + taxrange + "\t" + reaId + "\t" + reaEc + "\n")
+    if pwy.key_reactions != None:
+        keyRea = ",".join(pwy.key_reactions).replace("|","")
+    else:
+        keyRea = ""
+    ofile.write(p + "\t" + name + "\t" + altname + "\t" + hierarchy + "\t" + taxrange + "\t" + reaId + "\t" + reaEc + "\t" + keyRea  +"\n")
 ofile.close()
 
