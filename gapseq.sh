@@ -285,7 +285,11 @@ do
             ((vague++))
         fi
     done
-    completness=$(echo "scale=0; 100*$countex/$count" | bc)
+    if [ $count -eq 0 ]; then
+        completness=0
+    else
+        completness=$(echo "scale=0; 100*$countex/$count" | bc)
+    fi
     echo "Pathway completness: $countex/$count ($completness%) with $vague reactions of unclear state"
     echo -e Hits with candidate reactions in database: $countdb/$count
     if [ -n "$keyReaFound" ]; then
