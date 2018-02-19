@@ -14,9 +14,10 @@ if len(sys.argv) != 3:
   print("usage:", sys.argv[0], "file.xml transporter.lst")
   sys.exit(0)
 
-seedrDB = pandas.read_csv("/home/jo/uni/gapseq/dat/seed_reactions.tsv", sep="\t")
-seedmDB = pandas.read_csv("/home/jo/uni/gapseq/dat/seed_metabolites.tsv", sep="\t")
-substances = pandas.read_csv("/home/jo/uni/gapseq/dat/sub2pwy.csv", sep=",")
+dir = os.path.dirname(__file__)
+seedmDB = pandas.read_csv(dir+"/../dat/seed_metabolites.tsv", sep="\t")
+seedrDB = pandas.read_csv(dir+"/../dat/seed_reactions.tsv", sep="\t")
+substances = pandas.read_csv(dir+"/../dat/sub2pwy.csv", sep=",")
 
 mod = read_sbml_model(sys.argv[1])
 with open(sys.argv[2]) as f:

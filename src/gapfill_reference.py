@@ -13,7 +13,9 @@ def only_missing_H(dic):
 def repair_mass_balance(model, delete_unbalanced=True, verbose=False):
     import re
     import pandas
-    seedmDB = pandas.read_csv("/home/jo/uni/gapseq/dat/seed_metabolites.tsv", sep="\t")
+    import os
+    dir = os.path.dirname(__file__)
+    seedmDB = pandas.read_csv(dir+"/../dat/seed_metabolites.tsv", sep="\t")
 
     mod = model.copy()
     Cwrong = 0
@@ -107,8 +109,10 @@ def get_reference(mod, newR, delete_unbalanced, verbose):
     from cobra import Model, Reaction, Metabolite
     import pandas
     import re
-    seedrDB = pandas.read_csv("/home/jo/uni/gapseq/dat/seed_reactions.tsv", sep="\t")
-    seedmDB = pandas.read_csv("/home/jo/uni/gapseq/dat/seed_metabolites.tsv", sep="\t")
+    import os
+    dir = os.path.dirname(__file__)
+    seedmDB = pandas.read_csv(dir+"/../dat/seed_metabolites.tsv", sep="\t")
+    seedrDB = pandas.read_csv(dir+"/../dat/seed_reactions.tsv", sep="\t")
 
     #refdb  = seedrDB.loc[seedrDB['abbreviation'].isin(newR)] # vmh
     refdb  = seedrDB.loc[seedrDB['id'].isin(newR)]
