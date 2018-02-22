@@ -38,7 +38,7 @@ NeededReactions = ["rxn10122_c0", # respiratory complex I
                    "rxn10043_c0"]  # respiratory complex IV
 for r in NeededReactions:
     if r in refmod.reactions and r not in mod.reactions:
-        mod.add_reactions(refmod.reactions.get_by_id(r))
+        mod.add_reaction(refmod.reactions.get_by_id(r))
 print "Added needed reactions from reference:", len(mod.reactions) - NRea
 
 
