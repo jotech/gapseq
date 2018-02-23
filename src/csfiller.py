@@ -119,6 +119,7 @@ tmpmod = set2respiration(newmod)
 
 # ASSERTION 1: check for growth without carbon source
 sol = set_medium(tmpmod, minmed, verbose=False).optimize()
+print "Negative growth control", sol.status, sol.objective_value
 if sol.status == "optimal" and round(sol.objective_value,3) > 0:
     print "ATTENTION: Found growth without carbon source!"
     print set_medium(tmpmod, minmed, verbose=False).summary()
@@ -129,6 +130,7 @@ if sol.status == "optimal" and round(sol.objective_value,3) > 0:
 
 # ASSERTION 2: Adding some dummy carbon source (glc,fum,pyr) => there should be growth
 sol = set_medium(tmpmod, minmed+["cpd00027", "cpd00020", "cpd00106"], verbose=False).optimize()
+print "Positive growth control", sol.status, sol.objective_value
 if sol.status == "optimal" and round(sol.objective_value,3) < 0:
     print "No growth possible, check minimal medium?"
     sys.exit()
@@ -145,6 +147,7 @@ s1 = [ex for ex in substances["exid_seed"].dropna().values]
 s2 = [ex.id for ex in tmpmod.exchanges]
 csources = set(s1+s2)
 tmpmod = add_Exchanges(tmpmod, set(s1).difference(set(s2))) # add exchange reactions
+newmod = add_Exchanges(newmod, set(s1).difference(set(s2))) # add exchange reactions
 Nfix = 0
 for cs in csources:
     csname = tmpmod.reactions.get_by_id(cs).metabolites.keys()[0].name
@@ -158,19 +161,20 @@ for cs in csources:
         print csname, "CANNOT be used:", sol
         print "\t --> try to find reactions for gapfilling"    
         try:
-            gapsol = GapFiller(tmpmod, refmod, demand_reactions=False, integer_threshold=1e-16).fill()
+            #gapsol = GapFiller(tmpmod, refmod, demand_reactions=False, integer_threshold=1e-16).fill()
+            gapsol = GapFiller(tmpmod, refmod, demand_reactions=False).fill()
         except RuntimeError:
             print "\t => Runtime error: lowering the integer_threshold?"
-            tmpmod.remove_reactions(cs) # remove exchange reaction for compounds that cannot be used
+            newmod.remove_reactions(cs) # remove exchange reaction for compounds that cannot be used
             continue
         except:
             print "\t => failed:", sys.exc_info()[0]
-            tmpmod.remove_reactions(cs) # remove exchange reaction for compounds that cannot be used
+            newmod.remove_reactions(cs) # remove exchange reaction for compounds that cannot be used
             continue
         if len(gapsol[0]) > 0:
             Nfix += 1            
             print "\t => could be fixed:", ",".join([r.id for r in gapsol[0]])
-            tmpmod.add_reactions([r for r in gapsol[0] if r not in tmpmod.reactions])
-print "Fixed growth for compounds:", Nfix, "by adding reactions:", Nrea - len(tmpmod.reactions)
+            newmod.add_reactions([r for r in gapsol[0] if r not in newmod.reactions])
+print "Fixed growth for compounds:", Nfix, "by adding reactions:", len(newmod.reactions) - Nrea
 
-write_sbml_model(tmpmod, filename=fileID+"_csfilled.xml")
+write_sbml_model(newmod, filename=fileID+"_csfilled.xml")
