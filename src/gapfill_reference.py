@@ -10,7 +10,8 @@ def only_missing_H(dic):
     else:
         return False
 
-def repair_mass_balance(model, delete_unbalanced=True, verbose=False):
+def repair_mass_balance(model, delete_unbalanced=True, verbose=1):
+    from cobra import Model, Reaction, Metabolite
     import re
     import pandas
     import os
@@ -42,7 +43,7 @@ def repair_mass_balance(model, delete_unbalanced=True, verbose=False):
         if "charge" in mbal:
             mbal.pop("charge") # ToDo: how to handle charge? (is not always in agreement with H!)
         if not correct_mass(mbal): 
-            if verbose:
+            if verbose == 2:
                 print r.id, r.reaction
             Cwrong += 1
             if not only_missing_H(mbal):
@@ -55,7 +56,7 @@ def repair_mass_balance(model, delete_unbalanced=True, verbose=False):
                     if "charge" in mbal2:
                         mbal2.pop("charge")
                     if only_missing_H(mbal2):
-                        if verbose:
+                        if verbose == 2:
                             print "removed", m.id,m.name, "from", r.id
                             print mbal, mbal2
                         mbal = mbal2
@@ -64,7 +65,7 @@ def repair_mass_balance(model, delete_unbalanced=True, verbose=False):
             if only_missing_H(mbal): # check again if corrections could work
                 miss = mbal["H"]
             else:
-                if verbose:
+                if verbose == 2:
                     print "could not be fixed"
                     print "\t",r.id, r.name, r.reaction
                     print "\t",mbal
@@ -88,24 +89,25 @@ def repair_mass_balance(model, delete_unbalanced=True, verbose=False):
             if "charge" in mbal3:
                 mbal3.pop("charge")
             if not correct_mass(mbal3):
-                if verbose:
+                if verbose == 2:
                     print r.id, r.name, r.reaction
                     print "old:",mbal, "\tnew:",mbal3
                 if delete_unbalanced:
                     rea_rm.append(r)
                     #mod.remove_reactions(r)
             else:
-                if verbose:
+                if verbose == 2:
                     print r.id, "fixed"
                 Ccorrected += 1
     mod.remove_reactions(rea_rm)
     #print ",".join([r.name for r in rea_rm])
     #print [r.check_mass_balance() for r in rea_rm]
     mod.repair()
-    print "Unbalanced reactions:", Cwrong, "\tCould be corrected:", Ccorrected, "\tRemoved reactions:", len(model.reactions)-len(mod.reactions)
+    if verbose > 0:
+        print "Unbalanced reactions:", Cwrong, "\tCould be corrected:", Ccorrected, "\tRemoved reactions:", len(model.reactions)-len(mod.reactions)
     return(mod)
 
-def get_reference(mod, newR, delete_unbalanced, verbose):
+def get_reference(mod, newR, delete_unbalanced, verbose=1):
     from cobra import Model, Reaction, Metabolite
     import pandas
     import re
@@ -115,7 +117,7 @@ def get_reference(mod, newR, delete_unbalanced, verbose):
     seedrDB = pandas.read_csv(dir+"/../dat/seed_reactions.tsv", sep="\t")
 
     #refdb  = seedrDB.loc[seedrDB['abbreviation'].isin(newR)] # vmh
-    refdb  = seedrDB.loc[seedrDB['id'].isin(newR)]
+    refdb  = seedrDB.loc[(seedrDB['id'].isin(newR)) & (seedrDB['status']=="OK")] # only choose reaction which have status okay
     refmod = Model("reaction_database")
     Rmod   = [re.sub("_.*$", "", r.id) for r in mod.reactions]
     print "Consider", len(refdb.index), "reactions"
@@ -136,18 +138,22 @@ def get_reference(mod, newR, delete_unbalanced, verbose):
         #rstr = row["formula"] # vmh
         rstr = row["equation"]
         #rstr = row["code"]
-        rstr = rstr.replace("[0]", "_c0").replace("[1]", "_e0").replace("[3]", "_p0")
-        r.build_reaction_from_string(rstr, verbose=False)
+        rstr = rstr.replace("[0]", "_c0").replace("[1]", "_e0").replace("[3]", "_p0").replace("[2]", "_m0")
+        r.build_reaction_from_string(rstr, verbose=0)
         #r.reaction = rstr
     for m in refmod.metabolites:
+        if verbose == 2:
+            print m.id
         mid =re.sub("_.*$","", m.id)
         hit = seedmDB.loc[seedmDB["id"]==mid]
         m.name = hit["name"].values[0]
         m.formula = hit["formula"].values[0]
         m.charge = hit["charge"].values[0]
-
-    print Calready, "reactions already in the model"
-    print Cold, "removed deprecated reactions"
+    
+    if verbose > 0:
+        print Calready, "reactions already in the model"
+        print Cold, "removed deprecated reactions"
     refmod = repair_mass_balance(refmod, delete_unbalanced, verbose)
-    print len(refmod.reactions), "remaining reaction in reference database:", 
+    if verbose > 0:
+        print len(refmod.reactions), "remaining reaction in reference database:", 
     return(refmod)

@@ -25,6 +25,46 @@ def seed_fix(model, fixDirection=True, rmLoops=True):
         if "rxn01545_c0" in mod.reactions:
             CountDir += 1
             mod.reactions.rxn01545_c0.lower_bound=0 # Xanthosine hydrolase,3.2.2.8 is irreversible (vmh,metacyc)
+        if "rxn00610_c0" in mod.reactions:
+            CountDir += 1
+            mod.reactions.rxn00610_c0.lower_bound=0 #  3.1.3.21 sn-glycerol-3-phosphate phosphohydrolase, should be irreversible (metacyc) otherwise causing loop with atpase: rxn00615 ATP glycerol 3 phosphotransferase
+        if "rxn00132_c0" in mod.reactions:
+            CountDir += 1
+            mod.reactions.rxn00132_c0.lower_bound=0 # 3.1.3.5 is irreversible (metacyc,vmh) causing loop with atp rxn00134
+        if "rxn00123_c0" in mod.reactions:
+            CountDir += 1
+            mod.reactions.rxn00123_c0.lower_bound=0 # 3.1.3.74 is irreversible (metacyc) causing loop with atp rxn00124
+        if "rxn15029_c0" in mod.reactions:
+            CountDir += 1
+            mod.reactions.rxn15029_c0.lower_bound=0 # 3.1.3.9 is irreversible (metacyc) causing loop with atp rxn05145
+        if "rxn00220_c0" in mod.reactions:
+            CountDir += 1
+            mod.reactions.rxn00220_c0.lower_bound=0 # 3.1.3.9 is irreversible (metacyc) causing loop with atp rxn05145
+        if "rxn01807_c0" in mod.reactions:
+            CountDir += 1
+            mod.reactions.rxn01807_c0.lower_bound=0 # 2.7.1.35 Kinase is irreversible (metacyc,vmh)
+        if "rxn01396_c0" in mod.reactions:
+            CountDir += 1
+            mod.reactions.rxn01396_c0.lower_bound=0 #  2.7.1.35 Kinase is irreversible (metacyc,vmh)
+        if "rxn01671_c0" in mod.reactions:
+            CountDir += 1
+            mod.reactions.rxn01671_c0.lower_bound=0 #  irreversible (vmh)
+        if "rxn00148_c0" in mod.reactions:
+            CountDir += 1
+            mod.reactions.rxn00148_c0.upper_bound=0 #  pyruvate kinase is irreversible 2.7.1.40 (metacyc,vmh)
+        if "rxn00151_c0" in mod.reactions:
+            CountDir += 1
+            mod.reactions.rxn00151_c0.upper_bound=0 #  pyruvate dikinase is irreversible 2.7.9.1 (metacyc,vmh)
+        if "rxn02260_0" in mod.reactions:
+            CountDir += 1
+            mod.reactions.rxn02260_c0.lower_bound=0 #  6.2.1.36 -- 3-hydroxypropionyl-CoA synthase is irreversible (metacyc) 
+        if "rxn05054_c0" in mod.reactions:
+            CountDir += 1
+            mod.reactions.rxn05054_c0.lower_bound=0 #  adenosylcobinamide-phosphate synthase,6.3.1.10 irreversible (metacyc, vmh)
+        #if "rxn_c0" in mod.reactions:
+        #    CountDir += 1
+        #    mod.reactions.rxn_c0.lower_bound=0 #  
+
 
 
     # CORRECTION IN SEED MODEL DATABASE
@@ -138,6 +178,19 @@ def seed_fix(model, fixDirection=True, rmLoops=True):
             rmRea.add("rxn10860_c0")
         if "rxn09681_c0" in mod.reactions and "rxn08535_c0" in mod.reactions: # fructose proton symport causing loops, not in vmh
             rmRea.add("rxn09681_c0")
+        if "rxn00809_c0" in mod.reactions: # 1.1.1.21 this reactions is swapping nadh/nad and is proton source (+3!) could not be found in other databases, seems to be artifact causing loops
+            rmRea.add("rxn00809_c0")
+        if "rxn07077_c0" in mod.reactions: # wrong proton number for fad: fadh2 <-> fad + 3H ?? 
+            rmRea.add("rxn07077_c0")
+        if "rxn06840_c0" in mod.reactions: # 1.2.1.88  this reactions is has nad/nadh on the wrong side
+            rmRea.add("rxn06840_c0")
+        if "rxn_08173c0" in mod.reactions: # atpase with 4->3 proton causing imbalance
+            rmRea.add("rxn08173_c0")
+        if "rxn10091_c0" in mod.reactions: # cob(I)alamin adenosyltransferase: direction and compounds unclear/wrong
+            rmRea.add("rxn10091_c0")
+        if "rxn11268_c0" in mod.reactions: # ppi transporter from cytosol to periplasm with proton (symport) : unclear
+            rmRea.add("rxn11268_c0")
+        
         #if "rxn_c0" in mod.reactions and "rxn_c0" in mod.reactions: #
         #    rmRea.add("rxn_c0")
 
