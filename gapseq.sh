@@ -335,15 +335,19 @@ do
 done
 
 cand="$(echo $cand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
-echo -e '\n'Total candidate reactions:
-echo $cand
+if [[ verbose -gt 0 ]]; then
+    echo -e '\n'Total candidate reactions:
+    echo $cand
+fi
 
 echo -e '\n'Pathways found:
 echo -e $bestPwy
 
 bestCand="$(echo $bestCand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
-echo -e '\n'Candidate reactions from complete pathways:
-echo -e $bestCand
+if [[ verbose -gt 0 ]]; then
+    echo -e '\n'Candidate reactions from complete pathways:
+    echo -e $bestCand
+fi
 
 # export found reactions 
 #echo $bestCand > newReactions.lst
