@@ -16,6 +16,7 @@ identcutoff=0   # cutoff blast: min identity
 covcutoff=75 # cutoff blast: min coverage
 strictCandidates=false
 completnessCutoff=66 # consider pathway to be present if other hints (e.g. key enzyme present) are avaiable and pathway completness is at least as high as completnessCutoff (requires strictCandidates=false)
+addVague=true # should vague reactions (trunked EC number) be added when there is a hit in reaction DB?
 
 usage()
 {
@@ -28,6 +29,7 @@ usage()
     echo "  -i identity cutoff for local alignment (default: $identcutoff)"
     echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
     echo "  -s strict candidate reaction handling (do _not_ use pathway completness, key kenzymes and operon structure to infere if imcomplete pathway could be still present (default: $strictCandidates)"
+    echo "  -n Not add vague reactions (i.e. EC is trunked and no sequences is available) if pathway is otherwise complete (default: $addVague)"
 exit 1
 }
 # USAGE
@@ -54,7 +56,7 @@ seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique.tsv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:d:i:b:c:vs:o:t:s" opt; do
+while getopts "h?p:d:i:b:c:vs:o:t:sn" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -90,6 +92,10 @@ while getopts "h?p:d:i:b:c:vs:o:t:s" opt; do
         ;;
     s)
         strictCandidates=true
+        ;;
+    n)
+        addVague=false
+        ;;
     esac
 done
 shift $((OPTIND-1))
@@ -214,6 +220,7 @@ for i in `seq 1 $pwyNr`
 do
     pwyCand="" # candidate reaction of current pathway
     pwyCandAll="" # all possible reaction of current pathway
+    pwyVage="" # reaction belonging to trunked EC numbers (no sequence blast possible..)
     count=0
     countex=0
     countdb=0
@@ -283,6 +290,9 @@ do
             #TODO: if unspecific should the reaction still be added?
             echo -e '\t'EC number too unspecific: $rea $ec ..skipping..
             ((vague++))
+            ec=$ec.-
+            getDBhit
+            pwyVage="$pwyVage$dbhit "
         fi
     done
     if [ $count -eq 0 ]; then
@@ -301,13 +311,15 @@ do
     
     if [ $count -ne 0 ] && [ $completness -ge 90 ]; then
         bestCand="$bestCand$pwyCand " # save candidates from almost complete (>=90%) pathways
+        [[ -n "$pwyVage" ]] && [[ "$addVague" = true ]] && bestCand="$bestCand$pwyVage " # add vague reaction for pathways that are present
         bestPwy="$bestPwy$name\n"
     fi
     if [ "$strictCandidates" = false ] && [ $CountKeyReaFound -ge 1 ] && [ $CountKeyReaFound == $(echo $keyRea | wc -w) ] && [ $count -ne 0 ] && [ $completness -ge $completnessCutoff ] && [ $completness -lt 100 ]; then
         echo "Consider pathway to be present because of key enzyme!"
         cand="$cand$pwyCandAll"
-        if [[ $bestPwy != *"$name"* ]]; then
+        if [[ $bestPwy != *"$name"* ]]; then # if not alrady added because of completness (s.a.)
            bestCand="$bestCand$pwyCandAll "
+           [[ -n "$pwyVage" ]] && [[ "$addVague" = true ]] && bestCand="$bestCand$pwyVage " # add vague reaction for pathways that are present
            bestPwy="$bestPwy$name ($completness% completness, added because of key enzyme)\n"
         fi
     else
