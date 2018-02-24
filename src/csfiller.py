@@ -154,7 +154,7 @@ for cs in csources:
     med = minmed+[cs]
     tmpmod = set_medium(tmpmod, med, verbose=False)
     sol = tmpmod.slim_optimize()
-    if round(sol,12) > 0:
+    if round(sol,6) > 0:
         pass
         print csname, "can be used:", sol
     else:
@@ -165,11 +165,13 @@ for cs in csources:
             gapsol = GapFiller(tmpmod, refmod, demand_reactions=False).fill()
         except RuntimeError:
             print "\t => Runtime error: lowering the integer_threshold?"
-            newmod.remove_reactions(cs) # remove exchange reaction for compounds that cannot be used
+            if( cs in s1 ):
+                newmod.remove_reactions(cs) # remove exchange reaction for compounds that cannot be used
             continue
         except:
             print "\t => failed:", sys.exc_info()[0]
-            newmod.remove_reactions(cs) # remove exchange reaction for compounds that cannot be used
+            if( cs in s1 ):
+                newmod.remove_reactions(cs) # remove exchange reaction for compounds that cannot be used
             continue
         if len(gapsol[0]) > 0:
             Nfix += 1            
