@@ -287,12 +287,13 @@ do
                ((vague++))
             fi
         else
-            #TODO: if unspecific should the reaction still be added?
             echo -e '\t'EC number too unspecific: $rea $ec ..skipping..
             ((vague++))
-            ec=$ec.-
-            getDBhit
-            pwyVage="$pwyVage$dbhit "
+            if [ -n "$ec" ]; then
+                ec=$ec.-
+                getDBhit
+                [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
+            fi
         fi
     done
     if [ $count -eq 0 ]; then
@@ -311,7 +312,10 @@ do
     
     if [ $count -ne 0 ] && [ $completness -ge 90 ]; then
         bestCand="$bestCand$pwyCand " # save candidates from almost complete (>=90%) pathways
-        [[ -n "$pwyVage" ]] && [[ "$addVague" = true ]] && bestCand="$bestCand$pwyVage " # add vague reaction for pathways that are present
+        if [[ -n "$pwyVage" ]] && [[ "$addVague" = true ]]; then
+           bestCand="$bestCand$pwyVage " # add vague reaction for pathways that are present
+           cand="$cand$pwyVage "
+        fi
         bestPwy="$bestPwy$name\n"
     fi
     if [ "$strictCandidates" = false ] && [ $CountKeyReaFound -ge 1 ] && [ $CountKeyReaFound == $(echo $keyRea | wc -w) ] && [ $count -ne 0 ] && [ $completness -ge $completnessCutoff ] && [ $completness -lt 100 ]; then
@@ -319,7 +323,10 @@ do
         cand="$cand$pwyCandAll"
         if [[ $bestPwy != *"$name"* ]]; then # if not alrady added because of completness (s.a.)
            bestCand="$bestCand$pwyCandAll "
-           [[ -n "$pwyVage" ]] && [[ "$addVague" = true ]] && bestCand="$bestCand$pwyVage " # add vague reaction for pathways that are present
+           if [[ -n "$pwyVage" ]] && [[ "$addVague" = true ]]; then
+              bestCand="$bestCand$pwyVage " # add vague reaction for pathways that are present
+              cand="$cand$pwyVage "
+            fi
            bestPwy="$bestPwy$name ($completness% completness, added because of key enzyme)\n"
         fi
     else
