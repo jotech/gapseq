@@ -3,7 +3,7 @@ from cobra.flux_analysis.gapfilling import GapFiller
 from cobra.io import read_sbml_model
 from cobra.io import write_sbml_model
 #from cobra import Model, Reaction, Metabolite
-#import pandas
+import pandas
 import sys
 import re
 import os
@@ -14,8 +14,12 @@ if len(sys.argv) != 3:
   print("usage:", sys.argv[0], "file.xml reaction.lst")
   sys.exit(0)
 
+print " ".join(sys.argv)
+
 #seedrDB = pandas.read_csv("/home/jo/uni/gapseq/dat/seed_reactions.tsv", sep="\t")
 #seedmDB = pandas.read_csv("/home/jo/uni/gapseq/dat/seed_metabolites.tsv", sep="\t")
+dir = os.path.dirname(__file__)
+substances=pandas.read_csv(dir+"/../dat/sub2pwy.csv", sep=",")
 
 mod = gapfill_reference.repair_mass_balance(read_sbml_model(sys.argv[1]), verbose=False)
 with open(sys.argv[2]) as f:
@@ -44,13 +48,31 @@ print "Added needed reactions from reference:", len(mod.reactions) - NRea
 
 ignore = ["H", "Li", "Na", "Mg", "K", "Ca", "P", "Fe", "Cl", "Zn", "Mn", "Mo", "Se", "Co", "Cu", "Ni", "W", "H2O"]
 # prepare model with minimal medium
-minmed = ["cpd00027", "cpd00007", "cpd00001", # glc, o2, h2o
-          #"cpd00020", # pyruvate
-          "cpd00106", # fumarat # myb10
-          "cpd00013", # nh3
-          "cpd00048", # sulfate
+minmed = ["EX_cpd00007_e0", "EX_cpd00001_e0", # o2, h2o
+          "EX_cpd00013_e0", # nh3
+          "EX_cpd00048_e0", # sulfate
           # minerals
-          "cpd00009", "cpd00012", "cpd00030", "cpd00034", "cpd00058", "cpd00063", "cpd00067", "cpd00099", "cpd00149", "cpd00205", "cpd00254", "cpd10515", "cpd00971", "cpd01012", "cpd10516", "cpd11574"]
+          "EX_cpd00009_e0", "EX_cpd00012_e0", "EX_cpd00030_e0", "EX_cpd00034_e0", "EX_cpd00058_e0", "EX_cpd00063_e0", "EX_cpd00067_e0", "EX_cpd00099_e0", "EX_cpd00149_e0", "EX_cpd00205_e0", "EX_cpd00254_e0", "EX_cpd10515_e0", "EX_cpd00971_e0", "EX_cpd01012_e0", "EX_cpd10516_e0", "EX_cpd11574_e0"]
+# try to find a carbon source
+cs = ["EX_cpd00027_e0", # glucose
+      "EX_cpd00020_e0", # pyruvate
+      "EX_cpd00106_e0", # fumarat
+      "EX_cpd00179_e0"] # maltose
+found = [c for c in cs if c in [ex.id for ex in mod.exchanges]]
+if len(found) > 0:
+    carbon = found[0]
+    print "Try doing biomass gapfilling with carbon source", carbon, mod.reactions.get_by_id(carbon).name
+    minmed += [carbon]
+else:
+    found2= substances["exid_seed"].loc[substances["exid_seed"].isin([ex.id for ex in mod.exchanges])].tolist()
+    if len(found2) > 0:
+        carbon  = found2[0]
+        print "Try doing biomass gapfilling with carbon source", carbon, mod.reactions.get_by_id(carbon).name
+        minmed += [carbon]
+    else:
+        print "Error: no carbon source found for organism"
+        sys.exit(0)
+
 
 def set_medium(model, medium):
     mod = model.copy()
@@ -58,8 +80,11 @@ def set_medium(model, medium):
         ex.lower_bound=0
 
     for m in medium: # set medium
-        #ex = "EX_"+m+"_LPAREN_e_RPAREN_" # vmh
-        ex = "EX_"+m+"_e0"
+        if m not in mod.reactions:
+            #ex = "EX_"+m+"_LPAREN_e_RPAREN_" # vmh
+            ex = "EX_"+m+"_e0"
+        else:
+            ex = m
         #ex = m
         if ex in mod.reactions:
             mod.reactions.get_by_id(ex).lower_bound=-1000
