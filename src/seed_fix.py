@@ -188,8 +188,8 @@ def seed_fix(model, fixDirection=True, rmLoops=True):
             rmRea.add("rxn08173_c0")
         if "rxn10091_c0" in mod.reactions: # cob(I)alamin adenosyltransferase: direction and compounds unclear/wrong
             rmRea.add("rxn10091_c0")
-        if "rxn11268_c0" in mod.reactions: # ppi transporter from cytosol to periplasm with proton (symport) : unclear
-            rmRea.add("rxn11268_c0")
+        #if "rxn11268_c0" in mod.reactions: # ppi transporter from cytosol to periplasm with proton (symport) : unclear
+        #    rmRea.add("rxn11268_c0") # needed by some orgs to grow!
         if "rxn00568_c0" in mod.reactions: # ill defined? (2) H2O[0] + (3) NAD[0] + (1) NH3[0] => (3) NADH[0] + (5) H+[0] + (1) Nitrite[0]
             rmRea.add("rxn00568_c0")
         if "rxn00569_c0" in mod.reactions: # ill defined? (2) H2O[0] + (3) NADP[0] + (1) NH      3[0] => (3) NADPH[0] + (5) H+[0] + (1) Nitrite[0]
