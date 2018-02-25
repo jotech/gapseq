@@ -212,6 +212,7 @@ makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
 cand=""     #list of candidate reactions to be added
 bestCand="" # list of candidates from (almost) complete pathways
 bestPwy=""  # list of found pathways
+echo -e "ID\tName\tCompletness\tVagueReactions\tKeyReactions\tKeyReactionsFound" > output.tbl # pahtway statistics file
 
 pwyNr=$(echo "$pwyDB" | wc -l)
 echo Checking for pathways and reactions in: $1 $pwyKey
@@ -308,7 +309,10 @@ do
     else
         CountKeyReaFound=0
     fi
-    echo -e Key reactions: $CountKeyReaFound/$(echo $keyRea | wc -w)
+    CountKeyRea=$(echo $keyRea | wc -w)
+    echo -e Key reactions: $CountKeyReaFound/CountKeyRea
+    
+    echo -e "$pwy\t$name\t$completness\t$vague\t$CountKeyRea\t$CountKeyReaFound" >> output.tbl # write down some statistics
     
     if [ $count -ne 0 ] && [ $completness -ge 90 ]; then
         bestCand="$bestCand$pwyCand " # save candidates from almost complete (>=90%) pathways
@@ -353,6 +357,7 @@ fi
 #echo $bestCand > newReactions.lst
 echo $cand > newReactions.lst
 cp newReactions.lst $curdir/${fastaID}-$pathways-Reactions.lst
+cp output.tbl $curdir/${fastaID}-$pathways-Pathways.tbl
 
 # add reactions and write new sbml model
 if [ -n "$input_sbml" ] ; then # if there is an xml file

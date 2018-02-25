@@ -57,7 +57,7 @@ def mean_identity(records, newseq):
 def download_EC(ec):
     results = u.search("ec:"+ec+"+and+reviewed:yes"+"+and+taxonomy:"+taxonomy, columns="id,entry name, protein names, sequence", limit=max_download) # uniprot swissprot db (reviewed)
     Nhits = len(results.split("\n")) - 2 # minus header & empty last line
-    if Nhits < 5: # if only some sequences found get more
+    if Nhits < 15: # if only some sequences found get more
         results = u.search("ec:"+ec+"+and+taxonomy:"+taxonomy, columns="id,entry name, protein names, sequence", limit=max_download) # uniprot trembl db (unreviewed) limit=10
     if len(results) == 0:
         print "\t\tNo entry found for:", ec
