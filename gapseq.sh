@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# TODO: metacyc superpathways seems to be incomplete e.g. ASPASN-PWY
 # TODO: limit pwy search to taxonomic scope
 # TODO: save dummy seq file for ec without uniprot hit (save nonsense requests)
 # TODO: handle incomplete/unspecific ecs from metacyc (e.g. get ec from kegg, update maually or get genes from metacyc)
@@ -157,7 +158,7 @@ case $pathways in
 esac
 
 
-pwyDB=$(cat $metaPwy | grep -wE $pwyKey)
+pwyDB=$(cat $metaPwy | grep -wEi $pwyKey)
 [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
 
 
@@ -310,7 +311,7 @@ do
         CountKeyReaFound=0
     fi
     CountKeyRea=$(echo $keyRea | wc -w)
-    echo -e Key reactions: $CountKeyReaFound/CountKeyRea
+    echo -e Key reactions: $CountKeyReaFound/$CountKeyRea
     
     echo -e "$pwy\t$name\t$completness\t$vague\t$CountKeyRea\t$CountKeyReaFound" >> output.tbl # write down some statistics
     
