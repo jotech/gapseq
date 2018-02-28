@@ -157,3 +157,43 @@ def get_reference(mod, newR, delete_unbalanced, verbose=1):
     if verbose > 0:
         print len(refmod.reactions), "remaining reaction in reference database:", 
     return(refmod)
+
+def get_reference_vmh(mod, newR, verbose=1):
+    from cobra import Model, Reaction, Metabolite
+    import pandas
+    import re
+    import os
+    dir = os.path.dirname(__file__)
+    vmhmDB = pandas.read_csv(dir+"/../dat/vmh_metabolites.csv")
+    vmhrDB = pandas.read_csv(dir+"/../dat/vmh_reactions.csv")
+
+    refdb  = vmhrDB.loc[vmhrDB['abbreviation'].isin(newR)] # vmh
+    refmod = Model("reaction_database")
+    Rmod   = [re.sub("_.*$", "", r.id) for r in mod.reactions]
+    print "Consider", len(refdb.index), "reactions"
+    Cold = 0
+    Calready = 0
+    for i,row in refdb.iterrows():
+        rid = row["abbreviation"] # vmh
+        rname = row["description"]
+        if rid in Rmod: # vmh
+            Calready += 1
+            continue
+        r = Reaction(rid, rname) 
+        refmod.add_reaction(r)
+        rstr = row["formula"] # vmh
+        r.build_reaction_from_string(rstr, verbose=0)
+    for m in refmod.metabolites:
+        if verbose == 2:
+            print m.id
+        mid = re.sub("\\[.\\]","",m.id)
+        hit = vmhmDB.loc[vmhmDB["abbreviation"]==mid]
+        m.name = hit["fullName"].values[0]
+        m.formula = hit["chargedFormula"].values[0]
+        m.charge = hit["charge"].values[0]
+    
+    if verbose > 0:
+        print Calready, "reactions already in the model"
+    if verbose > 0:
+        print len(refmod.reactions), "remaining reaction in reference database:", 
+    return(refmod)

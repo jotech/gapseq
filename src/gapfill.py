@@ -32,7 +32,6 @@ newR = lines.rstrip("\n").split(" ") # remove linebreak at file end
 
 refmod = gapfill_reference.get_reference(mod, newR, delete_unbalanced=True, verbose=False)
 refmod = seed_fix.seed_fix(refmod, rmLoops=False)
-mod = seed_fix.seed_fix(mod)
 
 
 # Add some reactions, which have evidence by sequence and which are not covered by gapfilling
@@ -44,6 +43,7 @@ for r in NeededReactions:
     if r in refmod.reactions and r not in mod.reactions:
         mod.add_reaction(refmod.reactions.get_by_id(r))
 print "Added needed reactions from reference:", len(mod.reactions) - NRea
+mod = seed_fix.seed_fix(mod)
 
 
 ignore = ["H", "Li", "Na", "Mg", "K", "Ca", "P", "Fe", "Cl", "Zn", "Mn", "Mo", "Se", "Co", "Cu", "Ni", "W", "H2O"]
