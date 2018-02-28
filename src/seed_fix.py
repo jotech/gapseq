@@ -9,7 +9,7 @@ def seed_fix(model, fixDirection=True, rmLoops=True):
     if fixDirection:
         if "rxn05115_c0" in mod.reactions:
             CountDir += 1
-            mod.reactions.rxn05115_c0.upper_bound=1000 # wrong direction
+            mod.reactions.rxn05115_c0.upper_bound=1000 # 5.4.99.18 reversible (meta)
         if "rxn03031_c0" in mod.reactions:
             CountDir += 1
             mod.reactions.rxn03031_c0.lower_bound=-1000 # bidirectional http://www.rhea-db.org/reaction?id=17325
@@ -55,12 +55,34 @@ def seed_fix(model, fixDirection=True, rmLoops=True):
         if "rxn00151_c0" in mod.reactions:
             CountDir += 1
             mod.reactions.rxn00151_c0.upper_bound=0 #  pyruvate dikinase is irreversible 2.7.9.1 (metacyc,vmh)
-        if "rxn02260_0" in mod.reactions:
+        if "rxn02260_c0" in mod.reactions:
             CountDir += 1
             mod.reactions.rxn02260_c0.lower_bound=0 #  6.2.1.36 -- 3-hydroxypropionyl-CoA synthase is irreversible (metacyc) 
         if "rxn05054_c0" in mod.reactions:
             CountDir += 1
             mod.reactions.rxn05054_c0.lower_bound=0 #  adenosylcobinamide-phosphate synthase,6.3.1.10 irreversible (metacyc, vmh)
+        if "rxn02260_c0" in mod.reactions:
+            CountDir += 1
+            mod.reactions.rxn02260_c0.upper_bound=0 # synthase should be irreversible 
+        if "rxn09240_c0" in mod.reactions:
+            CountDir += 1
+            mod.reactions.rxn09240_c0.lower_bound=0 # Sulfate adenyltransferase,2.7.7.4, irreversible in vmh
+        if "rxn23850_c0" in mod.reactions:
+            CountDir += 1
+            mod.reactions.rxn23850_c0.lower_bound=0 # 1.2.1.3 aldehyde dehydrogenase irreversible (metacyc,vmh)
+        if "rxn01216_c0" in mod.reactions:
+            CountDir += 1
+            mod.reactions.rxn01216_c0.lower_bound=0 #  5.4.2.4. 3-phospho-D-glycerate 1,2-phosphomutase irreversible (metacyc, vmh)
+        if "rxn01104_c0" in mod.reactions:
+            CountDir += 1
+            mod.reactions.rxn01104_c0.lower_bound=0 # 2,3-bisphospho-D-glycerate 2-phosphohydrolase 5.4.2.11 irreversible (metacyc)
+        if "rxn05902_c0" in mod.reactions:
+            CountDir += 1 # 1.8.7.1  sulphite reductase, incorrect ferredoxin
+            # wrong: (3) H2O[0] + (1) H2S[0] + (3) Oxidizedferredoxin[0] <=> (6) H+[0] + (1) Sulfite[0] + (3) Reducedferredoxin[0]
+            # rhea (3) H2O[0] + (1) H2S[0] + (6) Oxidizedferredoxin[0] <=> (7) H+[0] + (1) Sulfite[0] + (6) Reducedferredoxin[0]
+            r = mod.reactions.rxn05902_c0
+            r.build_reaction_from_string("3.0 cpd00001_c0 + cpd00239_c0 + 6.0 cpd11621_c0 <=> 6.0 cpd00067_c0 + cpd00081_c0 + 6.0 cpd11620_c0")
+            r.upper_bound = 0 # irreversible (metacyc)          
         #if "rxn_c0" in mod.reactions:
         #    CountDir += 1
         #    mod.reactions.rxn_c0.lower_bound=0 #  
@@ -194,6 +216,11 @@ def seed_fix(model, fixDirection=True, rmLoops=True):
             rmRea.add("rxn00568_c0")
         if "rxn00569_c0" in mod.reactions: # ill defined? (2) H2O[0] + (3) NADP[0] + (1) NH      3[0] => (3) NADPH[0] + (5) H+[0] + (1) Nitrite[0]
             rmRea.add("rxn00569_c0")
+        if "rxn00106_c0" in mod.reactions: # strange Triphosphate phosphohydrolase, not in vmh and in metacyc without proton as products
+            rmRea.add("rxn00106_c0")
+        if "rxn00032_c0" in mod.reactions: # false Choline:oxygen 1-oxidoreductase (metabolites wrong), is available in correct form as rxn11744 R08212 
+            rmRea.add("rxn00032_c0")
+
         
         #if "rxn_c0" in mod.reactions and "rxn_c0" in mod.reactions: #
         #    rmRea.add("rxn_c0")
