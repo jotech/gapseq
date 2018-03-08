@@ -30,7 +30,7 @@ usage()
     echo "  -i identity cutoff for local alignment (default: $identcutoff)"
     echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
     echo "  -s strict candidate reaction handling (do _not_ use pathway completness, key kenzymes and operon structure to infere if imcomplete pathway could be still present (default: $strictCandidates)"
-    echo "  -n Not add vague reactions (i.e. EC is trunked and no sequences is available) if pathway is otherwise complete (default: $addVague)"
+    echo "  -n Add vague reactions (i.e. EC is trunked and no sequences is available) if pathway is otherwise complete (default: $addVague)"
 exit 1
 }
 # USAGE
@@ -245,7 +245,7 @@ do
         if [ -n "$test" ]; then
             ((count++))
             getDBhit # get db hits for this reactions
-            pwyCandAll="$pwyCandAll$dbhit"
+            pwyCandAll="$pwyCandAll$dbhit "
             query=$seqpath$ec.fasta
             if [ ! -s $query ]; then
                 python2 $dir/src/uniprot.py "$ec" "$taxonomy" # if sequence data not available then download from uniprot
