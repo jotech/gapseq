@@ -17,6 +17,7 @@ identcutoff=0   # cutoff blast: min identity
 covcutoff=75 # cutoff blast: min coverage
 strictCandidates=false
 completnessCutoff=66 # consider pathway to be present if other hints (e.g. key enzyme present) are avaiable and pathway completness is at least as high as completnessCutoff (requires strictCandidates=false)
+completnessCutoffNoHints=80 # consider pathway to be present if no hints are avaiable (requires stricCandidates=false)
 addVague=true # should vague reactions (trunked EC number) be added when there is a hit in reaction DB?
 
 usage()
@@ -51,7 +52,7 @@ reaDB2=$dir/dat/bigg_reactions.tbl
 reaDB3=$dir/dat/seed_reactions.tsv
 reaDB4=$dir/dat/mnxref_seed.tsv
 brenda=$dir/dat/brenda_ec.csv
-seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique.tsv
+seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
 
 
 # A POSIX variable
@@ -172,8 +173,8 @@ getDBhit(){
     if [ "$database" == "vmh" ]; then
         dbhit=$(grep -wF $ec $reaDB1 | awk -F ',' '{print $1}')
     elif [ "$database" == "seed" ]; then
-        dbhit=$(grep -wF $ec $seedEC | awk '{print $1}' | tr '|' '\n')
-        dbhit="$dbhit $(grep -wF $ec $reaDB4 | awk -F '\t' '{print $4}')"
+        dbhit=$(grep -wF $ec $seedEC | awk -F '\t' '{print $1}' | tr '|' ' ')
+        dbhit="$dbhit $(grep -wF $ec $reaDB4 | awk -F '\t' '{print $4}' | tr '\n' ' ')"
     fi
 
     # 2) search in reaction db by kegg identifier 
@@ -181,14 +182,14 @@ getDBhit(){
         [ -n "$kegg" ]  && dbhit="$dbhit $(grep -wE "$(echo $kegg |tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')"
     elif [ "$database" == "seed" ]; then
         [ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB3 | awk -F '\t' '$18 == "OK" {print $1}' )" # only consider reactions which are OK
-        [ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')"
+        [ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}' | tr '\n' ' ')"
     fi
 
     # 3) search in reaction db by alternative EC
     if [ "$database" == "vmh" ]; then
         [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')" # take care of multiple EC numbers
     elif [ "$database" == "seed" ]; then
-        [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $seedEC | awk '{print $1}' | tr '|' '\n')" # take care of multiple EC numbers
+        [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $seedEC | awk -F '\t' '{print $1}' | tr '|' ' ')" # take care of multiple EC numbers
         [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')" # take care of multiple EC numbers
     fi
     
@@ -280,13 +281,27 @@ do
                         someBitscore=$(cat $out | sort -rgk 5,5 | head -1 | cut -f5)
                         someCoverage=$(cat $out | sort -rgk 6,6 | head -1 | cut -f6)
                         echo -e '\t'No significant blast hits found: $rea $ec "\n\t\t(max: id=$someIdentity bit=$someBitscore cov=$someCoverage)"
+                        if [[ -n "$dbhit" ]];then
+                            dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
+                            pwyNoSeqFound="$pwyNoSeqFound$dbhit "
+                        fi
                     fi
                 else
                     echo -e '\t'No blast hits found for reaction: $rea $ec
+                    getDBhit
+                    if [[ -n "$dbhit" ]];then
+                        dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
+                        pwyNoSeqFound="$pwyNoSeqFound$dbhit "
+                    fi
                 fi
             else
                 echo -e '\t'No sequence data found for $rea $ec ..skipping..
-               ((vague++))
+                ((vague++))
+                getDBhit
+                if [[ -n "$dbhit" ]];then
+                    dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
+                    pwyNoSeqFound="$pwyNoSeqFound$dbhit "
+                fi
             fi
         else
             echo -e '\t'EC number too unspecific: $rea $ec ..skipping..
@@ -297,6 +312,7 @@ do
                 [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
             fi
         fi
+        [[ verbose -gt 0 ]] && echo -e "\t\tCandidate reactions: $dbhit"
     done
     if [ $count -eq 0 ]; then
         completness=0
@@ -311,19 +327,30 @@ do
         CountKeyReaFound=0
     fi
     CountKeyRea=$(echo $keyRea | wc -w)
+    CountTotalKeyRea=$(echo $keyRea | wc -w)
     echo -e Key reactions: $CountKeyReaFound/$CountKeyRea
     
     echo -e "$pwy\t$name\t$completness\t$vague\t$CountKeyRea\t$CountKeyReaFound" >> output.tbl # write down some statistics
     
-    if [ $count -ne 0 ] && [ $completness -ge 90 ]; then
-        bestCand="$bestCand$pwyCand " # save candidates from almost complete (>=90%) pathways
+    # add reactions of pathways (even if no blast hit) if above trashold (and no key enzyme is missed)
+    if [ $count -ne 0 ] && [ $completness -ge $completnessCutoffNoHints ] && [ $CountKeyReaFound -eq $CountTotalKeyRea ]; then
+        echo "Consider pathway to be present because of completness treshold!"
+        bestCand="$bestCand$pwyCand " # save candidates from almost complete pathways
         if [[ -n "$pwyVage" ]] && [[ "$addVague" = true ]]; then
-           bestCand="$bestCand$pwyVage " # add vague reaction for pathways that are present
-           cand="$cand$pwyVage "
+           bestCand="$bestCand$pwyVage$pwyNoSeqFound " # add vague reaction for pathways that are present
+           cand="$cand$pwyVage$pwyNoSeqFound "
         fi
-        bestPwy="$bestPwy$name\n"
+        if [[ -n "$pwyNoSeqFound" ]] && [[ "$strictCandidates" = false ]]; then
+           bestCand="$bestCand$pwyNoSeqFound " # add reaction with no blast hits
+           cand="$cand$pwyNoSeqFound "
+        fi
+        if [[ $completness -lt 100 ]]; then
+            bestPwy="$bestPwy$name ($completness% completness, added because of treshhold)\n"
+        else
+            bestPwy="$bestPwy$name\n"
+        fi
     fi
-    if [ "$strictCandidates" = false ] && [ $CountKeyReaFound -ge 1 ] && [ $CountKeyReaFound == $(echo $keyRea | wc -w) ] && [ $count -ne 0 ] && [ $completness -ge $completnessCutoff ] && [ $completness -lt 100 ]; then
+    if [ $CountKeyReaFound -ge 1 ] && [ $CountKeyReaFound -eq $CountTotalKeyRea ] && [ $count -ne 0 ] && [ $completness -ge $completnessCutoff ] && [ $completness -lt 100 ]; then
         echo "Consider pathway to be present because of key enzyme!"
         cand="$cand$pwyCandAll"
         if [[ $bestPwy != *"$name"* ]]; then # if not alrady added because of completness (s.a.)
@@ -331,6 +358,10 @@ do
            if [[ -n "$pwyVage" ]] && [[ "$addVague" = true ]]; then
               bestCand="$bestCand$pwyVage " # add vague reaction for pathways that are present
               cand="$cand$pwyVage "
+            fi
+            if [[ -n "$pwyNoSeqFound" ]] && [[ "$strictCandidates" = false ]]; then
+               bestCand="$bestCand$pwyNoSeqFound " # add reaction with no blast hits
+               cand="$cand$pwyNoSeqFound "
             fi
            bestPwy="$bestPwy$name ($completness% completness, added because of key enzyme)\n"
         fi
