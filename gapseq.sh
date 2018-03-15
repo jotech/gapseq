@@ -23,8 +23,9 @@ addVague=true # should vague reactions (trunked EC number) be added when there i
 usage()
 {
     echo "Usage"
-    echo "$0 -p keyword [-d database] [-f model.sbml] [-t taxonomy] file.fasta."
+    echo "$0 -p keyword / -e ec [-d database] [-f model.sbml] [-t taxonomy] file.fasta."
     echo "  -p keywords such as pathways or susbstem (for example amino,nucl,cofactor,carbo,polyamine)"
+    echo "  -e search by ec numbers (comma separated)"
     echo "  -d database: vmh or seed (default: $database)"
     echo "  -t taxonomic range (default: $taxonomy)"
     echo "  -b bit score cutoff for local alignment (default: $bitcutoff)"
@@ -58,7 +59,7 @@ seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:d:i:b:c:vs:o:t:sn" opt; do
+while getopts "h?p:e:d:i:b:c:vs:o:t:sn" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -66,6 +67,9 @@ while getopts "h?p:d:i:b:c:vs:o:t:sn" opt; do
         ;;
     p)  
         pathways=$OPTARG
+        ;;
+    e)  
+        ecnumber=$OPTARG
         ;;
     d)  
         database=$OPTARG
@@ -112,8 +116,8 @@ fasta=$(readlink -f "$1")
 tmpvar=$(basename $fasta)
 fastaID="${tmpvar%.*}"
 
-# pathways and fasta file have to be provided
-( [ -z "$pathways" ] || [ -z "$fasta" ] ) && { usage; }
+# pathways or ec number as well as fasta file have to be provided
+( [ -z "$pathways" ] && [ -z "$ecnumber" ] ) || [ -z "$fasta" ]  && { usage; }
 
 # select pathway keys to be used in database search
 case $pathways in
@@ -159,9 +163,17 @@ case $pathways in
 esac
 
 
-pwyDB=$(cat $metaPwy | grep -wEi $pwyKey)
-[ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
 
+
+if [ -n "$ecnumber" ]; then
+    # create dummpy pwy template for given ec number
+    pwyKey=$ecnumber
+    pwyDB=$(echo -e "dummy\t$ecnumber\t\t\t\t$ecnumber\t$ecnumber")
+else
+    # get entries for pathways from database
+    pwyDB=$(cat $metaPwy | grep -wEi $pwyKey)
+    [ -z "$ecnumber" ] && [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
+fi
 
 
 # function to get database hits for ec number
@@ -313,7 +325,8 @@ do
             fi
         fi
         [[ verbose -gt 0 ]] && echo -e "\t\tCandidate reactions: $dbhit"
-    done
+    done # pathway
+    
     if [ $count -eq 0 ]; then
         completness=0
     else
