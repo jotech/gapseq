@@ -226,7 +226,7 @@ makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
 cand=""     #list of candidate reactions to be added
 bestCand="" # list of candidates from (almost) complete pathways
 bestPwy=""  # list of found pathways
-echo -e "ID\tName\tCompletness\tVagueReactions\tKeyReactions\tKeyReactionsFound" > output.tbl # pahtway statistics file
+echo -e "ID\tName\tCompletness\tVagueReactions\tKeyReactions\tKeyReactionsFound\tReactionsFound" > output.tbl # pahtway statistics file
 
 pwyNr=$(echo "$pwyDB" | wc -l)
 echo Checking for pathways and reactions in: $1 $pwyKey
@@ -238,6 +238,7 @@ do
     pwyVage="" # reaction belonging to trunked EC numbers (no sequence blast possible..)
     count=0
     countex=0
+    countexList="" # list with reactions ids found
     countdb=0
     vague=0
     keyReaFound=""
@@ -288,6 +289,7 @@ do
                             echo -e '\t\t'No candidate reaction found for import
                         fi
                         ((countex++))
+                        countexList="$countexList$rea "
                     else
                         someIdentity=$(cat $out | sort -rgk 3,3 | head -1 | cut -f3)
                         someBitscore=$(cat $out | sort -rgk 5,5 | head -1 | cut -f5)
@@ -343,7 +345,7 @@ do
     CountTotalKeyRea=$(echo $keyRea | wc -w)
     echo -e Key reactions: $CountKeyReaFound/$CountKeyRea
     
-    echo -e "$pwy\t$name\t$completness\t$vague\t$CountKeyRea\t$CountKeyReaFound" >> output.tbl # write down some statistics
+    echo -e "$pwy\t$name\t$completness\t$vague\t$CountKeyRea\t$CountKeyReaFound\t$countexList" >> output.tbl # write down some statistics
     
     # add reactions of pathways (even if no blast hit) if above trashold (and no key enzyme is missed)
     if [ $count -ne 0 ] && [ $completness -ge $completnessCutoffNoHints ] && [ $CountKeyReaFound -eq $CountTotalKeyRea ]; then
