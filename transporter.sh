@@ -8,14 +8,12 @@ use_alternatives=true
 curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
-#fasta=/home/jo/uni/gapseq/dat/myb71.fna
 fasta=$(readlink -f $1)
 tmpvar=$(basename $fasta)
 fastaid=${tmpvar%.*}
 tcdb=/home/jo/uni/gapseq/dat/tcdb.fasta
 subDB=/home/jo/uni/gapseq/dat/sub2pwy.csv
-seedDB=/home/jo/uni/gapseq/dat/reftrdb_seed.csv
-
+seedDB=/home/jo/uni/gapseq/dat/seed_transporter.tbl
 
 # tmp working directory
 cd $(mktemp -d)
@@ -62,7 +60,7 @@ do
             exid=$(cat $subDB | grep -w "$sub" | awk -F ',' '{if ($7 != "NA") print $7}')
             sublist="$sublist;$sub"
             echo $id,$tc,$sub,$exmet,$exid,$type,$descr >> `echo "$sub" | tr '[:upper:]' '[:lower:]'`
-            cat $seedDB | awk -F '\t' -v type="$type" -v exmet="$exmet" '{if($8==type && $3==exmet) print $0}' > tr_cand
+            cat $seedDB | awk -F '\t' -v type="$type" -v exmet="$exmet" '{if($3==type && $4==exmet) print $0}' > tr_cand
             if [ -s tr_cand ]; then
                 rea=$(cat tr_cand | awk -F '\t' '{print $1}')
                 #echo -e "\t"Found: $rea
@@ -87,7 +85,7 @@ do
     cat "$sub" | awk -F ',' '{print $3, $6}' | sort | uniq
     for exmet in $(cat "$sub" | cut -d ',' -f 4 | sort | uniq)
     do
-        alter=$(cat $seedDB | awk -F '\t' -v exmet="$exmet" '{if($3==exmet) print $1}' | sort | uniq)
+        alter=$(cat $seedDB | awk -F '\t' -v exmet="$exmet" '{if($4==exmet) print $1}' | sort | uniq)
         if [ -n "$alter" ]; then
             echo -e "\tAlternatives:" $alter
             if [ "$use_alternatives" = true ] ; then
@@ -103,7 +101,7 @@ cat hit1 | tr '\n' '|' | rev | cut -c 2- | rev | grep -f - -iE $subDB | cut -d '
 comm -13 hit4 hit3
 
 cand="$(echo $cand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')"
-echo -e "\nReactions to be added:"
-echo $cand
+#echo -e "\nReactions to be added:"
+#echo $cand
 echo $cand > newTransporter.lst
 cp newTransporter.lst $curdir/${fastaid}Transporter.lst
