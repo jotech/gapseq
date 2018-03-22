@@ -104,4 +104,4 @@ cand="$(echo $cand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')"
 #echo -e "\nReactions to be added:"
 #echo $cand
 echo $cand > newTransporter.lst
-cp newTransporter.lst $curdir/${fastaid}Transporter.lst
+cp newTransporter.lst $curdir/${fastaid}-Transporter.lst
