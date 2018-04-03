@@ -3,7 +3,7 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
   cat("Working on",mod.orig@mod_desc,"\n")
   source("generate_rxn_stoich_hash.R")
   source("add_missing_exRxns.R")
-  source("sysBiolAlg_mtfClass2.R")
+  #source("sysBiolAlg_mtfClass2.R")
   sybil::SYBIL_SETTINGS("SOLVER","cplexAPI"); ok <- 1
   #sybil::SYBIL_SETTINGS("METHOD","hybbaropt")
   #sybil::SYBIL_SETTINGS("MAXIMUM",10000)
