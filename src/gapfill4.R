@@ -1,12 +1,12 @@
 gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd = 1e-3, diet.scale = 1,
-                     core.weight = 1, dummy.weight = 10000) {
-  cat("Working on",mod.orig@mod_desc,"\n")
-  source("generate_rxn_stoich_hash.R")
-  source("add_missing_exRxns.R")
-  #source("sysBiolAlg_mtfClass2.R")
-  sybil::SYBIL_SETTINGS("SOLVER","cplexAPI"); ok <- 1
-  #sybil::SYBIL_SETTINGS("METHOD","hybbaropt")
-  #sybil::SYBIL_SETTINGS("MAXIMUM",10000)
+                     core.weight = 1, dummy.weight = 10000, script.dir, core.only=FALSE) {
+  source(paste0(script.dir, "/src/generate_rxn_stoich_hash.R"))
+  source(paste0(script.dir, "/src/add_missing_exRxns.R"))
+  source(paste0(script.dir, "/src/sysBiolAlg_mtfClass2.R"))
+  
+  if( all(mod.orig@obj_coef==0) | all(mod.full@obj_coef==0) )
+    stop("Objective not set for models!")
+  
   # Load dummy model
   mod <- mod.full
   mod <- sync_full_mod(mod.orig, mod)
@@ -20,7 +20,7 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
   core.rxns <- unlist(str_split(core.rxns, " "))
   
   # Get all reactions (non-duplicates) that are not yet part of the model
-  mseed <- fread("modelSEED.reactions.noFutile.csv", header=T, stringsAsFactors = F)
+  mseed <- fread(paste0(script.dir, "dat/seed_reactions_corrected.tsv"), header=T, stringsAsFactors = F)
   mseed <- mseed[gapseq.status %in% c("approved","corrected")]
   mseed <- mseed[!(id %in% pres.rxns)]
   mseed[, core.rxn := id %in% core.rxns]
@@ -30,6 +30,22 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
   dupl.rxns <- mseed[duplicated(rxn.hash),id]
   mseed <- mseed[!duplicated(rxn.hash)]
   mseed <- mseed[order(id)]
+  
+  # If selected then only consider reactions with have sequence evidence
+  if( core.only ){
+    idx <- which( !gsub("_.0$","",mod@react_id) %in% core.rxns & !mod@react_id %in% mod.orig@react_id )
+    mod <- rmReact(mod, react=idx)
+    idx2<- which( !mseed$id  %in% core.rxns & !mseed$id %in% gsub("_.0$","",mod.orig@react_id) )
+    mseed <- mseed[-c(idx2),]
+  }
+  
+  # # Delete duplicate dummy reactions in full model
+  # cat("Deleting redundant reactions...\n")
+  # for(rd in dupl.rxns) {
+  #   if(!any(grepl(rd,pres.rxns,fixed = T))) {
+  #     mod <- rmReact(mod, react = paste0(rd,"_c0"), rm_met = F)
+  #   }
+  # }
   
   # Blocking redundant dummy reactions
   red.inds <- which(mod@react_id %in% paste0(dupl.rxns,"_c0"))
@@ -54,8 +70,15 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
     warning("Original model is already able to produce the target compound. Nothing to do...")
   sol <- optimizeProb(mod)
   gr.dummy <- sol@lp_obj
-  if(gr.dummy < 1e-7)
-    stop("ERORR: Full model is already not able to form the target compound. There's no way to successful gap-filling.")
+  if(gr.dummy < 1e-7){
+    #stop("ERROR: Full model is already not able to form the target compound. There's no way to successful gap-filling.")
+    target.met <- mod.orig@met_name[which(mod.orig@S[,mod.orig@obj_coef != 0] != 0)]
+    warning(paste0("ERROR: Full model is already not able to form ", target.met, ". There's no way to successful gap-filling."))
+    return(list(model = constrain.model(mod.orig, media.file = media.file, scaling.fac = 1),
+                rxns.added = c(),
+                core.rxns = core.rxns,
+                growth.rate = 0))
+  }
   
   #dummy.dt <- data.table()
 
