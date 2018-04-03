@@ -107,18 +107,12 @@ mod.res <- constrain.model(mod.fill.lst$model, media.file = media.file, scaling.
 
 if ( TRUE ){
   cat("\n\n2. Gapfilling with minimal medium using only reactions found by sequence\n")
-  #models <- readRDS("~/uni/gapseq/CE/CE-tsb.RDS")
-  #myb71 <- models[[82]]
-  #mod.orig  <- add_missing_exchanges(myb71)
-  #core.rxn.file <- "~/uni/gapseq/CE/MYb71-core-Reactions.lst"
-  
-  mod.orig2 <- mod.res
-  
+
   # constrain model
+  mod.orig2 <- mod.res
   media.file2 <- paste0(script.dir,"/dat/media/MM_glu.csv")
   mod.orig2 <- constrain.model(mod.orig2, media.file = media.file2, scaling.fac = diet.scale)
   mod.orig2@obj_coef <- rep(0,mod.orig2@react_num)
-  #mod      <- constrain.model(mod, media.file = media.file2, scaling.fac = diet.scale)
   
   bm.ind      <- which(mod.orig2@react_id == "bio1")
   bm.met.inds <- which(mod.orig2@S[,bm.ind]<0)
@@ -131,7 +125,9 @@ if ( TRUE ){
     target.new <- bm.met[i]
     
     # add metabolite objective + sink
-    #mod2      <- add_met_sink(mod, target.met, obj = 1)
+    rm.sink = TRUE
+    if( paste0("EX_",target.new,"_c0") %in% react_id(mod.fill) )
+      rm.sink = FALSE
     mod.fill  <- add_met_sink(mod.fill, target.new, obj = 1)
     
     sol <- optimizeProb(mod.fill, retOptSol=F)
@@ -156,12 +152,13 @@ if ( TRUE ){
         mod.fill <- mod.fill.lst$model
       }
       mod.fill@obj_coef <- rep(0,mod.fill@react_num)
-      #mod.fill <- constrain.model(mod.fill, media.file = media.file2, scaling.fac = diet.scale)
     }
+    if( rm.sink )
+      mod.fill <- rmReact(mod.fill, react=paste0("EX_",target.new,"_c0"))
   }
   options(warn=0)
   
-  mod.fill <- changeObjFunc(mod.fill, react="EX_cpd11416_c0")
+  mod.fill <- changeObjFunc(mod.fill, react=target.met)
   mod.fill <- constrain.model(mod.fill, media.file = media.file, scaling.fac = 1)
   
   cat("Gapfill summary:\n")
