@@ -2,10 +2,9 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
                      core.weight = 1, dummy.weight = 10000, script.dir, core.only=FALSE) {
   source(paste0(script.dir, "/src/generate_rxn_stoich_hash.R"))
   source(paste0(script.dir, "/src/add_missing_exRxns.R"))
-  source(paste0(script.dir, "/src/sysBiolAlg_mtfClass2.R"))
   
-  if( all(mod.orig@obj_coef==0) | all(mod.full@obj_coef==0) )
-    stop("Objective not set for models!")
+  #if( all(mod.orig@obj_coef==0) | all(mod.full@obj_coef==0) )
+  #  stop("Objective not set for models!")
   
   # Load dummy model
   mod <- mod.full
@@ -20,7 +19,7 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
   core.rxns <- unlist(str_split(core.rxns, " "))
   
   # Get all reactions (non-duplicates) that are not yet part of the model
-  mseed <- fread(paste0(script.dir, "dat/seed_reactions_corrected.tsv"), header=T, stringsAsFactors = F)
+  mseed <- fread(paste0(script.dir, "/dat/seed_reactions_corrected.tsv"), header=T, stringsAsFactors = F)
   mseed <- mseed[gapseq.status %in% c("approved","corrected")]
   mseed <- mseed[!(id %in% pres.rxns)]
   mseed[, core.rxn := id %in% core.rxns]

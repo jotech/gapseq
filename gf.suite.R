@@ -1,10 +1,6 @@
 library(getopt)
-library(sybilSBML)
-library(sybil)
-library(data.table)
-library(stringr)
-library(methods)
 
+# get options first
 spec <- matrix(c(
   'model', 'm', 1, "character", "Model to be gapfilled",
   'help' , 'h', 0, "logical", "help",
@@ -19,19 +15,38 @@ spec <- matrix(c(
 opt <- getopt(spec)
 
 # Help Screen
-if ( !is.null(opt$help) ) {
+if ( !is.null(opt$help) | is.null(opt$model) ){#| length(opt)==1 ) {
   cat(getopt(spec, usage=TRUE))
   q(status=1)
 }
 
+# get current script path
+if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
+    # RStudio specific code
+    script.dir    <- dirname(rstudioapi::getSourceEditorContext()$path)
+} else{
+    initial.options <- commandArgs(trailingOnly = FALSE)
+    script.name <- sub("--file=", "", initial.options[grep("--file=", initial.options)])
+    script.dir  <- dirname(script.name)
+}
+
+
+library(sybilSBML)
+library(sybil)
+library(data.table)
+library(stringr)
+library(methods)
+sybil::SYBIL_SETTINGS("SOLVER","cplexAPI"); ok <- 1
+
+
 # Setting defaults if required
-if ( is.null(opt$full.model ) ) { opt$full.model = "full.model.RDS" }
+if ( is.null(opt$full.model ) ) { opt$full.model = paste0(script.dir,"/dat/full.model.RDS") }
 if ( is.null(opt$target.metabolite) ) { opt$target.metabolite = "cpd11416" }
-if ( is.null(opt$output.dir) ) { opt$output.dir = "gapfill" }
+if ( is.null(opt$output.dir) ) { opt$output.dir = "." }
 if ( is.null(opt$sbml.output) ) { opt$sbml.output = F }
 #if ( is.null(opt$model) ) { opt$model = "" }
-if ( is.null(opt$core.reactions) ) { opt$core.reactions = "dat/myb71-core-Reactions.lst" }
-if ( is.null(opt$media) ) { opt$media = "dat/media/MM_glu.csv" }
+if ( is.null(opt$core.reactions) ) { opt$core.reactions = paste0(script.dir,"/dat/myb71-core-Reactions.lst") }
+if ( is.null(opt$media) ) { opt$media = paste0(script.dir,"/dat/media/MM_glu.csv") }
 
 
 # Arguments:
@@ -51,10 +66,10 @@ min.obj.val  <- 0.05
 sbml.export  <- FALSE 
 
 # Little helpers
-source("add_missing_exRxns.R")
-source("constrain.model.R")
-source("gapfill4.R")
-source("generate_rxn_stoich_hash.R")
+source(paste0(script.dir,"/src/add_missing_exRxns.R"))
+source(paste0(script.dir,"/src/constrain.model.R"))
+source(paste0(script.dir,"/src/gapfill4.R"))
+source(paste0(script.dir,"/src/generate_rxn_stoich_hash.R"))
 #source("sysBiolAlg_mtfClass2.R")
 #source("get_exch_profile.R")
 
@@ -80,11 +95,12 @@ mod.fill.lst <- gapfill4(mod.orig = mod.orig,
                          dummy.bnd = dummy.bnd,
                          diet.scale = diet.scale,
                          core.weight = core.weight,
-                         dummy.weight = dummy.weight)
+                         dummy.weight = dummy.weight,
+                         script.dir = script.dir)
 
 mod.res <- constrain.model(mod.fill.lst$model, media.file = media.file, scaling.fac = 1)
-dt <- get_exch_profile(mod.res)
-dt <- get_active_rxns(mod.res)
+#dt <- get_exch_profile(mod.res)
+#dt <- get_active_rxns(mod.res)
 #dt[abs(flux)!=0]
 
 if(!dir.exists(output.dir))
