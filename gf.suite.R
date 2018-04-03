@@ -31,11 +31,11 @@ if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
 }
 
 
-library(sybilSBML)
-library(sybil)
-library(data.table)
-library(stringr)
-library(methods)
+suppressMessages(library(sybilSBML))
+suppressMessages(library(sybil))
+suppressMessages(library(data.table))
+suppressMessages(library(stringr))
+suppressMessages(library(methods))
 sybil::SYBIL_SETTINGS("SOLVER","cplexAPI"); ok <- 1
 
 
@@ -88,6 +88,7 @@ mod.orig@obj_coef <- rep(0,mod.orig@react_num)
 mod.orig <- add_met_sink(mod.orig, target.met, obj = 1)
 
 # Perform gapfill3
+cat("\n\n1. Gapfilling with given media using all reactions\n")
 mod.fill.lst <- gapfill4(mod.orig = mod.orig, 
                          mod.full = mod, 
                          core.rxn.file = core.rxn.file, 
@@ -103,13 +104,85 @@ mod.res <- constrain.model(mod.fill.lst$model, media.file = media.file, scaling.
 #dt <- get_active_rxns(mod.res)
 #dt[abs(flux)!=0]
 
+
+if ( TRUE ){
+  cat("\n\n2. Gapfilling with minimal medium using only reactions found by sequence\n")
+  #models <- readRDS("~/uni/gapseq/CE/CE-tsb.RDS")
+  #myb71 <- models[[82]]
+  #mod.orig  <- add_missing_exchanges(myb71)
+  #core.rxn.file <- "~/uni/gapseq/CE/MYb71-core-Reactions.lst"
+  
+  mod.orig2 <- mod.res
+  
+  # constrain model
+  media.file2 <- paste0(script.dir,"/dat/media/MM_glu.csv")
+  mod.orig2 <- constrain.model(mod.orig2, media.file = media.file2, scaling.fac = diet.scale)
+  mod.orig2@obj_coef <- rep(0,mod.orig2@react_num)
+  #mod      <- constrain.model(mod, media.file = media.file2, scaling.fac = diet.scale)
+  
+  bm.ind      <- which(mod.orig2@react_id == "bio1")
+  bm.met.inds <- which(mod.orig2@S[,bm.ind]<0)
+  bm.met      <- gsub("\\[.0\\]","",mod.orig2@met_id[bm.met.inds])
+  bm.met.name <- mod.orig2@met_name[bm.met.inds]
+  mod.fill    <- mod.orig2
+  
+  options(warn=-1)
+  for( i in seq_along(bm.met.inds) ){
+    target.new <- bm.met[i]
+    
+    # add metabolite objective + sink
+    #mod2      <- add_met_sink(mod, target.met, obj = 1)
+    mod.fill  <- add_met_sink(mod.fill, target.new, obj = 1)
+    
+    sol <- optimizeProb(mod.fill, retOptSol=F)
+    
+    if(sol$stat == ok & sol$obj >= 1e-6){
+      mod.fill@obj_coef <- rep(0,mod.fill@react_num)
+    }else{
+      #cat("\nTry to gapfill", bm.met.name[i],"\n")
+      invisible(capture.output( mod.fill.lst <- gapfill4(mod.orig = mod.fill, 
+                                                         mod.full = mod,
+                                                         core.rxn.file = core.rxn.file, 
+                                                         min.gr = min.obj.val,
+                                                         dummy.bnd = dummy.bnd,
+                                                         diet.scale = diet.scale,
+                                                         core.weight = core.weight,
+                                                         dummy.weight = dummy.weight,
+                                                         script.dir = script.dir,
+                                                         core.only = TRUE) ))
+      new.reactions <- mod.fill.lst$rxns.added
+      if( length(new.reactions) > 0 ){
+        #cat("Added reactions:", new.reactions, "\n")
+        mod.fill <- mod.fill.lst$model
+      }
+      mod.fill@obj_coef <- rep(0,mod.fill@react_num)
+      #mod.fill <- constrain.model(mod.fill, media.file = media.file2, scaling.fac = diet.scale)
+    }
+  }
+  options(warn=0)
+  mod.fill <- changeObjFunc(mod.fill, react="EX_cpd11416_c0")
+  mod.fill <- constrain.model(mod.fill, media.file = media.file, scaling.fac = 1)
+  
+  #source("~/uni/div/r/growth.R")
+  #auxotrophy(mod.fill,rmMetals = T, useNames = T)
+  #tsb <- read.csv(media.file)
+  #tsb[match(setdiff(tsb$compounds, str_extract(trimMediumRand(mod.fill), "(?<=EX_).*?(?=_.0)")), tsb$compounds),]
+  #optimizeProb(mod.fill)
+}
+
+
+
+
+
+
 if(!dir.exists(output.dir))
   system(paste0("mkdir ",output.dir))
 
 if(opt$sbml.output)
-  writeSBML(mod.fill.lst$model, filename = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled(",target.met,").xml"))
+  writeSBML(mod.fill, filename = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled(",target.met,").xml"))
 
 cat(mod.fill.lst$rxns.added, file = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled(",target.met,").rxnlst"))
 
+saveRDS(mod.fill, file = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled(",target.met,").RDS"))
 
 q(status=0)
