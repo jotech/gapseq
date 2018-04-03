@@ -160,14 +160,13 @@ if ( TRUE ){
     }
   }
   options(warn=0)
+  
   mod.fill <- changeObjFunc(mod.fill, react="EX_cpd11416_c0")
   mod.fill <- constrain.model(mod.fill, media.file = media.file, scaling.fac = 1)
   
-  #source("~/uni/div/r/growth.R")
-  #auxotrophy(mod.fill,rmMetals = T, useNames = T)
-  #tsb <- read.csv(media.file)
-  #tsb[match(setdiff(tsb$compounds, str_extract(trimMediumRand(mod.fill), "(?<=EX_).*?(?=_.0)")), tsb$compounds),]
-  #optimizeProb(mod.fill)
+  cat("Gapfill summary:\n")
+  cat("Added reactions:      ",length(mod.fill@react_id)-length(mod.res@react_id),"\n")
+  cat("Final growth rate:    ",optimizeProb(mod.fill, retOptSol=F)$obj,"\n")
 }
 
 
