@@ -158,6 +158,7 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
       mod.orig@lowbnd[ko.dt[i,rxn.ind]] <- bu.lb
       mod.orig@uppbnd[ko.dt[i,rxn.ind]] <- bu.ub
     }
+    # TODO: Remove reaction from mod.orig if reaction is not needed (obj.val >0 min.obj.val*diet.scale)
   }
   rxns.added <- gsub("_.0","",ko.dt[keep==T,dummy.rxn])
   sol <- optimizeProb(mod.orig)
