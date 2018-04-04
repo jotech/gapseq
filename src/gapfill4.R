@@ -1,5 +1,5 @@
 gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd = 1e-3, diet.scale = 1,
-                     core.weight = 1, dummy.weight = 10000, script.dir, core.only=FALSE) {
+                     core.weight = 1, dummy.weight = 10000, script.dir, core.only = FALSE, mtf.scale = 3) {
   source(paste0(script.dir, "/src/generate_rxn_stoich_hash.R"))
   source(paste0(script.dir, "/src/add_missing_exRxns.R"))
   
@@ -69,7 +69,7 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
     warning("Original model is already able to produce the target compound. Nothing to do...")
   sol <- optimizeProb(mod)
   gr.dummy <- sol@lp_obj
-  if(gr.dummy < 1e-7){
+  if(sol@lp_stat!=ok | gr.dummy < 1e-7){
     #stop("ERROR: Full model is already not able to form the target compound. There's no way to successful gap-filling.")
     target.met <- mod.orig@met_name[which(mod.orig@S[,mod.orig@obj_coef != 0] != 0)]
     warning(paste0("ERROR: Full model is already not able to form ", target.met, ". There's no way to successful gap-filling."))
@@ -96,13 +96,18 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
   modj_warm <- sysBiolAlg(mod,
                           algorithm = "mtf",
                           costcoeffw = c.coef,
-                          scaling=2)
+                          scaling = mtf.scale)
   sol.fba <- optimizeProb(modj_warm)
   
-  if(sol.fba$stat!=ok)
-    stop("pFBA did not end successfully.")
+  if(sol.fba$stat!=ok){
+    warning("pFBA did not end successfully.")
+    return(list(model = constrain.model(mod.orig, media.file = media.file, scaling.fac = 1),
+                rxns.added = c(),
+                core.rxns = core.rxns,
+                growth.rate = 0))
+  }
 
-  # Retieve list of utilized dummy reactions and add them to the original/draft model
+  # Retrieve list of utilized dummy reactions and add them to the original/draft model
   ko.dt <- data.table(dummy.rxn = dummy.rxns,
                       d.rxn.ind = dummy.rxns.inds,
                       flux = sol.fba$fluxes[dummy.rxns.inds])

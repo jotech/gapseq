@@ -1,7 +1,13 @@
-constrain.model <- function(mod, media.file, scaling.fac = 1, ub = 1000) {
+constrain.model <- function(mod, media.file=NA, media=NA, scaling.fac = 1, ub = 1000) {
+  if( all(is.na(media)) & all(is.na(media.file)))
+    stop("Needed media file or media data frame")
+  if( !all(is.na(media)) & !all(is.na(media.file)))
+    warning("Media file and media data frame provided. Data frame will be used.")
+  if( all(is.na(media)) )
+    media <- fread(media.file, stringsAsFactors = F, header = T)
+  
   ex.rxns <- grep("^EX_",mod@react_id, fixed = F)
   mod@lowbnd[ex.rxns] <- 0
-  media <- fread(media.file, stringsAsFactors = F, header = T)
   media[,compounds := paste0("EX_",compounds,"_e0")]
   media$mod.rxn.id <- match(media$compounds,mod@react_id)
   
