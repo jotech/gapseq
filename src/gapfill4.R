@@ -3,8 +3,8 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
   source(paste0(script.dir, "/src/generate_rxn_stoich_hash.R"))
   source(paste0(script.dir, "/src/add_missing_exRxns.R"))
   
-  #if( all(mod.orig@obj_coef==0) | all(mod.full@obj_coef==0) )
-  #  stop("Objective not set for models!")
+  # backup model
+  mod.orig.bak <- mod.orig
   
   # Load dummy model
   mod <- mod.full
@@ -23,6 +23,8 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
   mseed <- mseed[gapseq.status %in% c("approved","corrected")]
   mseed <- mseed[!(id %in% pres.rxns)]
   mseed[, core.rxn := id %in% core.rxns]
+  if(core.only==T)
+    mseed <- mseed[core.rxn==T]
   # Remove all duplicate reactions from data base. Keep reactions that are in the core reaction list whereever possible (core.rxns).
   mseed[, rxn.hash := generate_rxn_stoich_hash(stoichiometry, reversibility)]
   mseed <- mseed[order(rxn.hash,-core.rxn)]
@@ -34,8 +36,8 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
   if( core.only ){
     idx <- which( !gsub("_.0$","",mod@react_id) %in% core.rxns & !mod@react_id %in% mod.orig@react_id )
     mod <- rmReact(mod, react=idx)
-    idx2<- which( !mseed$id  %in% core.rxns & !mseed$id %in% gsub("_.0$","",mod.orig@react_id) )
-    mseed <- mseed[-c(idx2),]
+    #idx2<- which( !mseed$id  %in% core.rxns & !mseed$id %in% gsub("_.0$","",mod.orig@react_id) )
+    #mseed <- mseed[-c(idx2),]
   }
   
   # # Delete duplicate dummy reactions in full model
@@ -54,9 +56,9 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
   # Create a list of all 'underground' or 'dummy' reactions. = Reactions that are in the reactions database but not (yet)
   # part of the model
   dummy.rxns      <- paste0(mseed[,id],"_c0")
-  dummy.rxns.inds <- which(mod@react_id %in% dummy.rxns)
+  dummy.rxns.inds <- which(mod@react_id %in% dummy.rxns) # CAUTION: Order of dummy.rxns & dummy.rxns.inds not neccessarily the same. use match instead!
   costly.rxns     <- dummy.rxns[!(dummy.rxns %in% paste0(core.rxns,"_c0"))]
-  costly.rxns.inds<- which(mod@react_id %in% costly.rxns)
+  costly.rxns.inds<- which(mod@react_id %in% costly.rxns) # CAUTION: Order of dummy.rxns & dummy.rxns.inds not neccessarily the same. use match instead!
   
   # change bounds 
   mod@lowbnd[dummy.rxns.inds] <- ifelse(mod@lowbnd[dummy.rxns.inds]==0,0,-dummy.bnd)
@@ -65,15 +67,22 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
   # get initial growth
   sol <- optimizeProb(mod.orig)
   gr.orig <- sol@lp_obj
-  if(gr.orig >= min.gr*diet.scale)
+  if(gr.orig >= min.gr*diet.scale){
     warning("Original model is already able to produce the target compound. Nothing to do...")
+    return(list(model = mod.orig.bak,
+                rxns.added = c(),
+                core.rxns = core.rxns,
+                growth.rate = 0))
+  }
+  if(sol@lp_stat != ok){
+    warning("FBA on original model did not end successfully! Zero solution is feasibile! But gapfilling will start anyway.")
+  }
+    
   sol <- optimizeProb(mod)
   gr.dummy <- sol@lp_obj
-  if(sol@lp_stat!=ok | gr.dummy < 1e-7){
-    #stop("ERROR: Full model is already not able to form the target compound. There's no way to successful gap-filling.")
-    target.met <- mod.orig@met_name[which(mod.orig@S[,mod.orig@obj_coef != 0] != 0)]
-    warning(paste0("ERROR: Full model is already not able to form ", target.met, ". There's no way to successful gap-filling."))
-    return(list(model = constrain.model(mod.orig, media.file = media.file, scaling.fac = 1),
+  if(sol@lp_stat!=ok){
+    warning(paste0("Full model is already not able to form. There's no way to successful gap-filling."))
+    return(list(model = mod.orig.bak,
                 rxns.added = c(),
                 core.rxns = core.rxns,
                 growth.rate = 0))
@@ -101,7 +110,7 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
   
   if(sol.fba$stat!=ok){
     warning("pFBA did not end successfully.")
-    return(list(model = constrain.model(mod.orig, media.file = media.file, scaling.fac = 1),
+    return(list(model = mod.orig.bak,
                 rxns.added = c(),
                 core.rxns = core.rxns,
                 growth.rate = 0))
@@ -115,6 +124,14 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
   ko.dt <- ko.dt[abs(flux) > 0]
   ko.dt[, core := gsub("_.0","",dummy.rxn) %in% core.rxns]
   cat("Utilized candidate reactions: ",nrow(ko.dt))
+  
+  if( nrow(ko.dt) == 0){ # no dummy reactions is needed
+    warning("No dummy reactions utilized in full model. Nothing to add.")
+    return(list(model = mod.orig.bak,
+                rxns.added = c(),
+                core.rxns = core.rxns,
+                growth.rate = 0))
+  }
   
   rel.rxns <- gsub("_.0","",ko.dt[, dummy.rxn])
   for(j in rel.rxns) {
@@ -157,6 +174,14 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
   mod.orig <- add_missing_exchanges(mod.orig)
   
   sol <- optimizeProb(mod.orig)
+  if(sol@lp_stat!=ok | sol@lp_obj < min.obj.val*diet.scale){
+    warning("Final model cannot produce enough target even all candidate reactions are added!")
+    #browser()
+    return(list(model = mod.orig.bak,
+                rxns.added = c(),
+                core.rxns = core.rxns,
+                growth.rate = 0))
+  }
   # while stop here
   
   ko.dt[, d.rxn.ind := NULL]
@@ -168,6 +193,8 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
   obj.val <- gr.orig
   # Get reaction essentiality & successively remove reactions:
   # successively remove non-essential gap-fill reactions. Starting with non-core reactions.
+  
+  dummy.rxn.rm <- c()
   for(i in 1:nrow(ko.dt)) {
     bu.lb <- mod.orig@lowbnd[ko.dt[i,rxn.ind]]
     bu.ub <- mod.orig@uppbnd[ko.dt[i,rxn.ind]]
@@ -175,7 +202,7 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
     mod.orig@lowbnd[ko.dt[i,rxn.ind]] <- 0
     mod.orig@uppbnd[ko.dt[i,rxn.ind]] <- 0
     
-    sol <- optimizeProb(mod.orig)
+    sol <- optimizeProb(mod.orig) # feasibiliy already checked (zero solution is possible)
     ko.dt[i, ko.obj := sol@lp_obj]
     obj.val <- sol@lp_obj
     
@@ -185,10 +212,23 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
       mod.orig@lowbnd[ko.dt[i,rxn.ind]] <- bu.lb
       mod.orig@uppbnd[ko.dt[i,rxn.ind]] <- bu.ub
     }
-    # TODO: Remove reaction from mod.orig if reaction is not needed (obj.val >0 min.obj.val*diet.scale)
+    # Remember reactions to be removed from model to be ready for iterative use
+    if(obj.val >= min.obj.val*diet.scale)
+      dummy.rxn.rm <- c(dummy.rxn.rm, ko.dt[i,dummy.rxn])
   }
+  # Remove reaction from mod.orig if reaction is not needed (obj.val >0 min.obj.val*diet.scale)
+  if( length(dummy.rxn.rm)>0 )
+    mod.orig <- rmReact(mod.orig, react = dummy.rxn.rm)
+  
   rxns.added <- gsub("_.0","",ko.dt[keep==T,dummy.rxn])
   sol <- optimizeProb(mod.orig)
+  if(sol@lp_stat!=ok){
+    stop("Final model cannot grow. Something is terribly wrong!")
+    return(list(model = mod.orig.bak,
+                rxns.added = c(),
+                core.rxns = core.rxns,
+                growth.rate = 0))
+  }
   obj.val <- sol@lp_obj
   
   # Generate output and summary info
@@ -196,7 +236,6 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
   cat("Added reactions:      ",length(rxns.added),"\n")
   cat("Added core reactions: ",sum(rxns.added %in% core.rxns),"\n")
   cat("Final growth rate:    ",obj.val/diet.scale,"\n")
-  
   
   return(list(model = mod.orig,
               rxns.added = rxns.added,
@@ -206,7 +245,7 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
 }
 
 sync_full_mod <- function(draft.mod, full.mod) {
-  # 1. add Reactions of draft, which are not part of full model to full model
+  # 1. add Reactions of draft, which are not part of full model, to full model
   trans.rxns <- draft.mod@react_id[!(draft.mod@react_id %in% full.mod@react_id)]
   rind.d <- which(draft.mod@react_id %in% trans.rxns)
   for(i in rind.d) {
