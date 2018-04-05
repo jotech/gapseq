@@ -111,7 +111,7 @@ if ( TRUE ){
 
   # constrain model
   mod.orig2 <- mod.fill1
-  media.file2 <- paste0(script.dir,"/dat/media/MM_glu.csv")
+  media.file2 <- paste0(script.dir,"/dat/media/MM_glu.csv") # TODO consider glucose is no valid carbon source!
   mod.orig2 <- constrain.model(mod.orig2, media.file = media.file2, scaling.fac = diet.scale)
   mod.orig2@obj_coef <- rep(0,mod.orig2@react_num)
   
@@ -121,7 +121,7 @@ if ( TRUE ){
   bm.met.name <- mod.orig2@met_name[bm.met.inds]
   mod.fill2    <- mod.orig2
   
-  options(warn=-1)
+  #options(warn=-1)
   for( i in seq_along(bm.met.inds) ){
     target.new <- bm.met[i]
     
@@ -136,9 +136,9 @@ if ( TRUE ){
     if(sol$stat == ok & sol$obj >= 1e-6){
       mod.fill2@obj_coef <- rep(0,mod.fill2@react_num)
     }else{
-      #cat("\nTry to gapfill", bm.met.name[i],"\n")
-      #invisible(capture.output( 
-        mod.fill2.lst <- gapfill4(mod.orig = mod.fill2, 
+      cat("\nTry to gapfill", bm.met.name[i],"\n")
+      invisible(capture.output( 
+                               mod.fill2.lst <- gapfill4(mod.orig = mod.fill2, 
                                                          mod.full = mod,
                                                          core.rxn.file = core.rxn.file, 
                                                          min.gr = min.obj.val,
@@ -148,7 +148,7 @@ if ( TRUE ){
                                                          dummy.weight = dummy.weight,
                                                          script.dir = script.dir,
                                                          core.only = TRUE,
-                                                         mtf.scale = 2) #))
+                                                         mtf.scale = 2) ))
       new.reactions <- mod.fill2.lst$rxns.added
       if( length(new.reactions) > 0 ){
         #cat("Added reactions:", new.reactions, "\n")
@@ -159,7 +159,7 @@ if ( TRUE ){
     if( rm.sink )
       mod.fill2 <- rmReact(mod.fill2, react=paste0("EX_",target.new,"_c0"))
   }
-  options(warn=0)
+  #options(warn=0)
   
   mod.fill2 <- changeObjFunc(mod.fill2, react=paste0("EX_",target.met,"_c0"))
   mod.fill2 <- constrain.model(mod.fill2, media.file = media.file, scaling.fac = 1)
@@ -185,7 +185,20 @@ if ( TRUE ){
   # add metabolite objective + sink
   mod.fill3    <- mod.orig3
   mod.fill3@obj_coef <- rep(0,mod.fill3@react_num)
-  mod.fill3    <- add_met_sink(mod.fill3, target.met, obj = 1)
+  #mod.fill3    <- add_met_sink(mod.fill3, target.met, obj = 1)
+  
+  # add biolog like test
+  mql <- "cpd15499[c0]"; mqn <- "cpd15500[c0]"
+  uql <- "cpd15561[c0]"; uqn <- "cpd15560[c0]"
+  #nad <- "cpd00003[c0]"; nadh<- "cpd00004[c0]"
+  h   <- "cpd00067[c0]"
+  mod.fill3 <- addReact(mod.fill3, "ESP1", met=c(mql,h,mqn), Scoef=c(-1,2,1), lb=0, ub=1000)
+  mod.fill3 <- addReact(mod.fill3, "ESP2", met=c(uql,h,uqn), Scoef=c(-1,2,1), lb=0, ub=1000)
+  #mod.fill3 <- addReact(mod.fill3, "ESP3", met=c(nadh,h,nad), Scoef=c(-1,1,1), lb=0, ub=1000)
+  mod.fill3 <- changeObjFunc(mod.fill3, react=c("ESP1", "ESP2"), obj_coef=c(1,1))
+  #mod.fill3 <- changeObjFunc(mod.fill3, react=c("ESP1", "ESP2", "ESP3"), obj_coef=c(1,1,1))
+  #mod.fill3 <- changeObjFunc(mod.fill3, react=c("ESP3"), obj_coef=1)
+  
   
   for( i in seq_along(ex.met) ){
     src.met      <- ex.met[i]
@@ -198,7 +211,7 @@ if ( TRUE ){
     
     sol <- optimizeProb(mod.fill3, retOptSol=F)
     
-    if(sol$stat == ok & sol$obj >= 1e-6){
+    if(sol$stat == ok & sol$obj >= 1e-7){
       #mod.fill3@obj_coef <- rep(0,mod.fill3@react_num)
     }else{
       cat("\nTry to gapfill", src.met.name,"\n")
@@ -212,10 +225,12 @@ if ( TRUE ){
                                                          dummy.weight = dummy.weight,
                                                          script.dir = script.dir,
                                                          core.only = TRUE) ))
-      cat("Added reactions:", mod.fill3.lst$rxns.added, "\n")
-      mod.fill3 <- mod.fill3.lst$model
+      new.reactions <- mod.fill3.lst$rxns.added
+      if( length(new.reactions) > 0 ){
+        cat("Added reactions:", new.reactions, "\n")
+        mod.fill3 <- mod.fill3.lst$model
+      }
     }
-    
   }
   mod.fill3 <- changeObjFunc(mod.fill3, react=paste0("EX_",target.met,"_c0"))
   mod.fill3 <- constrain.model(mod.fill3, media.file = media.file, scaling.fac = 1)
