@@ -83,6 +83,9 @@ source(paste0(script.dir,"/src/constrain.model.R"))
 source(paste0(script.dir,"/src/gapfill4.R"))
 source(paste0(script.dir,"/src/generate_rxn_stoich_hash.R"))
 
+# database files
+carbon.source <- fread(paste0(script.dir, "/dat/sub2pwy.csv"))
+
 # read full model & target model
 cat("\nLoading model files\n")
 mod       <- readRDS(fullmod.file)
@@ -115,10 +118,17 @@ mod.out <- mod.fill1
 if ( TRUE ){
   cat("\n\n2. Biomass gapfilling using core reactions only\n")
 
-  # constrain model
   mod.orig2 <- mod.out
-  media.file2 <- paste0(script.dir,"/dat/media/MM_glu.csv") # TODO consider glucose is no valid carbon source!
-  mod.orig2 <- constrain.model(mod.orig2, media.file = media.file2, scaling.fac = diet.scale)
+  
+  # load minimal medium and add available carbon sources
+  media2 <- fread(paste0(script.dir,"/dat/media/MM_glu.csv"))
+  media2 <- media2[name!="D-Glucose"]
+  src.met <- carbon.source[guild == "Carbohydrates" & exid_seed %in% mod.orig2@react_id, id_seed]
+  src.met.name <- carbon.source[id_seed %in% src.met, name]
+  media2 <- rbind(media2, data.table(compounds=gsub("\\[.0\\]","",src.met), name=src.met.name, maxFlux=100))
+  
+  # constrain model  
+  mod.orig2 <- constrain.model(mod.orig2, media = media2, scaling.fac = diet.scale)
   mod.orig2@obj_coef <- rep(0,mod.orig2@react_num)
   
   bm.ind      <- which(mod.orig2@react_id == "bio1")
