@@ -1,5 +1,6 @@
 gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-3, diet.scale = 1,
-                     core.weight = 1, dummy.weight = 10000, script.dir, core.only = FALSE, mtf.scale = 3) {
+                     core.weight = 1, dummy.weight = 10000, script.dir, core.only = FALSE, 
+                     mtf.scale = 3, verbose=verbose) {
   # backup model
   mod.orig.bak <- mod.orig
   
@@ -167,9 +168,9 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
   mod.orig <- add_missing_exchanges(mod.orig)
   
   sol <- optimizeProb(mod.orig)
-  if(sol@lp_stat!=ok | sol@lp_obj < min.obj.val*diet.scale){
-    warning("Final model cannot produce enough target even all candidate reactions are added!")
-    #browser()
+  #if(sol@lp_stat!=ok | sol@lp_obj < min.obj.val*diet.scale){
+  if(sol@lp_stat!=ok | sol@lp_obj < 1e-7){
+    warning(paste0("Final model cannot produce enough target even all candidate reactions are added! obj=", sol@lp_obj, " lp_stat=",sol@lp_stat))
     return(list(model = mod.orig.bak,
                 rxns.added = c(),
                 core.rxns = core.rxns,

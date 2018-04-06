@@ -109,7 +109,8 @@ mod.fill.lst <- gapfill4(mod.orig = mod.orig,
                          diet.scale = diet.scale,
                          core.weight = core.weight,
                          dummy.weight = dummy.weight,
-                         script.dir = script.dir)
+                         script.dir = script.dir,
+                         verbose=verbose)
 
 mod.fill1 <- constrain.model(mod.fill.lst$model, media.file = media.file, scaling.fac = 1)
 mod.out <- mod.fill1
@@ -167,7 +168,8 @@ if ( TRUE ){
                                                          dummy.weight = dummy.weight,
                                                          script.dir = script.dir,
                                                          core.only = TRUE,
-                                                         mtf.scale = 2) ))
+                                                         mtf.scale = 2,
+                                                         verbose=verbose) ))
       new.reactions <- mod.fill2.lst$rxns.added
       if( length(new.reactions) > 0 ){
         if( verbose ) cat("Added reactions:", new.reactions, "\n")
@@ -253,7 +255,8 @@ if ( TRUE ){
                                                          core.weight = core.weight,
                                                          dummy.weight = dummy.weight,
                                                          script.dir = script.dir,
-                                                         core.only = TRUE) ))
+                                                         core.only = TRUE,
+                                                         verbose=verbose) ))
       new.reactions <- mod.fill3.lst$rxns.added
       if( length(new.reactions) > 0 ){
         if( verbose ) cat("Added reactions:", new.reactions, "\n")
