@@ -9,13 +9,14 @@ spec <- matrix(c(
   'target.metabolite', 't', 2, "character", "ID (without compartment suffix) of metabolite that shall be produced. Default: cpd11416 (Biomass)",
   'core.reactions', 'c', 1, "character", "List (space-separated) of reactions that should preferably be used for gapfilling.",
   'output.dir', 'o', 2, "character", "Directory to store results. Default: \"gapfill\".",
-  'sbml.output', 's', 2, "logical", "Should the gapfilled model be saved as sbml? Default: FALSE"
+  'sbml.output', 's', 2, "logical", "Should the gapfilled model be saved as sbml? Default: FALSE",
+  'verbose', 'v', 2, "logical", "Verbose output and printing of debug messages. Default: FALSE"
 ), ncol = 5, byrow = T)
 
 opt <- getopt(spec)
 
 # Help Screen
-if ( !is.null(opt$help) | is.null(opt$model) ){#| length(opt)==1 ) {
+if ( !is.null(opt$help) | is.null(opt$model)){
   cat(getopt(spec, usage=TRUE))
   q(status=1)
 }
@@ -48,7 +49,7 @@ if ( is.null(opt$sbml.output) ) { opt$sbml.output = F }
 #if ( is.null(opt$model) ) { opt$model = "" }
 if ( is.null(opt$core.reactions) ) { opt$core.reactions = paste0(script.dir,"/dat/myb71-core-Reactions.lst") }
 if ( is.null(opt$media) ) { opt$media = paste0(script.dir,"/dat/media/MM_glu.csv") }
-
+if ( is.null(opt$verbose) ) { opt$verbose = F }
 
 # Arguments:
 mod.file      <- opt$model
@@ -57,6 +58,7 @@ fullmod.file  <- opt$full.model
 target.met    <- opt$target.metabolite
 core.rxn.file <- opt$core.reactions
 output.dir    <- opt$output.dir
+verbose       <- opt$verbose
 
 # Parameters:
 diet.scale   <- 4
@@ -66,15 +68,23 @@ core.weight  <- 1
 min.obj.val  <- 0.05
 sbml.export  <- FALSE 
 
+# Get list of core-reactions from one or more files (given as comma seperated string by -c)
+core.rxns <- c()
+for( file in unlist(str_split(core.rxn.file, ",")) ){
+  input.rxns <- readLines(file)
+  core.rxns <- c(core.rxns, unlist(str_split(input.rxns, " ")))
+}
+core.rxns <- unique(core.rxns)
+cat("\nLoading input reactions:", length(core.rxns), "\n")
+
 # Little helpers
 source(paste0(script.dir,"/src/add_missing_exRxns.R"))
 source(paste0(script.dir,"/src/constrain.model.R"))
 source(paste0(script.dir,"/src/gapfill4.R"))
 source(paste0(script.dir,"/src/generate_rxn_stoich_hash.R"))
-#source("sysBiolAlg_mtfClass2.R")
-#source("get_exch_profile.R")
 
 # read full model & target model
+cat("\nLoading model files\n")
 mod       <- readRDS(fullmod.file)
 mod.orig  <- readSBMLmod(mod.file)
 mod.orig  <- add_missing_exchanges(mod.orig)
@@ -82,17 +92,15 @@ mod.orig  <- add_missing_exchanges(mod.orig)
 # constrain model
 mod.orig <- constrain.model(mod.orig, media.file = media.file, scaling.fac = diet.scale)
 mod.orig@obj_coef <- rep(0,mod.orig@react_num)
-#mod      <- constrain.model(mod, media.file = media.file, scaling.fac = diet.scale)
 
 # add metabolite objective + sink
-#mod      <- add_met_sink(mod, target.met, obj = 1)
 mod.orig <- add_met_sink(mod.orig, target.met, obj = 1)
 
 # Perform gapfill3
-cat("\n\n1. Gapfilling with given media using all reactions\n")
+cat("\n\n1. Initial gapfilling: Make model grow on given media using all reactions\n")
 mod.fill.lst <- gapfill4(mod.orig = mod.orig, 
                          mod.full = mod, 
-                         core.rxn.file = core.rxn.file, 
+                         core.rxn = core.rxn, 
                          min.gr = min.obj.val,
                          dummy.bnd = dummy.bnd,
                          diet.scale = diet.scale,
@@ -101,16 +109,14 @@ mod.fill.lst <- gapfill4(mod.orig = mod.orig,
                          script.dir = script.dir)
 
 mod.fill1 <- constrain.model(mod.fill.lst$model, media.file = media.file, scaling.fac = 1)
-#dt <- get_exch_profile(mod.res)
-#dt <- get_active_rxns(mod.res)
-#dt[abs(flux)!=0]
+mod.out <- mod.fill1
 
 
 if ( TRUE ){
-  cat("\n\n2. Gapfilling with minimal medium using only reactions found by sequence\n")
+  cat("\n\n2. Biomass gapfilling using core reactions only\n")
 
   # constrain model
-  mod.orig2 <- mod.fill1
+  mod.orig2 <- mod.out
   media.file2 <- paste0(script.dir,"/dat/media/MM_glu.csv") # TODO consider glucose is no valid carbon source!
   mod.orig2 <- constrain.model(mod.orig2, media.file = media.file2, scaling.fac = diet.scale)
   mod.orig2@obj_coef <- rep(0,mod.orig2@react_num)
@@ -120,9 +126,12 @@ if ( TRUE ){
   bm.met      <- gsub("\\[.0\\]","",mod.orig2@met_id[bm.met.inds])
   bm.met.name <- mod.orig2@met_name[bm.met.inds]
   mod.fill2    <- mod.orig2
+  mod.fill2.counter <- 0
+  mod.fill2.names <- c()
   
-  #options(warn=-1)
+  if( !verbose ) options(warn=-1)
   for( i in seq_along(bm.met.inds) ){
+    cat("\r",i,"/",length(bm.met.inds))
     target.new <- bm.met[i]
     
     # add metabolite objective + sink
@@ -136,11 +145,11 @@ if ( TRUE ){
     if(sol$stat == ok & sol$obj >= 1e-6){
       mod.fill2@obj_coef <- rep(0,mod.fill2@react_num)
     }else{
-      cat("\nTry to gapfill", bm.met.name[i],"\n")
+      if( verbose ) cat("\nTry to gapfill", bm.met.name[i],"\n")
       invisible(capture.output( 
                                mod.fill2.lst <- gapfill4(mod.orig = mod.fill2, 
                                                          mod.full = mod,
-                                                         core.rxn.file = core.rxn.file, 
+                                                         core.rxn = core.rxn, 
                                                          min.gr = min.obj.val,
                                                          dummy.bnd = dummy.bnd,
                                                          diet.scale = diet.scale,
@@ -151,56 +160,66 @@ if ( TRUE ){
                                                          mtf.scale = 2) ))
       new.reactions <- mod.fill2.lst$rxns.added
       if( length(new.reactions) > 0 ){
-        #cat("Added reactions:", new.reactions, "\n")
+        if( verbose ) cat("Added reactions:", new.reactions, "\n")
         mod.fill2 <- mod.fill2.lst$model
+        mod.fill2.counter <- mod.fill2.counter + 1
+        mod.fill2.names <- c(mod.fill2.names, bm.met.name[i])
       }
       mod.fill2@obj_coef <- rep(0,mod.fill2@react_num)
     }
     if( rm.sink )
       mod.fill2 <- rmReact(mod.fill2, react=paste0("EX_",target.new,"_c0"))
   }
-  #options(warn=0)
+  options(warn=0)
   
   mod.fill2 <- changeObjFunc(mod.fill2, react=paste0("EX_",target.met,"_c0"))
   mod.fill2 <- constrain.model(mod.fill2, media.file = media.file, scaling.fac = 1)
+  mod.out <- mod.fill2
   
-  cat("Gapfill summary:\n")
+  cat("\rGapfill summary:\n")
+  cat("Filled components:    ",mod.fill2.counter, "(",paste(mod.fill2.names, collapse = ","),")\n")
   cat("Added reactions:      ",length(mod.fill2@react_id)-length(mod.fill1@react_id),"\n")
   cat("Final growth rate:    ",optimizeProb(mod.fill2, retOptSol=F)$obj,"\n")
 }
 
 
 if ( TRUE ){
-  cat("\n\n3. Gapfilling carbon sources\n")
+  cat("\n\n3. Carbon source gapfilling with core reactions only\n")
 
-  mod.orig3 <- mod.fill2
+  mod.orig3 <- mod.out
   media.org <- fread(paste0(script.dir,"/dat/media/MM_glu.csv")) # use minimal medium
-  core.rxn.file <- "~/uni/celegans_microbiome/dat/gapfilling/MYb71-degradation-Reactions.lst"
   
   ex          <- findExchReact(mod.orig3)
   ex.ind      <- ex@react_pos
+  ex.id       <- ex@react_id
   ex.met      <- ex@met_id
   ex.met.name <- mod.orig@met_name[ex@met_pos]
+  # Exchange reactions to be ignored (metals etc.)
+  ignore <- c("EX_cpd17041_e0", "EX_cpd17042_e0", "EX_cpd17043_e0", "EX_cpd11416_e0", "rxn13782_c0", "rxn13783_c0", "rxn13783_c0", "EX_cpd00001_e0","EX_cpd00007_e0", "EX_cpd00009_e0", "EX_cpd00011_e0" ,"EX_cpd00012_e0", "EX_cpd00030_e0", "EX_cpd00034_e0", "EX_cpd00058_e0", "EX_cpd00063_e0", "EX_cpd00067_e0", "EX_cpd00075_e0","EX_cpd00099_e0", "EX_cpd00149_e0", "EX_cpd00205_e0", "EX_cpd00254_e0", "EX_cpd10515_e0", "EX_cpd00971_e0", "EX_cpd01012_e0", "EX_cpd10516_e0", "EX_cpd11574_e0")
   
   # add metabolite objective + sink
   mod.fill3    <- mod.orig3
   mod.fill3@obj_coef <- rep(0,mod.fill3@react_num)
-  #mod.fill3    <- add_met_sink(mod.fill3, target.met, obj = 1)
   
   # add biolog like test
   mql <- "cpd15499[c0]"; mqn <- "cpd15500[c0]"
   uql <- "cpd15561[c0]"; uqn <- "cpd15560[c0]"
-  #nad <- "cpd00003[c0]"; nadh<- "cpd00004[c0]"
   h   <- "cpd00067[c0]"
+  #nad <- "cpd00003[c0]"; nadh<- "cpd00004[c0]"
   mod.fill3 <- addReact(mod.fill3, "ESP1", met=c(mql,h,mqn), Scoef=c(-1,2,1), lb=0, ub=1000)
   mod.fill3 <- addReact(mod.fill3, "ESP2", met=c(uql,h,uqn), Scoef=c(-1,2,1), lb=0, ub=1000)
-  #mod.fill3 <- addReact(mod.fill3, "ESP3", met=c(nadh,h,nad), Scoef=c(-1,1,1), lb=0, ub=1000)
   mod.fill3 <- changeObjFunc(mod.fill3, react=c("ESP1", "ESP2"), obj_coef=c(1,1))
+  #mod.fill3 <- addReact(mod.fill3, "ESP3", met=c(nadh,h,nad), Scoef=c(-1,1,1), lb=0, ub=1000)
   #mod.fill3 <- changeObjFunc(mod.fill3, react=c("ESP1", "ESP2", "ESP3"), obj_coef=c(1,1,1))
-  #mod.fill3 <- changeObjFunc(mod.fill3, react=c("ESP3"), obj_coef=1)
+  mod.fill3.counter <- 0
+  mod.fill3.names <- c()
   
-  
+  if( !verbose ) options(warn=-1)
   for( i in seq_along(ex.met) ){
+    cat("\r",i,"/",length(ex.met))
+    if( ex.id[i] %in% ignore ) 
+      next
+    
     src.met      <- ex.met[i]
     src.met.name <- ex.met.name[i]
     media <- media.org[name!="D-Glucose"]
@@ -214,10 +233,10 @@ if ( TRUE ){
     if(sol$stat == ok & sol$obj >= 1e-7){
       #mod.fill3@obj_coef <- rep(0,mod.fill3@react_num)
     }else{
-      cat("\nTry to gapfill", src.met.name,"\n")
+      if( verbose ) cat("\nTry to gapfill", src.met.name, ex@react_id[i], "\n")
       invisible(capture.output( mod.fill3.lst <- gapfill4(mod.orig = mod.fill3, 
                                                          mod.full = mod, 
-                                                         core.rxn.file = core.rxn.file, 
+                                                         core.rxn = core.rxn, 
                                                          min.gr = min.obj.val,
                                                          dummy.bnd = dummy.bnd,
                                                          diet.scale = diet.scale,
@@ -227,19 +246,22 @@ if ( TRUE ){
                                                          core.only = TRUE) ))
       new.reactions <- mod.fill3.lst$rxns.added
       if( length(new.reactions) > 0 ){
-        cat("Added reactions:", new.reactions, "\n")
+        if( verbose ) cat("Added reactions:", new.reactions, "\n")
         mod.fill3 <- mod.fill3.lst$model
+        mod.fill3.counter <- mod.fill3.counter + 1
+        mod.fill3.names <- c(mod.fill3.names, src.met.name)
       }
     }
   }
+  options(warn=0)
+  
   mod.fill3 <- changeObjFunc(mod.fill3, react=paste0("EX_",target.met,"_c0"))
   mod.fill3 <- constrain.model(mod.fill3, media.file = media.file, scaling.fac = 1)
-  #auxotrophy(mod.fill3,rmMetals = T, useNames = T)
-  #tsb <- read.csv(media.file)
-  #tsb[match(setdiff(tsb$compounds, str_extract(trimMediumRand(mod.fill3), "(?<=EX_).*?(?=_.0)")), tsb$compounds),]
-  
-  #optimizeProb(mod.fill3)
-  
+  mod.out <- mod.fill3
+  cat("\rGapfill summary:\n")
+  cat("Filled components:    ",mod.fill3.counter, "(",paste(mod.fill3.names, collapse = ","),")\n")
+  cat("Added reactions:      ",length(mod.fill3@react_id)-length(mod.fill2@react_id),"\n")
+  cat("Final growth rate:    ",optimizeProb(mod.fill3, retOptSol=F)$obj,"\n")
 }
 
 
@@ -247,10 +269,11 @@ if(!dir.exists(output.dir))
   system(paste0("mkdir ",output.dir))
 
 if(opt$sbml.output)
-  writeSBML(mod.fill, filename = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled(",target.met,").xml"))
+  writeSBML(mod.out, filename = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled.xml"))
 
-cat(mod.fill.lst$rxns.added, file = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled(",target.met,").rxnlst"))
+mod.out.rxns.added <- setdiff(mod.out@react_id, mod.orig@react_id)
+cat(mod.out.rxns.added, file = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled.rxnlst"))
 
-saveRDS(mod.fill, file = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled(",target.met,").RDS"))
+saveRDS(mod.out, file = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled.RDS"))
 
 q(status=0)

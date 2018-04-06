@@ -1,8 +1,5 @@
-gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd = 1e-3, diet.scale = 1,
+gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-3, diet.scale = 1,
                      core.weight = 1, dummy.weight = 10000, script.dir, core.only = FALSE, mtf.scale = 3) {
-  source(paste0(script.dir, "/src/generate_rxn_stoich_hash.R"))
-  source(paste0(script.dir, "/src/add_missing_exRxns.R"))
-  
   # backup model
   mod.orig.bak <- mod.orig
   
@@ -13,10 +10,6 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn.file, min.gr = 0.1, dummy.bnd 
   # get currently present reactions
   pres.rxns <- mod.orig@react_id
   pres.rxns <- gsub("_.*","",pres.rxns)
-  
-  # Get list of core-reactions
-  core.rxns <- readLines(core.rxn.file)
-  core.rxns <- unlist(str_split(core.rxns, " "))
   
   # Get all reactions (non-duplicates) that are not yet part of the model
   mseed <- fread(paste0(script.dir, "/dat/seed_reactions_corrected.tsv"), header=T, stringsAsFactors = F)
