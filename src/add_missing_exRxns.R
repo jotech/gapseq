@@ -65,3 +65,54 @@ add_met_sink <- function(mod, cpd, obj = 0) {
                   obj = obj)
   return(mod)
 }
+
+
+add_missing_diffusion <- function(mod, ub = 1000){
+  diff.mets.ids <- c("cpd00011", #"co2
+                     "cpd00007", #o2
+                     "cpd11640", #"h2
+                     "cpd00001", #h2o
+                     "cpd00363", # etoh
+                     "cpd00055", # Formaldehyde
+                     "cpd01861", # (R)-1,2-Propanediol
+                     "cpd00453", # 1,2-Propanediol
+                     "cpd00150", # HCN (Cyanide)
+                     "cpd00448", # D-Glyceraldehyde
+                     "cpd00025", # H2O2
+                     "cpd00359", # Indole (10.1128/JB.01477-10 <https://dx.doi.org/10.1128%2FJB.01477-10>)
+                     "cpd00811", # cpd00811 / tmao (klein und ungeladen)
+                     "cpd12733", # SO2 (klein, ungeladen)
+                     "cpd00371", # Propanal (klein, ungeladen)
+                     "cpd00418", # NO
+                     "cpd00659", # N2O
+                     "cpd11574", # Molybdate  (H2MoO4)
+                     "cpd00448", # glyald (D-Glyceraldehyde)
+                     "cpd00450", # dms (Methyl sulfide)
+                     "cpd08021", # DMSO
+                     "cpd00071", # acald (Acetaldehyde)
+                     "cpd00281", # 4abut (GABA)
+                     "cpd03828" # 23dappa (2,3-Diaminopropionate))
+                    )
+  diff.mets.ids.comp <- paste0(diff.mets.ids,"[c0]")
+  diff.mets.names <- ifelse(diff.mets.ids.comp %in% mod@met_id,
+                            mod@met_name[match(diff.mets.ids.comp, mod@met_id)],
+                            diff.mets.ids.comp)
+  
+  for(i in 1:length(diff.mets.ids)) {
+    diff.ex.id <- paste0("EX_",gsub("\\[.*\\]","",diff.mets.ids[i]),"_e0")
+    if( diff.ex.id %in% mod@react_id)
+      mod <- rmReact(mod, react=diff.ex.id)
+      
+    mod <- addReact(model = mod,
+                    id = diff.ex.id, 
+                    met = diff.mets.ids.comp[i],
+                    Scoef = -1,
+                    reversible = T, 
+                    metComp = 2,
+                    ub = ub,
+                    lb = 0,
+                    reactName = paste0(diff.mets.names[i], " Exchange + Diffusion"), 
+                    metName = diff.mets.names[i])
+  }
+  return(mod)
+}
