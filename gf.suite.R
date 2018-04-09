@@ -96,13 +96,17 @@ mod.orig  <- add_missing_exchanges(mod.orig)
 # temporary fix
 if( "rxn05292_c0" %in% mod.orig@react_id )
   mod.orig <- rmReact(mod.orig, react="rxn05292_c0") # fe3 diffusion ~futile cycle
-if( "rxn05292_c0" %in% mod@react_id )
-  mod <- rmReact(mod, react="rxn05292") # fe3 diffusion ~futile cycle
+
 
 # add diffusion reactions
-print(mod.orig)
 mod.orig       <- add_missing_diffusion(mod.orig)
-print(mod.orig)
+
+# add buch of exchange reactions
+idx <- which( !carbon.source$exid_seed %in% mod.orig@react_id )
+exchanges.new.met  <- rm.na(carbon.source$id_seed[idx])
+exchanges.new.ids  <- rm.na(carbon.source$exid_seed[idx])
+exchanges.new.used  <- rep(FALSE, length(exchanges.new.ids))  # delete unused addionally added exchange reactions later
+mod.orig       <- add_exchanges(mod.orig, exchanges.new.met)
 
 # create complete medium
 if( media.file == "complete" ){
@@ -223,6 +227,14 @@ if ( TRUE ){
   mod.orig3 <- mod.out
   media.org <- fread(paste0(script.dir,"/dat/media/MM_glu.csv")) # use minimal medium
   
+  # add some exchange reactions
+  additional <- c("cpd00029", #acetate
+                  "cpd00047", #formate
+                  "cpd00137", #citrate
+                  "cpd00020" #pyruvate
+  )
+  mod.orig3 <- add_exchanges(mod.orig3, cpd = additional)
+  
   ex          <- findExchReact(mod.orig3)
   ex.ind      <- ex@react_pos
   ex.id       <- ex@react_id
@@ -285,6 +297,8 @@ if ( TRUE ){
         mod.fill3 <- mod.fill3.lst$model
         mod.fill3.counter <- mod.fill3.counter + 1
         mod.fill3.names <- c(mod.fill3.names, src.met.name)
+        if( ex@react_id[i] %in% exchanges.new.ids) # delete unused addionally added exchange reactions later
+          exchanges.new.used[match(ex@react_id[i], exchanges.new.ids)] <- TRUE
       }
     }
   }
@@ -356,6 +370,8 @@ if ( TRUE ){
         mod.fill4 <- mod.fill4.lst$model
         mod.fill4.counter <- mod.fill4.counter + 1
         mod.fill4.names <- c(mod.fill4.names, src.met.name)
+        if( ex@react_id[i] %in% exchanges.new.ids) # delete unused addionally added exchange reactions later
+          exchanges.new.used[match(ex@react_id[i], exchanges.new.ids)] <- TRUE
       }
     }
   }
@@ -370,6 +386,10 @@ if ( TRUE ){
   cat("Final growth rate:    ",optimizeProb(mod.fill4, retOptSol=F)$obj,"\n")
 }
 
+# delete unused addionally added exchange reactions later
+exchanges.rm <- exchanges.new.ids[!exchanges.new.used]
+if( length(exchanges.rm) > 0 )
+  mod.out <- rmReact(mod.out, react=exchanges.rm)
 
 
 if(!dir.exists(output.dir))
