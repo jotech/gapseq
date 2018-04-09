@@ -68,6 +68,7 @@ core.weight  <- 1
 min.obj.val  <- 0.05
 sbml.export  <- FALSE 
 
+
 # Get list of core-reactions from one or more files (given as comma seperated string by -c)
 core.rxns <- c()
 for( file in unlist(str_split(core.rxn.file, ",")) ){
@@ -87,10 +88,20 @@ source(paste0(script.dir,"/src/generate_rxn_stoich_hash.R"))
 carbon.source <- fread(paste0(script.dir, "/dat/sub2pwy.csv"))
 
 # read full model & target model
-cat("\nLoading model files\n")
+cat("Loading model files", mod.file, "\n")
 mod       <- readRDS(fullmod.file)
 mod.orig  <- readSBMLmod(mod.file)
 mod.orig  <- add_missing_exchanges(mod.orig)
+
+# create complete medium
+if( media.file == "complete" ){
+  met.pos <- findExchReact(mod.orig)@met_pos
+  met.id  <- gsub("\\[.0\\]","",mod.orig@met_id[met.pos])
+  met.name<- mod.orig@met_name[met.pos]
+  media <- data.frame(compounds=met.id, name=met.name, maxFlux=100)
+  media.file <- paste0(script.dir,"/ALLmed.csv")
+  write.csv(media, media.file, quote = F, row.names = F)
+}
 
 # constrain model
 mod.orig <- constrain.model(mod.orig, media.file = media.file, scaling.fac = diet.scale)
