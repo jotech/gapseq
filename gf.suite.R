@@ -93,6 +93,17 @@ mod       <- readRDS(fullmod.file)
 mod.orig  <- readSBMLmod(mod.file)
 mod.orig  <- add_missing_exchanges(mod.orig)
 
+# temporary fix
+if( "rxn05292_c0" %in% mod.orig@react_id )
+  mod.orig <- rmReact(mod.orig, react="rxn05292_c0") # fe3 diffusion ~futile cycle
+if( "rxn05292_c0" %in% mod@react_id )
+  mod <- rmReact(mod, react="rxn05292") # fe3 diffusion ~futile cycle
+
+# add diffusion reactions
+print(mod.orig)
+mod.orig       <- add_missing_diffusion(mod.orig)
+print(mod.orig)
+
 # create complete medium
 if( media.file == "complete" ){
   met.pos <- findExchReact(mod.orig)@met_pos
@@ -216,7 +227,7 @@ if ( TRUE ){
   ex.ind      <- ex@react_pos
   ex.id       <- ex@react_id
   ex.met      <- ex@met_id
-  ex.met.name <- mod.orig@met_name[ex@met_pos]
+  ex.met.name <- mod.orig3@met_name[ex@met_pos]
   # Exchange reactions to be ignored (metals etc.)
   ignore <- c("EX_cpd17041_e0", "EX_cpd17042_e0", "EX_cpd17043_e0", "EX_cpd11416_e0", "rxn13782_c0", "rxn13783_c0", "rxn13783_c0", "EX_cpd00001_e0","EX_cpd00007_e0", "EX_cpd00009_e0", "EX_cpd00011_e0" ,"EX_cpd00012_e0", "EX_cpd00030_e0", "EX_cpd00034_e0", "EX_cpd00058_e0", "EX_cpd00063_e0", "EX_cpd00067_e0", "EX_cpd00075_e0","EX_cpd00099_e0", "EX_cpd00149_e0", "EX_cpd00205_e0", "EX_cpd00254_e0", "EX_cpd10515_e0", "EX_cpd00971_e0", "EX_cpd01012_e0", "EX_cpd10516_e0", "EX_cpd11574_e0")
   
@@ -287,6 +298,78 @@ if ( TRUE ){
   cat("Added reactions:      ",length(mod.fill3@react_id)-length(mod.fill2@react_id),"\n")
   cat("Final growth rate:    ",optimizeProb(mod.fill3, retOptSol=F)$obj,"\n")
 }
+
+
+if ( TRUE ){
+  cat("\n\n4. Checking for fermentation products with core reactions only\n")
+  
+  mod.orig4 <- mod.out
+  media.org <- fread(paste0(script.dir,"/dat/media/MM_glu.csv")) # use minimal medium
+  
+  ex          <- findExchReact(mod.orig4)
+  ex.ind      <- ex@react_pos
+  ex.id       <- ex@react_id
+  ex.met      <- ex@met_id
+  ex.met.name <- mod.orig4@met_name[ex@met_pos]
+  # Exchange reactions to be ignored (metals etc.)
+  ignore <- c("EX_cpd17041_e0", "EX_cpd17042_e0", "EX_cpd17043_e0", "EX_cpd11416_e0", "rxn13782_c0", "rxn13783_c0", "rxn13783_c0", "EX_cpd00001_e0","EX_cpd00007_e0", "EX_cpd00009_e0", "EX_cpd00011_e0" ,"EX_cpd00012_e0", "EX_cpd00030_e0", "EX_cpd00034_e0", "EX_cpd00058_e0", "EX_cpd00063_e0", "EX_cpd00067_e0", "EX_cpd00075_e0","EX_cpd00099_e0", "EX_cpd00149_e0", "EX_cpd00205_e0", "EX_cpd00254_e0", "EX_cpd10515_e0", "EX_cpd00971_e0", "EX_cpd01012_e0", "EX_cpd10516_e0", "EX_cpd11574_e0")
+  
+  # add metabolite objective + sink
+  mod.fill4    <- mod.orig4
+  mod.fill4 <- constrain.model(mod.fill4, media.file = media.file, scaling.fac = diet.scale)
+  
+  mod.fill4.counter <- 0
+  mod.fill4.names <- c()
+  
+  if( !verbose ) options(warn=-1)
+  for( i in seq_along(ex.met) ){
+    cat("\r",i,"/",length(ex.met))
+    if( ex.id[i] %in% ignore ) 
+      next
+    
+    src.met      <- ex.met[i]
+    src.met.name <- ex.met.name[i]
+    src.id       <- ex.id[i]
+    mod.fill4@obj_coef <- rep(0,mod.fill4@react_num)
+    mod.fill4 <- changeObjFunc(mod.fill4, react=src.id, obj_coef=1)
+    
+    sol <- optimizeProb(mod.fill4, retOptSol=F)
+    
+    if(sol$stat == ok & sol$obj >= 1e-7){
+      #mod.fill4@obj_coef <- rep(0,mod.fill4@react_num)
+    }else{
+      if( verbose ) cat("\nTry to gapfill", src.met.name, src.id, "\n")
+      invisible(capture.output( mod.fill4.lst <- gapfill4(mod.orig = mod.fill4, 
+                                                          mod.full = mod, 
+                                                          core.rxn = core.rxn, 
+                                                          min.gr = min.obj.val,
+                                                          dummy.bnd = dummy.bnd,
+                                                          diet.scale = diet.scale,
+                                                          core.weight = core.weight,
+                                                          dummy.weight = dummy.weight,
+                                                          script.dir = script.dir,
+                                                          core.only = TRUE,
+                                                          verbose=verbose) ))
+      new.reactions <- mod.fill4.lst$rxns.added
+      if( length(new.reactions) > 0 ){
+        if( verbose ) cat("Added reactions:", new.reactions, "\n")
+        mod.fill4 <- mod.fill4.lst$model
+        mod.fill4.counter <- mod.fill4.counter + 1
+        mod.fill4.names <- c(mod.fill4.names, src.met.name)
+      }
+    }
+  }
+  options(warn=0)
+  
+  mod.fill4 <- changeObjFunc(mod.fill4, react=paste0("EX_",target.met,"_c0"))
+  mod.fill4 <- constrain.model(mod.fill4, media.file = media.file, scaling.fac = 1)
+  mod.out <- mod.fill4
+  cat("\rGapfill summary:\n")
+  cat("Filled components:    ",mod.fill4.counter, "(",paste(mod.fill4.names, collapse = ","),")\n")
+  cat("Added reactions:      ",length(mod.fill4@react_id)-length(mod.fill3@react_id),"\n")
+  cat("Final growth rate:    ",optimizeProb(mod.fill4, retOptSol=F)$obj,"\n")
+}
+
 
 
 if(!dir.exists(output.dir))
