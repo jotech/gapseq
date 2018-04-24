@@ -83,6 +83,13 @@ source(paste0(script.dir,"/src/add_missing_exRxns.R"))
 source(paste0(script.dir,"/src/constrain.model.R"))
 source(paste0(script.dir,"/src/gapfill4.R"))
 source(paste0(script.dir,"/src/generate_rxn_stoich_hash.R"))
+rm.na <- function(vec){
+  idx <- which(is.na(vec))
+  if (length(idx) > 0) 
+    return(vec[-idx])
+  else return(vec)
+}
+
 
 # database files
 carbon.source <- fread(paste0(script.dir, "/dat/sub2pwy.csv"))
