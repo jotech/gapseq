@@ -1,7 +1,7 @@
 name,altname,exid,id,guild,metacyc,exid_seed,id_seed
 alpha-Cyclodextrin,,,,Polymers,,NA,NA
-Dextrin,,,,Polymers,,NA,NA
-Glycogen,,,,Polymers,,NA,NA
+Dextrin,,EX_dextrin(e),dextrin[e],Polymers,,EX_cpd11594_e0,cpd11594[e0]
+Glycogen,,EX_glycogen(e),glycogen[e],Polymers,,EX_cpd00155_e0,cpd00155[e0]
 Tween 40,,,,Polymers,,NA,NA
 Tween 80,,,,Polymers,,NA,NA
 N-Acetyl-D-Galactosamine,N-acetylgalactosamine,EX_acgal(e),acgal[e],Carbohydrates,PWY-7077,EX_cpd00832_e0,cpd00832[e0]
@@ -18,7 +18,7 @@ Gentiobiose,,,,Carbohydrates,,NA,NA
 alpha-D-Glucose,glucose,EX_glc(e),glc_D[e],Carbohydrates,GLYCOLYSIS;ANAGLYCOLYSIS-PWY;P341-PWY;NPGLUCAT-PWY;PWY-2221;ENTNER-DOUDOROFF-PWY,EX_cpd00027_e0,cpd00027[e0]
 m-Inositol,inositol,EX_inost(e),inost[e],Carbohydrates,P562-PWY;PWY-7241,EX_cpd00121_e0,cpd00121[e0]
 alpha-D-Lactose,lactose,EX_lcts(e),lcts[e],Carbohydrates,LACTOSEUTIL-PWY;BGALACT-PWY;LACTOSECAT-PWY,EX_cpd00208_e0,cpd00208[e0]
-Lactulose,,,,Carbohydrates,,NA,NA
+Lactulose,,,,Carbohydrates,,EX_cpd04349_e0,cpd04349[e0]
 Maltose,maltose,EX_malt(e),malt[e],Carbohydrates,MALTOSECAT-PWY,EX_cpd00179_e0,cpd00179[e0]
 D-Mannitol,mannitol,EX_mnl(e),mnl[e],Carbohydrates,PWY-3861;MANNIDEG-PWY,EX_cpd00314_e0,cpd00314[e0]
 D-Mannose,mannose,EX_man(e),man[e],Carbohydrates,MANNCAT-PWY,EX_cpd00138_e0,cpd00138[e0]
@@ -53,7 +53,7 @@ alpha-Keto Glutaric Acid,,,,Carboxylic acids,,NA,NA
 alpha-Keto Valeric Acid,,,,Carboxylic acids,,NA,NA
 D-L-Lactic Acid,,,,Carboxylic acids,,EX_cpd00159_e0,cpd00159[e0]
 Malonic Acid,,,,Carboxylic acids,,NA,NA
-Propionic Acid,,,,Carboxylic acids,,NA,NA
+Propionic Acid,propionate,EX_ppa(e),ppa[e],Carboxylic acids,,EX_cpd00141_e0,cpd00141[e0]
 Quinic Acid,,,,Carboxylic acids,,NA,NA
 D-Saccharic Acid,,,,Carboxylic acids,,NA,NA
 Sebacic Acid,,,,Carboxylic acids,,NA,NA
@@ -63,29 +63,29 @@ Succinamic Acid,,,,Amines/amides,,NA,NA
 Glucuronamide,,,,Amines/amides,,NA,NA
 L-Alaninamide,,,,Amines/amides,,NA,NA
 D-Alanine,,,,Amino acids,,NA,NA
-L-Alanine,,,,Amino acids,,NA,NA
+L-Alanine,alanine,EX_ala_L(e),ala_L[e],Amino acids,,EX_cpd00035_e0,cpd00035[e0]
 L-Alanylglycine,,,,Amino acids,,NA,NA
-L-Asparagine,,,,Amino acids,,NA,NA
-L-Aspartic Acid,,,,Amino acids,,NA,NA
-L-Glutamic Acid,,,,Amino acids,,NA,NA
+L-Asparagine,asparagine,EX_anp_L(e),anp_L[e],Amino acids,,EX_cpd00132_e0,cpd00132[e0]
+L-Aspartic Acid,aspartate,EX_asp_L(e),asp_L[e],Amino acids,,EX_cpd00041_e0,cpd00041[e0]
+L-Glutamic Acid,glutamate,EX_glu_L(e),glu_L[e],Amino acids,,EX_cpd00023_e0,cpd00023[e0]
 Glycyl-L-Aspartic Acid,,,,Amino acids,,NA,NA
 Glycyl-L-Glutamic Acid,,,,Amino acids,,NA,NA
-L-Histidine,,,,Amino acids,,NA,NA
+L-Histidine,histidine,EX_his_L(e),his_L[e],Amino acids,,EX_cpd00119_e0,cpd00119[e0]
 Hydroxy-L-Proline,,,,Amino acids,,NA,NA
-L-Leucine,,,,Amino acids,,NA,NA
-L-Ornithine,,,,Amino acids,,NA,NA
-L-Phenylalanine,,,,Amino acids,,NA,NA
-L-Proline,,,,Amino acids,,NA,NA
+L-Leucine,leucine,EX_leu_L(e),leu_L[e],Amino acids,,EX_cpd00107_e0,cpd00107[e0]
+L-Ornithine,ornithine,EX_orn(e),orn[e],Amino acids,,EX_cpd00064_e0,cpd00064[e0]
+L-Phenylalanine,phenylalanine,EX_phe_L(e),phe_L[e],Amino acids,,EX_cpd00066_e0,cpd00066[e0]
+L-Proline,proline,EX_pro_L(e),pro_L[e],Amino acids,,EX_cpd00129_e0,cpd00129[e0]
 L-Pyroglutamic Acid,,,,Amino acids,,NA,NA
 D-Serine,,,,Amino acids,,NA,NA
-L-Serine,,,,Amino acids,,NA,NA
-L-Threonine,,,,Amino acids,,NA,NA
-D-L-Carnitine,,,,Amino acids,,NA,NA
+L-Serine,serine,EX_ser_L(e),ser_L[e],Amino acids,,EX_cpd00054_e0,cpd00054[e0]
+L-Threonine,threonine,EX_thr_L(e),thr_L[e],Amino acids,,EX_cpd00161_e0,cpd00161[e0]
+D-L-Carnitine,carnitine,EX_crn(e),crn[e],Amino acids,,EX_cpd00266_e0,cpd00266[e0]
 gamma-Amino Butyric Acid,,,,Amino acids,,NA,NA
 Urocanic Acid,,,,Miscellaneous,,NA,NA
-Inosine,,,,Miscellaneous,,NA,NA
-Uridine,,,,Miscellaneous,,NA,NA
-Thymidine,,,,Miscellaneous,,NA,NA
+Inosine,,EX_ins(e),ins[e],Miscellaneous,,EX_cpd00246_e0,cpd00246[e0]
+Uridine,,EX_uri(e),uri[e],Miscellaneous,,EX_cpd00249_e0,cpd00249[e0]
+Thymidine,,EX_thymd(e),thymd[e],Miscellaneous,,EX_cpd00184_e0,cpd00184[e0]
 Phenyethylamine,,,,Amines/amides,,NA,NA
 Putrescine,,,,Amines/amides,,NA,NA
 2-Aminoethanol,,,,Amines/amides,,NA,NA
@@ -118,7 +118,6 @@ Matohextrin,,EX_malthx(e),malthx[e],,,EX_cpd01329_e0,cpd01329[e0]
 Methane,,EX_ch4(e),ch4[e],,,EX_cpd01024_e0,cpd01024[e0]
 N-Acetylneuraminate,acetylneuraminate,EX_acnam(e),acnam[e],,,EX_cpd00232_e0,cpd00232[e0]
 Phenylacetate,,EX_4hphac(e),4hphac[e],,,EX_cpd00489_e0,cpd00489[e0]
-Propionate,,EX_ppa(e),ppa[e],,,EX_cpd00141_e0,cpd00141[e0]
 Ribose,,EX_rib_D(e),rib_D[e],,,EX_cpd00105_e0,cpd00105[e0]
 Salicin,,EX_salcn(e),salcn[e],,,EX_cpd01030_e0,cpd01030[e0]
 Xylose,,EX_xyl_D(e),xyl_D[e],,,EX_cpd00154_e0,cpd00154[e0]
