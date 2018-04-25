@@ -100,20 +100,10 @@ mod       <- readRDS(fullmod.file)
 mod.orig  <- readSBMLmod(mod.file)
 mod.orig  <- add_missing_exchanges(mod.orig)
 
-# temporary fix
-if( "rxn05292_c0" %in% mod.orig@react_id )
-  mod.orig <- rmReact(mod.orig, react="rxn05292_c0") # fe3 diffusion ~futile cycle
-
 
 # add diffusion reactions
 mod.orig       <- add_missing_diffusion(mod.orig)
 
-# add buch of exchange reactions
-idx <- which( !carbon.source$exid_seed %in% mod.orig@react_id )
-exchanges.new.met  <- rm.na(carbon.source$id_seed[idx])
-exchanges.new.ids  <- rm.na(carbon.source$exid_seed[idx])
-exchanges.new.used  <- rep(FALSE, length(exchanges.new.ids))  # delete unused addionally added exchange reactions later
-mod.orig       <- add_exchanges(mod.orig, exchanges.new.met)
 
 # create complete medium
 if( media.file == "complete" ){
@@ -132,7 +122,7 @@ mod.orig@obj_coef <- rep(0,mod.orig@react_num)
 # add metabolite objective + sink
 mod.orig <- add_met_sink(mod.orig, target.met, obj = 1)
 
-# Perform gapfill3
+# Perform gapfill
 cat("\n\n1. Initial gapfilling: Make model grow on given media using all reactions\n")
 mod.fill.lst <- gapfill4(mod.orig = mod.orig, 
                          mod.full = mod, 
@@ -226,6 +216,15 @@ if ( TRUE ){
   cat("Added reactions:      ",length(mod.fill2@react_id)-length(mod.fill1@react_id),"\n")
   cat("Final growth rate:    ",optimizeProb(mod.fill2, retOptSol=F)$obj,"\n")
 }
+
+
+# Add list of exchange reactions for step 3 and 4 in order to check for a wide range of carbon sources or fermentation products
+# (Unused exchanges will be deleted afterwards)
+idx <- which( !carbon.source$exid_seed %in% mod.out@react_id )
+exchanges.new.met  <- rm.na(carbon.source$id_seed[idx])
+exchanges.new.ids  <- rm.na(carbon.source$exid_seed[idx])
+exchanges.new.used  <- rep(FALSE, length(exchanges.new.ids))  # delete unused addionally added exchange reactions later
+mod.out       <- add_exchanges(mod.out, exchanges.new.met)
 
 
 if ( TRUE ){
