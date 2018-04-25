@@ -64,15 +64,21 @@ Glucuronamide,,,,Amines/amides,,NA,NA
 L-Alaninamide,,,,Amines/amides,,NA,NA
 D-Alanine,,,,Amino acids,,NA,NA
 L-Alanine,alanine,EX_ala_L(e),ala_L[e],Amino acids,,EX_cpd00035_e0,cpd00035[e0]
+L-Arginine,arginine,EX_arg_L(e),arg_L[e],Amino acids,,EX_cpd00051_e0,cpd00051[e0]
 L-Alanylglycine,,,,Amino acids,,NA,NA
-L-Asparagine,asparagine,EX_anp_L(e),anp_L[e],Amino acids,,EX_cpd00132_e0,cpd00132[e0]
+L-Asparagine,asparagine,EX_asn_L(e),asn_L[e],Amino acids,,EX_cpd00132_e0,cpd00132[e0]
 L-Aspartic Acid,aspartate,EX_asp_L(e),asp_L[e],Amino acids,,EX_cpd00041_e0,cpd00041[e0]
+L-Cysteine,cysteine,EX_cys_L(e),cys_L[e],Amino acids,,EX_cpd00084_e0,cpd00084[e0]
 L-Glutamic Acid,glutamate,EX_glu_L(e),glu_L[e],Amino acids,,EX_cpd00023_e0,cpd00023[e0]
+L-Glycine,glycine,EX_gly_L(e),gly_L[e],Amino acids,,EX_cpd00033_e0,cpd00033[e0]
 Glycyl-L-Aspartic Acid,,,,Amino acids,,NA,NA
 Glycyl-L-Glutamic Acid,,,,Amino acids,,NA,NA
 L-Histidine,histidine,EX_his_L(e),his_L[e],Amino acids,,EX_cpd00119_e0,cpd00119[e0]
 Hydroxy-L-Proline,,,,Amino acids,,NA,NA
+L-Isoleucine,isoleucine,EX_ile_L(e),ile_L[e],Amino acids,,EX_cpd00322_e0,cpd00322[e0]
 L-Leucine,leucine,EX_leu_L(e),leu_L[e],Amino acids,,EX_cpd00107_e0,cpd00107[e0]
+L-Lysine,lysine,EX_lys_L(e),lys_L[e],Amino acids,,EX_cpd00039_e0,cpd00039[e0]
+L-Methionine,methionine,EX_met_L(e),met_L[e],Amino acids,,EX_cpd00060_e0,cpd00060[e0]
 L-Ornithine,ornithine,EX_orn(e),orn[e],Amino acids,,EX_cpd00064_e0,cpd00064[e0]
 L-Phenylalanine,phenylalanine,EX_phe_L(e),phe_L[e],Amino acids,,EX_cpd00066_e0,cpd00066[e0]
 L-Proline,proline,EX_pro_L(e),pro_L[e],Amino acids,,EX_cpd00129_e0,cpd00129[e0]
@@ -80,6 +86,9 @@ L-Pyroglutamic Acid,,,,Amino acids,,NA,NA
 D-Serine,,,,Amino acids,,NA,NA
 L-Serine,serine,EX_ser_L(e),ser_L[e],Amino acids,,EX_cpd00054_e0,cpd00054[e0]
 L-Threonine,threonine,EX_thr_L(e),thr_L[e],Amino acids,,EX_cpd00161_e0,cpd00161[e0]
+L-Tryptophan,tryptophan,EX_trp_L(e),trp_L[e],Amino acids,,EX_cpd00065_e0,cpd00065[e0]
+L-Tyrosine,tyrosine,EX_tyr_L(e),try_L[e],Amino acids,,EX_cpd00069_e0,cpd00069[e0]
+L-Valine,valine,EX_val_L(e),val_L[e],Amino acids,,EX_cpd00156_e0,cpd00156[e0]
 D-L-Carnitine,carnitine,EX_crn(e),crn[e],Amino acids,,EX_cpd00266_e0,cpd00266[e0]
 gamma-Amino Butyric Acid,,,,Amino acids,,NA,NA
 Urocanic Acid,,,,Miscellaneous,,NA,NA
