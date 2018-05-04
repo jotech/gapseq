@@ -146,10 +146,19 @@ if ( TRUE ){
   
   # load minimal medium and add available carbon sources
   media2 <- fread(paste0(script.dir,"/dat/media/MM_glu.csv"))
-  media2 <- media2[name!="D-Glucose"]
-  src.met <- carbon.source[guild == "Carbohydrates" & exid_seed %in% mod.orig2@react_id, id_seed]
-  src.met.name <- carbon.source[id_seed %in% src.met, name]
-  media2 <- rbind(media2, data.table(compounds=gsub("\\[.0\\]","",src.met), name=src.met.name, maxFlux=100))
+  src.met <- carbon.source[guild %in% c("Carbohydrates", "Polymers", "Carboxylic acids", "Amino acids") & exid_seed %in% mod.orig2@react_id, .(id_seed,name,guild)]
+  if( nrow(src.met) == 0)
+    stop("No carbon source exchange reactions found in model")
+  # if glucose is not usable then add other carbon source(s)
+  if( !"alpha-D-Glucose" %in% src.met$name ){
+    src.carbo <- src.met[guild=="Carbohydrates"]
+    if( nrow(src.carbo)>0 )
+      src.add <- src.carbo # if no glucose is there, then add all other available carbohydrates
+    else
+      src.add <- src.met # if no carbohydrates is avaiable, then take everything else (probably amino acid biosynthesis is not papfilled because amino acids are part of the medium)
+    media2 <- rbind(media2, data.table(compounds=gsub("\\[.0\\]","",src.add$id_seed), name=src.add$name, maxFlux=100))  
+  }
+  
   
   # constrain model  
   mod.orig2 <- constrain.model(mod.orig2, media = media2, scaling.fac = diet.scale)
@@ -233,14 +242,6 @@ if ( TRUE ){
   mod.orig3 <- mod.out
   media.org <- fread(paste0(script.dir,"/dat/media/MM_glu.csv")) # use minimal medium
   
-  # add some exchange reactions
-  additional <- c("cpd00029", #acetate
-                  "cpd00047", #formate
-                  "cpd00137", #citrate
-                  "cpd00020" #pyruvate
-  )
-  mod.orig3 <- add_exchanges(mod.orig3, cpd = additional)
-  
   ex          <- findExchReact(mod.orig3)
   ex.ind      <- ex@react_pos
   ex.id       <- ex@react_id
@@ -310,6 +311,7 @@ if ( TRUE ){
   }
   options(warn=0)
   
+  mod.fill3 <- rmReact(mod.fill3, react=c("ESP1","ESP2"))
   mod.fill3 <- changeObjFunc(mod.fill3, react=paste0("EX_",target.met,"_c0"))
   mod.fill3 <- constrain.model(mod.fill3, media.file = media.file, scaling.fac = 1)
   mod.out <- mod.fill3
