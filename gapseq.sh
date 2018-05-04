@@ -45,7 +45,8 @@ exit 1
 curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
-seqpath=$dir/dat/seq/
+#seqpath=$dir/dat/seq/
+seqpath=$dir/dat/seq/$taxonomy/unipac90/
 metaPwy=$dir/dat/meta_pwy.tbl
 metaRea=$dir/dat/meta_rea.tbl
 reaDB1=$dir/dat/vmh_reactions.csv
@@ -261,8 +262,9 @@ do
             getDBhit # get db hits for this reactions
             pwyCandAll="$pwyCandAll$dbhit "
             query=$seqpath$ec.fasta
-            if [ ! -s $query ]; then
-                python2 $dir/src/uniprot.py "$ec" "$taxonomy" # if sequence data not available then download from uniprot
+            if [ ! -f $query ]; then # check if sequence is not available => try to download
+                #python2 $dir/src/uniprot.py "$ec" "$taxonomy" # if sequence data not available then download from uniprot
+                $dir/src/uniprot.sh -e "$ec" -t "$taxonomy"
             fi
             if [ -s $query ]; then
                 out=$pwy-$ec.blast
