@@ -38,8 +38,12 @@ suppressMessages(library(data.table))
 suppressMessages(library(stringr))
 suppressMessages(library(methods))
 
-sybil::SYBIL_SETTINGS("SOLVER","cplexAPI"); ok <- 1
-
+if( "cplexAPI" %in% rownames(installed.packages()) ){
+  sybil::SYBIL_SETTINGS("SOLVER","cplexAPI"); ok <- 1
+}else{
+  stop("package cplexAPI is currently needed")
+  #sybil::SYBIL_SETTINGS("SOLVER","glpkAPI"); ok <- 5
+}
 
 # Setting defaults if required
 if ( is.null(opt$full.model ) ) { opt$full.model = paste0(script.dir,"/dat/full.model.RDS") }
