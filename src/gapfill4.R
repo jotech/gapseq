@@ -96,10 +96,10 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
   #                         algorithm = "mtf2",
   #                         costcoeffw = c.coef,
   #                         pFBAcoeff = 1e-6)
-  modj_warm <- sysBiolAlg(mod,
-                          algorithm = "mtf",
-                          costcoeffw = c.coef,
-                          scaling = mtf.scale)
+  if( sybil::SYBIL_SETTINGS("SOLVER") == "glpkAPI" )
+    modj_warm <- sysBiolAlg(mod, algorithm = "mtf", costcoeffw = c.coef)
+  else
+    modj_warm <- sysBiolAlg(mod, algorithm = "mtf", costcoeffw = c.coef, scaling = mtf.scale)
   sol.fba <- optimizeProb(modj_warm)
   
   if(sol.fba$stat!=ok){

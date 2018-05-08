@@ -38,11 +38,12 @@ suppressMessages(library(data.table))
 suppressMessages(library(stringr))
 suppressMessages(library(methods))
 
+# select solver
 if( "cplexAPI" %in% rownames(installed.packages()) ){
   sybil::SYBIL_SETTINGS("SOLVER","cplexAPI"); ok <- 1
 }else{
-  stop("package cplexAPI is currently needed")
-  #sybil::SYBIL_SETTINGS("SOLVER","glpkAPI"); ok <- 5
+  warning("glpkAPI is used but cplexAPI is recommended because it is much faster")
+  sybil::SYBIL_SETTINGS("SOLVER","glpkAPI"); ok <- 5
 }
 
 # Setting defaults if required
