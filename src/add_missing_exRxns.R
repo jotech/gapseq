@@ -118,14 +118,17 @@ add_missing_diffusion <- function(mod, ub = 1000){
 }
 
 
-add_exchanges <- function(mod, cpd, ub = 1000) {
+add_exchanges <- function(mod, cpd, ub = 1000, metname=NA) {
   for(m in cpd){
     ex.id  <- paste0("EX_",gsub("\\[.*\\]","",m),"_e0")
     if( ex.id %in% mod@react_id )
       next
     ex.met.id    <- paste0(gsub("\\[.*\\]","",m), "[e0]")
     ex.mets.ind  <- grep(m, mod@met_id,fixed=T)[1]
-    ex.mets.name <- mod@met_name[ex.mets.ind]
+    if( all(is.na(metname)) )
+      ex.mets.name <- mod@met_name[ex.mets.ind]
+    else
+      ex.mets.name <- metname[match(m, cpd)]
     mod <- addReact(model = mod,
                     id = ex.id, 
                     met = ex.met.id,

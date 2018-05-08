@@ -231,9 +231,10 @@ if ( TRUE ){
 # (Unused exchanges will be deleted afterwards)
 idx <- which( !carbon.source$exid_seed %in% mod.out@react_id )
 exchanges.new.met  <- rm.na(carbon.source$id_seed[idx])
+exchanges.new.name <- rm.na(carbon.source$name[idx])
 exchanges.new.ids  <- rm.na(carbon.source$exid_seed[idx])
 exchanges.new.used  <- rep(FALSE, length(exchanges.new.ids))  # delete unused addionally added exchange reactions later
-mod.out       <- add_exchanges(mod.out, exchanges.new.met)
+mod.out       <- add_exchanges(mod.out, exchanges.new.met, metname=exchanges.new.name)
 
 
 if ( TRUE ){
