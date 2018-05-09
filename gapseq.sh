@@ -269,7 +269,16 @@ do
             if [ -s $query ]; then
                 out=$ec.blast
                 if [ ! -f $out ]; then # check if there is a former hit
-                    tblastn -db orgdb -query $query -outfmt '6 qseqid sseqid pident evalue bitscore qcovs stitle' >$out 
+                    csplit -s -z $query '/>/' '{*}' # split multiple fasta file and skip further testing if a significant hit is found
+                    for q in `ls xx*`
+                    do
+                        tblastn -db orgdb -query $q -outfmt '6 qseqid sseqid pident evalue bitscore qcovs stitle' >>$out 
+                        bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($3>=identcutoff && $5>=bitcutoff && $6>=covcutoff) print $0}')
+                        if [ -n "$bhit" ]; then
+                            break
+                        fi
+                    done
+                    rm xx*
                 fi
                 if [ -s $out ]; then
                     bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($3>=identcutoff && $5>=bitcutoff && $6>=covcutoff) print $0}')
