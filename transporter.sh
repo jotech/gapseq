@@ -11,9 +11,9 @@ dir=$(dirname "$path")
 fasta=$(readlink -f $1)
 tmpvar=$(basename $fasta)
 fastaid=${tmpvar%.*}
-tcdb=/home/jo/uni/gapseq/dat/tcdb.fasta
-subDB=/home/jo/uni/gapseq/dat/sub2pwy.csv
-seedDB=/home/jo/uni/gapseq/dat/seed_transporter.tbl
+tcdb=$dir/dat/tcdb.fasta
+subDB=$dir/dat/sub2pwy.csv
+seedDB=$dir/dat/seed_transporter.tbl
 
 # tmp working directory
 cd $(mktemp -d)
