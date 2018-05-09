@@ -414,6 +414,7 @@ if [[ verbose -gt 0 ]]; then
 fi
 
 # export found reactions 
+echo -e Candidate reactions found: $(echo "$cand" | wc -w) '\n'
 #echo $bestCand > newReactions.lst
 echo $cand > newReactions.lst
 cp newReactions.lst $curdir/${fastaID}-$pathways-Reactions.lst
@@ -428,3 +429,4 @@ if [ -n "$input_sbml" ] ; then # if there is an xml file
     cp modelnew.xml $curdir/$modelnew
 fi
 
+times
