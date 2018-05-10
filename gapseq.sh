@@ -48,6 +48,7 @@ dir=$(dirname "$path")
 #seqpath=$dir/dat/seq/
 seqpath=$dir/dat/seq/$taxonomy/unipac90/
 metaPwy=$dir/dat/meta_pwy.tbl
+keggPwy=$dir/dat/kegg_pwy.tbl
 metaRea=$dir/dat/meta_rea.tbl
 reaDB1=$dir/dat/vmh_reactions.csv
 reaDB2=$dir/dat/bigg_reactions.tbl
@@ -158,12 +159,17 @@ case $pathways in
     core)
         pwyKey="Amino-Acid-Biosynthesis|Nucleotide-Biosynthesis|Cofactor-Biosynthesis|Carbohydrates-Degradation|CARBO-BIOSYNTHESIS|Polyamine-Biosynthesis|Fatty-acid-biosynthesis|Energy-Metabolism|Terpenoid-Biosynthesis|Chorismate-Biosynthesis"
         ;;
+    kegg)
+        pwyKey=kegg
+        ;;
     *)
         pwyKey=$pathways
         ;;
 esac
 
 
+# tmp working directory
+cd $(mktemp -d)
 
 
 if [ -n "$ecnumber" ]; then
@@ -172,7 +178,8 @@ if [ -n "$ecnumber" ]; then
     pwyDB=$(echo -e "dummy\t$ecnumber\t\t\t\t$ecnumber\t$ecnumber")
 else
     # get entries for pathways from database
-    pwyDB=$(cat $metaPwy | grep -wEi $pwyKey)
+    cat $metaPwy $keggPwy > allPwy
+    pwyDB=$(cat allPwy | grep -wEi $pwyKey)
     [ -z "$ecnumber" ] && [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
 fi
 
@@ -217,8 +224,6 @@ getDBhit(){
 
 
 
-# tmp working directory
-cd $(mktemp -d)
 
 # create blast database
 makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
@@ -264,7 +269,9 @@ do
             query=$seqpath$ec.fasta
             if [ ! -f $query ]; then # check if sequence is not available => try to download
                 #python2 $dir/src/uniprot.py "$ec" "$taxonomy" # if sequence data not available then download from uniprot
-                $dir/src/uniprot.sh -e "$ec" -t "$taxonomy"
+                
+                echo -e '\t'Downloading sequence for: $ec 
+                $dir/src/uniprot.sh -e "$ec" -t "$taxonomy" >/dev/null
             fi
             if [ -s $query ]; then
                 out=$ec.blast
