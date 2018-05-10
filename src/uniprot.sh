@@ -7,6 +7,7 @@ echo $dir
 metaPwy=$dir/../dat/meta_pwy.tbl
 identity=0.9 # clustered uniprot database (0.5 or 0.9)
 taxonomy=Bacteria
+overwrite=false
 
 # default core metabolism
 pwyKey="Amino-Acid-Biosynthesis|Nucleotide-Biosynthesis|Cofactor-Biosynthesis|Carbohydrates-Degradation|CARBO-BIOSYNTHESIS|Polyamine-Biosynthesis|Fatty-acid-biosynthesis|Energy-Metabolism|Terpenoid-Biosynthesis|Chorismate-Biosynthesis"
@@ -18,6 +19,7 @@ usage()
     echo "  -p keywords such as pathways or susbstem (default: core metabolism; 'Pathways' for all)"
     echo "  -e search by ec numbers (comma separated)"
     echo "  -t taxonomic range (default: $taxonomy)"
+    echo "  -o Should existing files be overwritten (default: $overwrite)"
 exit 1
 }
 
@@ -57,20 +59,26 @@ else
 fi
 
 ecs=$(echo "$pwyDB" | awk -F "\t" '{print $7}')
-
-for ec in `echo $ecs | tr ',' '\n' | sort | uniq`
+uniq_ecs=$(echo $ecs | tr ',' '\n' | tr ' ' '\n' | sort | uniq)
+ecs_max=$(echo "$uniq_ecs" | wc -w)
+for ec in $uniq_ecs
 do
+    i=$((i+1))
+    echo -en "\r$i/$ecs_max"
     re="([0-9]+.[0-9]+.[0-9]+.[0-9]+)"
     test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
     if [ -n "$test" ]; then # check if valid ec
-        echo $ec
+        if [ -f "$ec.fasta" ] &&  [ "$overwrite" = false ]; then # do not update existing files
+            continue
+        fi
+        echo -en " ... Downloading $ec \t\t"
         if [ ! -f "$ec.fasta" ]; then # fasta doesn't exist?
             url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3Abacteria%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
-            wget $url -O $ec.fasta
+            wget -q $url -O $ec.fasta
         fi
         if [ ! -s "$ec.fasta" ]; then # fasta is empty?
             url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3Abacteria)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
-            wget $url -O $ec.fasta
+            wget -q $url -O $ec.fasta
         fi
     fi
 done
