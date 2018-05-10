@@ -180,7 +180,7 @@ fi
 # function to get database hits for ec number
 getDBhit(){
     kegg=$(grep -wF $rea $metaRea | awk -F "\t" {'print $5'})
-    altec=$(grep $ec $brenda | grep -P "([0-9]+.[0-9]+.[0-9]+.[0-9]+)" -o | grep -v $ec)
+    altec=$(grep -wF $ec $brenda | grep -P "([0-9]+.[0-9]+.[0-9]+.[0-9]+)" -o | grep -v $ec)
     
     # 1) search in reaction db by EC
     if [ "$database" == "vmh" ]; then
