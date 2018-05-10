@@ -15,7 +15,7 @@ usage()
 {
     echo "Usage"
     echo "$0 -p keyword / -e ec [-t taxonomy]"
-    echo "  -p keywords such as pathways or susbstem (for example amino,nucl,cofactor,carbo,polyamine)"
+    echo "  -p keywords such as pathways or susbstem (default: core metabolism; 'Pathways' for all)"
     echo "  -e search by ec numbers (comma separated)"
     echo "  -t taxonomic range (default: $taxonomy)"
 exit 1
@@ -28,7 +28,7 @@ while getopts "h?p:e:t:" opt; do
         exit 0
         ;;
     p)
-        pathways=$OPTARG
+        pwyKey=$OPTARG
         ;;
     e)
         ecnumber=$OPTARG
