@@ -16,4 +16,4 @@ Informed curation and gapfilling of metabolic networks
 * ./transporter.sh dat/myb71.fna
 
 4) Gapfilling
-* Rscript gf.suite.R -m ./dat/myb71_corrected.xml -c ./dat/myb71-core-Reactions.lst,dat/myb71-degradation-Reactions.lst,dat/myb71-Transporter.lst -n ~/uni/gapseq/dat/media/TSBmed.csv
+* Rscript gf.suite.R -m ./dat/myb71_corrected.xml -c ./dat/myb71-core-Reactions.lst,dat/myb71-degradation-Reactions.lst,dat/myb71-Transporter.lst -n dat/media/TSBmed.csv
