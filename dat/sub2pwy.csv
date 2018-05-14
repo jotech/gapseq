@@ -70,6 +70,7 @@ L-Asparagine,asparagine,EX_asn_L(e),asn_L[e],Amino acids,,EX_cpd00132_e0,cpd0013
 L-Aspartic Acid,aspartate,EX_asp_L(e),asp_L[e],Amino acids,,EX_cpd00041_e0,cpd00041[e0]
 L-Cysteine,cysteine,EX_cys_L(e),cys_L[e],Amino acids,,EX_cpd00084_e0,cpd00084[e0]
 L-Glutamic Acid,glutamate,EX_glu_L(e),glu_L[e],Amino acids,,EX_cpd00023_e0,cpd00023[e0]
+L-Glutamine,glutamine,EX_gln_L(e),gln_L[e],Amino acids,,EX_cpd00053_e0,cpd00053[e0]
 L-Glycine,glycine,EX_gly_L(e),gly_L[e],Amino acids,,EX_cpd00033_e0,cpd00033[e0]
 Glycyl-L-Aspartic Acid,,,,Amino acids,,NA,NA
 Glycyl-L-Glutamic Acid,,,,Amino acids,,NA,NA
@@ -112,6 +113,7 @@ D-Arabinose,arabinose,EX_arab_D(e),arab_D[e],,,EX_cpd00185_e0,cpd00185[e0]
 D-glucosamine,glucosamine,EX_gam(e),gam[e],,,EX_cpd00276_e0,cpd00276[e0]
 D-Lactate,,EX_lac_D(e),lac_D[e],,,EX_cpd00221_e0,cpd00221[e0]
 Ethanol,,EX_etoh(e),etoh[e],,,EX_cpd00363_e0,cpd00363[e0]
+Ribitol,,EX_rbt(e),rbt[e],,,EX_cpd00366_e0,cpd00366[e0]
 Galacturonate,,EX_galur(e),galur[e],,,EX_cpd00280_e0,cpd00280[e0]
 Gluconate,,EX_glcn(e),glcn[e],,,EX_cpd00222_e0,cpd00222[e0]
 Glucuronate,,EX_glcur(e),glcur[e],,,EX_cpd00164_e0,cpd00164[e0]
