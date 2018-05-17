@@ -432,7 +432,7 @@ rxn13985	<			[SW] New direction according to Metacyc. And works in the direction
 rxn06872	<		-1:cpd00005:0:0:"NADPH";-2:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd00067:0:0:"H+";-2:cpd12872:0:0:"[Methionine synthase]-cob(I)alamin";1:cpd00006:0:0:"NADP";2:cpd00019:0:0:"S-Adenosyl-homocysteine";2:cpd12873:0:0:"[Methionine synthase]-methylcob(I)alamin"	[SW] works in the direction of NADP reduction to NADPH.  Stoich. Was also incorrect.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.1.1.135-RXN	
 rxn13842		TRUE		[SW] Enzyme/Proton Pump only exists in the mucus in stomachs of mamals. Not reported for Microorganisms.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.6.3.10-RXN	
 rxn00082	>		-1:cpd00005:0:0:"NADPH";-2:cpd00007:0:0:"O2";-2:cpd03527:0:0:"N-(omega)-Hydroxyarginine";2:cpd00001:0:0:"H2O";1:cpd00006:0:0:"NADP";1:cpd00067:0:0:"H+";2:cpd00274:0:0:"Citrulline";2:cpd00418:0:0:"NO"	[SW] Stoichiometry and reversibility corrected according to RHEA DB.	https://www.rhea-db.org/reaction?id=24664	
-						
+rxn05126	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-3922	
 						
 rxn00650	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN	
 rxn12844	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN	
