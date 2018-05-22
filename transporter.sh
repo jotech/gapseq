@@ -46,7 +46,7 @@ TC[4]="4.Group translocators"
 for id in $IDtcdb
 do
     descr=$(grep $id tcdb_header | grep -P "(?<= ).*(?=OS)" -o) # extract description
-    tc=$(grep $id tcdb_header | grep -Pw "([1-4].[A-Z]+.[0-9]+.[0-9]+)" -o) # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
+    tc=$(grep $id tcdb_header | grep -Pw "([1-4]\\.[A-Z]+\\.[0-9]+\\.[0-9]+)" -o) # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
     i=$(echo $tc | head -c1) # get first character of TC number => transporter type
     type=${TC[$i]}
     [ -z "$tc" ] && continue
@@ -54,6 +54,7 @@ do
     subl=$(echo "$descr" | grep -wEio "$key" | grep -if - redSubDB | awk -F ',' '{ if ($2 != "") print $2; else print $1}') # could be more then one hit (e.g. transporter with two substances)
     for sub in $subl
     do
+        echo -e $sub"\t"$type"\t"$tc"\t"$descr >> newTransporter.tbl
         exmetall=$(cat $subDB | grep -w "$sub" | awk -F ',' '{if ($8 != "NA") print $8}')
         for exmet in $exmetall
         do
@@ -105,3 +106,4 @@ cand="$(echo $cand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')"
 #echo $cand
 echo $cand > newTransporter.lst
 cp newTransporter.lst $curdir/${fastaid}-Transporter.lst
+cp newTransporter.tbl $curdir/${fastaid}-Transporter.tbl

@@ -187,7 +187,7 @@ fi
 # function to get database hits for ec number
 getDBhit(){
     kegg=$(grep -wF $rea $metaRea | awk -F "\t" {'print $5'})
-    altec=$(grep -wF $ec $brenda | grep -P "([0-9]+.[0-9]+.[0-9]+.[0-9]+)" -o | grep -v $ec)
+    altec=$(grep -wF $ec $brenda | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -v $ec)
     
     # 1) search in reaction db by EC
     if [ "$database" == "vmh" ]; then
@@ -260,7 +260,7 @@ do
     do 
         ec=$(echo $ecs | awk -v j=$j -F ',' '{print $j}')
         rea=$(echo $reaids | awk -v j=$j -F ',' '{print $j}')
-        re="([0-9]+.[0-9]+.[0-9]+.[0-9]+)"
+        re="([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
         test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
         if [ -n "$test" ]; then
             ((count++))
