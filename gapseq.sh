@@ -7,8 +7,6 @@
 # TODO: if taxonomic range is not bacteria, then sequence data must be updated!
 
 pathways=""
-input_sbml=""
-output_sbml=""
 database="seed"
 verbose=0
 taxonomy="Bacteria"
@@ -19,11 +17,12 @@ strictCandidates=false
 completnessCutoff=66 # consider pathway to be present if other hints (e.g. key enzyme present) are avaiable and pathway completness is at least as high as completnessCutoff (requires strictCandidates=false)
 completnessCutoffNoHints=80 # consider pathway to be present if no hints are avaiable (requires stricCandidates=false)
 addVague=true # should vague reactions (trunked EC number) be added when there is a hit in reaction DB?
+onlyMetacyc=false
 
 usage()
 {
     echo "Usage"
-    echo "$0 -p keyword / -e ec [-d database] [-f model.sbml] [-t taxonomy] file.fasta."
+    echo "$0 -p keyword / -e ec [-d database] [-t taxonomy] file.fasta."
     echo "  -p keywords such as pathways or susbstem (for example amino,nucl,cofactor,carbo,polyamine)"
     echo "  -e search by ec numbers (comma separated)"
     echo "  -d database: vmh or seed (default: $database)"
@@ -33,12 +32,9 @@ usage()
     echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
     echo "  -s strict candidate reaction handling (do _not_ use pathway completness, key kenzymes and operon structure to infere if imcomplete pathway could be still present (default: $strictCandidates)"
     echo "  -n Add vague reactions (i.e. EC is trunked and no sequences is available) if pathway is otherwise complete (default: $addVague)"
+    echo "  -o use only MetaCyc pathway database (default: $onlyMetacyc)"
 exit 1
 }
-# USAGE
-#[ $# -ne 2 ] && { echo "Usage: $0 file.fasta model.sbml"; exit 1; }
-#( [ $# -lt 2 ] || [ $# -gt 3 ] ) && { usage; }
-#( [ $# -eq 3 ] ) && { withSbml=true; sbml=$(readlink -f $3); }
 
 
 # paths and variables
@@ -61,7 +57,7 @@ seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:d:i:b:c:vs:o:t:sn" opt; do
+while getopts "h?p:e:d:i:b:c:vs:t:sno" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -79,10 +75,6 @@ while getopts "h?p:e:d:i:b:c:vs:o:t:sn" opt; do
     v)  
         verbose=1
         ;;
-    s)  
-        input_sbml=$(readlink -f $OPTARG)
-        $dir/src/sbml_read.R $input_sbml
-        ;;
     b)
         bitcutoff=$OPTARG
         ;;
@@ -95,14 +87,14 @@ while getopts "h?p:e:d:i:b:c:vs:o:t:sn" opt; do
     t)  
         taxonomy=$OPTARG
         ;;
-    o)  
-        output_sbml=$(readlink -f $OPTARG)
-        ;;
     s)
         strictCandidates=true
         ;;
     n)
         addVague=false
+        ;;
+    o)
+        onlyMetacyc=true
         ;;
     esac
 done
@@ -177,8 +169,12 @@ if [ -n "$ecnumber" ]; then
     pwyKey=$ecnumber
     pwyDB=$(echo -e "dummy\t$ecnumber\t\t\t\t$ecnumber\t$ecnumber")
 else
-    # get entries for pathways from database
-    cat $metaPwy $keggPwy > allPwy
+    # get entries for pathways from databases
+    if [ "$onlyMetacyc" == true ]; then
+        cat $metaPwy > allPwy
+    else
+        cat $metaPwy $keggPwy > allPwy
+    fi
     pwyDB=$(cat allPwy | grep -wEi $pwyKey)
     [ -z "$ecnumber" ] && [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
 fi
@@ -427,13 +423,5 @@ echo $cand > newReactions.lst
 cp newReactions.lst $curdir/${fastaID}-$pathways-Reactions.lst
 cp output.tbl $curdir/${fastaID}-$pathways-Pathways.tbl
 
-# add reactions and write new sbml model
-if [ -n "$input_sbml" ] ; then # if there is an xml file
-    echo ""
-    $dir/src/sbml_write.R newReactions.lst $dir
-    modelold=$(basename $sbml)
-    modelnew="${modelold%.*}G.xml"
-    cp modelnew.xml $curdir/$modelnew
-fi
 
 times
