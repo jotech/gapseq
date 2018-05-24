@@ -122,7 +122,7 @@ rxn11167		TRUE		[SW] Reaction unbalanced?
 rxn11339		TRUE		[SW] Reaction unbalanced?		
 rxn10062	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7230	
 rxn08972	>			[SW] Reaction never reported to be reversible.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.6.5.3#NATURAL%20SUBSTRATES	
-rxn03978	>			[SW] Reaction never reported to be reversible. Irrev. According to MetaCyc	http://www.brenda-enzymes.org/enzyme.php?ecno=1.7.2.2#NATURAL%20SUBSTRATES # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.7.2.2-RXN	
+rxn03978	<			[SW] Reaction never reported to be reversible. Irrev. According to MetaCyc	http://www.brenda-enzymes.org/enzyme.php?ecno=1.7.2.2#NATURAL%20SUBSTRATES # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.7.2.2-RXN	
 rxn11933	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7229	
 rxn01053	>			[SW] Reaction never reported to be reversible. Irrev. According to MetaCyc	http://www.brenda-enzymes.org/enzyme.php?ecno=1.2.1.22#NATURAL%20SUBSTRATES # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=LACTALDDEHYDROG-RXN	
 rxn10126	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-14971	
