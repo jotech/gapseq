@@ -436,6 +436,8 @@ rxn13842		TRUE		[SW] Enzyme/Proton Pump only exists in the mucus in stomachs of 
 rxn00082	>		-1:cpd00005:0:0:"NADPH";-2:cpd00007:0:0:"O2";-2:cpd03527:0:0:"N-(omega)-Hydroxyarginine";2:cpd00001:0:0:"H2O";1:cpd00006:0:0:"NADP";1:cpd00067:0:0:"H+";2:cpd00274:0:0:"Citrulline";2:cpd00418:0:0:"NO"	[SW] Stoichiometry and reversibility corrected according to RHEA DB.	https://www.rhea-db.org/reaction?id=24664	
 rxn05126	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-3922	
 rxn06413	<		-1:cpd00001:0:0:"H2O";-1:cpd01042:0:0:"p-Cresol";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00007:0:0:"O2";1:cpd01034:0:0:"Toluol";2:cpd11935:0:0:"Ferredoxin"	[SW] Direction and stoichiomentry changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=TOLUENE-SIDE-CHAIN-MONOOXYGENASE-RXN	
+rxn10123	>			[SW] Direction and stoichiomentry changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NADH-DEHYDROG-A-RXN	
+rxn10124	>			[SW] Direction and stoichiomentry changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NADH-DEHYDROG-A-RXN	
 						
 rxn00650	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN	
 rxn12844	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN	
@@ -525,6 +527,10 @@ rxn11053		TRUE		[SW] generic reaction.
 rxn11163		TRUE		[SW] generic reaction.		
 rxn05829		TRUE		[SW] generic reaction.		
 rxn05834		TRUE		[SW] generic reaction.		
+rxn12332		TRUE		[SW] generic reaction.		
+rxn12331		TRUE		[SW] generic reaction.		
+rxn12304		TRUE		[SW] generic reaction.		
+rxn12305		TRUE		[SW] generic reaction.		
 						
 rxn08014	>			[SW] Fatty acid ligase. Elongation not reversible as such.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-13266	
 rxn05465	>			[SW] Fatty acid ligase. Elongation not reversible as such. (2.3.1.39)		
@@ -624,6 +630,10 @@ rxn13697	>			[SW] Fatty acid oxidation is not reversible.
 rxn13698	>			[SW] Fatty acid oxidation is not reversible.		
 rxn30478	>			[SW] Fatty acid oxidation is not reversible.		
 rxn10074	>			[SW] Fatty acid oxidation is not reversible.		
+rxn12270	>			[SW] Fatty acid oxidation is not reversible.		
+rxn12275	>			[SW] Fatty acid oxidation is not reversible.		
+rxn12281	>			[SW] Fatty acid oxidation is not reversible.		
+rxn12286	>			[SW] Fatty acid oxidation is not reversible.		
 						
 rxn06440	>			[SW] Aminocyl-tRNA ligases are irreversible, as they are highly exergonic reactions.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ISOLEUCINE--TRNA-LIGASE-RXN	
 rxn11122	>			[SW] Aminocyl-tRNA ligases are irreversible, as they are highly exergonic reactions.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ISOLEUCINE--TRNA-LIGASE-RXN	
