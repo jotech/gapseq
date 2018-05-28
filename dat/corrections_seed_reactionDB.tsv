@@ -223,7 +223,8 @@ rxn01639	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NE
 rxn05256	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-12019	
 rxn05289	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=THIOREDOXIN-REDUCT-NADPH-RXN	
 rxn08357	>			[SW] unsure. However, biosynthesis of DMSO unlikely, because its a xenobiotic.		
-rxn09316	>			[SW] unsure. However, biosynthesis of DMSO unlikely, because its a xenobiotic.		
+rxn09315	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5264	
+rxn09316	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5264	
 rxn12682		TRUE		[SW] Reaction cannot be found in any other database.		
 rxn12054		TRUE		[SW] Reaction cannot be found in any other database.		
 rxn03379	>			[SW] never reported reversible according to BRENDA, and irreversible according to MetaCyc.	http://www.brenda-enzymes.org/enzyme.php?ecno=4.4.1.8#NATURAL%20SUBSTRATES # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-12729	
@@ -438,6 +439,11 @@ rxn05126	>			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn06413	<		-1:cpd00001:0:0:"H2O";-1:cpd01042:0:0:"p-Cresol";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00007:0:0:"O2";1:cpd01034:0:0:"Toluol";2:cpd11935:0:0:"Ferredoxin"	[SW] Direction and stoichiomentry changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=TOLUENE-SIDE-CHAIN-MONOOXYGENASE-RXN	
 rxn10123	>			[SW] Direction and stoichiomentry changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NADH-DEHYDROG-A-RXN	
 rxn10124	>			[SW] Direction and stoichiomentry changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NADH-DEHYDROG-A-RXN	
+rxn08978	>			[SW] direction changed according to MetaCyc and rxn08977	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-271	
+rxn08656	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7229	
+rxn08657	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7229	
+rxn08557	>			[SW] direction changed according to MetaCyc and rxn08556	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-15740	
+rxn01861	<			[SW] No reference found that reports the oxidation of trimethylamine to trimethyl-N-oxide. Only for the opposite reaction.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.6.6.9	
 						
 rxn00650	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN	
 rxn12844	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN	
