@@ -44,7 +44,10 @@ shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
 
 # path for saving sequences
+numeric_old=$LC_NUMERIC
+LC_NUMERIC="us_US.UTF-8" # must be set in order to get printf working with float numbers
 seqpath=$dir/../dat/seq/$taxonomy/unipac$(printf %.0f $(echo "$identity * 100" | bc -l))
+LC_NUMERIC=$numeric_old
 mkdir -p $seqpath
 cd $seqpath
 
