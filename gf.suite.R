@@ -251,8 +251,8 @@ if ( TRUE ){
   cat("\n\n3. Carbon source gapfilling with core reactions only\n")
 
   mod.orig3 <- mod.out
-  #media.org <- fread(paste0(script.dir,"/dat/media/MM_glu.csv")) # use minimal medium
-  media.org <- fread(paste0(script.dir,"/dat/media/Mineral_salt.csv")) # use minimal medium
+  media.org <- fread(paste0(script.dir,"/dat/media/MM_glu.csv")) # use minimal medium
+  #media.org <- fread(paste0(script.dir,"/dat/media/Mineral_salt.csv")) # use minimal medium
   
   ex          <- findExchReact(mod.orig3)
   ex.ind      <- ex@react_pos
