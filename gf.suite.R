@@ -32,11 +32,13 @@ if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
 }
 
 suppressMessages(library(cplexAPI))
-suppressMessages(library(sybilSBML))
+if( "sybilSBML" %in% installed.packages() )
+  suppressMessages(library(sybilSBML))
 suppressMessages(library(sybil))
 suppressMessages(library(data.table))
 suppressMessages(library(stringr))
 suppressMessages(library(methods))
+suppressMessages(library(tools))
 
 # select solver
 if( "cplexAPI" %in% rownames(installed.packages()) ){
@@ -101,9 +103,12 @@ carbon.source <- fread(paste0(script.dir, "/dat/sub2pwy.csv"))
 
 # read full model & target model
 cat("Loading model files", mod.file, "\n")
-mod       <- readRDS(fullmod.file)
-mod.orig  <- readSBMLmod(mod.file)
-mod.orig  <- add_missing_exchanges(mod.orig)
+mod        <- readRDS(fullmod.file)
+if ( toupper(file_ext(mod.file)) == "RDS" ){
+  mod.orig <- readRDS(mod.file)
+}else{ 
+  mod.orig <- readSBMLmod(mod.file)}
+mod.orig   <- add_missing_exchanges(mod.orig)
 
 
 # add diffusion reactions
@@ -246,7 +251,8 @@ if ( TRUE ){
   cat("\n\n3. Carbon source gapfilling with core reactions only\n")
 
   mod.orig3 <- mod.out
-  media.org <- fread(paste0(script.dir,"/dat/media/MM_glu.csv")) # use minimal medium
+  #media.org <- fread(paste0(script.dir,"/dat/media/MM_glu.csv")) # use minimal medium
+  media.org <- fread(paste0(script.dir,"/dat/media/Mineral_salt.csv")) # use minimal medium
   
   ex          <- findExchReact(mod.orig3)
   ex.ind      <- ex@react_pos
@@ -282,6 +288,7 @@ if ( TRUE ){
     src.met      <- ex.met[i]
     src.met.name <- ex.met.name[i]
     media <- media.org[name!="D-Glucose"]
+    #media <- media.org[!name %in% c("Benzoate", "co2")]
     media <- rbind(media, data.table(compounds=gsub("\\[.0\\]","",src.met), name=src.met.name, maxFlux=100))
     
     # constrain model
