@@ -23,7 +23,7 @@ usage()
 exit 1
 }
 
-while getopts "h?p:e:t:" opt; do
+while getopts "h?p:e:t:o" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -37,6 +37,9 @@ while getopts "h?p:e:t:" opt; do
         ;;
     t)
         taxonomy=$OPTARG
+        ;;
+    o)
+        overwrite=true
         ;;
     esac
 done
@@ -76,11 +79,11 @@ do
         fi
         echo -en " ... Downloading $ec \t\t"
         if [ ! -f "$ec.fasta" ]; then # fasta doesn't exist?
-            url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3Abacteria%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+            url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3D$ec%20taxonomy%3Abacteria%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
             wget -q $url -O $ec.fasta
         fi
         if [ ! -s "$ec.fasta" ]; then # fasta is empty?
-            url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3Abacteria)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+            url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3D$ec%20taxonomy%3Abacteria)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
             wget -q $url -O $ec.fasta
         fi
     fi
