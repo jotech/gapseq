@@ -593,8 +593,14 @@ rxn14135	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAG
 rxn16621	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN	
 rxn18043	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN	
 						
-						
-						
+rxn12893		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn11137		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn12893		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn12983		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn13119		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn30133		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn32268		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn32805		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
 						
 rxn09125	>			[SW] Reversible according to Metacyc & BRENDA.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-1602 # http://www.brenda-enzymes.org/enzyme.php?ecno=3.1.1.34#NATURAL%20SUBSTRATES	
 rxn09127	>			[SW] Reversible according to Metacyc & BRENDA.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-1602 # http://www.brenda-enzymes.org/enzyme.php?ecno=3.1.1.34#NATURAL%20SUBSTRATES	
