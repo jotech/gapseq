@@ -287,6 +287,7 @@ rxn12342		TRUE		[SW] generic reaction.
 rxn12343		TRUE		[SW] generic reaction.		
 rxn12345		TRUE		[SW] generic reaction.		
 rxn13047		TRUE		[SW] generic reaction.		
+rxn13048		TRUE		[SW] generic reaction.		
 rxn13049		TRUE		[SW] generic reaction.		
 rxn13086		TRUE		[SW] generic reaction.		
 rxn13093		TRUE		[SW] generic reaction.		
@@ -453,6 +454,105 @@ rxn07889	>			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn07890	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=BENZOATE-12-DIOXYGENASE-RXN	
 rxn07902	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=CATECHOL-12-DIOXYGENASE-RXN	
 rxn07903	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=CATECHOL-12-DIOXYGENASE-RXN	
+rxn01785	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=CYSTEAMINE-DIOXYGENASE-RXN	
+rxn09997		TRUE		[SW] Reaction cannot be found in any other database.		
+rxn13786	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-6381	
+rxn06134	>		-1:cpd00007:0:0:"O2";-2:cpd00067:0:0:"H+";-1:cpd00327:0:0:"strcoa";-2:cpd11797:0:0:"Ferrocytochrome b5";2:cpd00001:0:0:"H2O";1:cpd00399:0:0:"Oleoyl-CoA";2:cpd11795:0:0:"Ferricytochrome b5"	[SW] direction and stoichiometry changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.14.19.1-RXN	
+rxn09486	>			[SW] Probably irreversible because its a highly exergonic reaction.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.7.7.64-RXN	
+rxn06754		TRUE		[SW] Reactions unbalanced in C and N		
+rxn06755		TRUE		[SW] Reactions unbalanced in C and N		
+rxn13163		TRUE		[SW] Model-specific reaction.		
+rxn13164		TRUE		[SW] Model-specific reaction.		
+rxn13165		TRUE		[SW] Model-specific reaction.		
+rxn07295		TRUE		[SW] Charge unbalanced reaction . Also Cannot be found in any other DB.		
+rxn07296		TRUE		[SW] Reactions unbalanced in C and N		
+rxn07297		TRUE		[SW] Reactions unbalanced in C and N		
+rxn11956		TRUE		[SW] generic reaction.		
+rxn12190		TRUE		[SW] generic reaction.		
+rxn11242	>			[SW] Backwards direction not possible because it would generate high energy phosphate bonds without utilizing any energy source.		
+rxn11247	>			[SW] Backwards direction not possible because it would generate high energy phosphate bonds without utilizing any energy source.		
+rxn11576		TRUE		[SW] generic reaction.		
+rxn06504		TRUE		[SW] generic reaction.		
+rxn05853		TRUE		[SW] generic reaction.		
+rxn05879		TRUE		[SW] generic reaction.		
+rxn14071		TRUE		[SW] generic reaction.		
+rxn07190		TRUE		[SW] generic reaction.		
+rxn13025		TRUE		[SW] Reaction unbalanced in P		
+rxn11035			-1:cpd00067:0:0:"H+";-1:cpd00015:0:0:"FAD";-1:cpd00760:0:0:"2-Methylbutyryl-CoA";1:cpd00982:0:0:"FADH2";1:cpd16123:0:0:"tigyl-CoA"	[SW] Stoichiometry was adjusted according to imilar/same, but balanced reaction rxn02270		
+rxn12323	>		-1:cpd00001:0:0:"H2O";-1:cpd16629:0:0:"octadenoyl-acp";1:cpd01080:0:0:"ocdca";1:cpd11493:0:0:"ACP";1:cpd00067:0:0:"H+"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9548	
+rxn12937	>			[SW] Reversibility changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9548	
+rxn13027			-1:cpd00044:0:0:"3-phosphoadenylylsulfate";-1:cpd16831:0:0:"thioredoxin-dithiol";1:cpd00045:0:0:"Adenosine 3-5-bisphosphate";1:cpd00081:0:0:"Sulfite";1:cpd11420:0:0:"trdox";1:cpd00067:0:0:"H+"			
+rxn14168	>		-1:cpd00001:0:0:"H2O";-1:cpd12024:0:0:"(S)-2-Haloacid";1:cpd11844:0:0:"HX";1:cpd12147:0:0:"(S)-2-Hydroxyacid";1:cpd00067:0:0:"H+"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2-HALOACID-DEHALOGENASE-RXN	
+rxn14230	>		-1:cpd00001:0:0:"H2O";-1:cpd12024:0:0:"(S)-2-Haloacid";1:cpd11844:0:0:"HX";1:cpd12118:0:0:"(R)-2-Hydroxyacid";1:cpd00067:0:0:"H+"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2-HALOACID-DEHALOGENASE-RXN	
+rxn14116	>		-1:cpd00001:0:0:"H2O";-1:cpd14489:0:0:"(R)-2-Haloacid";1:cpd11844:0:0:"HX";1:cpd12147:0:0:"(S)-2-Hydroxyacid";1:cpd00067:0:0:"H+"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2-HALOACID-DEHALOGENASE-RXN	
+rxn14240	>		-1:cpd00001:0:0:"H2O";-1:cpd14489:0:0:"(R)-2-Haloacid";1:cpd11844:0:0:"HX";1:cpd12118:0:0:"(R)-2-Hydroxyacid";1:cpd00067:0:0:"H+"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2-HALOACID-DEHALOGENASE-RXN	
+rxn12941	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3-OXOACYL-ACP-REDUCT-RXN	
+rxn12942	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3-OXOACYL-ACP-REDUCT-RXN	
+rxn12943	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3-OXOACYL-ACP-REDUCT-RXN	
+rxn12944	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3-OXOACYL-ACP-REDUCT-RXN	
+rxn12938	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3-OXOACYL-ACP-REDUCT-RXN	
+rxn12939	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3-OXOACYL-ACP-REDUCT-RXN	
+rxn13017	>		-1:cpd00001:0:0:"H2O";-1:cpd16811:0:0:"inositol-phosphoryl-D-ceramide";1:cpd00167:0:0:"Ceramide";1:cpd02484:0:0:"Inositol 3-phosphate";1:cpd00067:0:0:"H+"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=SPHINGOMYELIN-PHOSPHODIESTERASE-RXN	
+rxn13018	>		-1:cpd00001:0:0:"H2O";-1:cpd16812:0:0:"inositol-phosphoryl-P-ceramide";1:cpd02484:0:0:"Inositol 3-phosphate";1:cpd08927:0:0:"Ceramide II";1:cpd00067:0:0:"H+"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=SPHINGOMYELIN-PHOSPHODIESTERASE-RXN	
+rxn11031	>		-1:cpd00067:0:0:"H+";-1:cpd00005:0:0:"NADPH";-1:cpd00668:0:0:"ALCTT";1:cpd00006:0:0:"NADP";1:cpd16120:0:0:"2,3-dihydroxy-3-isovalerate"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ACETOLACTREDUCTOISOM-RXN	
+rxn13098			-1:cpd00067:0:0:"H+";-1:cpd00005:0:0:"NADPH";-1:cpd11420:0:0:"trdox";1:cpd00006:0:0:"NADP";1:cpd16831:0:0:"thioredoxin-dithiol"	[SW] Stoichiometry changed for charge/H+ balance according to MetaCyc.	https://metacyc.org/compound?orgid=META&id=NADPH	
+rxn13078	>		-1:cpd00008:0:0:"ADP";-1:cpd16831:0:0:"thioredoxin-dithiol";1:cpd00177:0:0:"dADP";1:cpd11420:0:0:"trdox";1:cpd00001:0:0:"H2O"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ADPREDUCT-RXN	
+rxn13135	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ADPREDUCT-RXN	
+rxn13079	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ADPREDUCT-RXN	
+rxn13080	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ADPREDUCT-RXN	
+rxn13081	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ADPREDUCT-RXN	
+rxn13136	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ADPREDUCT-RXN	
+rxn13137	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ADPREDUCT-RXN	
+rxn13138	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ADPREDUCT-RXN	
+rxn11047	>		-1:cpd00001:0:0:"H2O";-1:cpd00022:0:0:"Acetyl-CoA";-1:cpd02465:0:0:"tetrahydrodipicolinate";1:cpd00010:0:0:"CoA";1:cpd16133:0:0:"N-acetyl-L-2-amino-6-oxopimelase"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.3.1.89-RXN	
+rxn11155	>			[SW] direction changed according to MetaCyc	https://metacyc.org/compound?orgid=META&id=N-ACETYL-L-2-AMINO-6-OXO-PIMELATE#tab=RXNS	
+rxn12314			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd16608:0:0:"cis-dodec-3-enoyl-acp";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd16614:0:0:"cis-3-oxotetradec-4-enoyl-acp"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.3.1.41-RXN	
+rxn12319			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd16616:0:0:"cis-tetradec-4-enoyl-acp";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd16623:0:0:"cis-3-oxohexadec-7-enoyl-acp"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.3.1.41-RXN	
+rxn12327			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd16625:0:0:"cis-hexadec-7-enoyl-acp";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd16634:0:0:"cis-3-oxooctadec-9-enoyl-acp"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.3.1.41-RXN	
+rxn12311	>		-1:cpd00067:0:0:"H+";-1:cpd00004:0:0:"NADH";-1:cpd16610:0:0:"trans,cis-tetradec-2,4-enoyl-acp";1:cpd00003:0:0:"NAD";1:cpd16616:0:0:"cis-tetradec-4-enoyl-acp"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9662	
+rxn12313	>		-1:cpd00067:0:0:"H+";-1:cpd00005:0:0:"NADPH";-1:cpd16614:0:0:"cis-3-oxotetradec-4-enoyl-acp";1:cpd00006:0:0:"NADP";1:cpd16612:0:0:"cis-3-hydroxytetradec-4-enoyl-acp"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9662	
+rxn12316	>		-1:cpd00067:0:0:"H+";-1:cpd00004:0:0:"NADH";-1:cpd16619:0:0:"trans,cis-hexadec-2,7-enoyl-acp";1:cpd00003:0:0:"NAD";1:cpd16625:0:0:"cis-hexadec-7-enoyl-acp"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9662	
+rxn12318	>		-1:cpd00067:0:0:"H+";-1:cpd00005:0:0:"NADPH";-1:cpd16623:0:0:"cis-3-oxohexadec-7-enoyl-acp";1:cpd00006:0:0:"NADP";1:cpd16621:0:0:"cis-3-hydroxyhexadec-7-enoyl-acp"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9662	
+rxn12324	>		-1:cpd00067:0:0:"H+";-1:cpd00004:0:0:"NADH";-1:cpd16630:0:0:"trans,cis-octadec-2,9-enoyl-acp";1:cpd00003:0:0:"NAD";1:cpd16636:0:0:"cis-octadec-9-enoyl-acp"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9662	
+rxn12326	>		-1:cpd00067:0:0:"H+";-1:cpd00005:0:0:"NADPH";-1:cpd16634:0:0:"cis-3-oxooctadec-9-enoyl-acp";1:cpd00006:0:0:"NADP";1:cpd16632:0:0:"cis-3-hydroxyoctadec-9-enoyl-acp"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9662	
+rxn12900	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9543	
+rxn12901	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9543	
+rxn12902	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9543	
+rxn12903	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9543	
+rxn12904	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9543	
+rxn12905	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9543	
+rxn12906	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9543	
+rxn12923	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ACYLCOASYN-RXN	
+rxn12924	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ACYLCOASYN-RXN	
+rxn12925	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ACYLCOASYN-RXN	
+rxn12926	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ACYLCOASYN-RXN	
+rxn22373	>			[SW] Reaction oxidises Fe2+ to Fe3+	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-12075	
+rxn00056	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-1483	
+						
+rxn12957	=			[SW] direction changed according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=4.2.1.17#SUBSTRATE	
+rxn12958	=			[SW] direction changed according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=4.2.1.17#SUBSTRATE	
+rxn12959	=			[SW] direction changed according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=4.2.1.17#SUBSTRATE	
+rxn12960	=			[SW] direction changed according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=4.2.1.17#SUBSTRATE	
+rxn12961	=			[SW] direction changed according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=4.2.1.17#SUBSTRATE	
+rxn12962	=		-1:cpd00001:0:0:"H2O";-1:cpd16852:0:0:"trans-delta2-octaenoyl-CoA";1:cpd16779:0:0:"3-hydroxyoctanoyl-CoA"	[SW] direction changed according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=4.2.1.17#SUBSTRATE	
+rxn12963	=		-1:cpd00001:0:0:"H2O";-1:cpd16851:0:0:"trans-delta2-hexaenoyl-CoA";1:cpd16777:0:0:"3-hydroxyhexanoyl-CoA"	[SW] direction changed according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=4.2.1.17#SUBSTRATE	
+rxn12964	=		-1:cpd00001:0:0:"H2O";-1:cpd16848:0:0:"trans-delta2-butaenoyl-CoA";1:cpd03043:0:0:"3-Hydroxybutanoyl-CoA"	[SW] direction changed according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=4.2.1.17#SUBSTRATE	
+						
+rxn13063	>			[SW] Fatty-acyl CoA-oxidase in direction of hydrogen peroxide formation. According to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11026	
+rxn13064	>			[SW] Fatty-acyl CoA-oxidase in direction of hydrogen peroxide formation. According to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11026	
+rxn13065	>		-1:cpd00007:0:0:"O2";-1:cpd01260:0:0:"Lauroyl-CoA";1:cpd00025:0:0:"H2O2";1:cpd16850:0:0:"trans-delta2-dodecaenoyl-CoA"	[SW] Fatty-acyl CoA-oxidase in direction of hydrogen peroxide formation. According to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11026	
+rxn13066	>		-1:cpd00007:0:0:"O2";-1:cpd03128:0:0:"Decanoyl-CoA";1:cpd00025:0:0:"H2O2";1:cpd16849:0:0:"trans-delta2-decaenoyl-CoA"	[SW] Fatty-acyl CoA-oxidase in direction of hydrogen peroxide formation. According to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11026	
+rxn13067	>		-1:cpd00007:0:0:"O2";-1:cpd01335:0:0:"Octanoyl-CoA";1:cpd00025:0:0:"H2O2";1:cpd16852:0:0:"trans-delta2-octaenoyl-CoA"	[SW] Fatty-acyl CoA-oxidase in direction of hydrogen peroxide formation. According to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11026	
+rxn13068	>		-1:cpd00007:0:0:"O2";-1:cpd03124:0:0:"Hexanoyl-CoA";1:cpd00025:0:0:"H2O2";1:cpd16851:0:0:"trans-delta2-hexaenoyl-CoA"	[SW] Fatty-acyl CoA-oxidase in direction of hydrogen peroxide formation. According to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11026	
+rxn13069	>		-1:cpd00007:0:0:"O2";-1:cpd00120:0:0:"Butyryl-CoA";1:cpd00025:0:0:"H2O2";1:cpd16848:0:0:"trans-delta2-butaenoyl-CoA"	[SW] Fatty-acyl CoA-oxidase in direction of hydrogen peroxide formation. According to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11026	
+						
+rxn12965	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN66-485	
+rxn12966	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN66-485	
+rxn12967	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN66-485	
+rxn12968	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN66-485	
+rxn12969	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN66-485	
+rxn12970	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN66-485	
+rxn12972	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN66-485	
 						
 rxn00650	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN	
 rxn12844	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN	
@@ -493,8 +593,14 @@ rxn14135	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAG
 rxn16621	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN	
 rxn18043	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN	
 						
-						
-						
+rxn12893		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn11137		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn12893		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn12983		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn13119		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn30133		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn32268		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn32805		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
 						
 rxn09125	>			[SW] Reversible according to Metacyc & BRENDA.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-1602 # http://www.brenda-enzymes.org/enzyme.php?ecno=3.1.1.34#NATURAL%20SUBSTRATES	
 rxn09127	>			[SW] Reversible according to Metacyc & BRENDA.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-1602 # http://www.brenda-enzymes.org/enzyme.php?ecno=3.1.1.34#NATURAL%20SUBSTRATES	
@@ -546,6 +652,9 @@ rxn12332		TRUE		[SW] generic reaction.
 rxn12331		TRUE		[SW] generic reaction.		
 rxn12304		TRUE		[SW] generic reaction.		
 rxn12305		TRUE		[SW] generic reaction.		
+rxn06406		TRUE		[SW] generic reaction.		
+rxn06407		TRUE		[SW] generic reaction.		
+rxn06408		TRUE		[SW] generic reaction.		
 						
 rxn08014	>			[SW] Fatty acid ligase. Elongation not reversible as such.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-13266	
 rxn05465	>			[SW] Fatty acid ligase. Elongation not reversible as such. (2.3.1.39)		
