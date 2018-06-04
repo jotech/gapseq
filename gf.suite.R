@@ -237,6 +237,97 @@ if ( TRUE ){
 }
 
 
+if ( TRUE ){
+  cat("\n\n2b. Anaerobic biomass gapfilling using core reactions only\n")
+  
+  mod.orig2 <- mod.out
+  
+  # load minimal medium and add available carbon sources
+  media2 <- fread(paste0(script.dir,"/dat/media/MM_glu.csv"))
+  media2 <- media2[name!="O2"] # remove oxygen
+  src.met <- carbon.source[guild %in% c("Carbohydrates", "Polymers", "Carboxylic acids", "Amino acids") & exid_seed %in% mod.orig2@react_id, .(id_seed,name,guild)]
+  if( nrow(src.met) == 0)
+    stop("No carbon source exchange reactions found in model")
+  # if glucose is not usable then add other carbon source(s)
+  if( !"alpha-D-Glucose" %in% src.met$name ){
+    src.carbo <- src.met[guild=="Carbohydrates"]
+    if( nrow(src.carbo)>0 )
+      src.add <- src.carbo # if no glucose is there, then add all other available carbohydrates
+    else
+      src.add <- src.met # if no carbohydrates is avaiable, then take everything else (probably amino acid biosynthesis is not papfilled because amino acids are part of the medium)
+    media2 <- rbind(media2, data.table(compounds=gsub("\\[.0\\]","",src.add$id_seed), name=src.add$name, maxFlux=100))  
+  }
+  
+  
+  # constrain model  
+  mod.orig2 <- constrain.model(mod.orig2, media = media2, scaling.fac = diet.scale)
+  mod.orig2@obj_coef <- rep(0,mod.orig2@react_num)
+  
+  bm.ind      <- which(mod.orig2@react_id == "bio1")
+  bm.met.inds <- which(mod.orig2@S[,bm.ind]<0)
+  bm.met      <- gsub("\\[.0\\]","",mod.orig2@met_id[bm.met.inds])
+  bm.met.name <- mod.orig2@met_name[bm.met.inds]
+  mod.fill2    <- mod.orig2
+  mod.fill2.counter <- 0
+  mod.fill2.names <- c()
+  
+  if( !verbose ) options(warn=-1)
+  for( i in seq_along(bm.met.inds) ){
+    cat("\r",i,"/",length(bm.met.inds))
+    target.new <- bm.met[i]
+    
+    # add metabolite objective + sink
+    rm.sink = TRUE
+    if( paste0("EX_",target.new,"_c0") %in% react_id(mod.fill2) )
+      rm.sink = FALSE
+    mod.fill2  <- add_met_sink(mod.fill2, target.new, obj = 1)
+    
+    sol <- optimizeProb(mod.fill2, retOptSol=F)
+    
+    if(sol$stat == ok & sol$obj >= 1e-6){
+      mod.fill2@obj_coef <- rep(0,mod.fill2@react_num)
+    }else{
+      if( verbose ) cat("\nTry to gapfill", bm.met.name[i],"\n")
+      invisible(capture.output( 
+        mod.fill2.lst <- gapfill4(mod.orig = mod.fill2, 
+                                  mod.full = mod,
+                                  core.rxn = core.rxn, 
+                                  min.gr = min.obj.val,
+                                  dummy.bnd = dummy.bnd,
+                                  diet.scale = diet.scale,
+                                  core.weight = core.weight,
+                                  dummy.weight = dummy.weight,
+                                  script.dir = script.dir,
+                                  core.only = TRUE,
+                                  mtf.scale = 2,
+                                  verbose=verbose) ))
+      new.reactions <- mod.fill2.lst$rxns.added
+      if( length(new.reactions) > 0 ){
+        if( verbose ) cat("Added reactions:", new.reactions, "\n")
+        mod.fill2 <- mod.fill2.lst$model
+        mod.fill2.counter <- mod.fill2.counter + 1
+        mod.fill2.names <- c(mod.fill2.names, bm.met.name[i])
+      }
+      mod.fill2@obj_coef <- rep(0,mod.fill2@react_num)
+    }
+    if( rm.sink )
+      mod.fill2 <- rmReact(mod.fill2, react=paste0("EX_",target.new,"_c0"))
+  }
+  options(warn=0)
+  
+  mod.fill2 <- changeObjFunc(mod.fill2, react=paste0("EX_",target.met,"_c0"))
+  mod.fill2 <- constrain.model(mod.fill2, media.file = media.file, scaling.fac = 1)
+  mod.out <- mod.fill2
+  
+  cat("\rGapfill summary:\n")
+  cat("Filled components:    ",mod.fill2.counter, "(",paste(mod.fill2.names, collapse = ","),")\n")
+  cat("Added reactions:      ",length(mod.fill2@react_id)-length(mod.fill1@react_id),"\n")
+  cat("Final growth rate:    ",optimizeProb(mod.fill2, retOptSol=F)$obj,"\n")
+}
+
+
+
+
 # Add list of exchange reactions for step 3 and 4 in order to check for a wide range of carbon sources or fermentation products
 # (Unused exchanges will be deleted afterwards)
 idx <- which( !carbon.source$exid_seed %in% mod.out@react_id )
