@@ -528,6 +528,9 @@ rxn12925	>			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn12926	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ACYLCOASYN-RXN	
 rxn22373	>			[SW] Reaction oxidises Fe2+ to Fe3+	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-12075	
 rxn00056	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-1483	
+rxn00905	<			[SW] Formation of formaldehyde not detected according to BRENDA.	http://www.brenda-enzymes.org/enzyme.php?ecno=4.1.2.12#SUBSTRATE	
+rxn08336	>			[SW] direction changed according to MetaCyc and BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=1.3.5.2#NATURAL%20SUBSTRATES # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-6554	
+rxn01484	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NAG6PDEACET-RXN	
 						
 rxn12957	=			[SW] direction changed according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=4.2.1.17#SUBSTRATE	
 rxn12958	=			[SW] direction changed according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=4.2.1.17#SUBSTRATE	
@@ -593,14 +596,14 @@ rxn14135	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAG
 rxn16621	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN	
 rxn18043	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN	
 						
-rxn12893		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
-rxn11137		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
-rxn12893		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
-rxn12983		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
-rxn13119		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
-rxn30133		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
-rxn32268		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
-rxn32805		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might noch be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn12893		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might not be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn11137		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might not be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn12893		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might not be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn12983		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might not be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn13119		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might not be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn30133		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might not be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn32268		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might not be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn32805		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might not be linked with reactions that utilize either L-lactate or D-lactate.		
 						
 rxn09125	>			[SW] Reversible according to Metacyc & BRENDA.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-1602 # http://www.brenda-enzymes.org/enzyme.php?ecno=3.1.1.34#NATURAL%20SUBSTRATES	
 rxn09127	>			[SW] Reversible according to Metacyc & BRENDA.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-1602 # http://www.brenda-enzymes.org/enzyme.php?ecno=3.1.1.34#NATURAL%20SUBSTRATES	
@@ -655,6 +658,8 @@ rxn12305		TRUE		[SW] generic reaction.
 rxn06406		TRUE		[SW] generic reaction.		
 rxn06407		TRUE		[SW] generic reaction.		
 rxn06408		TRUE		[SW] generic reaction.		
+rxn12496		TRUE		[SW] generic reaction.		
+rxn12214		TRUE		[SW] generic reaction.		
 						
 rxn08014	>			[SW] Fatty acid ligase. Elongation not reversible as such.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-13266	
 rxn05465	>			[SW] Fatty acid ligase. Elongation not reversible as such. (2.3.1.39)		
@@ -664,71 +669,71 @@ rxn09434	>			[SW] Fatty acid elongation not reversible as such.
 rxn10954	>			[SW] Fatty acid elongation not reversible as such.		
 rxn08392	>			[SW] Fatty acid elongation not reversible as such.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9663	
 						
-rxn05758		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn05767		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn05780		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn06055		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn06245		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn06783		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn06902		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn06903		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn06911		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn06920		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn06925		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn06927		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn11652		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn11658		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn11686		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn11947		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn11949		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn14045		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn14047		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn14086		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn14352		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn14364		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn15610		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn16153		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn16164		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn16640		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn19838		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn20770		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn20771		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn22255		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn22824		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn23077		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn23078		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn25467		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26151		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26153		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26154		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26155		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26156		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26157		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26179		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26195		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26266		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26267		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26268		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26290		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26299		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26308		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26392		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26393		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26411		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26442		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn26443		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn27207		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn27319		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn28219		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn28535		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn28790		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn30973		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn30986		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn30987		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn31281		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn31471		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn32467		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
-rxn32771		TRUE		[SW] Electrons shouldn???t be part of reactions as they are no metabolites and do not float around freely.		
+rxn05758		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn05767		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn05780		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn06055		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn06245		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn06783		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn06902		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn06903		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn06911		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn06920		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn06925		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn06927		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn11652		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn11658		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn11686		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn11947		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn11949		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn14045		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn14047		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn14086		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn14352		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn14364		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn15610		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn16153		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn16164		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn16640		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn19838		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn20770		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn20771		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn22255		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn22824		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn23077		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn23078		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn25467		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26151		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26153		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26154		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26155		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26156		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26157		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26179		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26195		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26266		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26267		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26268		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26290		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26299		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26308		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26392		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26393		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26411		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26442		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn26443		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn27207		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn27319		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn28219		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn28535		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn28790		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn30973		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn30986		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn30987		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn31281		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn31471		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn32467		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
+rxn32771		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.		
 						
 rxn13254		TRUE		[SW] yeast specific		
 rxn13255		TRUE		[SW] yeast specific		
