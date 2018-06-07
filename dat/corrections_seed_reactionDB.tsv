@@ -531,6 +531,19 @@ rxn00056	>			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn00905	<			[SW] Formation of formaldehyde not detected according to BRENDA.	http://www.brenda-enzymes.org/enzyme.php?ecno=4.1.2.12#SUBSTRATE	
 rxn08336	>			[SW] direction changed according to MetaCyc and BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=1.3.5.2#NATURAL%20SUBSTRATES # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-6554	
 rxn01484	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NAG6PDEACET-RXN	
+rxn08167	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=L-ASPARTATE-OXID-RXN	
+rxn05210	=		-1:cpd00009:1:0:"Phosphate";-3:cpd00971:1:0:"Na+";1:cpd00009:0:0:"Phosphate";3:cpd00971:0:0:"Na+"	[SW] Stoichiometry of Pi/Na+ Symporter adjusted according to TCDB	http://www.tcdb.org/search/result.php?tc=2.A.58	
+rxn34397			-1:cpd00009:1:0:"Phosphate";-3:cpd00971:1:0:"Na+";1:cpd00009:0:0:"Phosphate";3:cpd00971:0:0:"Na+"	[SW] Stoichiometry of Pi/Na+ Symporter adjusted according to TCDB	http://www.tcdb.org/search/result.php?tc=2.A.58	
+rxn34522			-1:cpd00009:1:0:"Phosphate";-3:cpd00971:1:0:"Na+";1:cpd00009:0:0:"Phosphate";3:cpd00971:0:0:"Na+"	[SW] Stoichiometry of Pi/Na+ Symporter adjusted according to TCDB	http://www.tcdb.org/search/result.php?tc=2.A.58	
+rxn13118		TRUE		[SW] Transport not found in any other database and caused futile cycles.		
+rxn09739		TRUE		[SW] Transport not found in any other database and caused futile cycles.		
+rxn13120		TRUE		[SW] Odd transport reaction of water and glutamate.		
+rxn06448	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=TRYPTOPHAN--TRNA-LIGASE-RXN	
+rxn13170	>		-1:cpd00002:0:0:"ATP";-1:cpd00065:0:0:"L-Tryptophan";-1:cpd11923:0:0:"tRNA(Trp)";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";1:cpd00067:0:0:"H+";1:cpd12336:0:0:"L-Tryptophanyl-tRNA(Trp)"	[SW] Trp was extracellular. Should be intracellular in this reaction. Direction also changed according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=TRYPTOPHAN--TRNA-LIGASE-RXN	
+rxn05207			-1:cpd00130:1:0:"L-Malate";-2:cpd00971:1:0:"Na+";1:cpd00130:0:0:"L-Malate";2:cpd00971:0:0:"Na+"	[SW] NA+/Malate ratio is reported to be 2:1	10.1016/j.bbamem.2009.10.008	
+						
+rxn16094		TRUE		[SW] Reaction not found in any other database and caused futile cycles.		
+rxn16104		TRUE		[SW] Reaction not found in any other database and caused futile cycles.		
 						
 rxn12957	=			[SW] direction changed according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=4.2.1.17#SUBSTRATE	
 rxn12958	=			[SW] direction changed according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=4.2.1.17#SUBSTRATE	
@@ -540,6 +553,14 @@ rxn12961	=			[SW] direction changed according to BRENDA	http://www.brenda-enzyme
 rxn12962	=		-1:cpd00001:0:0:"H2O";-1:cpd16852:0:0:"trans-delta2-octaenoyl-CoA";1:cpd16779:0:0:"3-hydroxyoctanoyl-CoA"	[SW] direction changed according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=4.2.1.17#SUBSTRATE	
 rxn12963	=		-1:cpd00001:0:0:"H2O";-1:cpd16851:0:0:"trans-delta2-hexaenoyl-CoA";1:cpd16777:0:0:"3-hydroxyhexanoyl-CoA"	[SW] direction changed according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=4.2.1.17#SUBSTRATE	
 rxn12964	=		-1:cpd00001:0:0:"H2O";-1:cpd16848:0:0:"trans-delta2-butaenoyl-CoA";1:cpd03043:0:0:"3-Hydroxybutanoyl-CoA"	[SW] direction changed according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=4.2.1.17#SUBSTRATE	
+						
+rxn08734	>			[SW] unsure, but highly exergonic reaction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5256	
+rxn08735	>			[SW] unsure, but highly exergonic reaction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5256	
+rxn08736	>			[SW] unsure, but highly exergonic reaction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5256	
+rxn10117	>			[SW] unsure, but highly exergonic reaction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5256	
+rxn10118	>			[SW] unsure, but highly exergonic reaction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5256	
+rxn10119	>			[SW] unsure, but highly exergonic reaction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5256	
+rxn10507	=		-2:cpd00067:0:0:"H+";-2:cpd15877:0:0:"ferredoxin (reduced) 2[4Fe-4S]";1:cpd11640:0:0:"H2";2:cpd15876:0:0:"ferredoxin (oxidized) 2[4Fe-4S]"	[SW] hydrogenase can perform H2 evolution and oxidation. Stoich. Adjusted according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=HYDROG-RXN	
 						
 rxn13063	>			[SW] Fatty-acyl CoA-oxidase in direction of hydrogen peroxide formation. According to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11026	
 rxn13064	>			[SW] Fatty-acyl CoA-oxidase in direction of hydrogen peroxide formation. According to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11026	
@@ -806,7 +827,6 @@ rxn05480	>			[SW] Proton symport uses membrane-proton potential: Force works onl
 rxn05481	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
 rxn05482	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
 rxn05484	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05488	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
 rxn05494	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
 rxn05495	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
 rxn05500	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
@@ -816,7 +836,7 @@ rxn05511	>			[SW] Proton symport uses membrane-proton potential: Force works onl
 rxn05519	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
 rxn05531	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
 rxn05551	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05559	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
+						transport
 rxn05565	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
 rxn05566	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
 rxn05571	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
@@ -1191,7 +1211,7 @@ rxn10497	>			H+-coupled transport w/o chemical transformation of transported mol
 rxn10573	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn10614	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn10818	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn10860	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn10860	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		
 rxn10977	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn10978	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn11099	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
@@ -1589,253 +1609,267 @@ rxn34512	<			H+-coupled transport w/o chemical transformation of transported mol
 rxn34534	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn05209	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 						
-rxn05667		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn07924		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn07925		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn07926		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn07927		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn07928		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn07931		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn07972		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn07973		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn07974		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn07975		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08004		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08005		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08006		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08009		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08012		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08030		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08036		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08037		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08039		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08042		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08047		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08049		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08051		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08059		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08063		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08065		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08069		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08082		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08096		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08099		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08104		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08115		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08117		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08134		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08135		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08142		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08155		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08159		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08170		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08175		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08182		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08184		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08186		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08197		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08211		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08214		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08217		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08234		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08236		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08241		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08265		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08267		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08279		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08283		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08284		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08290		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08293		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08302		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08303		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08305		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08314		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08315		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08317		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08320		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08322		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08324		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08342		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08344		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08351		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08363		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08373		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08374		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08375		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08377		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08424		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08426		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08432		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08475		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08525		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08537		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08539		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08540		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08544		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08545		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08554		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08560		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08562		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08564		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08566		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08570		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08572		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08574		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08577		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08579		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08581		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08585		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08587		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08589		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08593		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08595		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08600		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08610		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08614		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08617		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08621		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08623		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08625		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08633		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08639		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08640		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08643		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08645		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08653		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08664		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08672		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08674		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08677		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08680		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08682		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08702		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08721		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08723		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08726		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08732		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08737		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08743		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08747		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08749		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08754		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08755		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08759		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08780		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08786		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08795		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08856		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08859		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08864		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08868		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08870		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08873		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08874		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08876		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08878		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08880		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08883		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08886		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08908		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08911		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08920		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08925		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08945		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08950		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08960		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08985		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08991		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08999		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09005		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09030		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09036		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09048		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09050		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09061		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09080		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09118		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09121		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09166		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09172		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09183		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09185		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09190		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09193		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09204		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09216		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09218		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09223		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09228		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09229		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09243		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09248		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09257		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09260		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09266		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09271		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09275		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09278		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09284		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09286		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09287		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09299		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09300		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09303		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09307		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09309		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09318		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09323		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09330		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09334		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09335		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09337		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09339		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09342		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09347		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09349		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09352		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09353		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09361		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09366		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09372		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09378		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09380		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09382		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09385		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09387		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09390		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09642		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09648		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09741		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09742		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09765		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09766		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09768		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09789		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09791		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09793		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09794		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09796		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09805		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09807		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09823		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn12784		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn12789		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn12793		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn12795		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn12809		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn12812		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn12817		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn12818		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn13345		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn13406		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn13407		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn05616		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08947		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn05206		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn08028		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn09771		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
-rxn05292		TRUE		large polar molecules or smlall charged molecules cannot cross the mebrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn05667		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn07924		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn07925		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn07926		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn07927		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn07928		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn07931		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn07972		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn07973		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn07974		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn07975		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08004		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08005		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08006		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08009		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08012		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08030		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08036		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08037		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08039		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08042		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08047		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08049		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08051		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08059		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08063		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08065		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08069		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08082		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08096		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08099		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08104		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08115		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08117		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08134		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08135		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08142		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08155		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08159		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08170		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08175		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08182		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08184		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08186		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08197		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08211		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08214		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08217		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08234		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08236		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08241		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08265		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08267		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08279		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08283		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08284		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08290		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08293		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08302		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08303		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08305		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08314		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08315		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08317		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08320		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08322		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08324		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08342		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08344		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08351		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08363		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08373		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08374		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08375		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08377		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08424		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08426		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08432		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08475		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08525		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08537		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08539		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08540		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08544		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08545		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08554		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08560		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08562		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08564		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08566		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08570		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08572		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08574		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08577		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08579		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08581		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08585		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08587		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08589		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08593		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08595		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08600		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08610		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08614		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08617		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08621		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08623		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08625		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08633		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08639		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08640		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08643		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08645		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08653		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08664		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08672		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08674		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08677		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08680		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08682		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08702		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08721		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08723		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08726		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08732		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08737		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08743		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08747		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08749		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08754		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08755		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08759		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08780		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08786		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08795		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08856		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08859		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08864		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08868		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08870		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08873		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08874		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08876		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08878		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08880		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08883		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08886		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08908		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08911		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08920		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08925		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08945		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08950		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08960		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08985		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08991		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08999		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09005		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09030		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09036		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09048		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09050		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09061		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09080		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09118		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09121		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09166		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09172		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09183		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09185		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09190		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09193		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09204		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09216		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09218		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09223		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09228		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09229		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09243		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09248		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09257		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09260		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09266		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09271		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09275		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09278		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09284		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09286		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09287		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09299		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09300		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09303		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09307		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09309		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09318		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09323		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09330		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09334		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09335		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09337		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09339		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09342		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09347		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09349		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09352		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09353		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09361		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09366		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09372		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09378		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09380		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09382		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09385		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09387		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09390		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09642		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09648		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09741		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09742		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09765		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09766		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09768		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09789		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09791		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09793		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09794		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09796		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09805		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09807		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09823		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn12784		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn12789		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn12793		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn12795		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn12809		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn12812		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn12817		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn12818		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn13345		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn13406		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn13407		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn05616		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08947		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn05206		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn08028		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn09771		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn05292		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
+rxn05238		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn27375		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn13365		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn31201		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn23651		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn12420		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn34296		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn08662		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn32020		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09839		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn05222		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09327		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn34118		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn12803		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
 						
 rxn09898	>			ATP-Depending amino acid ligases are generally irreversible	E.g.: https://biocyc.org/gene?orgid=META&id=DALADALALIGA-MONOMER	
 rxn09899	>			ATP-Depending amino acid ligases are generally irreversible	E.g.: https://biocyc.org/gene?orgid=META&id=DALADALALIGA-MONOMER	
@@ -2002,3 +2036,14 @@ rxn15103	>			[SW] Phosphates are usually irreversible, as they would build a hig
 rxn15102	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.		
 rxn05782	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.		
 rxn01352	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.		
+						
+rxn05245		TRUE		[SW] Valine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09375		TRUE		[SW] Valine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn29139		TRUE		[SW] Valine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn33518		TRUE		[SW] Valine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn33520		TRUE		[SW] Valine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn05218		TRUE		[SW] Glycine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn13111		TRUE		[SW] Glycine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn31188		TRUE		[SW] Glycine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn11336		TRUE		[SW] Phenylacetic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn12774		TRUE		[SW] Phenylacetic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
