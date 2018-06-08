@@ -532,15 +532,18 @@ rxn00905	<			[SW] Formation of formaldehyde not detected according to BRENDA.	ht
 rxn08336	>			[SW] direction changed according to MetaCyc and BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=1.3.5.2#NATURAL%20SUBSTRATES # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-6554	
 rxn01484	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NAG6PDEACET-RXN	
 rxn08167	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=L-ASPARTATE-OXID-RXN	
-rxn05210	=		-1:cpd00009:1:0:"Phosphate";-3:cpd00971:1:0:"Na+";1:cpd00009:0:0:"Phosphate";3:cpd00971:0:0:"Na+"	[SW] Stoichiometry of Pi/Na+ Symporter adjusted according to TCDB	http://www.tcdb.org/search/result.php?tc=2.A.58	
-rxn34397			-1:cpd00009:1:0:"Phosphate";-3:cpd00971:1:0:"Na+";1:cpd00009:0:0:"Phosphate";3:cpd00971:0:0:"Na+"	[SW] Stoichiometry of Pi/Na+ Symporter adjusted according to TCDB	http://www.tcdb.org/search/result.php?tc=2.A.58	
-rxn34522			-1:cpd00009:1:0:"Phosphate";-3:cpd00971:1:0:"Na+";1:cpd00009:0:0:"Phosphate";3:cpd00971:0:0:"Na+"	[SW] Stoichiometry of Pi/Na+ Symporter adjusted according to TCDB	http://www.tcdb.org/search/result.php?tc=2.A.58	
+rxn05210	=		-1:cpd00009:1:0:"Phosphate";-2:cpd00971:1:0:"Na+";1:cpd00009:0:0:"Phosphate";2:cpd00971:0:0:"Na+"	[SW] Stoichiometry of Pi/Na+ Symporter adjusted according to TCDB	http://www.tcdb.org/search/result.php?tc=2.A.58	
+rxn34397			-1:cpd00009:1:0:"Phosphate";-2:cpd00971:1:0:"Na+";1:cpd00009:0:0:"Phosphate";2:cpd00971:0:0:"Na+"	[SW] Stoichiometry of Pi/Na+ Symporter adjusted according to TCDB	http://www.tcdb.org/search/result.php?tc=2.A.58	
+rxn05313			-1:cpd00009:1:0:"Phosphate";-2:cpd00971:1:0:"Na+";1:cpd00009:0:0:"Phosphate";2:cpd00971:0:0:"Na+"	[SW] Stoichiometry of Pi/Na+ Symporter adjusted according to TCDB	http://www.tcdb.org/search/result.php?tc=2.A.58	
+rxn34522			-1:cpd00009:1:0:"Phosphate";-2:cpd00971:1:0:"Na+";1:cpd00009:0:0:"Phosphate";2:cpd00971:0:0:"Na+"	[SW] Stoichiometry of Pi/Na+ Symporter adjusted according to TCDB	http://www.tcdb.org/search/result.php?tc=2.A.58	
 rxn13118		TRUE		[SW] Transport not found in any other database and caused futile cycles.		
 rxn09739		TRUE		[SW] Transport not found in any other database and caused futile cycles.		
 rxn13120		TRUE		[SW] Odd transport reaction of water and glutamate.		
 rxn06448	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=TRYPTOPHAN--TRNA-LIGASE-RXN	
 rxn13170	>		-1:cpd00002:0:0:"ATP";-1:cpd00065:0:0:"L-Tryptophan";-1:cpd11923:0:0:"tRNA(Trp)";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";1:cpd00067:0:0:"H+";1:cpd12336:0:0:"L-Tryptophanyl-tRNA(Trp)"	[SW] Trp was extracellular. Should be intracellular in this reaction. Direction also changed according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=TRYPTOPHAN--TRNA-LIGASE-RXN	
-rxn05207			-1:cpd00130:1:0:"L-Malate";-2:cpd00971:1:0:"Na+";1:cpd00130:0:0:"L-Malate";2:cpd00971:0:0:"Na+"	[SW] NA+/Malate ratio is reported to be 2:1	10.1016/j.bbamem.2009.10.008	
+rxn08188			-1:cpd00063:0:0:"Ca2+";-3:cpd00971:1:0:"Na+";1:cpd00063:1:0:"Ca2+";3:cpd00971:0:0:"Na+"	[SW] Stoichiometry changed according to TCDB. 1:3	http://www.tcdb.org/search/result.php?tc=2.A.19	
+rxn10868		TRUE		[SW] seems to be present only in mamalian kidney		
+rxn05517		TRUE		[SW] Transporter not found in any other database.		
 						
 rxn16094		TRUE		[SW] Reaction not found in any other database and caused futile cycles.		
 rxn16104		TRUE		[SW] Reaction not found in any other database and caused futile cycles.		
@@ -569,6 +572,17 @@ rxn13066	>		-1:cpd00007:0:0:"O2";-1:cpd03128:0:0:"Decanoyl-CoA";1:cpd00025:0:0:"
 rxn13067	>		-1:cpd00007:0:0:"O2";-1:cpd01335:0:0:"Octanoyl-CoA";1:cpd00025:0:0:"H2O2";1:cpd16852:0:0:"trans-delta2-octaenoyl-CoA"	[SW] Fatty-acyl CoA-oxidase in direction of hydrogen peroxide formation. According to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11026	
 rxn13068	>		-1:cpd00007:0:0:"O2";-1:cpd03124:0:0:"Hexanoyl-CoA";1:cpd00025:0:0:"H2O2";1:cpd16851:0:0:"trans-delta2-hexaenoyl-CoA"	[SW] Fatty-acyl CoA-oxidase in direction of hydrogen peroxide formation. According to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11026	
 rxn13069	>		-1:cpd00007:0:0:"O2";-1:cpd00120:0:0:"Butyryl-CoA";1:cpd00025:0:0:"H2O2";1:cpd16848:0:0:"trans-delta2-butaenoyl-CoA"	[SW] Fatty-acyl CoA-oxidase in direction of hydrogen peroxide formation. According to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11026	
+						
+rxn05554	>			[SW] direction changed according to MetaCyc	https://ecocyc.org/gene?orgid=ECOLI&id=UHPT-MONOMER#tab=RXNS	
+rxn05563	>			[SW] direction changed according to MetaCyc	https://ecocyc.org/gene?orgid=ECOLI&id=UHPT-MONOMER#tab=RXNS	
+rxn08431	>			[SW] direction changed according to MetaCyc	https://ecocyc.org/gene?orgid=ECOLI&id=UHPT-MONOMER#tab=RXNS	
+rxn08569	>			[SW] direction changed according to MetaCyc	https://ecocyc.org/gene?orgid=ECOLI&id=UHPT-MONOMER#tab=RXNS	
+rxn08879	>			[SW] direction changed according to MetaCyc	https://ecocyc.org/gene?orgid=ECOLI&id=UHPT-MONOMER#tab=RXNS	
+rxn10187	>			[SW] direction changed according to MetaCyc	https://ecocyc.org/gene?orgid=ECOLI&id=UHPT-MONOMER#tab=RXNS	
+rxn05562	>			[SW] direction changed according to MetaCyc	https://ecocyc.org/gene?orgid=ECOLI&id=UHPT-MONOMER#tab=RXNS	
+rxn10188	>			[SW] direction changed according to MetaCyc	https://ecocyc.org/gene?orgid=ECOLI&id=UHPT-MONOMER#tab=RXNS	
+rxn08642	>			[SW] direction changed according to MetaCyc	https://ecocyc.org/gene?orgid=ECOLI&id=UHPT-MONOMER#tab=RXNS	
+rxn10165	>			[SW] direction changed according to MetaCyc	https://ecocyc.org/gene?orgid=ECOLI&id=UHPT-MONOMER#tab=RXNS	
 						
 rxn12965	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN66-485	
 rxn12966	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN66-485	
@@ -858,7 +872,7 @@ rxn05640	>			[SW] Proton symport uses membrane-proton potential: Force works onl
 rxn05645	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
 rxn05646	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
 rxn05649	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05651	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
+rxn05651	>		-1:cpd00048:1:0:"Sulfate";-2:cpd00067:1:0:"H+";1:cpd00048:0:0:"Sulfate";2:cpd00067:0:0:"H+"	[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
 rxn05659	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
 rxn05661	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
 rxn05671	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
@@ -1078,7 +1092,7 @@ rxn05299	>			H+-coupled transport w/o chemical transformation of transported mol
 rxn05301	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn05306	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn05307	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05312	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn05312	>		-1:cpd00009:1:0:"Phosphate";-2:cpd00067:1:0:"H+";1:cpd00009:0:0:"Phosphate";2:cpd00067:0:0:"H+"	H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn05316	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn05317	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn05318	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
@@ -1609,6 +1623,17 @@ rxn34512	<			H+-coupled transport w/o chemical transformation of transported mol
 rxn34534	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn05209	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 						
+rxn12379		TRUE		Transport reactions with Protons in periplasmic space are currently omitted.		
+rxn12370		TRUE		Transport reactions with Protons in periplasmic space are currently omitted.		
+rxn12378		TRUE		Transport reactions with Protons in periplasmic space are currently omitted.		
+rxn12421		TRUE		Transport reactions with Protons in periplasmic space are currently omitted.		
+rxn12437		TRUE		Transport reactions with Protons in periplasmic space are currently omitted.		
+rxn12439		TRUE		Transport reactions with Protons in periplasmic space are currently omitted.		
+rxn12449		TRUE		Transport reactions with Protons in periplasmic space are currently omitted.		
+rxn12450		TRUE		Transport reactions with Protons in periplasmic space are currently omitted.		
+rxn12455		TRUE		Transport reactions with Protons in periplasmic space are currently omitted.		
+rxn12458		TRUE		Transport reactions with Protons in periplasmic space are currently omitted.		
+						
 rxn05667		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
 rxn07924		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
 rxn07925		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion
@@ -2047,3 +2072,10 @@ rxn13111		TRUE		[SW] Glycine diffusion across membrane unlikely	https://www.ncbi
 rxn31188		TRUE		[SW] Glycine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
 rxn11336		TRUE		[SW] Phenylacetic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
 rxn12774		TRUE		[SW] Phenylacetic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn10826		TRUE		[SW] Carbonic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn13310		TRUE		[SW] Carbonic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn29060		TRUE		[SW] Carbonic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn29238		TRUE		[SW] Carbonic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn31553		TRUE		[SW] Carbonic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+						
+rxn09713		TRUE		[SW] Unsure. However, only reported in few cases and only mitochondrial.	http://www.tcdb.org/search/result.php?tc=2.A.29.2.7	
