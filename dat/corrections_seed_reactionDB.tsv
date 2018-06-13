@@ -42,13 +42,14 @@ rxn02289	>			[SW] Reaction irreversible.	Nurmikko, V.; M??nts??l??, P.; Kuusikko
 rxn00508		TRUE		[SW] Reaction is not Proton balanced and cannot be found in chem. Databases.		
 rxn00509		TRUE		[SW] Reaction is not Proton balanced and cannot be found in chem. Databases.		
 rxn05734		TRUE		[SW] Reaction cannot be found in any other database.		
-rxn00148	>			[SW] Pyruvate kinase is irreversible under physiological conditions	Berg JM Tymoczko JL, Stryer L, Clarke ND (2002). Biochemistry (fifth ed.). New York, NY: W.H. Freeman. ISBN 978-0-7167-3051-4.	
-rxn00840	>			[SW] Pyruvate kinase is irreversible under physiological conditions. Same as rxn00148, but with dATP as cofactor.	Berg JM Tymoczko JL, Stryer L, Clarke ND (2002). Biochemistry (fifth ed.). New York, NY: W.H. Freeman. ISBN 978-0-7167-3051-4.	
-rxn01354	>			[SW] Pyruvate kinase is irreversible under physiological conditions. Same as rxn00148, but with dGTP as cofactor.	Berg JM Tymoczko JL, Stryer L, Clarke ND (2002). Biochemistry (fifth ed.). New York, NY: W.H. Freeman. ISBN 978-0-7167-3051-4.	
-rxn00517	>			[SW] Pyruvate kinase is irreversible under physiological conditions. Same as rxn00148, but with ITP as cofactor.	Berg JM Tymoczko JL, Stryer L, Clarke ND (2002). Biochemistry (fifth ed.). New York, NY: W.H. Freeman. ISBN 978-0-7167-3051-4.	
-rxn00304	>			[SW] Pyruvate kinase is irreversible under physiological conditions. Same as rxn00148, but with GTP as cofactor.	Berg JM Tymoczko JL, Stryer L, Clarke ND (2002). Biochemistry (fifth ed.). New York, NY: W.H. Freeman. ISBN 978-0-7167-3051-4.	
-rxn00411	>			[SW] Pyruvate kinase is irreversible under physiological conditions. Same as rxn00148, but with CTP as cofactor.	Berg JM Tymoczko JL, Stryer L, Clarke ND (2002). Biochemistry (fifth ed.). New York, NY: W.H. Freeman. ISBN 978-0-7167-3051-4.	
-rxn00460	>			[SW] Pyruvate kinase is irreversible under physiological conditions. Same as rxn00148, but with UTP as cofactor.	Berg JM Tymoczko JL, Stryer L, Clarke ND (2002). Biochemistry (fifth ed.). New York, NY: W.H. Freeman. ISBN 978-0-7167-3051-4.	
+rxn00148	<			[SW] Pyruvate kinase is irreversible under physiological conditions	Berg JM Tymoczko JL, Stryer L, Clarke ND (2002). Biochemistry (fifth ed.). New York, NY: W.H. Freeman. ISBN 978-0-7167-3051-4.	
+rxn00840	<			[SW] Pyruvate kinase is irreversible under physiological conditions. Same as rxn00148, but with dATP as cofactor.	Berg JM Tymoczko JL, Stryer L, Clarke ND (2002). Biochemistry (fifth ed.). New York, NY: W.H. Freeman. ISBN 978-0-7167-3051-4.	
+rxn01354	<			[SW] Pyruvate kinase is irreversible under physiological conditions. Same as rxn00148, but with dGTP as cofactor.	Berg JM Tymoczko JL, Stryer L, Clarke ND (2002). Biochemistry (fifth ed.). New York, NY: W.H. Freeman. ISBN 978-0-7167-3051-4.	
+rxn00517	<			[SW] Pyruvate kinase is irreversible under physiological conditions. Same as rxn00148, but with ITP as cofactor.	Berg JM Tymoczko JL, Stryer L, Clarke ND (2002). Biochemistry (fifth ed.). New York, NY: W.H. Freeman. ISBN 978-0-7167-3051-4.	
+rxn00304	<			[SW] Pyruvate kinase is irreversible under physiological conditions. Same as rxn00148, but with GTP as cofactor.	Berg JM Tymoczko JL, Stryer L, Clarke ND (2002). Biochemistry (fifth ed.). New York, NY: W.H. Freeman. ISBN 978-0-7167-3051-4.	
+rxn00411	<			[SW] Pyruvate kinase is irreversible under physiological conditions. Same as rxn00148, but with CTP as cofactor.	Berg JM Tymoczko JL, Stryer L, Clarke ND (2002). Biochemistry (fifth ed.). New York, NY: W.H. Freeman. ISBN 978-0-7167-3051-4.	
+rxn00460	<			[SW] Pyruvate kinase is irreversible under physiological conditions. Same as rxn00148, but with UTP as cofactor.	Berg JM Tymoczko JL, Stryer L, Clarke ND (2002). Biochemistry (fifth ed.). New York, NY: W.H. Freeman. ISBN 978-0-7167-3051-4.	
+rxn01667	<			[SW] Pyruvate kinase is irreversible under physiological conditions. Same as rxn00148, but with NTP as cofactor.	Berg JM Tymoczko JL, Stryer L, Clarke ND (2002). Biochemistry (fifth ed.). New York, NY: W.H. Freeman. ISBN 978-0-7167-3051-4.	
 rxn04036	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=R229-RXN	
 rxn07847	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-2882	
 rxn01077	>			[SW] New direction according to Metacyc. Never been reported reversible (BRENDA)	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUCURONOKINASE-RXN # https://www.brenda-enzymes.org/enzyme.php?ecno=2.7.1.43#	
@@ -374,9 +375,6 @@ rxn00114	=			[SW] Reversible according to Metacyc & BRENDA.	http://www.brenda-en
 rxn09447	>			[SW] Wrong reaction direction. Corrected.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-7904	
 rxn09448	>			[SW] Wrong reaction direction. Corrected.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-7904	
 rxn09450	>			[SW] Wrong reaction direction. Corrected.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-7904	
-rxn08451	>			[SW] Wrong reaction direction. Corrected.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-7904	
-rxn08453	>			[SW] Wrong reaction direction. Corrected.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-7904	
-rxn08455	>			[SW] Wrong reaction direction. Corrected.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-7904	
 rxn02794	>			[SW] Wrong reaction direction. Corrected.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17398	
 rxn09458	>			[SW] Wrong reaction direction. Corrected.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.14.19.1-RXN	
 rxn06882	>			[SW] Wrong reaction direction. Corrected.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=FOLYLPOLYGLUTAMATESYNTH-RXN	
@@ -544,6 +542,44 @@ rxn13170	>		-1:cpd00002:0:0:"ATP";-1:cpd00065:0:0:"L-Tryptophan";-1:cpd11923:0:0
 rxn08188			-1:cpd00063:0:0:"Ca2+";-3:cpd00971:1:0:"Na+";1:cpd00063:1:0:"Ca2+";3:cpd00971:0:0:"Na+"	[SW] Stoichiometry changed according to TCDB. 1:3	http://www.tcdb.org/search/result.php?tc=2.A.19	
 rxn10868		TRUE		[SW] seems to be present only in mamalian kidney		
 rxn05517		TRUE		[SW] Transporter not found in any other database.		
+rxn08767	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17787	
+rxn01602	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-18357	
+rxn04945	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUCOSE-1-DEHYDROGENASE-NADP%2b-RXN	
+rxn13834	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUCOSE-1-DEHYDROGENASE-NADP%2b-RXN	
+rxn00611	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.1.1.8-RXN	
+rxn00612	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.1.1.8-RXN	
+rxn00613	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.1.1.8-RXN	
+rxn14229	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-15745	
+rxn07251	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NQOR-RXN	
+rxn14299	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=DIHYDROOROTATE-DEHYDROGENASE-RXN	
+rxn16165	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.1.99.25-RXN	
+rxn20655		TRUE		[SW] Reaction specific to C4-Plants	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=PYRUVATEORTHOPHOSPHATE-DIKINASE-RXN	
+rxn00151		TRUE		[SW] Reaction specific to C4-Plants	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=PYRUVATEORTHOPHOSPHATE-DIKINASE-RXN	
+rxn00641	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.7.7.13-RXN	
+rxn00649	>			[SW] Unsure but seems unlikely to be reversible as reaction is highly exergonic.		
+rxn00952	>			[SW] Unsure but seems unlikely to be reversible as reaction is highly exergonic.		
+rxn02229	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=MERCAPYSTRANS-RXN	
+rxn02248	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.5.1.51-RXN	
+rxn12991	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ACETYL-COA-CARBOXYLTRANSFER-RXN	
+rxn13752			-2:cpd00067:0:0:"H+";-1:cpd01414:1:0:"Tetrathionate";-1:cpd17026:1:0:"methymenaquinol 7";2:cpd00067:1:0:"H+";2:cpd00268:1:0:"H2S2O3";1:cpd11606:0:0:"Menaquinone 7"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-8358	
+rxn05595			-1:cpd00067:0:0:"H+";-1:cpd00205:1:0:"K+";1:cpd00067:1:0:"H+";1:cpd00205:0:0:"K+"	[SW] K+/H+ transport should be antagonistic. Antiport.		
+rxn11078	>			[SW] Unsure, but transport causes Mg2+/H+ futile cycle.		
+rxn09722		TRUE		[SW] Mitochondrium-specific reaction		
+rxn09750		TRUE		[SW] Mitochondrium-specific reaction		
+rxn05315		TRUE		[SW] Unsure, but transport causes Zn2+/K+/H+ futile cycle. Also transport reaction not found in any other database.		
+rxn12500	>			[SW] Unsure as not found in any other database. However, exergonic reaction.		
+rxn08756	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-884	
+						
+rxn08448	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd01107:1:0:"Decanoate";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";1:cpd03128:0:0:"Decanoyl-CoA";2:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248	
+rxn08449	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd01741:1:0:"ddca";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";2:cpd00067:0:0:"H+";1:cpd01260:0:0:"Lauroyl-CoA"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248	
+rxn08450	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd03847:1:0:"Myristic acid";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";2:cpd00067:0:0:"H+";1:cpd01695:0:0:"Myristoyl-CoA"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248	
+rxn08451	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd15298:1:0:"tetradecenoate";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";1:cpd15295:0:0:"Tetradecenoyl-CoA";1:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248	
+rxn08452	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd00214:1:0:"Palmitate";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";2:cpd00067:0:0:"H+";1:cpd00134:0:0:"Palmitoyl-CoA"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248	
+rxn08453	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd15237:1:0:"hexadecenoate";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";1:cpd15238:0:0:"Hexadecenoyl-CoA";1:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248	
+rxn08454	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd01080:1:0:"ocdca";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";2:cpd00067:0:0:"H+";1:cpd00327:0:0:"strcoa"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248	
+rxn08455	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd15269:1:0:"octadecenoate";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";1:cpd15274:0:0:"Octadecenoyl-CoA";1:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248	
+rxn08456	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd01113:1:0:"Hexanoate";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";2:cpd00067:0:0:"H+";1:cpd03124:0:0:"Hexanoyl-CoA"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248	
+rxn08457	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd03846:1:0:"octanoate";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";2:cpd00067:0:0:"H+";1:cpd01335:0:0:"Octanoyl-CoA"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248	
 						
 rxn16094		TRUE		[SW] Reaction not found in any other database and caused futile cycles.		
 rxn16104		TRUE		[SW] Reaction not found in any other database and caused futile cycles.		
@@ -636,6 +672,7 @@ rxn11137		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote 
 rxn12893		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might not be linked with reactions that utilize either L-lactate or D-lactate.		
 rxn12983		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might not be linked with reactions that utilize either L-lactate or D-lactate.		
 rxn13119		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might not be linked with reactions that utilize either L-lactate or D-lactate.		
+rxn11116		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might not be linked with reactions that utilize either L-lactate or D-lactate.		
 rxn30133		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might not be linked with reactions that utilize either L-lactate or D-lactate.		
 rxn32268		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might not be linked with reactions that utilize either L-lactate or D-lactate.		
 rxn32805		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might not be linked with reactions that utilize either L-lactate or D-lactate.		
@@ -824,745 +861,23 @@ rxn07191	>		-1:cpd00001:0:0:"H2O";-1:cpd00102:0:0:"Glyceraldehyde3-phosphate";-2
 rxn13775	=		-2:cpd00047:0:0:"Formate";-2:cpd11621:0:0:"Oxidizedferredoxin";-1:cpd00003:0:0:"NAD";2:cpd00011:0:0:"CO2";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"		http://www.rhea-db.org/reaction?id=46952	
 rxn14108	>		-1:cpd00001:0:0:"H2O";-1:cpd00448:0:0:"D-Glyceraldehyde";-2:cpd11621:0:0:"Oxidizedferredoxin";3:cpd00067:0:0:"H+";1:cpd00223:0:0:"Glycerate";2:cpd11620:0:0:"Reducedferredoxin"		https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.2.7.5-RXN	
 						
-rxn08543	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn08866	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05308	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05469	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05470	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05472	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05473	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05474	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05475	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05476	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05477	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05478	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05479	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05480	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05481	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05482	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05484	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05494	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05495	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05500	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05502	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05505	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05511	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05519	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05531	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05551	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-						transport
-rxn05565	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05566	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05571	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05573	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05574	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05577	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05579	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05590	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05602	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05603	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05609	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05611	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05618	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05625	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05627	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05629	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05639	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05640	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05645	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05646	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05649	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05651	>		-1:cpd00048:1:0:"Sulfate";-2:cpd00067:1:0:"H+";1:cpd00048:0:0:"Sulfate";2:cpd00067:0:0:"H+"	[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05659	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05661	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05671	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05672	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05673	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05674	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05676	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05678	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05681	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05682	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05683	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05686	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05688	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05690	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05691	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05694	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05696	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05700	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05701	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05703	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05706	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05708	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05709	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05710	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05711	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05715	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05716	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05717	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05718	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05719	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05720	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05721	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05722	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05723	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05724	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05725	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05726	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05727	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05728	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05730	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05731	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn07929	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn08075	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn08079	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn08081	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn08278	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn08323	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn08350	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn08427	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn08533	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn08538	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn08644	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn08714	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn09060	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn09182	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn09195	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn09386	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn09647	<			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn09681	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn09802	<			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn09837	<			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn10155	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn10157	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn10161	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn10162	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn10163	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn10426	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn10438	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn10559	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn10587	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn10604	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn10855	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn11395	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn11397	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn11398	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn11399	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn11400	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn11401	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn11402	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn11403	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn11404	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn11406	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn11407	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12519	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12521	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12522	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12523	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12524	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12525	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12528	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12530	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12531	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12534	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12535	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12536	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12537	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12538	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12539	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12540	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12541	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12542	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12543	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12544	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12545	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12546	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12547	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12549	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12550	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12552	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12553	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12554	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12555	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12556	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12557	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12558	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12559	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12560	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12561	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12562	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12563	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12564	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12565	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12566	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12568	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12569	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12570	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12571	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12572	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12573	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12574	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12575	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12576	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12577	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12578	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12580	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12581	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12582	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12584	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12588	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12589	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12590	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12591	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12592	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12593	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12594	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12595	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12598	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12599	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12600	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12602	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12603	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12604	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12606	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12608	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12609	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12610	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12611	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12612	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12613	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12614	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12615	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12616	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12617	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12619	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12620	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12627	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12628	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12629	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12671	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn12806	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn13854	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn13865	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn30477	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn30508	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn09269	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn11268	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		
-rxn09270	>			[SW] Proton antiport only in the direction of proton flow into the cell.		transport
-rxn08982	>			[SW] Proton antiport only in the direction of proton flow into the cell.		transport
+rxn05651	=		-1:cpd00048:1:0:"Sulfate";-2:cpd00067:1:0:"H+";1:cpd00048:0:0:"Sulfate";2:cpd00067:0:0:"H+"	[SW] Rule: sulfate:proton symport with ratio 2:1		transport
+rxn11268	=		-1:cpd00012:1:0:"PPi";-2:cpd00067:1:0:"H+";1:cpd00012:0:0:"PPi";2:cpd00067:0:0:"H+"	[SW] Rule: diphosphate:proton symport with ratio 2:1		
+rxn09270	>			[SW] Proton antiport only in the direction of proton flow into the cell. Ok		transport
 rxn08655	>			[SW] New direction according to Metacyc	https://biocyc.org/META/new-image?object=RXN-969	
 rxn08900	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXNI-3	
-rxn08983	>			[SW] Proton antiport only in the direction of proton flow into the cell.		transport
 rxn08792	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=L-LACTATE-DEHYDROGENASE-CYTOCHROME-RXN	
 rxn08783	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=L-LACTATE-DEHYDROGENASE-CYTOCHROME-RXN	
 rxn00399	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NITRIC-OXIDE-SYNTHASE-RXN	
-rxn05300	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn08921	<			[SW] Proton antiport only in the direction of proton flow into the cell.		transport
-rxn09304	>			[SW] Proton antiport only in the direction of proton flow into the cell.		transport
-rxn08854	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn08863	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05305	>			[SW] Proton antiport only in the direction of proton flow into the cell.		transport
-rxn09049	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
+rxn09304	>			[SW] Proton antiport only in the direction of proton flow into the cell. Ok 		transport
+rxn05305	>			[SW] Proton antiport only in the direction of proton flow into the cell. Ok		transport
 rxn09295	>			[SW] Hydride transfer only from NADH to NADP+.	DOI: 10.1016/j.bbabio.2012.04.006	
 rxn27378	>			[SW] Hydride transfer only from NADH to NADP+.	DOI: 10.1016/j.bbabio.2012.04.006	
-rxn05303	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05595	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
-rxn05596	>			[SW] Proton antiport only in the direction of proton flow into the cell.		transport
-rxn08154	>			[SW] Proton antiport only in the direction of proton flow into the cell.		transport
+rxn08154	>			[SW] Proton antiport only in the direction of proton flow into the cell. Ok		transport
 rxn08730		TRUE		Proton diffusion across membrane should be omitted.		
 rxn27372		TRUE		Proton diffusion across membrane should be omitted.		
 rxn26298		TRUE		Proton diffusion across membrane should be omitted.		
-rxn05197	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05198	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05199	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05200	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05201	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05202	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05203	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05204	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05205	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05211	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05217	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05243	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05244	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05255	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05297	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05299	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05301	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05306	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05307	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05312	>		-1:cpd00009:1:0:"Phosphate";-2:cpd00067:1:0:"H+";1:cpd00009:0:0:"Phosphate";2:cpd00067:0:0:"H+"	H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05316	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05317	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05318	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05471	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05486	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05487	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05491	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05493	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05496	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05497	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05508	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05514	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05525	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05526	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05527	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05529	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05553	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05561	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05564	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05572	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05578	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05582	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05593	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05605	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05612	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05615	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05626	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05628	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05630	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05634	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05636	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05638	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05643	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05648	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05652	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05654	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05663	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05665	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05669	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05679	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05680	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05684	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05685	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05687	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05689	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05692	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05693	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05695	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05697	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05698	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05699	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05704	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05713	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05714	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08011	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08071	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08091	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08141	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08148	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08149	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08150	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08169	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08190	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08193	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08196	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08213	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08240	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08250	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08251	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08252	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08261	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08262	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08270	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08275	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08343	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08376	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08473	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08474	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08479	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08482	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08488	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08489	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08490	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08498	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08499	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08500	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08506	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08507	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08508	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08514	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08515	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08516	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08542	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08576	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08578	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08701	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08716	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08722	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08725	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08742	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08779	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08781	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08865	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08907	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08944	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08946	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn08990	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09256	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09308	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09389	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09653	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09655	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09657	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09658	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09660	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09663	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09664	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09670	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09672	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09673	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09678	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09689	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09690	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09693	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09696	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09701	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09702	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn10421	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn10497	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn10573	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn10614	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn10818	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn10860	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		
-rxn10977	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn10978	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11099	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11100	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11110	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11116	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11119	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11158	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11190	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11229	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11230	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11277	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11286	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11321	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11324	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11327	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11334	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11337	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11340	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn11396	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12364	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12365	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12366	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12367	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12368	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12371	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12372	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12373	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12374	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12375	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12377	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12380	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12381	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12382	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12385	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12386	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12387	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12388	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12389	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12390	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12391	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12392	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12393	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12394	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12395	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12397	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12399	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12400	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12403	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12406	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12413	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12414	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12415	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12416	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12417	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12418	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12419	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12423	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12425	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12427	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12428	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12429	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12431	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12433	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12434	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12435	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12438	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12440	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12444	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12445	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12446	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12447	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12451	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12454	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12456	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12457	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12459	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12460	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12520	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12529	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12532	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12548	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12551	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12579	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12583	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12585	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12587	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12618	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12623	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12624	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12630	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12673	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12783	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12798	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12816	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn12819	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13074	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13126	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13127	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13128	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13129	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13229	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13301	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13314	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13321	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13339	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13411	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13478	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13686	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13722	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13759	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13781	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13811	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn13837	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn27354	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn27355	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn27356	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn27357	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn27358	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn27359	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn27376	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn28604	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn28613	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn28671	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29024	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29027	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29031	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29044	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29068	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29075	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29080	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29089	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29090	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29094	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29096	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29097	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29098	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29099	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29102	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29108	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29119	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29120	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29121	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29123	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29124	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29136	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29154	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29184	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29225	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29253	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29254	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29495	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29532	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29533	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29534	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29535	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29536	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29537	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29538	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29539	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29540	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29541	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29542	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29543	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29544	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29546	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29547	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29548	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29549	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29550	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29551	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29552	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29553	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29554	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29555	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29556	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29557	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29558	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29559	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29560	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29561	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29562	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29563	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29564	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29565	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29566	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29567	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29568	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29569	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29570	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29571	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29572	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29573	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29574	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29575	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29576	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29577	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29578	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29579	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29580	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29581	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29582	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29583	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29584	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29585	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29586	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29587	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29588	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29589	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29590	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29591	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29592	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29593	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29594	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29595	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29596	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29597	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29598	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29599	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29600	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29601	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29602	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29603	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29604	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29605	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29606	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29607	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29608	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29609	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29610	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29611	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29612	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29613	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29614	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29615	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29616	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29617	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29618	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29619	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29620	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29621	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29622	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29623	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29624	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29625	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29626	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29627	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29628	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29629	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29630	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29631	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29632	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29633	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29634	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29635	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29636	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29637	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29638	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29639	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29641	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29642	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29643	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29644	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29645	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29646	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29647	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29649	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29650	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29651	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29653	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29654	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29655	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29656	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29657	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29658	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29659	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29661	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29662	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29663	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29664	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29665	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29666	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29668	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29673	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29784	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29786	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29788	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29789	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29790	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29824	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29848	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29850	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29851	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29852	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29853	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29854	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29855	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29856	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29857	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29858	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29859	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29860	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29861	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29862	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29863	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29864	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29865	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29866	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29867	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29868	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29869	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29870	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29871	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29872	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29873	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29886	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29887	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn30455	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn30460	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn30464	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn30470	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn30482	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn30506	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn30512	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn30528	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn32067	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn34420	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn38755	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn38756	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn39018	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn39019	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05315	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09722	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn09750	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05213	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05214	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn05589	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn05312	=		-1:cpd00009:1:0:"Phosphate";-2:cpd00067:1:0:"H+";1:cpd00009:0:0:"Phosphate";2:cpd00067:0:0:"H+"	[SW] Rule: phosphate:proton symport with ratio 2:1		transport
 						
 rxn39020	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn08750	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
@@ -1585,7 +900,6 @@ rxn13392	<			H+-coupled transport w/o chemical transformation of transported mol
 rxn13398	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn29255	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn29256	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
-rxn29260	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn29262	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn29263	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn29492	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
@@ -1622,6 +936,9 @@ rxn34390	<			H+-coupled transport w/o chemical transformation of transported mol
 rxn34512	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn34534	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 rxn05209	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn05213	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn05214	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn05589	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
 						
 rxn12379		TRUE		Transport reactions with Protons in periplasmic space are currently omitted.		
 rxn12370		TRUE		Transport reactions with Protons in periplasmic space are currently omitted.		
@@ -2077,5 +1394,159 @@ rxn13310		TRUE		[SW] Carbonic acid diffusion across membrane unlikely	https://ww
 rxn29060		TRUE		[SW] Carbonic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
 rxn29238		TRUE		[SW] Carbonic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
 rxn31553		TRUE		[SW] Carbonic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn11322		TRUE		[SW] (R,R)-butanediol diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn13195		TRUE		[SW] 2-oxobutyrate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn29351		TRUE		[SW] 2-oxobutyrate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn08534		TRUE		[SW] Fructoselysine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn29171		TRUE		[SW] Fructoselysine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09331		TRUE		[SW] Myristic acid  diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09654		TRUE		[SW] Myristic acid  diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09852		TRUE		[SW] Myristic acid  diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09034		TRUE		[SW] Octadecanoate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09669		TRUE		[SW] Octadecanoate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn34366		TRUE		[SW] Octadecanoate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn07930		TRUE		[SW] 2,3-Diaminopropionate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn08704		TRUE		[SW] Palmitate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09676		TRUE		[SW] Palmitate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09848		TRUE		[SW] Palmitate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn31182		TRUE		[SW] Palmitate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09196		TRUE		[SW] psicoselysine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn29172		TRUE		[SW] psicoselysine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn11319		TRUE		[SW] Acetoin diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn11320		TRUE		[SW] Acetyllactic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn13114		TRUE		[SW] Acetyllactic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn32770		TRUE		[SW] Acetyllactic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn12404		TRUE		[SW] D-Aspartate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn30250		TRUE		[SW] D-Aspartate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn12452		TRUE		[SW] Quinate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn31859		TRUE		[SW] Quinate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn31862		TRUE		[SW] Quinate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn31865		TRUE		[SW] Quinate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09792		TRUE		[SW] 4-Hydroxybenzoate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn12787		TRUE		[SW] 4-Hydroxybenzoate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn10936		TRUE		[SW] Acetamide diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn05580		TRUE		[SW] Glycogen diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn13298		TRUE		[SW] Glycogen diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn30289		TRUE		[SW] Glycogen diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn30290		TRUE		[SW] Glycogen diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn12246		TRUE		[SW] Protocatechuate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn12672		TRUE		[SW] Protocatechuate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn05310		TRUE		[SW] Niacin diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn08969		TRUE		[SW] Niacin diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn08970		TRUE		[SW] Niacin diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn05568		TRUE		[SW] D-glucosamine 6-phosphate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn08591		TRUE		[SW] D-glucosamine 6-phosphate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn13642		TRUE		[SW] D-glucosamine 6-phosphate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn12401		TRUE		[SW] Salicylic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn05499		TRUE		[SW] D-arabinose diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn32874		TRUE		[SW] D-arabinose diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn32883		TRUE		[SW] D-arabinose diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn05212		TRUE		[SW] Copper diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn08273		TRUE		[SW] Copper diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn08274		TRUE		[SW] Copper diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn38516		TRUE		[SW] Copper diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn08995		TRUE		[SW] Nucleotide diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn08997		TRUE		[SW] Nucleotide diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn10181		TRUE		[SW] Nucleotide diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn05220		TRUE		[SW] L-asparagine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn08162		TRUE		[SW] L-asparagine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn32042		TRUE		[SW] L-asparagine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn32043		TRUE		[SW] L-asparagine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn05586		TRUE		[SW] Hg2+ diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn08717		TRUE		[SW] Hg2+ diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn10867		TRUE		[SW] Nicotinamide diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn32452		TRUE		[SW] Nicotinamide diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn32456		TRUE		[SW] Nicotinamide diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09784		TRUE		[SW] SAM diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09826		TRUE		[SW] SAM diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn29883		TRUE		[SW] SAM diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn32578		TRUE		[SW] SAM diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn32583		TRUE		[SW] SAM diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn34146		TRUE		[SW] SAM diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn34470		TRUE		[SW] SAM diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09788		TRUE		[SW] Acetylcarnitine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09867		TRUE		[SW] Acetylcarnitine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn08265		TRUE		[SW] Carnitine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09691		TRUE		[SW] Carnitine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09773		TRUE		[SW] Carnitine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09858		TRUE		[SW] Carnitine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09790		TRUE		[SW] 5-Aminolevulinate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn05483		TRUE		[SW] L-lyxitol diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn38747		TRUE		[SW] L-lyxitol diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn05653		TRUE		[SW] l-Sorbose diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn28581		TRUE		[SW] l-Sorbose diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn38740		TRUE		[SW] l-Sorbose diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn12786		TRUE		[SW] 3-oxodipate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn12396		TRUE		[SW] caffeate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn12785		TRUE		[SW] caffeate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn31780		TRUE		[SW] caffeate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn12436		TRUE		[SW] Benzoate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09651		TRUE		[SW] Xylitol diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn32606		TRUE		[SW] Xylitol diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn09661		TRUE		[SW] Gulitol diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
+rxn12797		TRUE		[SW] Gallate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/	
 						
 rxn09713		TRUE		[SW] Unsure. However, only reported in few cases and only mitochondrial.	http://www.tcdb.org/search/result.php?tc=2.A.29.2.7	
+rxn05645	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		
+rxn05618	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		
+rxn05520	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		
+rxn05225	<			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		
+rxn05708	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
+rxn08427	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		
+rxn12553	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
+rxn12606	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport
+						
+rxn10977	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn08141	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn08907	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn05652	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn10860	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		
+rxn10818	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn05615	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn09660	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn05626	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn08474	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn08779	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn08722	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn13245	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		
+rxn09308	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn05553	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn11158	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn13415	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		
+rxn05521	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		
+rxn05522	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		
+rxn05523	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		
+rxn12529	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn13339	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn13301	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn13229	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn13321	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn13314	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn13411	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+rxn05526	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport
+						
+						
+						
+						
+rxn10156			-1:cpd00067:1:0:"H+";-1:cpd00130:1:0:"L-Malate";1:cpd00067:0:0:"H+";1:cpd00130:0:0:"L-Malate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+rxn08866			-1:cpd00067:1:0:"H+";-1:cpd00130:1:0:"L-Malate";1:cpd00067:0:0:"H+";1:cpd00130:0:0:"L-Malate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+rxn10158			-1:cpd00067:1:0:"H+";-1:cpd00106:1:0:"Fumarate";1:cpd00067:0:0:"H+";1:cpd00106:0:0:"Fumarate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+rxn08543			-1:cpd00067:1:0:"H+";-1:cpd00106:1:0:"Fumarate";1:cpd00067:0:0:"H+";1:cpd00106:0:0:"Fumarate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+rxn10157			-1:cpd00036:1:0:"Succinate";-1:cpd00067:1:0:"H+";1:cpd00036:0:0:"Succinate";1:cpd00067:0:0:"H+"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+rxn10155			-1:cpd00041:1:0:"L-Aspartate";-1:cpd00067:1:0:"H+";1:cpd00041:0:0:"L-Aspartate";1:cpd00067:0:0:"H+"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+rxn10154			-1:cpd00036:1:0:"Succinate";-1:cpd00067:1:0:"H+";1:cpd00036:0:0:"Succinate";1:cpd00067:0:0:"H+"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+rxn09269			-1:cpd00036:1:0:"Succinate";-1:cpd00067:1:0:"H+";1:cpd00036:0:0:"Succinate";1:cpd00067:0:0:"H+"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+rxn10153			-1:cpd00067:1:0:"H+";-1:cpd00130:1:0:"L-Malate";1:cpd00067:0:0:"H+";1:cpd00130:0:0:"L-Malate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+rxn08865			-1:cpd00067:1:0:"H+";-1:cpd00130:1:0:"L-Malate";1:cpd00067:0:0:"H+";1:cpd00130:0:0:"L-Malate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+rxn10152			-1:cpd00067:1:0:"H+";-1:cpd00106:1:0:"Fumarate";1:cpd00067:0:0:"H+";1:cpd00106:0:0:"Fumarate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+rxn08542			-1:cpd00067:1:0:"H+";-1:cpd00106:1:0:"Fumarate";1:cpd00067:0:0:"H+";1:cpd00106:0:0:"Fumarate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+rxn10151			-1:cpd00041:1:0:"L-Aspartate";-1:cpd00067:1:0:"H+";1:cpd00041:0:0:"L-Aspartate";1:cpd00067:0:0:"H+"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+rxn08169			-1:cpd00041:1:0:"L-Aspartate";-1:cpd00067:1:0:"H+";1:cpd00041:0:0:"L-Aspartate";1:cpd00067:0:0:"H+"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+rxn12569			-1:cpd00067:1:0:"H+";-1:cpd00308:1:0:"Malonate";1:cpd00067:0:0:"H+";1:cpd00308:0:0:"Malonate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+rxn12591			-1:cpd00067:1:0:"H+";-1:cpd00666:1:0:"Tartrate";1:cpd00067:0:0:"H+";1:cpd00666:0:0:"Tartrate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+rxn08863			-1:cpd00067:1:0:"H+";-1:cpd00386:1:0:"D-Malate";1:cpd00067:0:0:"H+";1:cpd00386:0:0:"D-Malate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+rxn09049			-1:cpd00067:1:0:"H+";-1:cpd00247:1:0:"Orotate";1:cpd00067:0:0:"H+";1:cpd00247:0:0:"Orotate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.		
+						
+rxn08982			-1:cpd00067:1:0:"H+";-1:cpd00971:0:0:"Na+";1:cpd00067:0:0:"H+";1:cpd00971:1:0:"Na+"	[SW] Rule: Na+/H+ antiport has the ratio 1:1		
+rxn08983			-1:cpd00067:1:0:"H+";-1:cpd00971:0:0:"Na+";1:cpd00067:0:0:"H+";1:cpd00971:1:0:"Na+"	[SW] Rule: Na+/H+ antiport has the ratio 1:1		
+rxn13722			-2:cpd00067:0:0:"H+";-1:cpd00254:1:0:"Mg";2:cpd00067:1:0:"H+";1:cpd00254:0:0:"Mg"	[SW] Rule: Mg2+/H+ antiport has ratio 1:2		
