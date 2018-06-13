@@ -330,10 +330,12 @@ if ( TRUE ){
 
 # Add list of exchange reactions for step 3 and 4 in order to check for a wide range of carbon sources or fermentation products
 # (Unused exchanges will be deleted afterwards)
+carbon.source <- carbon.source[!is.na(id_seed) & !is.na(name) & !is.na(exid_seed)]
 idx <- which( !carbon.source$exid_seed %in% mod.out@react_id )
-exchanges.new.met  <- rm.na(carbon.source$id_seed[idx])
-exchanges.new.name <- rm.na(carbon.source$name[idx])
-exchanges.new.ids  <- rm.na(carbon.source$exid_seed[idx])
+exchanges.new.met  <- carbon.source$id_seed[idx]
+#exchanges.new.name <- carbon.source$name[idx]
+exchanges.new.name <- mod@met_name[match(carbon.source$id_seed[idx],mod@met_id)]
+exchanges.new.ids  <- carbon.source$exid_seed[idx]
 exchanges.new.used  <- rep(FALSE, length(exchanges.new.ids))  # delete unused addionally added exchange reactions later
 mod.out       <- add_exchanges(mod.out, exchanges.new.met, metname=exchanges.new.name)
 
