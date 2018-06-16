@@ -1,0 +1,102 @@
+compounds,name,maxFlux
+cpd00007,O2,100
+cpd00009,Phosphate,100
+cpd00011,CO2,100
+cpd00013,NH3,100
+cpd00018,AMP,100
+cpd00023,L-Glutamate,100
+cpd00027,D-Glucose,100
+cpd00030,Mn2+,100
+cpd00033,Glycine,100
+cpd00034,Zn2+,100
+cpd00035,L-Alanine,100
+cpd00038,GTP,100
+cpd00039,L-Lysine,100
+cpd00041,L-Aspartate,100
+cpd00046,CMP,100
+cpd00048,Sulfate,100
+cpd00051,L-Arginine,100
+cpd00052,CTP,100
+cpd00053,L-Glutamine,100
+cpd00054,L-Serine,100
+cpd00058,Cu2+,100
+cpd00060,L-Methionine,100
+cpd00062,UTP,100
+cpd00063,Ca2+,100
+cpd00065,L-Tryptophan,100
+cpd00066,L-Phenylalanine,100
+cpd00067,H+,100
+cpd00069,L-Tyrosine,100
+cpd00075,Nitrite,100
+cpd00076,Sucrose,100
+cpd00082,D-Fructose,100
+cpd00084,L-Cysteine,100
+cpd00091,UMP,100
+cpd00099,Cl-,100
+cpd00104,BIOT,100
+cpd00107,L-Leucine,100
+cpd00108,Galactose,100
+cpd00115,dATP,100
+cpd00119,L-Histidine,100
+cpd00122,N-Acetyl-D-glucosamine,100
+cpd00126,GMP,100
+cpd00129,L-Proline,100
+cpd00132,L-Asparagine,100
+cpd00138,D-Mannose,100
+cpd00154,Xylose,100
+cpd00156,L-Valine,100
+cpd00160,Cholesterol,100
+cpd00161,L-Threonine,100
+cpd00206,dCMP,100
+cpd00209,Nitrate,100
+cpd00210,Taurine,100
+cpd00214,Palmitate,100
+cpd00214,Palmitate,100
+cpd00220,Riboflavin,100
+cpd00224,L-Arabinose,100
+cpd00239,H2S,100
+cpd00241,dGTP,100
+cpd00244,Ni2+,100
+cpd00254,Mg,100
+cpd00263,Pyridoxol,100
+cpd00294,dAMP,100
+cpd00296,dGMP,100
+cpd00298,dTMP,100
+cpd00305,Thiamin,100
+cpd00322,L-Isoleucine,100
+cpd00356,dCTP,100
+cpd00393,Folate,100
+cpd00396,L-Rhamnose,100
+cpd00528,N2,100
+cpd00531,Hg2+,100
+cpd00552,F-,100
+cpd00751,L-Fucose,100
+cpd00966,HBr,100
+cpd00971,Na+,100
+cpd01012,Cd2+,100
+cpd01080,ocdca,100
+cpd03424,Vitamin B12,100
+cpd03847,Myristic acid,100
+cpd03848,Arachidic acid,100
+cpd04097,Pb,100
+cpd05231,Erucic acid,100
+cpd05235,tetracosanoate,100
+cpd05238,Nervonic acid,100
+cpd09693,Ba2+,100
+cpd10515,Fe2+,100
+cpd10516,fe3,100
+cpd12878,Methylcobalamin,100
+cpd15609,heptadecanoate (C17:0),100
+cpd15622,pentadecanoate (C15:0),100
+cpd16341,Icosenoic acid,100
+cpd17321,Rb+,100
+cpd20624,Chromium (III),100
+cpd24344,Al+++,100
+cpd24347,Be++,100
+cpd24363,Cs+,100
+cpd24365,Tl+,100
+cpd26474,La3+,100
+cpd27384,Li+,100
+cpd00001,H2O,100
+cpd00149,Co2+,100
+cpd00205,K+,100
