@@ -435,6 +435,7 @@ rxn06872	<		-1:cpd00005:0:0:"NADPH";-2:cpd00017:0:0:"S-Adenosyl-L-methionine";-1
 rxn13842		TRUE		[SW] Enzyme/Proton Pump only exists in the mucus in stomachs of mamals. Not reported for Microorganisms.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.6.3.10-RXN	
 rxn00082	>		-1:cpd00005:0:0:"NADPH";-2:cpd00007:0:0:"O2";-2:cpd03527:0:0:"N-(omega)-Hydroxyarginine";2:cpd00001:0:0:"H2O";1:cpd00006:0:0:"NADP";1:cpd00067:0:0:"H+";2:cpd00274:0:0:"Citrulline";2:cpd00418:0:0:"NO"	[SW] Stoichiometry and reversibility corrected according to RHEA DB.	https://www.rhea-db.org/reaction?id=24664	
 rxn05126	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-3922	
+rxn05127	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-3922	
 rxn06413	<		-1:cpd00001:0:0:"H2O";-1:cpd01042:0:0:"p-Cresol";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00007:0:0:"O2";1:cpd01034:0:0:"Toluol";2:cpd11935:0:0:"Ferredoxin"	[SW] Direction and stoichiomentry changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=TOLUENE-SIDE-CHAIN-MONOOXYGENASE-RXN	
 rxn10123	>			[SW] Direction and stoichiomentry changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NADH-DEHYDROG-A-RXN	
 rxn10124	>			[SW] Direction and stoichiomentry changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NADH-DEHYDROG-A-RXN	
@@ -569,6 +570,10 @@ rxn09750		TRUE		[SW] Mitochondrium-specific reaction
 rxn05315		TRUE		[SW] Unsure, but transport causes Zn2+/K+/H+ futile cycle. Also transport reaction not found in any other database.		
 rxn12500	>			[SW] Unsure as not found in any other database. However, exergonic reaction.		
 rxn08756	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-884	
+rxn00272	>			[SW] irrev according to BRENDA (numerous studies)	http://www.brenda-enzymes.org/enzyme.php?ecno=2.6.1.44#NATURAL%20SUBSTRATES	
+rxn01299	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-363	
+rxn00868	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-12558	
+rxn02283	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUTAMATE-FORMIMINOTRANSFERASE-RXN	
 						
 rxn08448	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd01107:1:0:"Decanoate";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";1:cpd03128:0:0:"Decanoyl-CoA";2:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248	
 rxn08449	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd01741:1:0:"ddca";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";2:cpd00067:0:0:"H+";1:cpd01260:0:0:"Lauroyl-CoA"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248	
@@ -841,7 +846,7 @@ rxn11122	>			[SW] Aminocyl-tRNA ligases are irreversible, as they are highly exe
 rxn06438	>			[SW] Aminocyl-tRNA ligases are irreversible, as they are highly exergonic reactions.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ISOLEUCINE--TRNA-LIGASE-RXN	
 						
 rxn05760	<		-2:cpd00023:0:0:"L-Glutamate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00024:0:0:"2-Oxoglutarate";1:cpd00053:0:0:"L-Glutamine";2:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"			
-rxn05902	<		-3:cpd00001:0:0:"H2O";-1:cpd00239:0:0:"H2S";-6:cpd11621:0:0:"Oxidizedferredoxin";7:cpd00067:0:0:"H+";1:cpd00081:0:0:"Sulfite";6:cpd11620:0:0:"Reducedferredoxin"	[JZ][SW] reaction not proton balanced. Changing stoichiometries		
+rxn05902	<		-3:cpd00001:0:0:"H2O";-1:cpd00239:0:0:"H2S";-6:cpd11621:0:0:"Oxidizedferredoxin";6:cpd00067:0:0:"H+";1:cpd00081:0:0:"Sulfite";6:cpd11620:0:0:"Reducedferredoxin"	[JZ][SW] reaction not proton balanced. Changing stoichiometries		
 rxn05937	=		-1:cpd00006:0:0:"NADP";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00005:0:0:"NADPH";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Reaction was incomplete. Here new balances full reaction.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17897	
 rxn06990	>		-1:cpd00003:0:0:"NAD";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00004:0:0:"NADH";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Ferredoxin Stoichiometries corrected. Reverse direction possible, but only in the presense of sodium ion potential.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=FERREDOXIN--NAD%2b-REDUCTASE-RXN # Hess, V.; Schuchmann, K.; Mueller, V.; J. Biol. Chem. 288, 31496-31502 (2013)	
 rxn07849	=		-1:cpd00001:0:0:"H2O";-1:cpd00735:0:0:"Formylmethanofuran";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00047:0:0:"Formate";1:cpd00643:0:0:"Methanofuran";-2:cpd11620:0:0:"Reducedferredoxin"	[SW] Reaction was incomplete. Here new balances full reaction.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=FORMYLMETHANOFURAN-DEHYDROGENASE-RXN	
@@ -862,7 +867,8 @@ rxn13775	=		-2:cpd00047:0:0:"Formate";-2:cpd11621:0:0:"Oxidizedferredoxin";-1:cp
 rxn14108	>		-1:cpd00001:0:0:"H2O";-1:cpd00448:0:0:"D-Glyceraldehyde";-2:cpd11621:0:0:"Oxidizedferredoxin";3:cpd00067:0:0:"H+";1:cpd00223:0:0:"Glycerate";2:cpd11620:0:0:"Reducedferredoxin"		https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.2.7.5-RXN	
 						
 rxn05651	=		-1:cpd00048:1:0:"Sulfate";-2:cpd00067:1:0:"H+";1:cpd00048:0:0:"Sulfate";2:cpd00067:0:0:"H+"	[SW] Rule: sulfate:proton symport with ratio 2:1		transport
-rxn11268	=		-1:cpd00012:1:0:"PPi";-2:cpd00067:1:0:"H+";1:cpd00012:0:0:"PPi";2:cpd00067:0:0:"H+"	[SW] Rule: diphosphate:proton symport with ratio 2:1		
+rxn11268			-1:cpd00012:1:0:"PPi";-3:cpd00067:1:0:"H+";1:cpd00012:0:0:"PPi";3:cpd00067:0:0:"H+"	[SW] Rule: diphosphate:proton symport with ratio 3:1		
+rxn11395			-1:cpd00012:1:0:"PPi";-3:cpd00067:1:0:"H+";1:cpd00012:0:0:"PPi";3:cpd00067:0:0:"H+"	[SW] Rule: diphosphate:proton symport with ratio 3:1		
 rxn09270	>			[SW] Proton antiport only in the direction of proton flow into the cell. Ok		transport
 rxn08655	>			[SW] New direction according to Metacyc	https://biocyc.org/META/new-image?object=RXN-969	
 rxn08900	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXNI-3	
