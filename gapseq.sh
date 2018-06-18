@@ -289,6 +289,7 @@ do
                         bestIdentity=$(echo "$bhit" | sort -rgk 5,5 | head -1 | cut -f3)
                         bestBitscore=$(echo "$bhit" | sort -rgk 5,5 | head -1 | cut -f5)
                         bestCoverage=$(echo "$bhit" | sort -rgk 5,5 | head -1 | cut -f6)
+                        echo -e "$rea\t$ec\t1\t$bestBitscore\t$bestIdentity\t$bestCoverage" >> reactions.tbl 
                         echo -e '\t'Blast hit: $rea $ec "(bit=$bestBitscore, id=$bestIdentity, cov=$bestCoverage)"
                         # check if key reactions of pathway
                         if [[ $keyRea = *"$rea"* ]]; then
@@ -310,6 +311,7 @@ do
                         someIdentity=$(cat $out | sort -rgk 3,3 | head -1 | cut -f3)
                         someBitscore=$(cat $out | sort -rgk 5,5 | head -1 | cut -f5)
                         someCoverage=$(cat $out | sort -rgk 6,6 | head -1 | cut -f6)
+                        echo -e "$rea\t$ec\t0\t$someBitscore\t$someIdentity\t$someCoverage" >> reactions.tbl 
                         echo -e '\t'No significant blast hits found: $rea $ec "\n\t\t(max: id=$someIdentity bit=$someBitscore cov=$someCoverage)"
                         if [[ -n "$dbhit" ]];then
                             dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
@@ -422,6 +424,7 @@ echo -e Candidate reactions found: $(echo "$cand" | wc -w) '\n'
 echo $cand > newReactions.lst
 cp newReactions.lst $curdir/${fastaID}-$pathways-Reactions.lst
 cp output.tbl $curdir/${fastaID}-$pathways-Pathways.tbl
+cp reactions.tbl $curdir/${fastaID}-$pathways-blast.tbl
 
-
+ps -p $$ -o %cpu,%mem,cmd
 times
