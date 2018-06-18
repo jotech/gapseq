@@ -11,15 +11,16 @@ dir=$(dirname "$path")
 fasta=$(readlink -f $1)
 tmpvar=$(basename $fasta)
 fastaid=${tmpvar%.*}
-tcdb=$dir/dat/tcdb.fasta
+tcdb=$dir/dat/seq/tcdb.fasta
+otherDB=$dir/dat/seq/transporter.fasta
 subDB=$dir/dat/sub2pwy.csv
 seedDB=$dir/dat/seed_transporter.tbl
 
 # tmp working directory
 cd $(mktemp -d)
 
-
-grep -e ">" $tcdb > tcdb_header
+cat $tcdb $otherDB > all.fasta # join transporter databases
+grep -e ">" all.fasta > tcdb_header
 sed '1d' $subDB | awk -F ',' '{if ($8 != "NA") print $0}' > redSubDB
 key=$(cat redSubDB | awk -F ',' '{if ($2 != "") print $1"|"$2; else print $1}' | paste -s -d '|') # ignore substances without linked exchange reaction
 grep -wEi "$key" tcdb_header | awk '{print substr($1,2)}' > hits
@@ -27,8 +28,8 @@ grep -wEi "$key" tcdb_header | awk '{print substr($1,2)}' > hits
 subhits=$(grep -wEio "$key" tcdb_header | sort | uniq | paste -s -d '|')
 allDBsubs=$(cat redSubDB | grep -wEi "$subhits" | awk -F ',' '{if ($2 != "") print $2; else print $1}' | sort | paste -s -d ';') # list of substances that are covered by DB
 #apt install exonerate
-fastaindex $tcdb tcdb.idx 
-fastafetch -f $tcdb -i tcdb.idx -Fq <(sort -u hits ) > tcdbsmall.fasta
+fastaindex all.fasta tcdb.idx 
+fastafetch -f all.fasta -i tcdb.idx -Fq <(sort -u hits ) > tcdbsmall.fasta
 
 #
 makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
@@ -45,12 +46,11 @@ TC[4]="4.Group translocators"
 
 for id in $IDtcdb
 do
-    descr=$(grep $id tcdb_header | grep -P "(?<= ).*(?=OS)" -o) # extract description
+    descr=$(grep $id tcdb_header | grep -P "(?<= ).*" -o) # extract description
     tc=$(grep $id tcdb_header | grep -Pw "([1-4]\\.[A-Z]+\\.[0-9]+\\.[0-9]+)" -o) # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
     i=$(echo $tc | head -c1) # get first character of TC number => transporter type
     type=${TC[$i]}
     [ -z "$tc" ] && continue
-    [ -z "$descr" ] && descr=$(grep $id tcdb_header | grep -P "(?<= ).*(?= - )" -o)
     subl=$(echo "$descr" | grep -wEio "$key" | grep -if - redSubDB | awk -F ',' '{ if ($2 != "") print $2; else print $1}') # could be more then one hit (e.g. transporter with two substances)
     for sub in $subl
     do
