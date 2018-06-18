@@ -91,6 +91,8 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
   # make non sequence-supported reaction more expensive. This ensures that in the case a core reaction fulfils the same function
   # as a costly reacton, the core reaction will carry the flux
   c.coef[costly.rxns.inds] <- dummy.weight
+  ind.ex <- grep("^EX_",mod@react_id)
+  c.coef[ind.ex] <- core.weight
   
   # modj_warm <- sysBiolAlg(mod,
   #                         algorithm = "mtf2",
