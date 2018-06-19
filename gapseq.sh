@@ -18,6 +18,7 @@ completnessCutoff=66 # consider pathway to be present if other hints (e.g. key e
 completnessCutoffNoHints=80 # consider pathway to be present if no hints are avaiable (requires stricCandidates=false)
 addVague=true # should vague reactions (trunked EC number) be added when there is a hit in reaction DB?
 onlyMetacyc=false
+blast_format="qseqid pident evalue bitscore qcovs stitle sstart send"
 
 usage()
 {
@@ -33,6 +34,7 @@ usage()
     echo "  -s strict candidate reaction handling (do _not_ use pathway completness, key kenzymes and operon structure to infere if imcomplete pathway could be still present (default: $strictCandidates)"
     echo "  -n Add vague reactions (i.e. EC is trunked and no sequences is available) if pathway is otherwise complete (default: $addVague)"
     echo "  -o use only MetaCyc pathway database (default: $onlyMetacyc)"
+    echo "  -u suffix used for output files (default: pathway keyword)"
 exit 1
 }
 
@@ -57,7 +59,7 @@ seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:d:i:b:c:vs:t:sno" opt; do
+while getopts "h?p:e:d:i:b:c:vs:t:snou:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -95,6 +97,9 @@ while getopts "h?p:e:d:i:b:c:vs:t:sno" opt; do
         ;;
     o)
         onlyMetacyc=true
+        ;;
+    u)
+        output_suffix=$OPTARG
         ;;
     esac
 done
@@ -168,6 +173,7 @@ if [ -n "$ecnumber" ]; then
     # create dummpy pwy template for given ec number
     pwyKey=$ecnumber
     pwyDB=$(echo -e "dummy\t$ecnumber\t\t\t\t$ecnumber\t$ecnumber")
+    pathways="ec"
 else
     # get entries for pathways from databases
     if [ "$onlyMetacyc" == true ]; then
@@ -178,6 +184,7 @@ else
     pwyDB=$(cat allPwy | grep -wEi $pwyKey)
     [ -z "$ecnumber" ] && [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
 fi
+[ -z "$output_suffix" ] && output_suffix=$pathways
 
 
 # function to get database hits for ec number
@@ -275,8 +282,8 @@ do
                     csplit -s -z $query '/>/' '{*}' # split multiple fasta file and skip further testing if a significant hit is found
                     for q in `ls xx*`
                     do
-                        tblastn -db orgdb -query $q -outfmt '6 qseqid sseqid pident evalue bitscore qcovs stitle' >>$out 
-                        bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($3>=identcutoff && $5>=bitcutoff && $6>=covcutoff) print $0}')
+                        tblastn -db orgdb -query $q -outfmt "6 $blast_format" >>$out 
+                        bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
                         if [ -n "$bhit" ]; then
                             break
                         fi
@@ -284,12 +291,13 @@ do
                     rm xx*
                 fi
                 if [ -s $out ]; then
-                    bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($3>=identcutoff && $5>=bitcutoff && $6>=covcutoff) print $0}')
+                    bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
                     if [ -n "$bhit" ]; then
-                        bestIdentity=$(echo "$bhit" | sort -rgk 5,5 | head -1 | cut -f3)
-                        bestBitscore=$(echo "$bhit" | sort -rgk 5,5 | head -1 | cut -f5)
-                        bestCoverage=$(echo "$bhit" | sort -rgk 5,5 | head -1 | cut -f6)
-                        echo -e "$rea\t$ec\t1\t$bestBitscore\t$bestIdentity\t$bestCoverage" >> reactions.tbl 
+                        bestIdentity=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f2)
+                        bestBitscore=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f4)
+                        bestCoverage=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f5)
+                        besthit_all=$(echo "$bhit" | sort -rgk 4,4 | head -1)
+                        echo -e "$rea\t$ec\t$besthit_all" >> reactions.tbl 
                         echo -e '\t'Blast hit: $rea $ec "(bit=$bestBitscore, id=$bestIdentity, cov=$bestCoverage)"
                         # check if key reactions of pathway
                         if [[ $keyRea = *"$rea"* ]]; then
@@ -308,10 +316,11 @@ do
                         ((countex++))
                         countexList="$countexList$rea "
                     else
-                        someIdentity=$(cat $out | sort -rgk 3,3 | head -1 | cut -f3)
-                        someBitscore=$(cat $out | sort -rgk 5,5 | head -1 | cut -f5)
-                        someCoverage=$(cat $out | sort -rgk 6,6 | head -1 | cut -f6)
-                        echo -e "$rea\t$ec\t0\t$someBitscore\t$someIdentity\t$someCoverage" >> reactions.tbl 
+                        someIdentity=$(cat $out | sort -rgk 2,2 | head -1 | cut -f2)
+                        someBitscore=$(cat $out | sort -rgk 4,4 | head -1 | cut -f4)
+                        someCoverage=$(cat $out | sort -rgk 5,5 | head -1 | cut -f5)
+                        somehit_all=$( cat $out | sort -rgk 4,4 | head -1)
+                        echo -e "$rea\t$ec\t$somehit_all" >> reactions.tbl 
                         echo -e '\t'No significant blast hits found: $rea $ec "\n\t\t(max: id=$someIdentity bit=$someBitscore cov=$someCoverage)"
                         if [[ -n "$dbhit" ]];then
                             dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
@@ -422,9 +431,10 @@ fi
 echo -e Candidate reactions found: $(echo "$cand" | wc -w) '\n'
 #echo $bestCand > newReactions.lst
 echo $cand > newReactions.lst
-cp newReactions.lst $curdir/${fastaID}-$pathways-Reactions.lst
-cp output.tbl $curdir/${fastaID}-$pathways-Pathways.tbl
-cp reactions.tbl $curdir/${fastaID}-$pathways-blast.tbl
+cp newReactions.lst $curdir/${fastaID}-$output_suffix-Reactions.lst
+cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
+echo "#rxn ec $blast_format" | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
+
 
 ps -p $$ -o %cpu,%mem,cmd
 times
