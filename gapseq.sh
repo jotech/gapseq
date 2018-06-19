@@ -316,12 +316,12 @@ do
                         ((countex++))
                         countexList="$countexList$rea "
                     else
-                        someIdentity=$(cat $out | sort -rgk 2,2 | head -1 | cut -f2)
+                        someIdentity=$(cat $out | sort -rgk 4,4 | head -1 | cut -f2)
                         someBitscore=$(cat $out | sort -rgk 4,4 | head -1 | cut -f4)
-                        someCoverage=$(cat $out | sort -rgk 5,5 | head -1 | cut -f5)
+                        someCoverage=$(cat $out | sort -rgk 4,4 | head -1 | cut -f5)
                         somehit_all=$( cat $out | sort -rgk 4,4 | head -1)
                         echo -e "$rea\t$ec\t$somehit_all" >> reactions.tbl 
-                        echo -e '\t'No significant blast hits found: $rea $ec "\n\t\t(max: id=$someIdentity bit=$someBitscore cov=$someCoverage)"
+                        echo -e '\t'No significant blast hits found: $rea $ec "\n\t\t(best one: id=$someIdentity bit=$someBitscore cov=$someCoverage)"
                         if [[ -n "$dbhit" ]];then
                             dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
                             pwyNoSeqFound="$pwyNoSeqFound$dbhit "
