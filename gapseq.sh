@@ -18,7 +18,7 @@ completnessCutoff=66 # consider pathway to be present if other hints (e.g. key e
 completnessCutoffNoHints=80 # consider pathway to be present if no hints are avaiable (requires stricCandidates=false)
 addVague=true # should vague reactions (trunked EC number) be added when there is a hit in reaction DB?
 onlyMetacyc=false
-blast_format="qseqid pident evalue bitscore qcovs stitle sstart send"
+blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
 
 usage()
 {
@@ -43,8 +43,7 @@ exit 1
 curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
-#seqpath=$dir/dat/seq/
-seqpath=$dir/dat/seq/$taxonomy/unipac90/
+uniprotIdentity=0.9 # clustered uniprot database (0.5 or 0.9)
 metaPwy=$dir/dat/meta_pwy.tbl
 keggPwy=$dir/dat/kegg_pwy.tbl
 metaRea=$dir/dat/meta_rea.tbl
@@ -165,6 +164,10 @@ case $pathways in
 esac
 
 
+# squence directory
+seqpath=$dir/dat/seq/$taxonomy/unipac$(printf %.0f $(echo "$uniprotIdentity * 100" | bc -l))
+mkdir -p $seqpath
+
 # tmp working directory
 cd $(mktemp -d)
 
@@ -269,12 +272,12 @@ do
             ((count++))
             getDBhit # get db hits for this reactions
             pwyCandAll="$pwyCandAll$dbhit "
-            query=$seqpath$ec.fasta
+            query=$seqpath/$ec.fasta
             if [ ! -f $query ]; then # check if sequence is not available => try to download
                 #python2 $dir/src/uniprot.py "$ec" "$taxonomy" # if sequence data not available then download from uniprot
                 
                 echo -e '\t'Downloading sequence for: $ec 
-                $dir/src/uniprot.sh -e "$ec" -t "$taxonomy" >/dev/null
+                $dir/src/uniprot.sh -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
             fi
             if [ -s $query ]; then
                 out=$ec.blast
@@ -433,7 +436,7 @@ echo -e Candidate reactions found: $(echo "$cand" | wc -w) '\n'
 echo $cand > newReactions.lst
 cp newReactions.lst $curdir/${fastaID}-$output_suffix-Reactions.lst
 cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
-echo "#rxn ec $blast_format" | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
+[ -f reactions.tbl ] && echo "#rxn ec $blast_format" | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
 
 
 ps -p $$ -o %cpu,%mem,cmd
