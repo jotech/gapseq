@@ -90,7 +90,6 @@ add_reaction_from_db <- function(mod, react) {
   }
   
   for(i in (1:nrow(mseed))) {
-    cat("\r",i,"/",nrow(mseed))
     mets  <- unlist(str_split(string = mseed[i,compound_ids],pattern = ";"))
     rxn.info <- str_split(unlist(str_split(string = mseed[i,stoichiometry],pattern = ";")), pattern = ":", simplify = T)
     
@@ -126,7 +125,6 @@ add_reaction_from_db <- function(mod, react) {
                     reactName = mseed[i, name], 
                     metName = met.name)
   }
-  cat("\n")
   return(mod)
 }
 
