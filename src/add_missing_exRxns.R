@@ -66,59 +66,73 @@ add_met_sink <- function(mod, cpd, obj = 0) {
   return(mod)
 }
 
-
 add_missing_diffusion <- function(mod, ub = 1000){
-  diff.mets.ids <- c("cpd00011", #"co2
-                     "cpd00007", #o2
-                     "cpd11640", #"h2
-                     "cpd00001", #h2o
-                     "cpd00363", # etoh
-                     "cpd00055", # Formaldehyde
-                     "cpd01861", # (R)-1,2-Propanediol
-                     "cpd00453", # 1,2-Propanediol
-                     "cpd00150", # HCN (Cyanide)
-                     "cpd00448", # D-Glyceraldehyde
-                     "cpd00025", # H2O2
-                     "cpd00359", # Indole (10.1128/JB.01477-10 <https://dx.doi.org/10.1128%2FJB.01477-10>)
-                     "cpd00811", # cpd00811 / tmao (klein und ungeladen)
-                     "cpd12733", # SO2 (klein, ungeladen)
-                     "cpd00371", # Propanal (klein, ungeladen)
-                     "cpd00418", # NO
-                     "cpd00659", # N2O
-                     "cpd11574", # Molybdate  (H2MoO4)
-                     "cpd00448", # glyald (D-Glyceraldehyde)
-                     "cpd00450", # dms (Methyl sulfide)
-                     "cpd08021", # DMSO
-                     "cpd00071", # acald (Acetaldehyde)
-                     "cpd00281", # 4abut (GABA)
-                     "cpd03828" # 23dappa (2,3-Diaminopropionate))
-                    )
-  diff.mets.ids.comp <- paste0(diff.mets.ids,"[c0]")
-  diff.mets.names <- ifelse(diff.mets.ids.comp %in% mod@met_id,
-                            mod@met_name[match(diff.mets.ids.comp, mod@met_id)],
-                            diff.mets.ids.comp)
+  diff.mets <- fread(paste0(script.dir, "/dat/diffusion_mets.tsv"), header=T, stringsAsFactors = F)
+  mod <- add_reaction_from_db(mod, react = diff.mets$diffrxn)
+  mod <- add_missing_exchanges(mod)
   
-  for(i in 1:length(diff.mets.ids)) {
-    diff.ex.id <- paste0("EX_",gsub("\\[.*\\]","",diff.mets.ids[i]),"_e0")
-    if( diff.ex.id %in% mod@react_id)
-      mod <- rmReact(mod, react=diff.ex.id)
-      
-    mod <- addReact(model = mod,
-                    id = diff.ex.id, 
-                    met = diff.mets.ids.comp[i],
-                    Scoef = -1,
-                    reversible = T, 
-                    metComp = 2,
-                    ub = ub,
-                    lb = 0,
-                    reactName = paste0(diff.mets.names[i], " Exchange + Diffusion"), 
-                    metName = diff.mets.names[i])
-  }
   return(mod)
 }
 
+add_reaction_from_db <- function(mod, react) {
+  mseed <- fread(paste0(script.dir, "/dat/seed_reactions_corrected.tsv"), header=T, stringsAsFactors = F)
+  mseed <- mseed[gapseq.status %in% c("approved","corrected")]
+  mseed <- mseed[order(id)]
+  
+  mseed <- mseed[id %in% react]
+  
+  if(nrow(mseed)==0) {
+    warning("None of the reactions ids are found in the database.")
+    return(mod)
+  }
+  if(nrow(mseed) != length(react)){
+    warning("Some of the specified reaction IDs are not found in database.") # TODO: Print wrong ids
+  }
+  
+  for(i in (1:nrow(mseed))) {
+    cat("\r",i,"/",nrow(mseed))
+    mets  <- unlist(str_split(string = mseed[i,compound_ids],pattern = ";"))
+    rxn.info <- str_split(unlist(str_split(string = mseed[i,stoichiometry],pattern = ";")), pattern = ":", simplify = T)
+    
+    met.comp  <- rxn.info[,3]
+    met.comp.n <- ifelse(met.comp==0,"c0","e0")
+    met.comp.n <- ifelse(met.comp>=2,"p0",met.comp.n)
+    
+    met.ids   <- paste0(rxn.info[,2],"[",met.comp.n,"]")
+    met.scoef <- as.numeric(rxn.info[,1])
+    met.name  <- str_replace_all(rxn.info[,5],"\\\"","")
+    
+    met.name  <- paste0(met.name,"-",met.comp.n)
+    
+    ind <- which(met.name=="" | is.na(met.name))
+    met.name[ind] <- met.ids[ind]
+    
+    is.rev <- ifelse(mseed[i,reversibility] %in% c("<","="),T,F)
+    only.backwards <- ifelse(mseed[i,reversibility]=="<",T,F)
+    
+    ind.new.mets <- which(met.ids %in% mod@met_id)
+    ind.old.mets <- which(mod@met_id %in% met.ids[ind.new.mets])
+    
+    met.name[ind.new.mets] <- mod@met_name[ind.old.mets]
+    
+    mod <- addReact(model = mod, 
+                    id = paste0(mseed[i,id],"_c0"), 
+                    met = met.ids,
+                    Scoef = met.scoef,
+                    reversible = is.rev, 
+                    metComp = as.integer(met.comp)+1,
+                    ub = ifelse(only.backwards, 0, 1000),
+                    lb = ifelse(is.rev, -1000, 0),
+                    reactName = mseed[i, name], 
+                    metName = met.name)
+  }
+  cat("\n")
+  return(mod)
+}
 
 add_exchanges <- function(mod, cpd, ub = 1000, metname=NA) {
+  metname <- ifelse(!is.na(metname),paste0(metname,"-e0"),metname)
+  
   for(m in cpd){
     ex.id  <- paste0("EX_",gsub("\\[.*\\]","",m),"_e0")
     if( ex.id %in% mod@react_id )
