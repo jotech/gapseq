@@ -134,12 +134,6 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
   ko.dt[, core := gsub("_.0","",dummy.rxn) %in% core.rxns]
   cat("Utilized candidate reactions: ",nrow(ko.dt))
   
-  # SW remove this later
-  if(!core.only) {
-    saveRDS(mod, file="mod.RDS")
-    saveRDS(c.coef, file="c.coef.RDS")
-  }
-  
   if( nrow(ko.dt) == 0){ # no dummy reactions is needed
     warning("No dummy reactions utilized in full model. Nothing to add.")
     return(list(model = mod.orig.bak,
@@ -187,10 +181,6 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
                          metName = met.name)
   }
   mod.orig <- add_missing_exchanges(mod.orig)
-  
-  # SW remove this later
-  if(!core.only)
-    saveRDS(mod.orig, file="mod.orig.RDS")
   
   sol <- optimizeProb(mod.orig)
   #if(sol@lp_stat!=ok | sol@lp_obj < min.obj.val*diet.scale){
