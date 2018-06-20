@@ -1,6 +1,7 @@
 gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-3, diet.scale = 1,
                      core.weight = 1, dummy.weight = 10000, script.dir, core.only = FALSE, 
                      mtf.scale = 3, verbose=verbose) {
+  source(paste0(script.dir, "/src/sysBiolAlg_mtfClass2.R"))
   # backup model
   mod.orig.bak <- mod.orig
   
@@ -57,7 +58,7 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
   # change bounds 
   mod@lowbnd[dummy.rxns.inds] <- ifelse(mod@lowbnd[dummy.rxns.inds]==0,0,-dummy.bnd)
   mod@uppbnd[dummy.rxns.inds] <- ifelse(mod@uppbnd[dummy.rxns.inds]==0,0,dummy.bnd)
-  
+
   # get initial growth
   sol <- optimizeProb(mod.orig)
   gr.orig <- sol@lp_obj
@@ -92,16 +93,28 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
   # as a costly reacton, the core reaction will carry the flux
   c.coef[costly.rxns.inds] <- dummy.weight
   ind.ex <- grep("^EX_",mod@react_id)
-  c.coef[ind.ex] <- core.weight
+  c.coef[ind.ex] <- 0
+  mtf.scale <- 1
   
   # modj_warm <- sysBiolAlg(mod,
   #                         algorithm = "mtf2",
   #                         costcoeffw = c.coef,
   #                         pFBAcoeff = 1e-6)
-  if( sybil::SYBIL_SETTINGS("SOLVER") == "glpkAPI" )
-    modj_warm <- sysBiolAlg(mod, algorithm = "mtf", costcoeffw = c.coef)
-  else
-    modj_warm <- sysBiolAlg(mod, algorithm = "mtf", costcoeffw = c.coef, scaling = mtf.scale)
+  if( sybil::SYBIL_SETTINGS("SOLVER") == "glpkAPI" ) {
+    #modj_warm <- sysBiolAlg(mod, algorithm = "mtf", costcoeffw = c.coef)
+    modj_warm <- sysBiolAlg(mod,
+                            algorithm = "mtf2",
+                            costcoeffw = c.coef,
+                            pFBAcoeff = 1e-3)
+  }
+  else {
+    #modj_warm <- sysBiolAlg(mod, algorithm = "mtf", costcoeffw = c.coef, scaling = mtf.scale)
+    modj_warm <- sysBiolAlg(mod,
+                            algorithm = "mtf2",
+                            costcoeffw = c.coef,
+                            pFBAcoeff = 1e-3,
+                            scaling = mtf.scale)
+  }
   sol.fba <- optimizeProb(modj_warm)
   
   if(sol.fba$stat!=ok){
@@ -120,6 +133,12 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
   ko.dt <- ko.dt[abs(flux) > 0]
   ko.dt[, core := gsub("_.0","",dummy.rxn) %in% core.rxns]
   cat("Utilized candidate reactions: ",nrow(ko.dt))
+  
+  # SW remove this later
+  if(!core.only) {
+    saveRDS(mod, file="mod.RDS")
+    saveRDS(c.coef, file="c.coef.RDS")
+  }
   
   if( nrow(ko.dt) == 0){ # no dummy reactions is needed
     warning("No dummy reactions utilized in full model. Nothing to add.")
@@ -169,10 +188,14 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
   }
   mod.orig <- add_missing_exchanges(mod.orig)
   
+  # SW remove this later
+  if(!core.only)
+    saveRDS(mod.orig, file="mod.orig.RDS")
+  
   sol <- optimizeProb(mod.orig)
   #if(sol@lp_stat!=ok | sol@lp_obj < min.obj.val*diet.scale){
   if(sol@lp_stat!=ok | sol@lp_obj < 1e-7){
-    warning(paste0("Final model cannot produce enough target even all candidate reactions are added! obj=", sol@lp_obj, " lp_stat=",sol@lp_stat))
+    warning(paste0("Final model cannot produce enough target even when all candidate reactions are added! obj=", sol@lp_obj, " lp_stat=",sol@lp_stat))
     return(list(model = mod.orig.bak,
                 rxns.added = c(),
                 core.rxns = core.rxns,

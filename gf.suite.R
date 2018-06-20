@@ -71,8 +71,8 @@ verbose       <- opt$verbose
 diet.scale   <- 4
 dummy.bnd    <- 1e-3
 dummy.weight <- 100
-core.weight  <- 1 
-min.obj.val  <- 0.05
+core.weight  <- 1
+min.obj.val  <- 0.01
 sbml.export  <- FALSE 
 
 
