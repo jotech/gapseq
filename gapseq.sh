@@ -238,7 +238,7 @@ makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
 cand=""     #list of candidate reactions to be added
 bestCand="" # list of candidates from (almost) complete pathways
 bestPwy=""  # list of found pathways
-echo -e "ID\tName\tCompletness\tVagueReactions\tKeyReactions\tKeyReactionsFound\tReactionsFound" > output.tbl # pahtway statistics file
+echo -e "ID\tName\tPrediction\tCompletness\tVagueReactions\tKeyReactions\tKeyReactionsFound\tReactionsFound" > output.tbl # pahtway statistics file
 
 pwyNr=$(echo "$pwyDB" | wc -l)
 echo Checking for pathways and reactions in: $1 $pwyKey
@@ -375,11 +375,11 @@ do
     CountTotalKeyRea=$(echo $keyRea | wc -w)
     echo -e Key reactions: $CountKeyReaFound/$CountKeyRea
     
-    echo -e "$pwy\t$name\t$completness\t$vague\t$CountKeyRea\t$CountKeyReaFound\t$countexList" >> output.tbl # write down some statistics
-    
     # add reactions of pathways (even if no blast hit) if above trashold (and no key enzyme is missed)
+    prediction=false
     if [ $count -ne 0 ] && [ $completness -ge $completnessCutoffNoHints ] && [ $CountKeyReaFound -eq $CountTotalKeyRea ]; then
         echo "Consider pathway to be present because of completness treshold!"
+        prediction=true
         bestCand="$bestCand$pwyCand " # save candidates from almost complete pathways
         if [[ -n "$pwyVage" ]] && [[ "$addVague" = true ]]; then
            bestCand="$bestCand$pwyVage$pwyNoSeqFound " # add vague reaction for pathways that are present
@@ -397,6 +397,7 @@ do
     fi
     if [ $CountKeyReaFound -ge 1 ] && [ $CountKeyReaFound -eq $CountTotalKeyRea ] && [ $count -ne 0 ] && [ $completness -ge $completnessCutoff ] && [ $completness -lt 100 ]; then
         echo "Consider pathway to be present because of key enzyme!"
+        prediction=true
         cand="$cand$pwyCandAll"
         if [[ $bestPwy != *"$name"* ]]; then # if not alrady added because of completness (s.a.)
            bestCand="$bestCand$pwyCandAll "
@@ -413,6 +414,9 @@ do
     else
         cand="$cand$pwyCand "
     fi
+    
+    echo -e "$pwy\t$name\t$prediction\t$completness\t$vague\t$CountKeyRea\t$CountKeyReaFound\t$countexList" >> output.tbl # write down some statistics
+
 done
 
 cand="$(echo $cand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
