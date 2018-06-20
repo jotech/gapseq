@@ -113,7 +113,7 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
                             algorithm = "mtf2",
                             costcoeffw = c.coef,
                             pFBAcoeff = 1e-3,
-                            scaling = mtf.scale)
+                            scaling = 1)
   }
   sol.fba <- optimizeProb(modj_warm)
   

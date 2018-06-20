@@ -68,7 +68,7 @@ output.dir    <- opt$output.dir
 verbose       <- opt$verbose
 
 # Parameters:
-diet.scale   <- 4
+diet.scale   <- 1 # parameter might be not needed anymore. >1 may even cause issues
 dummy.bnd    <- 1e-3
 dummy.weight <- 100
 core.weight  <- 1
