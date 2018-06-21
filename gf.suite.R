@@ -330,6 +330,7 @@ if ( TRUE ){
 
 # Add list of exchange reactions for step 3 and 4 in order to check for a wide range of carbon sources or fermentation products
 # (Unused exchanges will be deleted afterwards)
+mod.out <- add_missing_exchanges(mod.out)
 carbon.source <- carbon.source[!is.na(id_seed) & !is.na(name) & !is.na(exid_seed)]
 idx <- which( !carbon.source$exid_seed %in% mod.out@react_id )
 exchanges.new.met  <- carbon.source$id_seed[idx]
@@ -504,7 +505,7 @@ if ( TRUE ){
 exchanges.rm <- exchanges.new.ids[!exchanges.new.used]
 if( length(exchanges.rm) > 0 )
   mod.out <- rmReact(mod.out, react=exchanges.rm)
-
+mod.out <- add_missing_exchanges(mod.out)
 
 if(!dir.exists(output.dir))
   system(paste0("mkdir ",output.dir))

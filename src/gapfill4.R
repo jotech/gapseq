@@ -105,15 +105,15 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
     modj_warm <- sysBiolAlg(mod,
                             algorithm = "mtf2",
                             costcoeffw = c.coef,
-                            pFBAcoeff = 1e-3)
+                            pFBAcoeff = 1e-4)
   }
   else {
     #modj_warm <- sysBiolAlg(mod, algorithm = "mtf", costcoeffw = c.coef, scaling = mtf.scale)
     modj_warm <- sysBiolAlg(mod,
                             algorithm = "mtf2",
                             costcoeffw = c.coef,
-                            pFBAcoeff = 1e-3,
-                            scaling = 1)
+                            pFBAcoeff = 1e-4,
+                            scaling = NULL)
   }
   sol.fba <- optimizeProb(modj_warm)
   
@@ -202,7 +202,7 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
   obj.val <- gr.orig
   # Get reaction essentiality & successively remove reactions:
   # successively remove non-essential gap-fill reactions. Starting with non-core reactions.
-  
+  # Or maybe remove only non-core reactions?
   dummy.rxn.rm <- c()
   for(i in 1:nrow(ko.dt)) {
     bu.lb <- mod.orig@lowbnd[ko.dt[i,rxn.ind]]
@@ -225,7 +225,7 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
     if(obj.val >= min.obj.val*diet.scale)
       dummy.rxn.rm <- c(dummy.rxn.rm, ko.dt[i,dummy.rxn])
   }
-  # Remove reaction from mod.orig if reaction is not needed (obj.val >0 min.obj.val*diet.scale)
+  # Remove reaction from mod.orig if reaction is not needed (obj.val > min.obj.val*diet.scale)
   if( length(dummy.rxn.rm)>0 )
     mod.orig <- rmReact(mod.orig, react = dummy.rxn.rm)
   
