@@ -268,8 +268,8 @@ do
         rea=$(echo $reaids | awk -v j=$j -F ',' '{print $j}')
         re="([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
         test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
+        ((count++))
         if [ -n "$test" ]; then
-            ((count++))
             getDBhit # get db hits for this reactions
             pwyCandAll="$pwyCandAll$dbhit "
             query=$seqpath/$ec.fasta
@@ -362,13 +362,14 @@ do
     if [ $count -eq 0 ]; then
         completness=0
     else
-        if [ "$addVague" = true ]; then # if vague reaction are considered they should not influence the completness treshold
+        check_vague=$(echo "$vague < $count*0.5" | bc) # vague reactions shouldn't make more than half of total reactions
+        if [ "$addVague" = true ] && [ $check_vague -eq 1 ] ; then # if vague reaction are considered they should not influence the completness treshold
             completness=$(echo "scale=0; 100*($countex+$vague)/$count" | bc)
         else
             completness=$(echo "scale=0; 100*($countex)/$count" | bc)
         fi
     fi
-    if [ $vague -eq 0 ] || [ "$addVague" = false ]; then
+    if [ $vague -eq 0 ] || [ "$addVague" = false ] || [ $check_vague -eq 0 ]; then
         echo "Pathway completness: $countex/$count ($completness%)"
     else
         echo "Pathway completness: ($countex+$vague)/$count ($completness%) with $vague reactions of unclear state"
