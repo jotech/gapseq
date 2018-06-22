@@ -16,7 +16,7 @@ covcutoff=75 # cutoff blast: min coverage
 strictCandidates=false
 completnessCutoff=66 # consider pathway to be present if other hints (e.g. key enzyme present) are avaiable and pathway completness is at least as high as completnessCutoff (requires strictCandidates=false)
 completnessCutoffNoHints=80 # consider pathway to be present if no hints are avaiable (requires stricCandidates=false)
-addVague=true # should vague reactions (trunked EC number) be added when there is a hit in reaction DB?
+addVague=true # should vague reactions (trunked EC number or no sequence data) be added when there is a hit in reaction DB?
 onlyMetacyc=false
 blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
 
@@ -362,9 +362,18 @@ do
     if [ $count -eq 0 ]; then
         completness=0
     else
-        completness=$(echo "scale=0; 100*$countex/$count" | bc)
+        if [ "$addVague" = true ]; then # if vague reaction are considered they should not influence the completness treshold
+            completness=$(echo "scale=0; 100*($countex+$vague)/$count" | bc)
+        else
+            completness=$(echo "scale=0; 100*($countex)/$count" | bc)
+        fi
     fi
-    echo "Pathway completness: $countex/$count ($completness%) with $vague reactions of unclear state"
+    if [ $vague -eq 0 ] || [ "$addVague" = false ]; then
+        echo "Pathway completness: $countex/$count ($completness%)"
+    else
+        echo "Pathway completness: ($countex+$vague)/$count ($completness%) with $vague reactions of unclear state"
+    fi
+
     echo -e Hits with candidate reactions in database: $countdb/$count
     if [ -n "$keyReaFound" ]; then
         CountKeyReaFound=$(echo $keyReaFound | tr ' ' '\n' |  sort | uniq | wc -l)
