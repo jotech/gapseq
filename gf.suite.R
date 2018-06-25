@@ -72,7 +72,7 @@ diet.scale   <- 1 # parameter might be not needed anymore. >1 may even cause iss
 dummy.bnd    <- 1e-3
 dummy.weight <- 100
 core.weight  <- 1
-min.obj.val  <- 0.01
+min.obj.val  <- 0.05
 sbml.export  <- FALSE 
 
 

@@ -579,6 +579,10 @@ rxn03365	>			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn00474	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-2382	
 rxn00471	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ORNITHINE-CYCLODEAMINASE-RXN	
 rxn02516	>			[SW] never reported reversible according to BRENDA. Even reported IR in some cases.	http://www.brenda-enzymes.org/enzyme.php?ecno=4.4.1.9#NATURAL%20SUBSTRATES	
+rxn01964	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=TRYPSYN-RXN	
+rxn01023	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=CYANIDE-HYDRATASE-RXN	
+rxn00288	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=SUCCINATE-DEHYDROGENASE-UBIQUINONE6-RXN	
+rxn00673	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=PROPCOASYN-RXN	
 						
 rxn08448	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd01107:1:0:"Decanoate";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";1:cpd03128:0:0:"Decanoyl-CoA";2:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248	
 rxn08449	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd01741:1:0:"ddca";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";2:cpd00067:0:0:"H+";1:cpd01260:0:0:"Lauroyl-CoA"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248	
