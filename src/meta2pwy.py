@@ -21,8 +21,10 @@ def getReaInfos(pwy):
 
     ec_list  = []
     reaid_list = []
+    rea_counter = 0
     for r in rea_list:
         if meta[r]["spontaneous_p"]:
+            rea_counter +=1 # still count reaction
             continue
         ec  = meta[r]["ec_number"]
         reaid = r
@@ -39,6 +41,7 @@ def getReaInfos(pwy):
             ec = meta[r2]["ec_number"]
             if ec == None:
                 continue
+        rea_counter +=1 
         ec_nr=len(ec)
         ec = str(",".join(ec)).replace("|","").replace("EC-","")
         ec_list.append(ec)
@@ -46,11 +49,12 @@ def getReaInfos(pwy):
         reaid_list.append(",".join([reaid for i in range(0,ec_nr)]))
     ec_col = (",".join(ec_list))
     rea_col= (",".join(reaid_list)) 
-    return([ec_col,rea_col])
+    status = rea_counter == len(ec_list) # check if all reactins are covered by EC numbers
+    return([ec_col,rea_col,status])
 
 
 ofile = open("./meta_pwy.tbl", "w")
-ofile.write("id" + "\t" + "name" + "\t" + "altname" + "\t" + "hierarchy" + "\t" + "taxrange" + "\t" + "reaId" + "\t" + "reaEc" + "\t" + "keyRea" + "\n")
+ofile.write("id" + "\t" + "name" + "\t" + "altname" + "\t" + "hierarchy" + "\t" + "taxrange" + "\t" + "reaId" + "\t" + "reaEc" + "\t" + "keyRea" + "\t" + "status" + "\n")
 for p in meta.all_pathways():
     pwy = meta[p]
     qry = "(get-instance-all-types '"+p+")"
@@ -60,6 +64,7 @@ for p in meta.all_pathways():
     reaInf = getReaInfos(p)
     reaEc = reaInf[0]
     reaId = reaInf[1]
+    status= reaInf[2]
     # TODO: causes problems somehow?
     #taxrange = ",".join([meta[t].common_name.replace("|","") for t in pwy.taxonomic_range])
     if pwy.taxonomic_range != None:
@@ -70,7 +75,7 @@ for p in meta.all_pathways():
         keyRea = ",".join(pwy.key_reactions).replace("|","")
     else:
         keyRea = ""
-    ofile.write(p + "\t" + name + "\t" + altname + "\t" + hierarchy + "\t" + taxrange + "\t" + reaId + "\t" + reaEc + "\t" + keyRea  +"\n")
+    ofile.write(p + "\t" + name + "\t" + altname + "\t" + hierarchy + "\t" + taxrange + "\t" + reaId + "\t" + reaEc + "\t" + keyRea  + "\t" + str(status)  + "\n")
 ofile.close()
 # sort file!!
 # sort -k 1 dat/meta_pwy.tbl
