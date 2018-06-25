@@ -33,7 +33,7 @@ usage()
     echo "  -i identity cutoff for local alignment (default: $identcutoff)"
     echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
     echo "  -s strict candidate reaction handling (do _not_ use pathway completness, key kenzymes and operon structure to infere if imcomplete pathway could be still present (default: $strictCandidates)"
-    echo "  -n Add vague reactions (i.e. EC is trunked and no sequences is available) if pathway is otherwise complete (default: $addVague)"
+    echo "  -n Do _not_ consider vague reactions (i.e. EC is trunked and no sequence data is available) if pathway is otherwise complete (default consider vague reactions: $addVague)"
     echo "  -o use only MetaCyc pathway database (default: $onlyMetacyc)"
     echo "  -u suffix used for output files (default: pathway keyword)"
     echo "  -a blast hits back against uniprot enzyme database"
@@ -253,12 +253,14 @@ do
     pwyCand="" # candidate reaction of current pathway
     pwyCandAll="" # all possible reaction of current pathway
     pwyVage="" # reaction belonging to trunked EC numbers (no sequence blast possible..)
+    pwyNoSeqFound="" # remember reactions without blast hit so that they can be added in case of high pathway completness 
     count=0
     countex=0
     countexList="" # list with reactions ids found
     countdb=0
     vague=0
     keyReaFound=""
+    vagueKeyReaFound=""
     line=$(echo "$pwyDB" | awk -v i=$i 'NR==i')
     pwy=$(echo "$line" | awk -F "\t" '{print $1}')
     name=$(echo "$line" | awk -F "\t" '{print $2}')
@@ -357,6 +359,9 @@ do
                     dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
                     pwyNoSeqFound="$pwyNoSeqFound$dbhit "
                 fi
+                if [[ $keyRea = *"$rea"* ]]; then
+                    vagueKeyReaFound="$vagueKeyReaFound $rea"
+                fi
             fi
         else
             echo -e '\t'EC number too unspecific: $rea $ec ..skipping..
@@ -365,6 +370,9 @@ do
                 ec=$ec.-
                 getDBhit
                 [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
+            fi
+            if [[ $keyRea = *"$rea"* ]]; then
+                vagueKeyReaFound="$vagueKeyReaFound $rea"
             fi
         fi
         [[ verbose -gt 0 ]] && echo -e "\t\tCandidate reactions: $dbhit"
@@ -392,9 +400,14 @@ do
     else
         CountKeyReaFound=0
     fi
-    CountKeyRea=$(echo $keyRea | wc -w)
     CountTotalKeyRea=$(echo $keyRea | wc -w)
-    echo -e Key reactions: $CountKeyReaFound/$CountKeyRea
+    if [ "$addVague" = true ]; then
+        CountTotalVagueKeyRea=$(echo $vagueKeyReaFound | wc -w)
+        echo Key reactions: "$CountKeyReaFound/($CountTotalKeyRea-$CountTotalVagueKeyRea)"
+        CountTotalKeyRea=$(echo $CountTotalKeyRea - $CountTotalVagueKeyRea | bc )
+    else
+        echo Key reactions: $CountKeyReaFound/$CountTotalKeyRea
+    fi
     
     # add reactions of pathways (even if no blast hit) if above trashold (and no key enzyme is missed)
     prediction=false
@@ -403,7 +416,7 @@ do
         prediction=true
         bestCand="$bestCand$pwyCand " # save candidates from almost complete pathways
         if [[ -n "$pwyVage" ]] && [[ "$addVague" = true ]]; then
-           bestCand="$bestCand$pwyVage$pwyNoSeqFound " # add vague reaction for pathways that are present
+           bestCand="$bestCand$pwyVage$pwyNoSeqFound " # add vague reaction and reactions without sequence found for pathways that are present
            cand="$cand$pwyVage$pwyNoSeqFound "
         fi
         if [[ -n "$pwyNoSeqFound" ]] && [[ "$strictCandidates" = false ]]; then
@@ -436,7 +449,7 @@ do
         cand="$cand$pwyCand "
     fi
     
-    echo -e "$pwy\t$name\t$prediction\t$completness\t$vague\t$CountKeyRea\t$CountKeyReaFound\t$countexList" >> output.tbl # write down some statistics
+    echo -e "$pwy\t$name\t$prediction\t$completness\t$vague\t$CountTotalKeyRea\t$CountKeyReaFound\t$countexList" >> output.tbl # write down some statistics
 
 done
 
