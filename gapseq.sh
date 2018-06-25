@@ -25,10 +25,10 @@ usage()
 {
     echo "Usage"
     echo "$0 -p keyword / -e ec [-d database] [-t taxonomy] file.fasta."
-    echo "  -p keywords such as pathways or susbstem (for example amino,nucl,cofactor,carbo,polyamine)"
+    echo "  -p keywords such as pathways or subsystems (for example amino,nucl,cofactor,carbo,polyamine)"
     echo "  -e search by ec numbers (comma separated)"
     echo "  -d database: vmh or seed (default: $database)"
-    echo "  -t taxonomic range (default: $taxonomy)"
+    echo "  -t taxonomic range for sequences to be downloaded (default: $taxonomy)"
     echo "  -b bit score cutoff for local alignment (default: $bitcutoff)"
     echo "  -i identity cutoff for local alignment (default: $identcutoff)"
     echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
@@ -115,7 +115,7 @@ shift $((OPTIND-1))
 
 # get fasta file
 fasta=$(readlink -f "$1")
-[ ! -s $fasta ] && { echo Invalid file: $1; exit 0; }
+[[ ! -s $fasta ]] && { echo Invalid file: $1; exit 0; }
 tmpvar=$(basename $fasta)
 fastaID="${tmpvar%.*}"
 
@@ -292,7 +292,7 @@ do
                     csplit -s -z $query '/>/' '{*}' # split multiple fasta file and skip further testing if a significant hit is found
                     for q in `ls xx*`
                     do
-                        tblastn -db orgdb -query $q -outfmt "6 $blast_format" >>$out 
+                        tblastn -db orgdb -query $q -outfmt "6 $blast_format" >> $out 
                         bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
                         if [ -n "$bhit" ]; then
                             break
@@ -474,7 +474,7 @@ echo -e Candidate reactions found: $(echo "$cand" | wc -w) '\n'
 echo $cand > newReactions.lst
 cp newReactions.lst $curdir/${fastaID}-$output_suffix-Reactions.lst
 cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
-[ -f reactions.tbl ] && echo "#rxn ec $blast_format" | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
+[ -f reactions.tbl ] && echo "#rxn ec $(echo $blast_format | tr ' ' '\t')" | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
 
 
 ps -p $$ -o %cpu,%mem,cmd
