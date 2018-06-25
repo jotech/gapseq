@@ -12,4 +12,4 @@ for(p in kegg2$pwy){
   kegg.pwy <- rbind(kegg.pwy, data.table(id=pid, name=pname, altname="", hierarchy="kegg", taxrange="", reaId=prxn, reaEc=pec, keyRea=""))
 }
 
-fwrite(kegg.pwy, file="~/uni/gapseq/dat/kegg_pwy.tbl", sep="\t")
+fwrite(kegg.pwy, file="~/uni/gapseq/dat/kegg_pwy.tbl", sep="\t", quote=F)

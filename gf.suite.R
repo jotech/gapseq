@@ -121,7 +121,7 @@ if( media.file == "complete" ){
   met.id  <- gsub("\\[.0\\]","",mod.orig@met_id[met.pos])
   met.name<- mod.orig@met_name[met.pos]
   media <- data.frame(compounds=met.id, name=met.name, maxFlux=100)
-  media.file <- paste0(script.dir,"/ALLmed.csv")
+  media.file <- paste0(script.dir,"/dat/media/ALLmed.csv")
   write.csv(media, media.file, quote = F, row.names = F)
 }
 
@@ -147,7 +147,7 @@ mod.fill.lst <- gapfill4(mod.orig = mod.orig,
 
 mod.fill1 <- constrain.model(mod.fill.lst$model, media.file = media.file, scaling.fac = 1)
 mod.out <- mod.fill1
-
+saveRDS(mod.out, "./test.RDS")
 
 if ( TRUE ){
   cat("\n\n2. Biomass gapfilling using core reactions only\n")
