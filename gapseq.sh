@@ -19,6 +19,7 @@ completnessCutoffNoHints=80 # consider pathway to be present if no hints are ava
 addVague=true # should vague reactions (trunked EC number or no sequence data) be added when there is a hit in reaction DB?
 onlyMetacyc=false
 blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
+blast_back=false
 
 usage()
 {
@@ -35,6 +36,7 @@ usage()
     echo "  -n Add vague reactions (i.e. EC is trunked and no sequences is available) if pathway is otherwise complete (default: $addVague)"
     echo "  -o use only MetaCyc pathway database (default: $onlyMetacyc)"
     echo "  -u suffix used for output files (default: pathway keyword)"
+    echo "  -a blast hits back against uniprot enzyme database"
 exit 1
 }
 
@@ -58,7 +60,7 @@ seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:d:i:b:c:vs:t:snou:" opt; do
+while getopts "h?p:e:d:i:b:c:vs:t:snou:a" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -99,6 +101,9 @@ while getopts "h?p:e:d:i:b:c:vs:t:snou:" opt; do
         ;;
     u)
         output_suffix=$OPTARG
+        ;;
+    a)
+        blast_back=true
         ;;
     esac
 done
@@ -306,6 +311,12 @@ do
                         if [[ $keyRea = *"$rea"* ]]; then
                             echo -e '\t\t'Key reaction found!!
                             keyReaFound="$keyReaFound $rea"
+                        fi
+                        #blast hit back to uniprot enzyme database
+                        if [ "$blast_back" = true ]; then
+                            echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f9 | sed 's/-/*/g' > "$ec.hit.fasta"
+                            echo "Blast best hit against uniprot db:"
+                            blastp -db $dir/dat/seq/uniprot_sprot -query "$ec.hit.fasta" -outfmt '6 pident bitscore qcovs stitle' | awk '{if ( $4>50 ) print $0}' | sort -rgk 2,2 | head -n 3
                         fi
                         
                         if [ -n "$dbhit" ]; then
