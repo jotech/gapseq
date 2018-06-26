@@ -19,6 +19,7 @@ completnessCutoffNoHints=80 # consider pathway to be present if no hints are ava
 onlyMetacyc=false
 blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
 blast_back=false
+noSuperpathways=false
 
 usage()
 {
@@ -35,6 +36,7 @@ usage()
     echo "  -o use only MetaCyc pathway database (default: $onlyMetacyc)"
     echo "  -u suffix used for output files (default: pathway keyword)"
     echo "  -a blast hits back against uniprot enzyme database"
+    echo "  -n Do not consider superpathways of metacyc database"
 exit 1
 }
 
@@ -99,6 +101,9 @@ while getopts "h?p:e:d:i:b:c:vst:snou:a" opt; do
         ;;
     a)
         blast_back=true
+        ;;
+    n)
+        noSuperpathways=true
         ;;
     esac
 done
@@ -185,6 +190,7 @@ else
         cat $metaPwy $keggPwy > allPwy
     fi
     pwyDB=$(cat allPwy | grep -wEi $pwyKey)
+    [[ "$noSuperpathways" = true ]] && pwyDB=$(echo "$pwyDB" | grep -v 'Super-Pathways')
     [ -z "$ecnumber" ] && [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
 fi
 [ -z "$output_suffix" ] && output_suffix=$pathways
@@ -261,7 +267,6 @@ do
     reaids=$(echo "$line" | awk -F "\t" '{print $6}')
     reaNames=$(echo "$line" | awk -F "\t" '{print $9}')
     keyRea=$(echo "$line" | awk -F "\t" '{print $8}' | tr ',' ' ')
-    pwyStatus=$(echo "$line" | awk -F "\t" '{print $13}')
     echo -e '\n'$i/$pwyNr: Checking for pathway $pwy $name
     for j in `seq 1 $(echo $ecs | tr "," "\n" | wc -l)`
     #for ec in $(echo $ecs | tr "," "\n")
@@ -396,7 +401,6 @@ do
     
     prediction=false
     # add reactions of pathways (even if no blast hit) if above treshold (and no key enzyme is missed)
-    echo "Pathway status: $pwyStatus"
     cand="$cand$pwyCand " # add all reactions with direct sequence-based evidence
     
     # A) Consider as complete pathway because all reactions are present
