@@ -18,13 +18,14 @@ usage()
     echo "$0 -p keyword / -e ec [-t taxonomy]"
     echo "  -p keywords such as pathways or susbstem (default: core metabolism; 'Pathways' for all)"
     echo "  -e search by ec numbers (comma separated)"
+    echo "  -r search by reaction names (colon separated)"
     echo "  -t taxonomic range (default: $taxonomy)"
     echo "  -o Should existing files be overwritten (default: $overwrite)"
     echo "  -i identity of clustered uniprot database (0.5 or 0.9; default: $identity)"
 exit 1
 }
 
-while getopts "h?p:e:t:oi:" opt; do
+while getopts "h?p:e:t:oi:r:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -45,6 +46,9 @@ while getopts "h?p:e:t:oi:" opt; do
     i)
         identity=$OPTARG
         ;;
+    r)
+        reaNames=$OPTARG
+        ;;
     esac
 done
 shift $((OPTIND-1))
@@ -62,33 +66,63 @@ if [ -n "$ecnumber" ]; then
     # create dummpy pwy template for given ec number
     pwyKey=$ecnumber
     pwyDB=$(echo -e "dummy\t$ecnumber\t\t\t\t$ecnumber\t$ecnumber")
+elif [ -n "$reaNames" ]; then
+    pwyKey=$reaNames
+    pwyDB=$(echo -e "dummy\t$reaNames\t\t\t\t$reaNames\t$reaNames")
 else
     # get entries for pathways from database
     pwyDB=$(cat $metaPwy | grep -wEi $pwyKey)
     [ -z "$ecnumber" ] && [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
 fi
 
-ecs=$(echo "$pwyDB" | awk -F "\t" '{print $7}')
-uniq_ecs=$(echo $ecs | tr ',' '\n' | tr ' ' '\n' | sort | uniq)
-ecs_max=$(echo "$uniq_ecs" | wc -w)
-for ec in $uniq_ecs
-do
-    i=$((i+1))
-    echo -en "\r$i/$ecs_max"
-    re="([0-9]+.[0-9]+.[0-9]+.[0-9]+)"
-    test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
-    if [ -n "$test" ]; then # check if valid ec
-        if [ -f "$ec.fasta" ] &&  [ "$overwrite" = false ]; then # do not update existing files
+
+if [ -n "$ecnumber" ]; then
+    ecs=$(echo "$pwyDB" | awk -F "\t" '{print $7}')
+    uniq_ecs=$(echo $ecs | tr ',' '\n' | tr ' ' '\n' | sort | uniq)
+    ecs_max=$(echo "$uniq_ecs" | wc -w)
+    for ec in $uniq_ecs
+    do
+        i=$((i+1))
+        echo -en "\r$i/$ecs_max"
+        re="([0-9]+.[0-9]+.[0-9]+.[0-9]+)"
+        test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
+        if [ -n "$test" ]; then # check if valid ec
+            if [ -f "$ec.fasta" ] &&  [ "$overwrite" = false ]; then # do not update existing files
+                continue
+            fi
+            echo -en " ... Downloading $ec \t\t"
+            if [ ! -f "$ec.fasta" ]; then # fasta doesn't exist?
+                url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+                wget -q $url -O $ec.fasta
+            fi
+            if [ ! -s "$ec.fasta" ]; then # fasta is empty?
+                url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+                wget -q $url -O $ec.fasta
+            fi
+        fi
+    done
+fi
+
+
+if [ -n "$reaNames" ]; then
+    reas=$(echo "$pwyDB" | awk -F "\t" '{print $7}')
+    uniq_reas=$(echo $reas | tr ';' '\n' | sort | uniq)
+    reas_max=$(echo "$uniq_reas" | wc -l)
+    for rea in "$uniq_reas"
+    do
+        i=$((i+1))
+        echo -en "\r$i/$reas_max"
+        if [ -f "$rea.fasta" ] &&  [ "$overwrite" = false ]; then # do not update existing files
             continue
         fi
-        echo -en " ... Downloading $ec \t\t"
-        if [ ! -f "$ec.fasta" ]; then # fasta doesn't exist?
-            url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3D$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
-            wget -q $url -O $ec.fasta
+        echo -en " ... Downloading $rea \t\t"
+        if [ ! -f "$rea.fasta" ]; then # fasta doesn't exist?
+            url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+            wget  -q "$url" -O "$rea.fasta"
         fi
-        if [ ! -s "$ec.fasta" ]; then # fasta is empty?
-            url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3D$ec%20taxonomy%3A$taxonomy)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
-            wget -q $url -O $ec.fasta
+        if [ ! -s "$rea.fasta" ]; then # fasta is empty?
+            url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+            wget -q "$url" -O "$rea.fasta"
         fi
-    fi
-done
+    done
+fi
