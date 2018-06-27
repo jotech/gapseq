@@ -20,6 +20,7 @@ completnessCutoffNoHints=80 # consider pathway to be present if no hints are ava
 blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
 blast_back=false
 noSuperpathways=false
+vagueCutoff=0.3 # cutoff for vague reactions. If the amount of vague reactions in a pathways is more then this their influence will not be recognized even with strictCandidates=false
 
 usage()
 {
@@ -273,7 +274,9 @@ do
     reaids=$(echo "$line" | awk -F "\t" '{print $6}')
     reaNames=$(echo "$line" | awk -F "\t" '{print $9}')
     keyRea=$(echo "$line" | awk -F "\t" '{print $8}' | tr ',' ' ')
+    pwyHierarchy=$(echo "$line" | awk -F "\t" '{print $4}' | sed 's/|\|THINGS\|Generalized-Reactions\|Pathways\|FRAMES//g' | sed 's/,,//g')
     echo -e '\n'$i/$pwyNr: Checking for pathway $pwy $name
+    echo "($pwyHierarchy)"
     for j in `seq 1 $(echo $ecs | tr "," "\n" | wc -l)`
     #for ec in $(echo $ecs | tr "," "\n")
     do 
@@ -378,7 +381,7 @@ do
     if [ $count -eq 0 ]; then
         completness=0
     else
-        check_vague=$(echo "$vague < $count*0.5" | bc) # vague reactions shouldn't make more than half of total reactions
+        check_vague=$(echo "$vague < $count*$vagueCutoff" | bc) # vague reactions shouldn't make more than certain amount of total reactions
         if [ "$strictCandidates" = false ] && [ $check_vague -eq 1 ] ; then # if vague reaction are considered they should not influence the completness treshold
             completness=$(echo "scale=0; 100*($countex+$vague)/$count" | bc)
         else
