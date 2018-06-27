@@ -8,6 +8,7 @@
 
 pathways=""
 database="seed"
+pwyDatabase="metacyc"
 verbose=0
 taxonomy="Bacteria"
 bitcutoff=50 # cutoff blast: min bit score
@@ -16,7 +17,6 @@ covcutoff=75 # cutoff blast: min coverage
 strictCandidates=false
 completnessCutoff=66 # consider pathway to be present if other hints (e.g. key enzyme present) are avaiable and pathway completness is at least as high as completnessCutoff (requires strictCandidates=false)
 completnessCutoffNoHints=80 # consider pathway to be present if no hints are avaiable (requires stricCandidates=false)
-onlyMetacyc=false
 blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
 blast_back=false
 noSuperpathways=false
@@ -33,10 +33,10 @@ usage()
     echo "  -i identity cutoff for local alignment (default: $identcutoff)"
     echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
     echo "  -s strict candidate reaction handling (do _not_ use pathway completness, key kenzymes and operon structure to infere if imcomplete pathway could be still present (default: $strictCandidates)"
-    echo "  -o use only MetaCyc pathway database (default: $onlyMetacyc)"
     echo "  -u suffix used for output files (default: pathway keyword)"
     echo "  -a blast hits back against uniprot enzyme database"
     echo "  -n Do not consider superpathways of metacyc database"
+    echo "  -l Select the pathway database (MetaCyc, KEGG, SEED, all; default: $pwyDatabase)"
 exit 1
 }
 
@@ -48,6 +48,7 @@ dir=$(dirname "$path")
 uniprotIdentity=0.9 # clustered uniprot database (0.5 or 0.9)
 metaPwy=$dir/dat/meta_pwy.tbl
 keggPwy=$dir/dat/kegg_pwy.tbl
+seedPwy=$dir/dat/seed_pwy.tbl
 metaRea=$dir/dat/meta_rea.tbl
 reaDB1=$dir/dat/vmh_reactions.csv
 reaDB2=$dir/dat/bigg_reactions.tbl
@@ -60,7 +61,7 @@ seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:d:i:b:c:vst:snou:a" opt; do
+while getopts "h?p:e:d:i:b:c:vst:snou:al:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -93,9 +94,6 @@ while getopts "h?p:e:d:i:b:c:vst:snou:a" opt; do
     s)
         strictCandidates=true
         ;;
-    o)
-        onlyMetacyc=true
-        ;;
     u)
         output_suffix=$OPTARG
         ;;
@@ -104,6 +102,9 @@ while getopts "h?p:e:d:i:b:c:vst:snou:a" opt; do
         ;;
     n)
         noSuperpathways=true
+        ;;
+    l)
+        pwyDatabase=$OPTARG
         ;;
     esac
 done
@@ -183,11 +184,16 @@ if [ -n "$ecnumber" ]; then
     pwyDB=$(echo -e "dummy\t$ecnumber\t\t\t\t$ecnumber\t$ecnumber")
     pathways="ec"
 else
+    pwyDatabase=$(echo $pwyDatabase | tr '[:upper:]' '[:lower:]')
     # get entries for pathways from databases
-    if [ "$onlyMetacyc" == true ]; then
+    if [[ "$pwyDatabase" == "all" ]]; then
+        cat $metaPwy $keggPwy $seedPwy > allPwy
+    elif [[ "$pwyDatabase" == "metacyc" ]]; then
         cat $metaPwy > allPwy
-    else
-        cat $metaPwy $keggPwy > allPwy
+    elif [[ "$pwyDatabase" == "kegg" ]]; then
+        cat $keggPwy > allPwy
+    elif [[ "$pwyDatabase" == "seed" ]]; then
+        cat $seedPwy > allPwy
     fi
     pwyDB=$(cat allPwy | grep -wEi $pwyKey)
     [[ "$noSuperpathways" = true ]] && pwyDB=$(echo "$pwyDB" | grep -v 'Super-Pathways')
