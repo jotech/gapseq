@@ -105,14 +105,14 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
     modj_warm <- sysBiolAlg(mod,
                             algorithm = "mtf2",
                             costcoeffw = c.coef,
-                            pFBAcoeff = 1e-4)
+                            pFBAcoeff = 1e-3)
   }
   else {
     #modj_warm <- sysBiolAlg(mod, algorithm = "mtf", costcoeffw = c.coef, scaling = mtf.scale)
     modj_warm <- sysBiolAlg(mod,
                             algorithm = "mtf2",
                             costcoeffw = c.coef,
-                            pFBAcoeff = 1e-4,
+                            pFBAcoeff = 1e-3,
                             scaling = NULL)
   }
   sol.fba <- optimizeProb(modj_warm)
