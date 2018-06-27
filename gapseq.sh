@@ -16,10 +16,10 @@ covcutoff=75 # cutoff blast: min coverage
 strictCandidates=false
 completnessCutoff=66 # consider pathway to be present if other hints (e.g. key enzyme present) are avaiable and pathway completness is at least as high as completnessCutoff (requires strictCandidates=false)
 completnessCutoffNoHints=80 # consider pathway to be present if no hints are avaiable (requires stricCandidates=false)
-addVague=true # should vague reactions (trunked EC number or no sequence data) be added when there is a hit in reaction DB?
 onlyMetacyc=false
 blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
 blast_back=false
+noSuperpathways=false
 
 usage()
 {
@@ -33,10 +33,10 @@ usage()
     echo "  -i identity cutoff for local alignment (default: $identcutoff)"
     echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
     echo "  -s strict candidate reaction handling (do _not_ use pathway completness, key kenzymes and operon structure to infere if imcomplete pathway could be still present (default: $strictCandidates)"
-    echo "  -n Do _not_ consider vague reactions (i.e. EC is trunked and no sequence data is available) if pathway is otherwise complete (default consider vague reactions: $addVague)"
     echo "  -o use only MetaCyc pathway database (default: $onlyMetacyc)"
     echo "  -u suffix used for output files (default: pathway keyword)"
     echo "  -a blast hits back against uniprot enzyme database"
+    echo "  -n Do not consider superpathways of metacyc database"
 exit 1
 }
 
@@ -60,7 +60,7 @@ seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:d:i:b:c:vs:t:snou:a" opt; do
+while getopts "h?p:e:d:i:b:c:vst:snou:a" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -93,9 +93,6 @@ while getopts "h?p:e:d:i:b:c:vs:t:snou:a" opt; do
     s)
         strictCandidates=true
         ;;
-    n)
-        addVague=false
-        ;;
     o)
         onlyMetacyc=true
         ;;
@@ -104,6 +101,9 @@ while getopts "h?p:e:d:i:b:c:vs:t:snou:a" opt; do
         ;;
     a)
         blast_back=true
+        ;;
+    n)
+        noSuperpathways=true
         ;;
     esac
 done
@@ -190,6 +190,7 @@ else
         cat $metaPwy $keggPwy > allPwy
     fi
     pwyDB=$(cat allPwy | grep -wEi $pwyKey)
+    [[ "$noSuperpathways" = true ]] && pwyDB=$(echo "$pwyDB" | grep -v 'Super-Pathways')
     [ -z "$ecnumber" ] && [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
 fi
 [ -z "$output_suffix" ] && output_suffix=$pathways
@@ -241,7 +242,6 @@ makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
 
 
 cand=""     #list of candidate reactions to be added
-bestCand="" # list of candidates from (almost) complete pathways
 bestPwy=""  # list of found pathways
 echo -e "ID\tName\tPrediction\tCompletness\tVagueReactions\tKeyReactions\tKeyReactionsFound\tReactionsFound" > output.tbl # pahtway statistics file
 
@@ -251,9 +251,8 @@ echo Number of pathways to be considered: $pwyNr
 for i in `seq 1 $pwyNr`
 do
     pwyCand="" # candidate reaction of current pathway
-    pwyCandAll="" # all possible reaction of current pathway
     pwyVage="" # reaction belonging to trunked EC numbers (no sequence blast possible..)
-    pwyNoSeqFound="" # remember reactions without blast hit so that they can be added in case of high pathway completness 
+    pwyNoHitFound="" # remember reactions without blast hit so that they can be added in case of high pathway completness 
     count=0
     countex=0
     countexList="" # list with reactions ids found
@@ -266,6 +265,7 @@ do
     name=$(echo "$line" | awk -F "\t" '{print $2}')
     ecs=$(echo "$line" | awk -F "\t" '{print $7}')
     reaids=$(echo "$line" | awk -F "\t" '{print $6}')
+    reaNames=$(echo "$line" | awk -F "\t" '{print $9}')
     keyRea=$(echo "$line" | awk -F "\t" '{print $8}' | tr ',' ' ')
     echo -e '\n'$i/$pwyNr: Checking for pathway $pwy $name
     for j in `seq 1 $(echo $ecs | tr "," "\n" | wc -l)`
@@ -273,107 +273,96 @@ do
     do 
         ec=$(echo $ecs | awk -v j=$j -F ',' '{print $j}')
         rea=$(echo $reaids | awk -v j=$j -F ',' '{print $j}')
+        reaName=$(echo $reaNames | awk -v j=$j -F ';' '{print $j}')
         re="([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
-        test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
+        EC_test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
         ((count++))
-        if [ -n "$test" ]; then
+        if [ -n "$EC_test" ]; then
             getDBhit # get db hits for this reactions
-            pwyCandAll="$pwyCandAll$dbhit "
             query=$seqpath/$ec.fasta
-            if [ ! -f $query ]; then # check if sequence is not available => try to download
-                #python2 $dir/src/uniprot.py "$ec" "$taxonomy" # if sequence data not available then download from uniprot
-                
+            if [ ! -f "$query" ]; then # check if sequence is not available => try to download
                 echo -e '\t'Downloading sequence for: $ec 
                 $dir/src/uniprot.sh -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
             fi
-            if [ -s $query ]; then
-                out=$ec.blast
-                if [ ! -f $out ]; then # check if there is a former hit
-                    csplit -s -z $query '/>/' '{*}' # split multiple fasta file and skip further testing if a significant hit is found
-                    for q in `ls xx*`
-                    do
-                        tblastn -db orgdb -query $q -outfmt "6 $blast_format" >> $out 
-                        bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
-                        if [ -n "$bhit" ]; then
-                            break
-                        fi
-                    done
-                    rm xx*
-                fi
-                if [ -s $out ]; then
+        else
+            query="$seqpath/$reaName.fasta"
+            if [ ! -f "$query" ]; then # check if sequence is not available => try to download
+                echo -e '\t'Downloading sequence for: $reaName 
+                $dir/src/uniprot.sh -r "$reaName" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+            fi
+
+        fi
+        if [ -s "$query" ]; then
+            out=$ec.blast
+            if [ ! -f $out ]; then # check if there is a former hit
+                csplit -s -z "$query" '/>/' '{*}' # split multiple fasta file and skip further testing if a significant hit is found
+                for q in `ls xx*`
+                do
+                    tblastn -db orgdb -query $q -outfmt "6 $blast_format" >> $out 
                     bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
                     if [ -n "$bhit" ]; then
-                        bestIdentity=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f2)
-                        bestBitscore=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f4)
-                        bestCoverage=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f5)
-                        besthit_all=$(echo "$bhit" | sort -rgk 4,4 | head -1)
-                        echo -e "$rea\t$ec\t$besthit_all" >> reactions.tbl 
-                        echo -e '\t'Blast hit: $rea $ec "(bit=$bestBitscore, id=$bestIdentity, cov=$bestCoverage)"
-                        # check if key reactions of pathway
-                        if [[ $keyRea = *"$rea"* ]]; then
-                            echo -e '\t\t'Key reaction found!!
-                            keyReaFound="$keyReaFound $rea"
-                        fi
-                        #blast hit back to uniprot enzyme database
-                        if [ "$blast_back" = true ]; then
-                            echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f9 | sed 's/-/*/g' > "$ec.hit.fasta"
-                            echo "Blast best hit against uniprot db:"
-                            blastp -db $dir/dat/seq/uniprot_sprot -query "$ec.hit.fasta" -outfmt '6 pident bitscore qcovs stitle' | awk '{if ( $4>50 ) print $0}' | sort -rgk 2,2 | head -n 3
-                        fi
-                        
-                        if [ -n "$dbhit" ]; then
-                            dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
-                            echo -e '\t\t'Candidate reaction for import: `echo "$dbhit" | wc -w`
-                            pwyCand="$pwyCand$dbhit " # remember candidate reaction
-                            ((countdb++))
-                        else
-                            echo -e '\t\t'No candidate reaction found for import
-                        fi
-                        ((countex++))
-                        countexList="$countexList$rea "
-                    else
-                        someIdentity=$(cat $out | sort -rgk 4,4 | head -1 | cut -f2)
-                        someBitscore=$(cat $out | sort -rgk 4,4 | head -1 | cut -f4)
-                        someCoverage=$(cat $out | sort -rgk 4,4 | head -1 | cut -f5)
-                        somehit_all=$( cat $out | sort -rgk 4,4 | head -1)
-                        echo -e "$rea\t$ec\t$somehit_all" >> reactions.tbl 
-                        echo -e '\t'No significant blast hits found: $rea $ec "\n\t\t(best one: id=$someIdentity bit=$someBitscore cov=$someCoverage)"
-                        if [[ -n "$dbhit" ]];then
-                            dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
-                            pwyNoSeqFound="$pwyNoSeqFound$dbhit "
-                        fi
+                        break
                     fi
+                done
+                rm xx*
+            fi
+            if [ -s $out ]; then
+                bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
+                if [ -n "$bhit" ]; then
+                    bestIdentity=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f2)
+                    bestBitscore=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f4)
+                    bestCoverage=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f5)
+                    besthit_all=$(echo "$bhit" | sort -rgk 4,4 | head -1)
+                    echo -e "$rea\t$ec\t$besthit_all" >> reactions.tbl 
+                    echo -e '\t'Blast hit: $rea $reaName $ec"\n\t\tbit=$bestBitscore, id=$bestIdentity, cov=$bestCoverage"
+                    # check if key reactions of pathway
+                    if [[ $keyRea = *"$rea"* ]]; then
+                        echo -e '\t\t--> KEY reaction found <--'
+                        keyReaFound="$keyReaFound $rea"
+                    fi
+                    #blast hit back to uniprot enzyme database
+                    if [ "$blast_back" = true ]; then
+                        echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f9 | sed 's/-/*/g' > "$ec.hit.fasta"
+                        echo "Blast best hit against uniprot db:"
+                        blastp -db $dir/dat/seq/uniprot_sprot -query "$ec.hit.fasta" -outfmt '6 pident bitscore qcovs stitle' | awk '{if ( $4>50 ) print $0}' | sort -rgk 2,2 | head -n 3
+                    fi
+                    
+                    if [ -n "$dbhit" ]; then
+                        dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
+                        echo -e '\t\t'Candidate reaction for import: `echo "$dbhit" | wc -w`
+                        pwyCand="$pwyCand$dbhit " # remember candidate reaction
+                        ((countdb++))
+                    else
+                        echo -e '\t\t'No candidate reaction found for import
+                    fi
+                    ((countex++))
+                    countexList="$countexList$rea "
                 else
-                    echo -e '\t'No blast hits found for reaction: $rea $ec
-                    getDBhit
+                    someIdentity=$(cat $out | sort -rgk 4,4 | head -1 | cut -f2)
+                    someBitscore=$(cat $out | sort -rgk 4,4 | head -1 | cut -f4)
+                    someCoverage=$(cat $out | sort -rgk 4,4 | head -1 | cut -f5)
+                    somehit_all=$( cat $out | sort -rgk 4,4 | head -1)
+                    echo -e "$rea\t$ec\t$somehit_all" >> reactions.tbl 
+                    echo -e '\t'NO good blast hit: $rea $reaName $ec"\n\t\t(best one: id=$someIdentity bit=$someBitscore cov=$someCoverage)"
                     if [[ -n "$dbhit" ]];then
                         dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
-                        pwyNoSeqFound="$pwyNoSeqFound$dbhit "
+                        pwyNoHitFound="$pwyNoHitFound$dbhit "
                     fi
                 fi
             else
-                echo -e '\t'No sequence data found for $rea $ec ..skipping..
-                ((vague++))
-                getDBhit
+                echo -e '\t'NO blast hit: $rea $reaName $ec
+                [[ -n "$EC_test" ]] && getDBhit
                 if [[ -n "$dbhit" ]];then
                     dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
-                    pwyNoSeqFound="$pwyNoSeqFound$dbhit "
-                fi
-                if [[ $keyRea = *"$rea"* ]]; then
-                    vagueKeyReaFound="$vagueKeyReaFound $rea"
+                    pwyNoHitFound="$pwyNoHitFound$dbhit "
                 fi
             fi
         else
-            echo -e '\t'EC number too unspecific: $rea $ec ..skipping..
+            echo -e '\t'No sequence data found for $rea $reaName $ec ..skipping..
             ((vague++))
-            if [ -n "$ec" ]; then
-                ec=$ec.-
-                getDBhit
-                [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
-            fi
-            if [[ $keyRea = *"$rea"* ]]; then
-                vagueKeyReaFound="$vagueKeyReaFound $rea"
-            fi
+            [[ -n "$EC_test" ]] && getDBhit
+            [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
+            [[ $keyRea = *"$rea"* ]] && vagueKeyReaFound="$vagueKeyReaFound $rea"
         fi
         [[ verbose -gt 0 ]] && echo -e "\t\tCandidate reactions: $dbhit"
     done # pathway
@@ -382,13 +371,13 @@ do
         completness=0
     else
         check_vague=$(echo "$vague < $count*0.5" | bc) # vague reactions shouldn't make more than half of total reactions
-        if [ "$addVague" = true ] && [ $check_vague -eq 1 ] ; then # if vague reaction are considered they should not influence the completness treshold
+        if [ "$strictCandidates" = false ] && [ $check_vague -eq 1 ] ; then # if vague reaction are considered they should not influence the completness treshold
             completness=$(echo "scale=0; 100*($countex+$vague)/$count" | bc)
         else
             completness=$(echo "scale=0; 100*($countex)/$count" | bc)
         fi
     fi
-    if [ $vague -eq 0 ] || [ "$addVague" = false ] || [ $check_vague -eq 0 ]; then
+    if [ $vague -eq 0 ] || [ "$strictCandidates" = true ] || [ $check_vague -eq 0 ]; then
         echo "Pathway completness: $countex/$count ($completness%)"
     else
         echo "Pathway completness: ($countex+$vague)/$count ($completness%) with $vague reactions of unclear state"
@@ -400,53 +389,36 @@ do
     else
         CountKeyReaFound=0
     fi
+    
     CountTotalKeyRea=$(echo $keyRea | wc -w)
-    if [ "$addVague" = true ]; then
-        CountTotalVagueKeyRea=$(echo $vagueKeyReaFound | wc -w)
-        echo Key reactions: "$CountKeyReaFound/($CountTotalKeyRea-$CountTotalVagueKeyRea)"
+    CountTotalVagueKeyRea=$(echo $vagueKeyReaFound | wc -w)
+    if [[ "$strictCandidates" = false ]] && [[ $CountTotalVagueKeyRea -gt 0 ]]; then
+        echo Key reactions: "$CountKeyReaFound/($CountTotalKeyRea-$CountTotalVagueKeyRea) with $CountTotalVagueKeyRea key reactions of unclear state"
         CountTotalKeyRea=$(echo $CountTotalKeyRea - $CountTotalVagueKeyRea | bc )
     else
         echo Key reactions: $CountKeyReaFound/$CountTotalKeyRea
     fi
     
-    # add reactions of pathways (even if no blast hit) if above trashold (and no key enzyme is missed)
     prediction=false
-    if [ $count -ne 0 ] && [ $completness -ge $completnessCutoffNoHints ] && [ $CountKeyReaFound -eq $CountTotalKeyRea ]; then
+    # add reactions of pathways (even if no blast hit) if above treshold (and no key enzyme is missed)
+    cand="$cand$pwyCand " # add all reactions with direct sequence-based evidence
+    
+    # A) Consider as complete pathway because all reactions are present
+    if [[ $completness -eq 100 ]]; then
+        prediction=true
+        bestPwy="$bestPwy$name\n"
+    # B) Consider as complete pathway because of completness treshold
+    elif [[ $completness -ge $completnessCutoffNoHints ]] && [[ "$strictCandidates" = false ]]; then
         echo "Consider pathway to be present because of completness treshold!"
         prediction=true
-        bestCand="$bestCand$pwyCand " # save candidates from almost complete pathways
-        if [[ -n "$pwyVage" ]] && [[ "$addVague" = true ]]; then
-           bestCand="$bestCand$pwyVage$pwyNoSeqFound " # add vague reaction and reactions without sequence found for pathways that are present
-           cand="$cand$pwyVage$pwyNoSeqFound "
-        fi
-        if [[ -n "$pwyNoSeqFound" ]] && [[ "$strictCandidates" = false ]]; then
-           bestCand="$bestCand$pwyNoSeqFound " # add reaction with no blast hits
-           cand="$cand$pwyNoSeqFound "
-        fi
-        if [[ $completness -lt 100 ]]; then
-            bestPwy="$bestPwy$name ($completness% completness, added because of treshhold)\n"
-        else
-            bestPwy="$bestPwy$name\n"
-        fi
-    fi
-    if [ $CountKeyReaFound -ge 1 ] && [ $CountKeyReaFound -eq $CountTotalKeyRea ] && [ $count -ne 0 ] && [ $completness -ge $completnessCutoff ] && [ $completness -lt 100 ]; then
+        cand="$cand$pwyVage$pwyNoHitFound "
+        bestPwy="$bestPwy$name ($completness% completness, added because of treshhold)\n"
+    # C) Consider as complete pathway because of key enzymes (lower treshold)
+    elif [[ $CountKeyReaFound -ge 1 ]] && [[ $CountKeyReaFound -eq $CountTotalKeyRea ]] && [[ $completness -ge $completnessCutoff ]] && [[ "$strictCandidates" = false ]]; then
         echo "Consider pathway to be present because of key enzyme!"
         prediction=true
-        cand="$cand$pwyCandAll"
-        if [[ $bestPwy != *"$name"* ]]; then # if not alrady added because of completness (s.a.)
-           bestCand="$bestCand$pwyCandAll "
-           if [[ -n "$pwyVage" ]] && [[ "$addVague" = true ]]; then
-              bestCand="$bestCand$pwyVage " # add vague reaction for pathways that are present
-              cand="$cand$pwyVage "
-            fi
-            if [[ -n "$pwyNoSeqFound" ]] && [[ "$strictCandidates" = false ]]; then
-               bestCand="$bestCand$pwyNoSeqFound " # add reaction with no blast hits
-               cand="$cand$pwyNoSeqFound "
-            fi
-           bestPwy="$bestPwy$name ($completness% completness, added because of key enzyme)\n"
-        fi
-    else
-        cand="$cand$pwyCand "
+        cand="$cand$pwyVage$pwyNoHitFound "
+        bestPwy="$bestPwy$name ($completness% completness, added because of key enzyme)\n"
     fi
     
     echo -e "$pwy\t$name\t$prediction\t$completness\t$vague\t$CountTotalKeyRea\t$CountKeyReaFound\t$countexList" >> output.tbl # write down some statistics
@@ -462,15 +434,9 @@ fi
 echo -e '\n'Pathways found:
 echo -e $bestPwy
 
-bestCand="$(echo $bestCand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
-if [[ verbose -gt 0 ]]; then
-    echo -e '\n'Candidate reactions from complete pathways:
-    echo -e $bestCand
-fi
 
 # export found reactions 
 echo -e Candidate reactions found: $(echo "$cand" | wc -w) '\n'
-#echo $bestCand > newReactions.lst
 echo $cand > newReactions.lst
 cp newReactions.lst $curdir/${fastaID}-$output_suffix-Reactions.lst
 cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
