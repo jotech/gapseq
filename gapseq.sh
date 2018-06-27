@@ -277,23 +277,25 @@ do
         re="([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
         EC_test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
         ((count++))
-        if [ -n "$EC_test" ]; then
+        if [[ -n "$EC_test" ]]; then
             getDBhit # get db hits for this reactions
             query=$seqpath/$ec.fasta
             if [ ! -f "$query" ]; then # check if sequence is not available => try to download
                 echo -e '\t'Downloading sequence for: $ec 
                 $dir/src/uniprot.sh -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
             fi
-        else
-            query="$seqpath/$reaName.fasta"
+        fi
+        # if no EC number is available or no sequence was found for EC number then use reaction name instead for sequence search
+        if [[ -z "$EC_test" ]] || [[ ! -s "$query" ]] ;then
+            reaNameHash=$(echo -n "$reaName" | md5sum | awk '{print $1}')
+            query="$seqpath/$reaNameHash.fasta"
             if [ ! -f "$query" ]; then # check if sequence is not available => try to download
-                echo -e '\t'Downloading sequence for: $reaName 
+                echo -e '\t'Downloading sequence for: $reaName "\n\t\t(hash: $reaNameHash)" 
                 $dir/src/uniprot.sh -r "$reaName" -t "$taxonomy" -i $uniprotIdentity >/dev/null
             fi
-
         fi
         if [ -s "$query" ]; then
-            out=$ec.blast
+            out=$rea.blast #$ec.blast
             if [ ! -f $out ]; then # check if there is a former hit
                 csplit -s -z "$query" '/>/' '{*}' # split multiple fasta file and skip further testing if a significant hit is found
                 for q in `ls xx*`
@@ -333,7 +335,7 @@ do
                         pwyCand="$pwyCand$dbhit " # remember candidate reaction
                         ((countdb++))
                     else
-                        echo -e '\t\t'No candidate reaction found for import
+                        echo -e '\t\t'NO candidate reaction found for import
                     fi
                     ((countex++))
                     countexList="$countexList$rea "
@@ -358,7 +360,7 @@ do
                 fi
             fi
         else
-            echo -e '\t'No sequence data found for $rea $reaName $ec ..skipping..
+            echo -e '\t'NO sequence data found for $rea $reaName $ec ..skipping..
             ((vague++))
             [[ -n "$EC_test" ]] && getDBhit
             [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "

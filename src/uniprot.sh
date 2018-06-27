@@ -91,10 +91,10 @@ if [ -n "$ecnumber" ]; then
                 continue
             fi
             echo -en " ... Downloading $ec \t\t"
-            if [ ! -f "$ec.fasta" ]; then # fasta doesn't exist?
-                url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
-                wget -q $url -O $ec.fasta
-            fi
+#            if [ ! -f "$ec.fasta" ]; then # fasta doesn't exist?
+#                url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+#                wget -q $url -O $ec.fasta
+#            fi
             if [ ! -s "$ec.fasta" ]; then # fasta is empty?
                 url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
                 wget -q $url -O $ec.fasta
@@ -111,18 +111,19 @@ if [ -n "$reaNames" ]; then
     for rea in "$uniq_reas"
     do
         i=$((i+1))
+        reaNameHash=$(echo -n "$rea" | md5sum | awk '{print $1}')
         echo -en "\r$i/$reas_max"
-        if [ -f "$rea.fasta" ] &&  [ "$overwrite" = false ]; then # do not update existing files
+        if [ -f "$reaNameHash.fasta" ] &&  [ "$overwrite" = false ]; then # do not update existing files
             continue
         fi
-        echo -en " ... Downloading $rea \t\t"
-        if [ ! -f "$rea.fasta" ]; then # fasta doesn't exist?
-            url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
-            wget  -q "$url" -O "$rea.fasta"
-        fi
-        if [ ! -s "$rea.fasta" ]; then # fasta is empty?
+        echo -en " ... Downloading $rea $reaNameHash\t\t"
+#        if [ ! -f "$reaNameHash.fasta" ]; then # fasta doesn't exist?
+#            url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+#            wget  -q "$url" -O "$reaNameHash.fasta"
+#        fi
+        if [ ! -s "$reaNameHash.fasta" ]; then # fasta is empty?
             url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
-            wget -q "$url" -O "$rea.fasta"
+            wget -q "$url" -O "$reaNameHash.fasta"
         fi
     done
 fi
