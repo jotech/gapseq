@@ -91,10 +91,10 @@ if [ -n "$ecnumber" ]; then
                 continue
             fi
             echo -en " ... Downloading $ec \t\t"
-#            if [ ! -f "$ec.fasta" ]; then # fasta doesn't exist?
-#                url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
-#                wget -q $url -O $ec.fasta
-#            fi
+            if [ ! -f "$ec.fasta" ]; then # fasta doesn't exist?
+                url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+                wget -q $url -O $ec.fasta
+            fi
             if [ ! -s "$ec.fasta" ]; then # fasta is empty?
                 url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
                 wget -q $url -O $ec.fasta
@@ -117,10 +117,10 @@ if [ -n "$reaNames" ]; then
             continue
         fi
         echo -en " ... Downloading $rea $reaNameHash\t\t"
-#        if [ ! -f "$reaNameHash.fasta" ]; then # fasta doesn't exist?
-#            url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
-#            wget  -q "$url" -O "$reaNameHash.fasta"
-#        fi
+        if [ ! -f "$reaNameHash.fasta" ]; then # fasta doesn't exist?
+            url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+            wget  -q "$url" -O "$reaNameHash.fasta"
+        fi
         if [ ! -s "$reaNameHash.fasta" ]; then # fasta is empty?
             url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
             wget -q "$url" -O "$reaNameHash.fasta"
