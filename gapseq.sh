@@ -413,13 +413,14 @@ do
     prediction=false
     # add reactions of pathways (even if no blast hit) if above treshold (and no key enzyme is missed)
     cand="$cand$pwyCand " # add all reactions with direct sequence-based evidence
+    [[ $CountTotalKeyRea -gt 0 ]] && KeyReaFracAvail=$(echo "scale=2; $CountKeyReaFound / $CountTotalKeyRea > 0.5" | bc) # how many key enzymes were found?
     
     # A) Consider as complete pathway because all reactions are present
     if [[ $completness -eq 100 ]]; then
         prediction=true
         bestPwy="$bestPwy$name\n"
-    # B) Consider as complete pathway because of completness treshold (key enzymes should be present anyways)
-    elif [[ $completness -ge $completnessCutoffNoHints ]] && [[ $CountKeyReaFound -eq $CountTotalKeyRea ]] && [[ "$strictCandidates" = false ]]; then
+    # B) Consider as complete pathway because of completness treshold (key enzymes should be present too)
+    elif [[ $completness -ge $completnessCutoffNoHints ]] && [[ "$KeyReaFracAvail" -eq 1 ]] && [[ "$strictCandidates" = false ]]; then
         echo "Consider pathway to be present because of completness treshold!"
         prediction=true
         cand="$cand$pwyVage$pwyNoHitFound "
