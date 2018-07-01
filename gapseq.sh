@@ -418,8 +418,8 @@ do
     if [[ $completness -eq 100 ]]; then
         prediction=true
         bestPwy="$bestPwy$name\n"
-    # B) Consider as complete pathway because of completness treshold
-    elif [[ $completness -ge $completnessCutoffNoHints ]] && [[ "$strictCandidates" = false ]]; then
+    # B) Consider as complete pathway because of completness treshold (key enzymes should be present anyways)
+    elif [[ $completness -ge $completnessCutoffNoHints ]] && [[ $CountKeyReaFound -eq $CountTotalKeyRea ]] && [[ "$strictCandidates" = false ]]; then
         echo "Consider pathway to be present because of completness treshold!"
         prediction=true
         cand="$cand$pwyVage$pwyNoHitFound "
