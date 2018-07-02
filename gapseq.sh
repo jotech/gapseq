@@ -413,7 +413,12 @@ do
     prediction=false
     # add reactions of pathways (even if no blast hit) if above treshold (and no key enzyme is missed)
     cand="$cand$pwyCand " # add all reactions with direct sequence-based evidence
-    [[ $CountTotalKeyRea -gt 0 ]] && KeyReaFracAvail=$(echo "scale=2; $CountKeyReaFound / $CountTotalKeyRea > 0.5" | bc) # how many key enzymes were found?
+    if [[ $CountTotalKeyRea -gt 0 ]]; then 
+        KeyReaFracAvail=$(echo "scale=2; $CountKeyReaFound / $CountTotalKeyRea > 0.5" | bc) # how many key enzymes were found?
+    else
+        KeyReaFracAvail=1 # no key enzymes are present anyway
+    fi
+
     
     # A) Consider as complete pathway because all reactions are present
     if [[ $completness -eq 100 ]]; then
