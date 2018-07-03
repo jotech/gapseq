@@ -369,7 +369,8 @@ do
                 fi
             fi
         else
-            echo -e '\t'NO sequence data found for $rea $reaName $ec ..skipping..
+            echo -e "\tNO sequence data found for $rea $reaName $ec ..skipping.."
+            echo -e "\t\t$(basename $query)" 
             ((vague++))
             [[ -n "$EC_test" ]] && getDBhit
             [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
