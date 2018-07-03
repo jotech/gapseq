@@ -18,6 +18,7 @@ for(p in kegg2$pwy){
   pec  <- gsub("ec:","",kegg4[match(prxn.id, rxn), ec])
   pec  <- ifelse(is.na(pec),"", pec)
   prxn.name <- str_extract(kegg5[match(prxn.id, rxn), rxn.name], ".*?(?=;)")
+  prxn.name <- ifelse(is.na(prxn.name),gsub("rn:","",prxn.id), prxn.name)
   
   kegg.pwy <- rbind(kegg.pwy, data.table(id=pid, name=pname, altname="", hierarchy="kegg", taxrange="", reaId=prxn, reaEc=paste(pec,collapse=","), keyRea="", reaName=paste0(prxn.name,collapse=";"), reaNr=length(pec), ecNr=length(na.omit(pec)), superpathway=FALSE, status=TRUE))
 }

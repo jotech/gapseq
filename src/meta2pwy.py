@@ -45,13 +45,24 @@ def getReaInfos(pwy):
         if meta[r].common_name != None:
             reaName = meta[r].common_name
         else:
-            if meta[r].enzymatic_reaction != None:
-                if meta[meta[r].enzymatic_reaction[0]].common_name != None:
-                    reaName = meta[meta[r].enzymatic_reaction[0]].common_name
-                else:
-                    reaName = reaId
-            else:
+            set1 = set(meta.enzymes_of_pathway(pwy))
+            set2 = set(meta.enzymes_of_reaction(r))
+            enzyme = {meta.enzyme_activity_name(e, pwy) for e in set1.intersection(set2)} 
+            if len(enzyme) > 1:
+                print("more than one enzyme-reaction match:",pwy,r)
+                #sys.exit(0)
+                reaName = enzyme.pop()
+            if len(enzyme) == 1:
+                reaName = "".join(enzyme)
+            if len(enzyme) == 0:
                 reaName = reaId
+            #if meta[r].enzymatic_reaction != None:
+            #    if meta[meta[r].enzymatic_reaction[0]].common_name != None:
+            #        reaName = meta[meta[r].enzymatic_reaction[0]].common_name
+            #    else:
+            #        reaName = reaId
+            #else:
+            #    reaName = reaId
         if ec == None:
             # there are reaction without EC number in metacyc which have a EC number assigned in the pathway-overview
             rea_related = filter(lambda x:'RXN' in x,meta[r]["in_pathway"])
