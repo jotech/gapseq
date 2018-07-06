@@ -585,6 +585,17 @@ rxn00288	>			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn00673	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=PROPCOASYN-RXN	
 rxn00693	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=HOMOCYSMETB12-RXN	
 rxn00909	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.5.1.20-RXN	
+rxn00410	>			[SW] never reported reversible according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=6.3.4.2#SUBSTRATE	
+rxn00859	>			[SW] never reported reversible according to BRENDA. Even reported IR in some cases.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.1.1.23#SUBSTRATE	
+rxn00863	>			[SW] never reported reversible according to BRENDA. Even reported IR in some cases.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.1.1.23#SUBSTRATE	
+rxn01280	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=TSA-REDUCT-RXN	
+rxn01281	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=TSA-REDUCT-RXN	
+rxn01301	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=HOMOSERDEHYDROG-RXN	
+rxn01302	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=HOMOSERDEHYDROG-RXN	
+rxn00927	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=PURINE-NUCLEOSIDASE-RXN	
+rxn01649	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=XANTHOSINEPHOSPHORY-RXN	
+rxn02186	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ACETOLACTREDUCTOISOM-RXN	
+rxn00249	>			[SW] never reported reversible according to BRENDA. Plus: Highly exergonic.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.1.1.299#SUBSTRATE	
 						
 rxn08448	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd01107:1:0:"Decanoate";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";1:cpd03128:0:0:"Decanoyl-CoA";2:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248	
 rxn08449	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd01741:1:0:"ddca";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";2:cpd00067:0:0:"H+";1:cpd01260:0:0:"Lauroyl-CoA"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248	
