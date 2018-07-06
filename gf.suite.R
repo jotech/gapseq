@@ -69,7 +69,7 @@ verbose       <- opt$verbose
 
 # Parameters:
 diet.scale   <- 1 # parameter might be not needed anymore. >1 may even cause issues
-dummy.bnd    <- 1e-3
+dummy.bnd    <- 1e-2
 dummy.weight <- 100
 core.weight  <- 1
 min.obj.val  <- 0.05
@@ -113,7 +113,7 @@ mod.orig   <- add_missing_exchanges(mod.orig)
 
 # add diffusion reactions
 mod.orig       <- add_missing_diffusion(mod.orig)
-#mod.orig       <- changeBounds(mod.orig, react="EX_cpd11640_e0", lb=0, ub=1)
+mod.orig       <- changeBounds(mod.orig, react="EX_cpd11640_e0", lb=0, ub=1)
 
 # create complete medium
 if( media.file == "complete" ){
@@ -131,6 +131,9 @@ mod.orig@obj_coef <- rep(0,mod.orig@react_num)
 
 # add metabolite objective + sink
 mod.orig <- add_met_sink(mod.orig, target.met, obj = 1)
+
+# keeping track of which reactions are added during gapfilling -> store in reaction attributes data.frame
+mod.orig@react_attr <- data.frame(gapfill=rep(0,mod.orig@react_num))
 
 # Perform gapfill
 cat("\n\n1. Initial gapfilling: Make model grow on given media using all reactions\n")
