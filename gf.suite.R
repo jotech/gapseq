@@ -150,7 +150,6 @@ mod.fill.lst <- gapfill4(mod.orig = mod.orig,
 
 mod.fill1 <- constrain.model(mod.fill.lst$model, media.file = media.file, scaling.fac = 1)
 mod.out <- mod.fill1
-saveRDS(mod.out, "./test.RDS")
 
 if ( TRUE ){
   cat("\n\n2. Biomass gapfilling using core reactions only\n")
