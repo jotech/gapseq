@@ -2,32 +2,50 @@
 
 import pythoncyc
 import sys
+import re
+import pdb
 
 meta = pythoncyc.select_organism('meta')
 pythoncyc.sendQueryToPTools("(select-organism :org-id 'META)")
 
+
 def getReaInfos(pwy):
+    #pwy = "ANAEROFRUCAT-PWY"
+    #pwy = "ALL-CHORISMATE-PWY"
     if meta[pwy] == None:
         print(pwy, "Pathway does not exist")
         return([[],[]])
-    rea_list = meta[pwy]["reaction_list"]
     
-    keyRea_list = []
-    if meta[pwy].key_reactions != None: # get key enzymes
+    rea_list = []
+    if meta[pwy].key_reactions != None:
         keyRea_list = meta[pwy].key_reactions
-    
+    else:
+        keyRea_list = []
+    check_list = meta[pwy]["reaction_list"]
+    if meta[pwy].sub_pathways != None:
+        check_list.extend([p for p in meta[pwy].sub_pathways if p not in check_list])
     isSuperPwy = False
-    superpathway = filter(lambda x:'PWY' in x,rea_list)
-    if len(superpathway) > 0:
-        isSuperPwy = True
-        rea_list_new = []
-        for sp in superpathway:
-            rea_list_new.extend(meta[sp]["reaction_list"])
-            if meta[sp].key_reactions != None: # get key enzymes
-                keyRea_list.extend(meta[sp].key_reactions)
-        rea_list = rea_list_new
+    while len(check_list) > 0:
+        ptmp = check_list.pop()
+        has_subpwy = meta[ptmp].sub_pathways != None
+        is_pwy = has_subpwy or "PWY" in ptmp
+        #is_pwy = "PWY" in ptmp
+        if not is_pwy:
+            rea_list.append(ptmp)
+        else:
+            tmp_list = meta[ptmp]["reaction_list"]
+            if has_subpwy:
+                tmp_list.extend([pw for pw in meta[ptmp].sub_pathways if pw not in rea_list])
+            if ptmp in tmp_list:
+                tmp_list.remove(ptmp)
+            tmp_key  = meta[ptmp].key_reactions
+            if tmp_key != None:
+                keyRea_list.extend(tmp_key)
+            isSuperPwy = True
+            check_list.extend(tmp_list)
     keyRea = ",".join(keyRea_list).replace("|","")
-    #print(keyRea)
+    #print(rea_list)
+    #print(keyRea_list)
 
     ec_list  = []
     reaId_list = []
@@ -56,13 +74,27 @@ def getReaInfos(pwy):
                 reaName = "".join(enzyme)
             if len(enzyme) == 0:
                 reaName = reaId
-            #if meta[r].enzymatic_reaction != None:
-            #    if meta[meta[r].enzymatic_reaction[0]].common_name != None:
-            #        reaName = meta[meta[r].enzymatic_reaction[0]].common_name
-            #    else:
-            #        reaName = reaId
-            #else:
-            #    reaName = reaId
+            # substitute html chars in name
+            sub_dic = { "&mdash;":"-",
+                        "&ndash;":"-",
+                        "&prime;":"'",
+                        "&alpha;":"alpha",
+                        "&beta;":"beta",
+                        "&gamma;":"gamma",
+                        "&delta;":"delta",
+                        "&epsilon;":"epsilon",
+                        "&chi;":"chi",
+                        "&iota;":"iota",
+                        "&lambda;":"lambda",
+                        "&mu;":"mu",
+                        "&phi;":"phi",
+                        "&zeta;":"zeta",
+                        "&omega;":"omega",
+                        }
+            for sub in sub_dic:
+                reaName = reaName.replace(sub, sub_dic[sub])
+            cleanr = re.compile('<.*?>')
+            reaName = re.sub(cleanr, '', reaName)
         if ec == None:
             # there are reaction without EC number in metacyc which have a EC number assigned in the pathway-overview
             rea_related = filter(lambda x:'RXN' in x,meta[r]["in_pathway"])
@@ -97,16 +129,23 @@ def getReaInfos(pwy):
 #getReaInfos("|PWY-6381|")
 #getReaInfos("|p381-PWY|")
 #getReaInfos("|BRANCHED-CHAIN-AA-SYN-PWY|")
+#print(getReaInfos("|ALL-CHORISMATE-PWY|"))
 #sys.exit(0)
 
 
 ofile = open("./meta_pwy.tbl", "w")
 ofile.write("id" + "\t" + "name" + "\t" + "altname" + "\t" + "hierarchy" + "\t" + "taxrange" + "\t" + "reaId" + "\t" + "reaEc" + "\t" + "keyRea" + "\t"+ "reaName" + "\t" + "reaNr" + "\t" + "ecNr" + "\t" + "superpathway" + "\t" "status" + "\n")
+meta = pythoncyc.select_organism('meta')
+pythoncyc.sendQueryToPTools("(select-organism :org-id 'META)")
 for p in meta.all_pathways():
+    meta = pythoncyc.select_organism('meta')
+    pythoncyc.sendQueryToPTools("(select-organism :org-id 'META)")
     pwy = meta[p]
     qry = "(get-instance-all-types '"+p+")"
     hierarchy = ",".join(pythoncyc.sendQueryToPTools(qry))
     name    = pwy.common_name.replace("|","")
+    cleanr = re.compile('<.*?>')
+    name = re.sub(cleanr, '', name)
     altname = ",".join(pwy.names)
     reaInf  = getReaInfos(p)
     reaEc   = reaInf[0]
