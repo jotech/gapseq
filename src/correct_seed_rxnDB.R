@@ -81,6 +81,23 @@ correct_seed_rxnDB <- function(script.path) {
       mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id], 
             gapseq.status := "removed"]
     }
+    # New reaction?
+    if(!(mseed.corr[i, rnx.id] %in% mseed$id) & mseed.corr[i, rnx.id] != "" & !is.na(mseed.corr[i, rnx.id])) {
+      dt.n <- data.table(id            = mseed.corr[i, rnx.id],
+                         abbreviation  = mseed.corr[i, abbreviation],
+                         name          = mseed.corr[i, name],
+                         stoichiometry = mseed.corr[i, new.stoichiometry],
+                         is_transport  = 0,
+                         reversibility = mseed.corr[i, new.rev],
+                         direction     = mseed.corr[i, new.rev],
+                         deltag        = 10000000,
+                         deltagerr     = 10000000,
+                         status        = "OK",
+                         is_obsolete   = 0,
+                         notes         = "Gapseq new",
+                         gapseq.status = "corrected")
+      mseed <- rbind(mseed,dt.n, fill=T)
+    }
   }
   mseed[reversibility=="?", reversibility := direction]
   
