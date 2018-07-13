@@ -250,7 +250,7 @@ makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
 
 cand=""     #list of candidate reactions to be added
 bestPwy=""  # list of found pathways
-echo -e "ID\tName\tPrediction\tCompletness\tVagueReactions\tKeyReactions\tKeyReactionsFound\tReactionsFound" > output.tbl # pahtway statistics file
+echo -e "ID\tName\tPrediction\tCompleteness\tVagueReactions\tKeyReactions\tKeyReactionsFound\tReactionsFound" > output.tbl # pahtway statistics file
 
 pwyNr=$(echo "$pwyDB" | wc -l)
 echo Checking for pathways and reactions in: $1 $pwyKey
