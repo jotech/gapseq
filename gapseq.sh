@@ -282,10 +282,13 @@ do
     do 
         ec=$(echo $ecs | awk -v j=$j -F ',' '{print $j}')
         rea=$(echo $reaids | awk -v j=$j -F ',' '{print $j}')
-        reaName=$(echo $reaNames | awk -v j=$j -F ';' '{print $j}')
+        reaName=$(echo $reaNames | awk -v j=$j -F ';' '{print $j}' | tr -d '|')
         re="([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
         EC_test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
-        is_exception=$(grep -Ew "$ec|$reaName" $dir/dat/exception.tbl | wc -l)
+        [[ -n "$ec" ]] && [[ -n "$reaName" ]] && { ex_pattern="$ec$|$reaName"; }
+        [[ -z "$ec" ]] && [[ -n "$reaName" ]] && { ex_pattern="$reaName"; }
+        [[ -n "$ec" ]] && [[ -z "$reaName" ]] && { ex_pattern="$ec"; }
+        is_exception=$(grep -Ew "$ex_pattern" $dir/dat/exception.tbl | wc -l)
         if [[ $is_exception -gt 0 ]] && [[ $identcutoff -lt 70 ]];then # take care of similair enzymes with different function
             identcutoff_tmp=70
             echo -e "\tUsing higher identity cutoff for $rea"
