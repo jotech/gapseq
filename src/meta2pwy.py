@@ -28,7 +28,8 @@ def getReaInfos(pwy):
     while len(check_list) > 0:
         ptmp = check_list.pop()
         has_subpwy = meta[ptmp].sub_pathways != None
-        is_pwy = has_subpwy or "PWY" in ptmp
+        has_reactions = meta[ptmp].reaction_list != None
+        is_pwy = has_subpwy or has_reactions
         #is_pwy = "PWY" in ptmp
         if not is_pwy:
             rea_list.append(ptmp)
@@ -56,9 +57,11 @@ def getReaInfos(pwy):
     for r in rea_list:
         if meta[r]["spontaneous_p"]:
             rea_spont_counter +=1
-            continue
-        rea_counter +=1 
+            continue # skip if reaction is spontaneous
         ec  = meta[r]["ec_number"]
+        if ec != None and str(",".join(ec)).replace("|","").replace("EC-","") in ec_list:
+            continue # skip if ec number is already added
+        rea_counter +=1 
         reaId = r
         if meta[r].common_name != None:
             reaName = meta[r].common_name
@@ -74,27 +77,27 @@ def getReaInfos(pwy):
                 reaName = "".join(enzyme)
             if len(enzyme) == 0:
                 reaName = reaId
-            # substitute html chars in name
-            sub_dic = { "&mdash;":"-",
-                        "&ndash;":"-",
-                        "&prime;":"'",
-                        "&alpha;":"alpha",
-                        "&beta;":"beta",
-                        "&gamma;":"gamma",
-                        "&delta;":"delta",
-                        "&epsilon;":"epsilon",
-                        "&chi;":"chi",
-                        "&iota;":"iota",
-                        "&lambda;":"lambda",
-                        "&mu;":"mu",
-                        "&phi;":"phi",
-                        "&zeta;":"zeta",
-                        "&omega;":"omega",
-                        }
-            for sub in sub_dic:
-                reaName = reaName.replace(sub, sub_dic[sub])
-            cleanr = re.compile('<.*?>')
-            reaName = re.sub(cleanr, '', reaName)
+        # substitute html chars in name
+        sub_dic = { "&mdash;":"-",
+                     "&ndash;":"-",
+                     "&prime;":"'",
+                     "&alpha;":"alpha",
+                     "&beta;":"beta",
+                     "&gamma;":"gamma",
+                     "&delta;":"delta",
+                     "&epsilon;":"epsilon",
+                     "&chi;":"chi",
+                     "&iota;":"iota",
+                     "&lambda;":"lambda",
+                     "&mu;":"mu",
+                     "&phi;":"phi",
+                     "&zeta;":"zeta",
+                     "&omega;":"omega",
+                   }
+        for sub in sub_dic:
+            reaName = reaName.replace(sub, sub_dic[sub])
+        cleanr = re.compile('<.*?>')
+        reaName = re.sub(cleanr, '', reaName)
         if ec == None:
             # there are reaction without EC number in metacyc which have a EC number assigned in the pathway-overview
             rea_related = filter(lambda x:'RXN' in x,meta[r]["in_pathway"])
