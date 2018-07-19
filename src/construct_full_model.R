@@ -1,7 +1,6 @@
 construct_full_model <- function(script.path) {
   require(data.table)
   require(stringr)
-  #require(sybilSBML)
   require(sybil)
   source(paste0(script.dir, "/add_missing_exRxns.R"))
   
@@ -12,7 +11,6 @@ construct_full_model <- function(script.path) {
   mod <- modelorg(name = "Full Dummy model with all approved/corrected ModelSEED reactions",id = "dummy")
   for(i in (1:nrow(mseed))) {
     cat("\r",i,"/",nrow(mseed))
-    mets  <- unlist(str_split(string = mseed[i,compound_ids],pattern = ";"))
     rxn.info <- str_split(unlist(str_split(string = mseed[i,stoichiometry],pattern = ";")), pattern = ":", simplify = T)
     
     met.comp  <- rxn.info[,3]
