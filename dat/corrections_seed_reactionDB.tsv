@@ -615,6 +615,7 @@ rxn03861	<			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn01453	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-5901			
 rxn06937	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLURS-RXN			
 rxn06591	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUTRNAREDUCT-RXN			
+rxn13689	>		-2:cpd00109:0:0:"Cytochrome c3+";-1:cpd15561:0:0:"Ubiquinol-8";2:cpd00067:1:0:"H+";2:cpd00110:0:0:"Cytochrome c2+";1:cpd15560:0:0:"Ubiquinone-8"	[SW] direction and stoichiometry changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-18580			
 								
 rxn08448	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd01107:1:0:"Decanoate";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";1:cpd03128:0:0:"Decanoyl-CoA";2:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248			
 rxn08449	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd01741:1:0:"ddca";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";2:cpd00067:0:0:"H+";1:cpd01260:0:0:"Lauroyl-CoA"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248			
@@ -881,6 +882,7 @@ rxn12270	>			[SW] Fatty acid oxidation is not reversible.
 rxn12275	>			[SW] Fatty acid oxidation is not reversible.				
 rxn12281	>			[SW] Fatty acid oxidation is not reversible.				
 rxn12286	>			[SW] Fatty acid oxidation is not reversible.				
+rxn13472	>			[SW] Fatty acid oxidation is not reversible.				
 								
 rxn06440	>			[SW] Aminocyl-tRNA ligases are irreversible, as they are highly exergonic reactions.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ISOLEUCINE--TRNA-LIGASE-RXN			
 rxn11122	>			[SW] Aminocyl-tRNA ligases are irreversible, as they are highly exergonic reactions.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ISOLEUCINE--TRNA-LIGASE-RXN			
