@@ -1,7 +1,7 @@
 met	diffrxn	comment
-cpd00001	rxn05319	
-cpd00011	rxn05467	
-cpd00007	rxn05468	
+cpd00001	rxn05319	water
+cpd00011	rxn05467	CO2
+cpd00007	rxn05468	Oxygen
 cpd01861	rxn07919	
 cpd00453	rxn07921	
 cpd00071	rxn08032	
@@ -11,7 +11,7 @@ cpd00450	rxn08359
 cpd00363	rxn08428	
 cpd00055	rxn08461	
 cpd00448	rxn08635	
-cpd00025	rxn08685	
+cpd00025	rxn08685	H2O2
 cpd00239	rxn08689	HS
 cpd11640	rxn08691	
 cpd00359	rxn08751	Indole (doi: 10.1128/JB.01477-10)
@@ -20,3 +20,5 @@ cpd00659	rxn08966
 cpd00418	rxn09008	
 cpd00371	rxn09169	
 cpd00811	rxn09317	
+cpd00029	rxn05488	The salt (protonated) acetate can pass.
+cpd00141	rxn05634	The salt (protonated) propionate can pass.

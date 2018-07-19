@@ -81,6 +81,23 @@ correct_seed_rxnDB <- function(script.path) {
       mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id], 
             gapseq.status := "removed"]
     }
+    # New reaction?
+    if(!(mseed.corr[i, rnx.id] %in% mseed$id) & mseed.corr[i, rnx.id] != "" & !is.na(mseed.corr[i, rnx.id])) {
+      dt.n <- data.table(id            = mseed.corr[i, rnx.id],
+                         abbreviation  = mseed.corr[i, abbreviation],
+                         name          = mseed.corr[i, name],
+                         stoichiometry = mseed.corr[i, new.stoichiometry],
+                         is_transport  = 0,
+                         reversibility = mseed.corr[i, new.rev],
+                         direction     = mseed.corr[i, new.rev],
+                         deltag        = 10000000,
+                         deltagerr     = 10000000,
+                         status        = "OK",
+                         is_obsolete   = 0,
+                         notes         = "Gapseq new",
+                         gapseq.status = "corrected")
+      mseed <- rbind(mseed,dt.n, fill=T)
+    }
   }
   mseed[reversibility=="?", reversibility := direction]
   
@@ -96,9 +113,59 @@ correct_seed_rxnDB <- function(script.path) {
         gapseq.status := "not.assessed"]
   table(mseed$gapseq.status)
   
+  # re-generate definition and equation string for corrected reactions
+  mseed[gapseq.status=="corrected",equation := getRxnEquaFromStoich(stoichiometry, reversibility, str.type = "equation")]
+  mseed[gapseq.status=="corrected",definition := getRxnEquaFromStoich(stoichiometry, reversibility, str.type = "definition")]
+  
   # Export of corrected database
   mseed <- mseed[,-"gs.hash"]
   fwrite(mseed, file=paste0(script.path,"/../dat/seed_reactions_corrected.tsv"), sep = "\t", quote = F)
+}
+
+getRxnEquaFromStoich <- function(stoichiometry, reversibility, str.type="definition") {
+  out.strings <- c()
+  for(i in 1:length(stoichiometry)) {
+    rxn.info <- str_split(unlist(str_split(string = stoichiometry[i],pattern = ";")), pattern = ":", simplify = T)
+    
+    met.comp  <- rxn.info[,3]
+    
+    # stoichiometry
+    met.scoef <- as.numeric(rxn.info[,1])
+    
+    # Ids for "equation"
+    met.ids   <- paste0(rxn.info[,2],"[",met.comp,"]")
+    met.ids.o <- paste0("(",abs(met.scoef),") ",met.ids)
+    
+    # Met names for reaction "definition"
+    met.name  <- str_replace_all(rxn.info[,5],"\\\"","")
+    met.name  <- paste0(met.name,"[",met.comp,"]")
+    ind <- which(met.name=="" | is.na(met.name))
+    met.name[ind] <- met.ids[ind]
+    met.name.o <- paste0("(",abs(met.scoef),") ",met.name)
+    
+    # Reaction reversibility
+    rev.sign <- ifelse(reversibility[i] == "<","<=",ifelse(reversibility[i] == ">","=>","<=>"))
+    
+    # LHS
+    ind        <- which(met.scoef < 0)
+    l.id.str   <- paste0(met.ids.o[ind], collapse = " + ")
+    l.name.str <- paste0(met.name.o[ind], collapse = " + ")
+    
+    # RHS
+    ind        <- which(met.scoef > 0)
+    r.id.str   <- paste0(met.ids.o[ind], collapse = " + ")
+    r.name.str <- paste0(met.name.o[ind], collapse = " + ")
+    
+    # final equation/definition assembly
+    id.str   <- paste(l.id.str,rev.sign,r.id.str)
+    name.str <- paste(l.name.str,rev.sign,r.name.str)
+    
+    if(str.type == "definition")
+      out.strings <- c(out.strings, name.str)
+    if(str.type == "equation")
+      out.strings <- c(out.strings, id.str)
+  }
+  return(out.strings)
 }
 
 # get current script path

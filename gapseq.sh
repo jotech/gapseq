@@ -15,8 +15,8 @@ bitcutoff=50 # cutoff blast: min bit score
 identcutoff=0   # cutoff blast: min identity
 covcutoff=75 # cutoff blast: min coverage
 strictCandidates=false
-completnessCutoff=66 # consider pathway to be present if other hints (e.g. key enzyme present) are avaiable and pathway completness is at least as high as completnessCutoff (requires strictCandidates=false)
-completnessCutoffNoHints=80 # consider pathway to be present if no hints are avaiable (requires stricCandidates=false)
+completenessCutoff=66 # consider pathway to be present if other hints (e.g. key enzyme present) are avaiable and pathway completeness is at least as high as completenessCutoff (requires strictCandidates=false)
+completenessCutoffNoHints=80 # consider pathway to be present if no hints are avaiable (requires stricCandidates=false)
 blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
 blast_back=false
 noSuperpathways=false
@@ -33,7 +33,7 @@ usage()
     echo "  -b bit score cutoff for local alignment (default: $bitcutoff)"
     echo "  -i identity cutoff for local alignment (default: $identcutoff)"
     echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
-    echo "  -s strict candidate reaction handling (do _not_ use pathway completness, key kenzymes and operon structure to infere if imcomplete pathway could be still present (default: $strictCandidates)"
+    echo "  -s strict candidate reaction handling (do _not_ use pathway completeness, key kenzymes and operon structure to infere if imcomplete pathway could be still present (default: $strictCandidates)"
     echo "  -u suffix used for output files (default: pathway keyword)"
     echo "  -a blast hits back against uniprot enzyme database"
     echo "  -n Do not consider superpathways of metacyc database"
@@ -250,7 +250,7 @@ makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
 
 cand=""     #list of candidate reactions to be added
 bestPwy=""  # list of found pathways
-echo -e "ID\tName\tPrediction\tCompletness\tVagueReactions\tKeyReactions\tKeyReactionsFound\tReactionsFound" > output.tbl # pahtway statistics file
+echo -e "ID\tName\tPrediction\tCompleteness\tVagueReactions\tKeyReactions\tKeyReactionsFound\tReactionsFound" > output.tbl # pahtway statistics file
 
 pwyNr=$(echo "$pwyDB" | wc -l)
 echo Checking for pathways and reactions in: $1 $pwyKey
@@ -259,7 +259,7 @@ for i in `seq 1 $pwyNr`
 do
     pwyCand="" # candidate reaction of current pathway
     pwyVage="" # reaction belonging to trunked EC numbers (no sequence blast possible..)
-    pwyNoHitFound="" # remember reactions without blast hit so that they can be added in case of high pathway completness 
+    pwyNoHitFound="" # remember reactions without blast hit so that they can be added in case of high pathway completeness 
     count=0
     countex=0
     countexList="" # list with reactions ids found
@@ -282,9 +282,18 @@ do
     do 
         ec=$(echo $ecs | awk -v j=$j -F ',' '{print $j}')
         rea=$(echo $reaids | awk -v j=$j -F ',' '{print $j}')
-        reaName=$(echo $reaNames | awk -v j=$j -F ';' '{print $j}')
+        reaName=$(echo $reaNames | awk -v j=$j -F ';' '{print $j}' | tr -d '|')
         re="([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
         EC_test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
+        [[ -n "$ec" ]] && [[ -n "$reaName" ]] && { is_exception=$(grep -F -e "$ec" -e "$reaName" $dir/dat/exception.tbl | wc -l); }
+        [[ -z "$ec" ]] && [[ -n "$reaName" ]] && { is_exception=$(grep -F "$reaName" $dir/dat/exception.tbl | wc -l); }
+        [[ -n "$ec" ]] && [[ -z "$reaName" ]] && { is_exception=$(grep -F "$ec" $dir/dat/exception.tbl | wc -l); }
+        if [[ $is_exception -gt 0 ]] && [[ $identcutoff -lt 70 ]];then # take care of similair enzymes with different function
+            identcutoff_tmp=70
+            echo -e "\tUsing higher identity cutoff for $rea"
+        else
+            identcutoff_tmp=$identcutoff
+        fi
         ((count++))
         if [[ -n "$EC_test" ]]; then
             getDBhit # get db hits for this reactions
@@ -310,7 +319,7 @@ do
                 for q in `ls xx*`
                 do
                     tblastn -db orgdb -query $q -outfmt "6 $blast_format" >> $out 
-                    bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
+                    bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
                     if [ -n "$bhit" ]; then
                         break
                     fi
@@ -318,7 +327,7 @@ do
                 rm xx*
             fi
             if [ -s $out ]; then
-                bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
+                bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
                 if [ -n "$bhit" ]; then
                     bestIdentity=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f2)
                     bestBitscore=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f4)
@@ -380,19 +389,19 @@ do
     done # pathway
     
     if [ $count -eq 0 ]; then
-        completness=0
+        completeness=0
     else
         check_vague=$(echo "$vague < $count*$vagueCutoff" | bc) # vague reactions shouldn't make more than certain amount of total reactions
-        if [ "$strictCandidates" = false ] && [ $check_vague -eq 1 ] ; then # if vague reaction are considered they should not influence the completness treshold
-            completness=$(echo "scale=0; 100*($countex+$vague)/$count" | bc)
+        if [ "$strictCandidates" = false ] && [ $check_vague -eq 1 ] ; then # if vague reaction are considered they should not influence the completeness treshold
+            completeness=$(echo "scale=0; 100*($countex+$vague)/$count" | bc)
         else
-            completness=$(echo "scale=0; 100*($countex)/$count" | bc)
+            completeness=$(echo "scale=0; 100*($countex)/$count" | bc)
         fi
     fi
     if [ $vague -eq 0 ] || [ "$strictCandidates" = true ] || [ $check_vague -eq 0 ]; then
-        echo "Pathway completness: $countex/$count ($completness%)"
+        echo "Pathway completeness: $countex/$count ($completeness%)"
     else
-        echo "Pathway completness: ($countex+$vague)/$count ($completness%) with $vague reactions of unclear state"
+        echo "Pathway completeness: ($countex+$vague)/$count ($completeness%) with $vague reactions of unclear state"
     fi
 
     echo -e Hits with candidate reactions in database: $countdb/$count
@@ -422,24 +431,24 @@ do
 
     
     # A) Consider as complete pathway because all reactions are present
-    if [[ $completness -eq 100 ]]; then
+    if [[ $completeness -eq 100 ]]; then
         prediction=true
         bestPwy="$bestPwy$name\n"
-    # B) Consider as complete pathway because of completness treshold (key enzymes should be present too)
-    elif [[ $completness -ge $completnessCutoffNoHints ]] && [[ "$KeyReaFracAvail" -eq 1 ]] && [[ "$strictCandidates" = false ]]; then
-        echo "Consider pathway to be present because of completness treshold!"
+    # B) Consider as complete pathway because of completeness treshold (key enzymes should be present too)
+    elif [[ $completeness -ge $completenessCutoffNoHints ]] && [[ "$KeyReaFracAvail" -eq 1 ]] && [[ "$strictCandidates" = false ]]; then
+        echo "Consider pathway to be present because of completeness treshold!"
         prediction=true
         cand="$cand$pwyVage$pwyNoHitFound "
-        bestPwy="$bestPwy$name ($completness% completness, added because of treshhold)\n"
+        bestPwy="$bestPwy$name ($completeness% completeness, added because of treshhold)\n"
     # C) Consider as complete pathway because of key enzymes (lower treshold)
-    elif [[ $CountKeyReaFound -ge 1 ]] && [[ $CountKeyReaFound -eq $CountTotalKeyRea ]] && [[ $completness -ge $completnessCutoff ]] && [[ "$strictCandidates" = false ]]; then
+    elif [[ $CountKeyReaFound -ge 1 ]] && [[ $CountKeyReaFound -eq $CountTotalKeyRea ]] && [[ $completeness -ge $completenessCutoff ]] && [[ "$strictCandidates" = false ]]; then
         echo "Consider pathway to be present because of key enzyme!"
         prediction=true
         cand="$cand$pwyVage$pwyNoHitFound "
-        bestPwy="$bestPwy$name ($completness% completness, added because of key enzyme)\n"
+        bestPwy="$bestPwy$name ($completeness% completeness, added because of key enzyme)\n"
     fi
     
-    echo -e "$pwy\t$name\t$prediction\t$completness\t$vague\t$CountTotalKeyRea\t$CountKeyReaFound\t$countexList" >> output.tbl # write down some statistics
+    echo -e "$pwy\t$name\t$prediction\t$completeness\t$vague\t$CountTotalKeyRea\t$CountKeyReaFound\t$countexList" >> output.tbl # write down some statistics
 
 done
 

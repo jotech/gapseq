@@ -21,11 +21,19 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
   if(core.only==T)
     mseed <- mseed[core.rxn==T]
   # Remove all duplicate reactions from data base. Keep reactions that are in the core reaction list whereever possible (core.rxns).
+  if(core.only & nrow(mseed) == 0) {
+    warning("There are no more core reaction that could be added to the model. Nothing to do...")
+    return(list(model = mod.orig.bak,
+                rxns.added = c(),
+                core.rxns = core.rxns,
+                growth.rate = 0))
+  }
   mseed[, rxn.hash := generate_rxn_stoich_hash(stoichiometry, reversibility)]
   mseed <- mseed[order(rxn.hash,-core.rxn)]
   dupl.rxns <- mseed[duplicated(rxn.hash),id]
   mseed <- mseed[!duplicated(rxn.hash)]
   mseed <- mseed[order(id)]
+  
   
   # If selected then only consider reactions with have sequence evidence
   if( core.only ){
@@ -44,6 +52,7 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
   # }
   
   # Blocking redundant dummy reactions
+  
   red.inds <- which(mod@react_id %in% paste0(dupl.rxns,"_c0"))
   mod@lowbnd[red.inds] <- 0
   mod@uppbnd[red.inds] <- 0
@@ -83,38 +92,21 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
                 growth.rate = 0))
   }
   
-  #dummy.dt <- data.table()
-
-  # while start here
-  
-  c.coef <- rep(0,mod@react_num)
+  c.coef <- rep(0.01,mod@react_num)
   c.coef[dummy.rxns.inds] <- core.weight
   # make non sequence-supported reaction more expensive. This ensures that in the case a core reaction fulfils the same function
   # as a costly reacton, the core reaction will carry the flux
   c.coef[costly.rxns.inds] <- dummy.weight
   ind.ex <- grep("^EX_",mod@react_id)
-  c.coef[ind.ex] <- 0
+  c.coef[ind.ex] <- 0.01
   mtf.scale <- 1
   
-  # modj_warm <- sysBiolAlg(mod,
-  #                         algorithm = "mtf2",
-  #                         costcoeffw = c.coef,
-  #                         pFBAcoeff = 1e-6)
-  if( sybil::SYBIL_SETTINGS("SOLVER") == "glpkAPI" ) {
-    #modj_warm <- sysBiolAlg(mod, algorithm = "mtf", costcoeffw = c.coef)
-    modj_warm <- sysBiolAlg(mod,
-                            algorithm = "mtf2",
-                            costcoeffw = c.coef,
-                            pFBAcoeff = 1e-3)
-  }
-  else {
-    #modj_warm <- sysBiolAlg(mod, algorithm = "mtf", costcoeffw = c.coef, scaling = mtf.scale)
-    modj_warm <- sysBiolAlg(mod,
-                            algorithm = "mtf2",
-                            costcoeffw = c.coef,
-                            pFBAcoeff = 1e-3,
-                            scaling = NULL)
-  }
+  #modj_warm <- sysBiolAlg(mod, algorithm = "mtf", costcoeffw = c.coef)
+  modj_warm <- sysBiolAlg(mod,
+                          algorithm = "mtf2",
+                          costcoeffw = c.coef,
+                          pFBAcoeff = 1e-2)
+  
   sol.fba <- optimizeProb(modj_warm)
   
   if(sol.fba$stat!=ok){
@@ -179,6 +171,7 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
                          lb = ifelse(is.rev, -1000, 0),
                          reactName = mseed[i, name], 
                          metName = met.name)
+    mod.orig@react_attr[which(mod.orig@react_id==paste0(mseed[i,id],"_c0")),"gapfill"] <- 1
   }
   mod.orig <- add_missing_exchanges(mod.orig)
   
@@ -191,20 +184,23 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
                 core.rxns = core.rxns,
                 growth.rate = 0))
   }
-  # while stop here
-  
+
   ko.dt[, d.rxn.ind := NULL]
   ko.dt[, rxn.ind := match(dummy.rxn, mod.orig@react_id)]
   ko.dt[, ko.obj := NA_real_]
-  ko.dt <- ko.dt[order(core, rnorm(.N))] # Randomization here
+  #ko.dt <- ko.dt[order(core, rnorm(.N))] # Randomization here
+  #ko.dt <- ko.dt[order(!core, dummy.rxn,decreasing = T)] # No Randomization here
+  #ko.dt <- ko.dt[order(core, dummy.rxn,decreasing = F)] # No Randomization here
+  ko.dt <- ko.dt[order(core, abs(flux))] # no randomization. Sorting by abs flux # BEST CHOICE as it preferrably removes reactions that carry only small flux
   ko.dt[, keep := F]
+  #if(core.only ==F)
+  #  print(ko.dt)
   
   obj.val <- gr.orig
   # Get reaction essentiality & successively remove reactions:
   # successively remove non-essential gap-fill reactions. Starting with non-core reactions.
-  # Or maybe remove only non-core reactions?
   dummy.rxn.rm <- c()
-  for(i in 1:nrow(ko.dt)) {
+  for(i in 1:nrow(ko.dt)) { 
     bu.lb <- mod.orig@lowbnd[ko.dt[i,rxn.ind]]
     bu.ub <- mod.orig@uppbnd[ko.dt[i,rxn.ind]]
     
