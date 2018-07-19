@@ -21,11 +21,19 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
   if(core.only==T)
     mseed <- mseed[core.rxn==T]
   # Remove all duplicate reactions from data base. Keep reactions that are in the core reaction list whereever possible (core.rxns).
+  if(core.only & nrow(mseed) == 0) {
+    warning("There are no more core reaction that could be added to the model. Nothing to do...")
+    return(list(model = mod.orig.bak,
+                rxns.added = c(),
+                core.rxns = core.rxns,
+                growth.rate = 0))
+  }
   mseed[, rxn.hash := generate_rxn_stoich_hash(stoichiometry, reversibility)]
   mseed <- mseed[order(rxn.hash,-core.rxn)]
   dupl.rxns <- mseed[duplicated(rxn.hash),id]
   mseed <- mseed[!duplicated(rxn.hash)]
   mseed <- mseed[order(id)]
+  
   
   # If selected then only consider reactions with have sequence evidence
   if( core.only ){
@@ -44,6 +52,7 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
   # }
   
   # Blocking redundant dummy reactions
+  
   red.inds <- which(mod@react_id %in% paste0(dupl.rxns,"_c0"))
   mod@lowbnd[red.inds] <- 0
   mod@uppbnd[red.inds] <- 0
@@ -96,7 +105,7 @@ gapfill4 <- function(mod.orig, mod.full, core.rxn, min.gr = 0.1, dummy.bnd = 1e-
   modj_warm <- sysBiolAlg(mod,
                           algorithm = "mtf2",
                           costcoeffw = c.coef,
-                          pFBAcoeff = 1e-3)
+                          pFBAcoeff = 1e-2)
   
   sol.fba <- optimizeProb(modj_warm)
   
