@@ -55,6 +55,7 @@ reaDB1=$dir/dat/vmh_reactions.csv
 reaDB2=$dir/dat/bigg_reactions.tbl
 reaDB3=$dir/dat/seed_reactions.tsv
 reaDB4=$dir/dat/mnxref_seed.tsv
+reaDB5=$dir/dat/mnxref_seed-other.tsv
 brenda=$dir/dat/brenda_ec.csv
 seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
 
@@ -206,14 +207,15 @@ fi
 # function to get database hits for ec number
 getDBhit(){
     kegg=$(grep -wF $rea $metaRea | awk -F "\t" {'print $5'})
-    altec=$(grep -wF $ec $brenda | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -v $ec)
     
     # 1) search in reaction db by EC
-    if [ "$database" == "vmh" ]; then
-        dbhit=$(grep -wF $ec $reaDB1 | awk -F ',' '{print $1}')
-    elif [ "$database" == "seed" ]; then
-        dbhit=$(grep -wF $ec $seedEC | awk -F '\t' '{print $1}' | tr '|' ' ')
-        dbhit="$dbhit $(grep -wF $ec $reaDB4 | awk -F '\t' '{print $4}' | tr '\n' ' ')"
+    if [[ -n "$EC_test" ]]; then
+        if [ "$database" == "vmh" ]; then
+            dbhit=$(grep -wF $ec $reaDB1 | awk -F ',' '{print $1}')
+        elif [ "$database" == "seed" ]; then
+            dbhit=$(grep -wF $ec $seedEC | awk -F '\t' '{print $1}' | tr '|' ' ')
+            dbhit="$dbhit $(grep -wF $ec $reaDB4 | awk -F '\t' '{print $4}' | tr '\n' ' ')"
+        fi
     fi
 
     # 2) search in reaction db by kegg identifier 
@@ -225,16 +227,24 @@ getDBhit(){
     fi
 
     # 3) search in reaction db by alternative EC
-    if [ "$database" == "vmh" ]; then
-        [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')" # take care of multiple EC numbers
-    elif [ "$database" == "seed" ]; then
-        [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $seedEC | awk -F '\t' '{print $1}' | tr '|' ' ')" # take care of multiple EC numbers
-        [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')" # take care of multiple EC numbers
+    if [[ -n "$EC_test" ]]; then
+        altec=$(grep -wF $ec $brenda | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -v $ec)
+        if [ "$database" == "vmh" ]; then
+            [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')" # take care of multiple EC numbers
+        elif [ "$database" == "seed" ]; then
+            [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $seedEC | awk -F '\t' '{print $1}' | tr '|' ' ')" # take care of multiple EC numbers
+            [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')" # take care of multiple EC numbers
+        fi
     fi
     
     # 4) search in bigg db by metacyc id (does only make sense for vmh/bigg namespace)
     if [ "$database" == "vmh" ]; then
         dbhit="$dbhit $(grep -wF $rea $reaDB2 | awk '{print $1}')"
+    fi
+
+    # 5) match reaction using mnxref namespace
+    if [ "$database" == "seed" ]; then
+        dbhit="$dbhit $(grep -wF $rea $reaDB5 | awk '{print $2}')"
     fi
 
     [ "$dbhit" == " " ] && dbhit=""
@@ -296,8 +306,8 @@ do
             identcutoff_tmp=$identcutoff
         fi
         ((count++))
+        getDBhit # get db hits for this reactions
         if [[ -n "$EC_test" ]]; then
-            getDBhit # get db hits for this reactions
             query=$seqpath/$ec.fasta
             if [ ! -f "$query" ]; then # check if sequence is not available => try to download
                 echo -e '\t'Downloading sequence for: $ec 
@@ -372,7 +382,6 @@ do
                 fi
             else
                 echo -e '\t'NO blast hit: $rea $reaName $ec
-                [[ -n "$EC_test" ]] && getDBhit
                 if [[ -n "$dbhit" ]];then
                     dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
                     pwyNoHitFound="$pwyNoHitFound$dbhit "
@@ -382,7 +391,6 @@ do
             echo -e "\tNO sequence data found for $rea $reaName $ec ..skipping.."
             echo -e "\t\t$(basename $query)" 
             ((vague++))
-            [[ -n "$EC_test" ]] && getDBhit
             [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
             [[ $keyRea = *"$rea"* ]] && vagueKeyReaFound="$vagueKeyReaFound $rea"
         fi
