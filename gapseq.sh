@@ -280,6 +280,7 @@ do
     for j in `seq 1 $(echo $ecs | tr "," "\n" | wc -l)`
     #for ec in $(echo $ecs | tr "," "\n")
     do 
+        dbhit=""
         ec=$(echo $ecs | awk -v j=$j -F ',' '{print $j}')
         rea=$(echo $reaids | awk -v j=$j -F ',' '{print $j}')
         reaName=$(echo $reaNames | awk -v j=$j -F ';' '{print $j}' | tr -d '|')
