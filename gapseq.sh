@@ -301,9 +301,9 @@ do
         reaName=$(echo $reaNames | awk -v j=$j -F ';' '{print $j}' | tr -d '|')
         re="([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
         EC_test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
-        [[ -n "$ec" ]] && [[ -n "$reaName" ]] && { is_exception=$(grep -F -e "$ec" -e "$reaName" $dir/dat/exception.tbl | wc -l); }
-        [[ -z "$ec" ]] && [[ -n "$reaName" ]] && { is_exception=$(grep -F "$reaName" $dir/dat/exception.tbl | wc -l); }
-        [[ -n "$ec" ]] && [[ -z "$reaName" ]] && { is_exception=$(grep -F "$ec" $dir/dat/exception.tbl | wc -l); }
+        [[ -n "$ec" ]] && [[ -n "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw -e "$ec" -e "$reaName" $dir/dat/exception.tbl | wc -l); }
+        ( [[ -z "$ec" ]] || [[ -z "$EC_test" ]] ) && [[ -n "$reaName" ]] && { is_exception=$(grep -Fw "$reaName" $dir/dat/exception.tbl | wc -l); }
+        [[ -n "$ec" ]] && [[ -z "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw "$ec" $dir/dat/exception.tbl | wc -l); }
         if [[ $is_exception -gt 0 ]] && [[ $identcutoff -lt 70 ]];then # take care of similair enzymes with different function
             identcutoff_tmp=70
             echo -e "\tUsing higher identity cutoff for $rea"
