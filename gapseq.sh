@@ -38,6 +38,7 @@ usage()
     echo "  -a blast hits back against uniprot enzyme database"
     echo "  -n Do not consider superpathways of metacyc database"
     echo "  -l Select the pathway database (MetaCyc, KEGG, SEED, all; default: $pwyDatabase)"
+    echo "  -o Only list pathways found for keyword"
 exit 1
 }
 
@@ -63,7 +64,7 @@ seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:d:i:b:c:vst:snou:al:" opt; do
+while getopts "h?p:e:d:i:b:c:vst:snou:al:o" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -107,6 +108,9 @@ while getopts "h?p:e:d:i:b:c:vst:snou:al:" opt; do
         ;;
     l)
         pwyDatabase=$OPTARG
+        ;;
+    o)
+        onlyList=true
         ;;
     esac
 done
@@ -287,6 +291,7 @@ do
     pwyHierarchy=$(echo "$line" | awk -F "\t" '{print $4}' | sed 's/|\|THINGS\|Generalized-Reactions\|Pathways\|FRAMES//g' | sed 's/,,//g')
     echo -e '\n'$i/$pwyNr: Checking for pathway $pwy $name
     echo "($pwyHierarchy)"
+    [[ "$onlyList" = true ]] && { continue; }
     for j in `seq 1 $(echo $ecs | tr "," "\n" | wc -l)`
     #for ec in $(echo $ecs | tr "," "\n")
     do 
