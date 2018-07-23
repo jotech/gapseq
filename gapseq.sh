@@ -456,6 +456,7 @@ do
     # A) Consider as complete pathway because all reactions are present
     if [[ $completeness -eq 100 ]]; then
         prediction=true
+        cand="$cand$pwyVage "
         bestPwy="$bestPwy$name\n"
     # B) Consider as complete pathway because of completeness treshold (key enzymes should be present too)
     elif [[ $completeness -ge $completenessCutoffNoHints ]] && [[ "$KeyReaFracAvail" -eq 1 ]] && [[ "$strictCandidates" = false ]]; then
