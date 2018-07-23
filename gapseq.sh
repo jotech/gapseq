@@ -307,6 +307,7 @@ do
         reaName=$(echo $reaNames | awk -v j=$j -F ';' '{print $j}' | tr -d '|')
         re="([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
         EC_test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
+        [[ -z "$rea" ]] && { continue; }
         [[ -n "$ec" ]] && [[ -n "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw -e "$ec" -e "$reaName" $dir/dat/exception.tbl | wc -l); }
         ( [[ -z "$ec" ]] || [[ -z "$EC_test" ]] ) && [[ -n "$reaName" ]] && { is_exception=$(grep -Fw "$reaName" $dir/dat/exception.tbl | wc -l); }
         [[ -n "$ec" ]] && [[ -z "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw "$ec" $dir/dat/exception.tbl | wc -l); }
@@ -326,7 +327,7 @@ do
             fi
         fi
         # if no EC number is available or no sequence was found for EC number then use reaction name instead for sequence search
-        if [[ -z "$EC_test" ]] || [[ ! -s "$query" ]] ;then
+        if [[ -n "$reaName" ]] && ( [[ -z "$EC_test" ]] || [[ ! -s "$query" ]] );then
             reaNameHash=$(echo -n "$reaName" | md5sum | awk '{print $1}')
             query="$seqpath/$reaNameHash.fasta"
             if [ ! -f "$query" ]; then # check if sequence is not available => try to download
