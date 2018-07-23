@@ -8,8 +8,8 @@ import pdb
 meta = pythoncyc.select_organism('meta')
 pythoncyc.sendQueryToPTools("(select-organism :org-id 'META)")
 
-
 def getReaInfos(pwy):
+    meta.allpwy = meta.all_pathways()
     #pwy = "ANAEROFRUCAT-PWY"
     #pwy = "ALL-CHORISMATE-PWY"
     if meta[pwy] == None:
@@ -29,7 +29,7 @@ def getReaInfos(pwy):
         ptmp = check_list.pop()
         has_subpwy = meta[ptmp].sub_pathways != None
         has_reactions = meta[ptmp].reaction_list != None
-        is_pwy = has_subpwy or has_reactions
+        is_pwy = (has_subpwy or has_reactions) and ptmp in meta.allpwy
         #is_pwy = "PWY" in ptmp
         if not is_pwy:
             rea_list.append(ptmp)
@@ -71,7 +71,7 @@ def getReaInfos(pwy):
         if meta[r].common_name != None:
             reaName = meta[r].common_name
         elif len(diff) > 0 and rxn_enz == None:
-            print(r, pwy, ec)
+            #print(r, pwy, ec)
             reaName = meta.enzyme_activity_name(next(iter(diff)),r)
         elif rxn_enz != None and len(rxn_enz) == 1:
             reaName = meta.enzyme_activity_name(next(iter(meta[r].enzymatic_reaction)),r)
@@ -139,6 +139,7 @@ def getReaInfos(pwy):
 #getReaInfos("|PWY-6381|")
 #getReaInfos("|p381-PWY|")
 #getReaInfos("|BRANCHED-CHAIN-AA-SYN-PWY|")
+#getReaInfos("|PWY-3781|")
 #print(getReaInfos("|ALL-CHORISMATE-PWY|"))
 #sys.exit(0)
 
