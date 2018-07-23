@@ -21,6 +21,8 @@ blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
 blast_back=false
 noSuperpathways=false
 vagueCutoff=0.3 # cutoff for vague reactions. If the amount of vague reactions in a pathways is more then this their influence will not be recognized even with strictCandidates=false
+onlyList=false
+skipBlast=false
 
 usage()
 {
@@ -38,7 +40,8 @@ usage()
     echo "  -a blast hits back against uniprot enzyme database"
     echo "  -n Do not consider superpathways of metacyc database"
     echo "  -l Select the pathway database (MetaCyc, KEGG, SEED, all; default: $pwyDatabase)"
-    echo "  -o Only list pathways found for keyword"
+    echo "  -o Only list pathways found for keyword; default $onlyList)"
+    echo "  -x Do not blast only list pathways, reactions and check for available sequences; default $skipBlast"
 exit 1
 }
 
@@ -64,7 +67,7 @@ seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:d:i:b:c:vst:snou:al:o" opt; do
+while getopts "h?p:e:d:i:b:c:vst:snou:al:ox" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -111,6 +114,9 @@ while getopts "h?p:e:d:i:b:c:vst:snou:al:o" opt; do
         ;;
     o)
         onlyList=true
+        ;;
+    x)
+        skipBlast=true
         ;;
     esac
 done
@@ -328,6 +334,7 @@ do
                 $dir/src/uniprot.sh -r "$reaName" -t "$taxonomy" -i $uniprotIdentity >/dev/null
             fi
         fi
+        [[ "$skipBlast" = true ]] && { echo -e "\t"$rea $reaName $ec; continue; }
         if [ -s "$query" ]; then
             out=$rea.blast #$ec.blast
             if [ ! -f $out ]; then # check if there is a former hit
@@ -358,9 +365,10 @@ do
                     fi
                     #blast hit back to uniprot enzyme database
                     if [ "$blast_back" = true ]; then
-                        echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f9 | sed 's/-/*/g' > "$ec.hit.fasta"
+                        echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f9 | sed 's/-/*/g' > "$rea.hit.fasta"
                         echo "Blast best hit against uniprot db:"
-                        blastp -db $dir/dat/seq/uniprot_sprot -query "$ec.hit.fasta" -outfmt '6 pident bitscore qcovs stitle' | awk '{if ( $4>50 ) print $0}' | sort -rgk 2,2 | head -n 3
+                        blastp -db $dir/dat/seq/uniprot_sprot -query "$rea.hit.fasta" -outfmt '6 pident bitscore qcovs stitle' > $rea.hit.blast 
+                        cat $rea.hit.blast | awk '{if ( $4>50 ) print $0}' | sort -rgk 2,2 | head -n 3
                     fi
                     
                     if [ -n "$dbhit" ]; then
