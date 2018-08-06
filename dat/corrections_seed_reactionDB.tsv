@@ -1600,5 +1600,6 @@ rxn08982			-1:cpd00067:1:0:"H+";-1:cpd00971:0:0:"Na+";1:cpd00067:0:0:"H+";1:cpd0
 rxn08983			-1:cpd00067:1:0:"H+";-1:cpd00971:0:0:"Na+";1:cpd00067:0:0:"H+";1:cpd00971:1:0:"Na+"	[SW] Rule: Na+/H+ antiport has the ratio 1:1				
 rxn13722			-2:cpd00067:0:0:"H+";-1:cpd00254:1:0:"Mg";2:cpd00067:1:0:"H+";1:cpd00254:0:0:"Mg"	[SW] Rule: Mg2+/H+ antiport has ratio 1:2				
 								
-rxn90001	>		-2:cpd00004:1:0:"NADH";-2:cpd11621:1:0:"Oxidizedferredoxin";-1:cpd00650:1:0:"Crotonyl-CoA";2:cpd00003:1:0:"NAD";2:cpd11620:1:0:"Reducedferredoxin";1:cpd00120:1:0:"Butyryl-CoA"	[SW] new reaction. Essential for butyrate production in Clostridia.			But-CoA dehydrogenase ETF	Butyryl-CoA dehydrogenase (Etf complex)
-					Li, Hinderberger, Seedorf, Zhang, Buckel, Thauer (2008) Journal of Bacteriology			
+rxn90001	>		-2:cpd00004:0:0:"NADH";-2:cpd11621:0:0:"Oxidizedferredoxin";-1:cpd00650:0:0:"Crotonyl-CoA";2:cpd00003:0:0:"NAD";2:cpd11620:0:0:"Reducedferredoxin";1:cpd00120:0:0:"Butyryl-CoA"	[SW] new reaction. Essential for butyrate production in Clostridia.	Li, Hinderberger, Seedorf, Zhang, Buckel, Thauer (2008) Journal of Bacteriology		But-CoA dehydrogenase ETF	Butyryl-CoA dehydrogenase (Etf complex)
+rxn90002	>		-1:cpd90001:0:0:"2-Fucosyllactose";-1:cpd00001:0:0:"H2O";1:cpd00208:0:0:"LACT";1:cpd00751:0:0:"L-Fucose"	[SW] new reaction for the degradtion of the most common human oligosaccharide 2-fucosyllactose	10.1073/pnas.0809584105			
+rxn90003	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd90001:1:0:"2-Fucosyllactose";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd90001:0:0:"2-Fucosyllactose";1:cpd00067:0:0:"H+"	[SW] new reaction for import of 2-FL via ABC-transport.	10.1073/pnas.0809584105			
