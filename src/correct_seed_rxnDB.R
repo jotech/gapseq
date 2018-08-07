@@ -55,6 +55,7 @@ correct_seed_rxnDB <- function(script.path) {
     stop("Error in seed-reactions corrections file: Double quotes!")
   }
   mseed.corr[is.na(rm.rxn), rm.rxn := FALSE]
+  mseed.corr[is.na(forced.approval), forced.approval := FALSE]
   for(i in 1:nrow(mseed.corr)) {
     # Change is reversibility
     if(mseed.corr[i, new.rev]!="" & !is.na(mseed.corr[i, new.rev])) {
@@ -75,6 +76,11 @@ correct_seed_rxnDB <- function(script.path) {
             reversibility := tmp]
       mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id], 
             gapseq.status := "corrected"]
+    }
+    # manually approved reaction?
+    if(mseed.corr[i, forced.approval]==TRUE) {
+      mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id], 
+            gapseq.status := "approved"]
     }
     # remove reaction?
     if(mseed.corr[i, rm.rxn]==TRUE) {
