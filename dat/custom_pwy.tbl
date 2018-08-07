@@ -1,0 +1,3 @@
+id	name	altname	hierarchy	taxrange	reaId	reaEc	keyRea	reaName
+PWY1	Oxidase test		respiration,test		rxn1,rxn2	1.9.3.1,1.10.2.2	rxn1	cytochrome-c oxidase;quinol---cytochrome-c reductase
+PWY2	Catalase test		detoxification,test	rxn1	1.11.1.6	1.11.1.6	catalase

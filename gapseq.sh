@@ -8,7 +8,7 @@
 
 pathways=""
 database="seed"
-pwyDatabase="metacyc"
+pwyDatabase="metacyc,custom"
 verbose=0
 taxonomy="Bacteria"
 bitcutoff=50 # cutoff blast: min bit score
@@ -54,6 +54,7 @@ uniprotIdentity=0.9 # clustered uniprot database (0.5 or 0.9)
 metaPwy=$dir/dat/meta_pwy.tbl
 keggPwy=$dir/dat/kegg_pwy.tbl
 seedPwy=$dir/dat/seed_pwy.tbl
+customPwy=$dir/dat/custom_pwy.tbl
 metaRea=$dir/dat/meta_rea.tbl
 reaDB1=$dir/dat/vmh_reactions.csv
 reaDB2=$dir/dat/bigg_reactions.tbl
@@ -198,15 +199,12 @@ if [ -n "$ecnumber" ]; then
 else
     pwyDatabase=$(echo $pwyDatabase | tr '[:upper:]' '[:lower:]')
     # get entries for pathways from databases
-    if [[ "$pwyDatabase" == "all" ]]; then
-        cat $metaPwy $keggPwy $seedPwy > allPwy
-    elif [[ "$pwyDatabase" == "metacyc" ]]; then
-        cat $metaPwy > allPwy
-    elif [[ "$pwyDatabase" == "kegg" ]]; then
-        cat $keggPwy > allPwy
-    elif [[ "$pwyDatabase" == "seed" ]]; then
-        cat $seedPwy > allPwy
-    fi
+    [[ "$pwyDatabase" =~ "metacyc" ]] && { echo $pwyDatabase; }
+    [[ "$pwyDatabase" =~ "all" ]]     && cat $metaPwy $keggPwy $seedPwy $customPwy > allPwy
+    [[ "$pwyDatabase" =~ "metacyc" ]] && cat $metaPwy >> allPwy
+    [[ "$pwyDatabase" =~ "kegg" ]]    && cat $keggPwy >> allPwy
+    [[ "$pwyDatabase" =~ "seed" ]]    && cat $seedPwy >> allPwy
+    [[ "$pwyDatabase" =~ "custom" ]]  && cat $customPwy >> allPwy
     pwyDB=$(cat allPwy | grep -wEi $pwyKey)
     [[ "$noSuperpathways" = true ]] && pwyDB=$(echo "$pwyDB" | grep -v 'Super-Pathways')
     [ -z "$ecnumber" ] && [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
@@ -491,7 +489,7 @@ echo -e Candidate reactions found: $(echo "$cand" | wc -w) '\n'
 echo $cand > newReactions.lst
 cp newReactions.lst $curdir/${fastaID}-$output_suffix-Reactions.lst
 cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
-[ -f reactions.tbl ] && echo "#rxn ec $(echo $blast_format | tr ' ' '\t')" | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
+[ -f reactions.tbl ] && echo "rxn\tec\t$(echo $blast_format | tr ' ' '\t')" | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
 
 
 ps -p $$ -o %cpu,%mem,cmd
