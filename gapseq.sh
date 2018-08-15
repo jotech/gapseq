@@ -63,6 +63,7 @@ reaDB4=$dir/dat/mnxref_seed.tsv
 reaDB5=$dir/dat/mnxref_seed-other.tsv
 brenda=$dir/dat/brenda_ec.csv
 seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
+seedEnzymesNames=$dir/dat/seed_Enzyme_Name_Reactions_Aliases.tsv
 
 
 # A POSIX variable
@@ -254,6 +255,11 @@ getDBhit(){
     if [ "$database" == "seed" ]; then
         dbhit="$dbhit $(grep -wF $rea $reaDB5 | awk '{print $2}')"
     fi
+    
+    # 6) match reaction using custom enzyme-name - seedID mapping
+    if [ "$database" == "seed" ]; then
+        dbhit="$dbhit $(grep -wF "$reaName" $seedEnzymesNames | awk -F '\t' ' {print $1}')"
+    fi
 
     [ "$dbhit" == " " ] && dbhit=""
 }
@@ -340,7 +346,7 @@ do
                 csplit -s -z "$query" '/>/' '{*}' # split multiple fasta file and skip further testing if a significant hit is found
                 for q in `ls xx*`
                 do
-                    tblastn -db orgdb -query $q -outfmt "6 $blast_format" >> $out 
+                    tblastn -db orgdb -query $q -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" >> $out 
                     bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
                     if [ -n "$bhit" ]; then
                         break
