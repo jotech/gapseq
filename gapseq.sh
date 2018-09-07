@@ -130,6 +130,11 @@ shift $((OPTIND-1))
 
 # get fasta file
 fasta=$(readlink -f "$1")
+if [[ $fasta == *.gz ]]; then # in case fasta is in a archive
+    tmp_fasta=$(mktemp)
+    gunzip -c $fasta > $tmp_fasta
+    fasta=$tmp_fasta
+fi
 [[ ! -s $fasta ]] && { echo Invalid file: $1; exit 0; }
 tmpvar=$(basename $fasta)
 fastaID="${tmpvar%.*}"
