@@ -19,7 +19,7 @@ completenessCutoff=66 # consider pathway to be present if other hints (e.g. key 
 completenessCutoffNoHints=80 # consider pathway to be present if no hints are avaiable (requires stricCandidates=false)
 blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
 blast_back=false
-noSuperpathways=false
+noSuperpathways=true
 vagueCutoff=0.3 # cutoff for vague reactions. If the amount of vague reactions in a pathways is more then this their influence will not be recognized even with strictCandidates=false
 onlyList=false
 skipBlast=false
@@ -38,7 +38,7 @@ usage()
     echo "  -s strict candidate reaction handling (do _not_ use pathway completeness, key kenzymes and operon structure to infere if imcomplete pathway could be still present (default: $strictCandidates)"
     echo "  -u suffix used for output files (default: pathway keyword)"
     echo "  -a blast hits back against uniprot enzyme database"
-    echo "  -n Do not consider superpathways of metacyc database"
+    echo "  -n Consider superpathways of metacyc database"
     echo "  -l Select the pathway database (MetaCyc, KEGG, SEED, all; default: $pwyDatabase)"
     echo "  -o Only list pathways found for keyword; default $onlyList)"
     echo "  -x Do not blast only list pathways, reactions and check for available sequences; default $skipBlast"
@@ -109,7 +109,7 @@ while getopts "h?p:e:d:i:b:c:vst:snou:al:ox" opt; do
         blast_back=true
         ;;
     n)
-        noSuperpathways=true
+        noSuperpathways=false
         ;;
     l)
         pwyDatabase=$OPTARG
