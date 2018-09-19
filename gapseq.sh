@@ -128,11 +128,12 @@ shift $((OPTIND-1))
 # after parsing arguments, only fasta file shoud be there
 [ "$#" -ne 1 ] && { usage; }
 
+
 # tmp working directory
+fasta=$(readlink -f "$1") # save input file before changing to temporary directory
 cd $(mktemp -d)
 
 # get fasta file
-fasta=$(readlink -f "$1")
 if [[ $fasta == *.gz ]]; then # in case fasta is in a archive
     tmp_fasta=$(basename "${fasta}" .gz)
     gunzip -c $fasta > $tmp_fasta
