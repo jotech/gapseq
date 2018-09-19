@@ -128,10 +128,13 @@ shift $((OPTIND-1))
 # after parsing arguments, only fasta file shoud be there
 [ "$#" -ne 1 ] && { usage; }
 
+# tmp working directory
+cd $(mktemp -d)
+
 # get fasta file
 fasta=$(readlink -f "$1")
 if [[ $fasta == *.gz ]]; then # in case fasta is in a archive
-    tmp_fasta=$(mktemp)
+    tmp_fasta=$(basename "${fasta}" .gz)
     gunzip -c $fasta > $tmp_fasta
     fasta=$tmp_fasta
 fi
@@ -192,9 +195,6 @@ esac
 # squence directory
 seqpath=$dir/dat/seq/$taxonomy/unipac$(printf %.0f $(echo "$uniprotIdentity * 100" | bc -l))
 mkdir -p $seqpath
-
-# tmp working directory
-cd $(mktemp -d)
 
 
 if [ -n "$ecnumber" ]; then
