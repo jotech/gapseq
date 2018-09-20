@@ -8,16 +8,25 @@ use_alternatives=true
 curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
-fasta=$(readlink -f $1)
+
+# tmp working directory
+fasta=$(readlink -f "$1") # save input file before changing to temporary directory
+cd $(mktemp -d)
+
+# Get fasta file
+if [[ $fasta == *.gz ]]; then # in case fasta is in a archive
+    tmp_fasta=$(basename "${fasta}" .gz)
+    gunzip -c $fasta > $tmp_fasta
+    fasta=$tmp_fasta
+fi
+[[ ! -s $fasta ]] && { echo Invalid file: $1; exit 0; }
+
 tmpvar=$(basename $fasta)
 fastaid=${tmpvar%.*}
 tcdb=$dir/dat/seq/tcdb.fasta
 otherDB=$dir/dat/seq/transporter.fasta
 subDB=$dir/dat/sub2pwy.csv
 seedDB=$dir/dat/seed_transporter.tbl
-
-# tmp working directory
-cd $(mktemp -d)
 
 cat $tcdb $otherDB > all.fasta # join transporter databases
 grep -e ">" all.fasta > tcdb_header
