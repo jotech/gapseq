@@ -89,7 +89,7 @@ echo -e "\nFound transporter and import reactions for:"
 echo ${sublist2:1} | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort | uniq > hit2
 cat hit2
 
-echo -e "\nDo not found transport reactions in database for:"
+echo -e "\nNo transport reactions found in database for:"
 for sub in $(comm -23 hit1 hit2)
 do
     cat "$sub" | awk -F ',' '{print $3, $6}' | sort | uniq
