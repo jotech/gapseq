@@ -30,6 +30,7 @@ usage()
     echo "$0 -p keyword / -e ec [-d database] [-t taxonomy] file.fasta."
     echo "  -p keywords such as pathways or subsystems (for example amino,nucl,cofactor,carbo,polyamine)"
     echo "  -e search by ec numbers (comma separated)"
+    echo "  -r search by enzyme name (comma separated)"
     echo "  -d database: vmh or seed (default: $database)"
     echo "  -t taxonomic range for sequences to be downloaded (default: $taxonomy)"
     echo "  -b bit score cutoff for local alignment (default: $bitcutoff)"
@@ -69,7 +70,7 @@ seedEnzymesNames=$dir/dat/seed_Enzyme_Name_Reactions_Aliases.tsv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:d:i:b:c:vst:snou:al:ox" opt; do
+while getopts "h?p:e:r:d:i:b:c:vst:snou:al:ox" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -80,6 +81,9 @@ while getopts "h?p:e:d:i:b:c:vst:snou:al:ox" opt; do
         ;;
     e)  
         ecnumber=$OPTARG
+        ;;
+    r)  
+        reaname=$OPTARG
         ;;
     d)  
         database=$OPTARG
@@ -144,7 +148,7 @@ tmpvar=$(basename $fasta)
 fastaID="${tmpvar%.*}"
 
 # pathways or ec number as well as fasta file have to be provided
-( [ -z "$pathways" ] && [ -z "$ecnumber" ] ) || [ -z "$fasta" ]  && { usage; }
+( [ -z "$pathways" ] && [ -z "$ecnumber" ] && [ -z "$reaname" ] ) || [ -z "$fasta" ]  && { usage; }
 
 # select pathway keys to be used in database search
 case $pathways in
@@ -198,11 +202,21 @@ seqpath=$dir/dat/seq/$taxonomy/unipac$(printf %.0f $(echo "$uniprotIdentity * 10
 mkdir -p $seqpath
 
 
-if [ -n "$ecnumber" ]; then
+if [ -n "$ecnumber" ] || [ -n "$reaname" ]; then
     # create dummpy pwy template for given ec number
-    pwyKey=$ecnumber
-    pwyDB=$(echo -e "dummy\t$ecnumber\t\t\t\t$ecnumber\t$ecnumber")
-    pathways="ec"
+    if [[ -z "$ecnumber" ]]; then
+        rea_count=$(echo $reaname | tr ';' '\n' | wc -l)
+        ecnumber=$(echo $reaname | grep -o ";" | tr ';' ',') # get dummy empty comma seperated ec numbers
+    elif [[ -z "$reaname" ]]; then
+        rea_count=$(echo $ecnumber | tr ',' '\n' | wc -l)
+        reaname=$(echo $ecnumber | grep -o "," | tr ',' ';') # get dummy empty colon seperated reaction names
+    else  
+        rea_count=$(echo $ecnumber | tr ',' '\n' | wc -l)
+    fi
+    rea_id=$(seq 1 $rea_count | awk '{print "reaction"$1}' |tr '\n' ',')
+    pwyKey="custom"
+    pwyDB=$(echo -e "custom\t$ecnumber\t\t\t\t${rea_id::-1}\t$ecnumber\t\t$reaname")
+    pathways="custom"
 else
     pwyDatabase=$(echo $pwyDatabase | tr '[:upper:]' '[:lower:]')
     # get entries for pathways from databases
@@ -221,7 +235,7 @@ fi
 
 # function to get database hits for ec number
 getDBhit(){
-    kegg=$(grep -wF $rea $metaRea | awk -F "\t" {'print $5'})
+    kegg=$(grep -wF "$rea" $metaRea | awk -F "\t" {'print $5'})
     
     # 1) search in reaction db by EC
     if [[ -n "$EC_test" ]]; then
@@ -251,17 +265,17 @@ getDBhit(){
             [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')" # take care of multiple EC numbers
         fi
     fi
-    
+
     # 4) search in bigg db by metacyc id (does only make sense for vmh/bigg namespace)
     if [ "$database" == "vmh" ]; then
-        dbhit="$dbhit $(grep -wF $rea $reaDB2 | awk '{print $1}')"
+        dbhit="$dbhit $(grep -wF "$rea" $reaDB2 | awk '{print $1}')"
     fi
 
     # 5) match reaction using mnxref namespace
     if [ "$database" == "seed" ]; then
-        dbhit="$dbhit $(grep -wF $rea $reaDB5 | awk '{print $2}')"
+        dbhit="$dbhit $(grep -wF "$rea" $reaDB5 | awk '{print $2}')"
     fi
-    
+   
     # 6) match reaction using custom enzyme-name - seedID mapping
     if [ "$database" == "seed" ]; then
         dbhit="$dbhit $(grep -wF "$reaName" $seedEnzymesNames | awk -F '\t' ' {print $1}')"
@@ -302,7 +316,7 @@ do
     name=$(echo "$line" | awk -F "\t" '{print $2}')
     ecs=$(echo "$line" | awk -F "\t" '{print $7}')
     reaids=$(echo "$line" | awk -F "\t" '{print $6}')
-    reaNames=$(echo "$line" | awk -F "\t" '{print $9}')
+    reaNames=$(echo -e "$line" | awk -F "\t" '{print $9}')
     keyRea=$(echo "$line" | awk -F "\t" '{print $8}' | tr ',' ' ')
     pwyHierarchy=$(echo "$line" | awk -F "\t" '{print $4}' | sed 's/|\|THINGS\|Generalized-Reactions\|Pathways\|FRAMES//g' | sed 's/,,//g')
     echo -e '\n'$i/$pwyNr: Checking for pathway $pwy $name
@@ -367,7 +381,7 @@ do
                     bestBitscore=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f4)
                     bestCoverage=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f5)
                     besthit_all=$(echo "$bhit" | sort -rgk 4,4 | head -1)
-                    echo -e "$rea\t$ec\t$besthit_all" >> reactions.tbl 
+                    echo -e "$rea\t$reaName\t$ec\t$besthit_all" >> reactions.tbl 
                     echo -e '\t'Blast hit: $rea $reaName $ec"\n\t\tbit=$bestBitscore, id=$bestIdentity, cov=$bestCoverage"
                     # check if key reactions of pathway
                     if [[ $keyRea = *"$rea"* ]]; then
@@ -397,7 +411,7 @@ do
                     someBitscore=$(cat $out | sort -rgk 4,4 | head -1 | cut -f4)
                     someCoverage=$(cat $out | sort -rgk 4,4 | head -1 | cut -f5)
                     somehit_all=$( cat $out | sort -rgk 4,4 | head -1)
-                    echo -e "$rea\t$ec\t$somehit_all" >> reactions.tbl 
+                    echo -e "$rea\t$reaName\t$ec\t$somehit_all" >> reactions.tbl 
                     echo -e '\t'NO good blast hit: $rea $reaName $ec"\n\t\t(best one: id=$someIdentity bit=$someBitscore cov=$someCoverage)"
                     if [[ -n "$dbhit" ]];then
                         dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
@@ -413,6 +427,7 @@ do
             fi
         else
             echo -e "\tNO sequence data found for $rea $reaName $ec ..skipping.."
+            echo $query
             echo -e "\t\t$(basename $query)" 
             ((vague++))
             [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
@@ -501,7 +516,7 @@ echo -e Candidate reactions found: $(echo "$cand" | wc -w) '\n'
 echo $cand > newReactions.lst
 cp newReactions.lst $curdir/${fastaID}-$output_suffix-Reactions.lst
 cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
-[ -f reactions.tbl ] && echo "rxn\tec\t$(echo $blast_format | tr ' ' '\t')" | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
+[ -f reactions.tbl ] && echo "rxn\tname\tec\t$(echo $blast_format | tr ' ' '\t')" | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
 
 
 ps -p $$ -o %cpu,%mem,cmd
