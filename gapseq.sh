@@ -420,6 +420,7 @@ do
                 fi
             else
                 echo -e '\t'NO blast hit: $rea $reaName $ec
+                echo -e "\t$query" 
                 if [[ -n "$dbhit" ]];then
                     dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
                     pwyNoHitFound="$pwyNoHitFound$dbhit "
@@ -427,8 +428,8 @@ do
             fi
         else
             echo -e "\tNO sequence data found for $rea $reaName $ec ..skipping.."
-            echo $query
-            echo -e "\t\t$(basename $query)" 
+            echo -e "\t$query" 
+            #echo -e "\t\t$(basename $query)" 
             ((vague++))
             [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
             [[ $keyRea = *"$rea"* ]] && vagueKeyReaFound="$vagueKeyReaFound $rea"
