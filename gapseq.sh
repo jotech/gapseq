@@ -13,6 +13,7 @@ verbose=0
 taxonomy="Bacteria"
 bitcutoff=50 # cutoff blast: min bit score
 identcutoff=0   # cutoff blast: min identity
+identcutoff_exception=80  # min identity for enzymes marked as false friends (hight seq similarity but different function)
 covcutoff=75 # cutoff blast: min coverage
 strictCandidates=false
 completenessCutoff=66 # consider pathway to be present if other hints (e.g. key enzyme present) are avaiable and pathway completeness is at least as high as completenessCutoff (requires strictCandidates=false)
@@ -335,8 +336,8 @@ do
         [[ -n "$ec" ]] && [[ -n "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw -e "$ec" -e "$reaName" $dir/dat/exception.tbl | wc -l); }
         ( [[ -z "$ec" ]] || [[ -z "$EC_test" ]] ) && [[ -n "$reaName" ]] && { is_exception=$(grep -Fw "$reaName" $dir/dat/exception.tbl | wc -l); }
         [[ -n "$ec" ]] && [[ -z "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw "$ec" $dir/dat/exception.tbl | wc -l); }
-        if [[ $is_exception -gt 0 ]] && [[ $identcutoff -lt 70 ]];then # take care of similair enzymes with different function
-            identcutoff_tmp=70
+        if [[ $is_exception -gt 0 ]] && [[ $identcutoff -lt $identcutoff_exception ]];then # take care of similair enzymes with different function
+            identcutoff_tmp=$identcutoff_exception
             echo -e "\tUsing higher identity cutoff for $rea"
         else
             identcutoff_tmp=$identcutoff
@@ -411,7 +412,7 @@ do
                     someBitscore=$(cat $out | sort -rgk 4,4 | head -1 | cut -f4)
                     someCoverage=$(cat $out | sort -rgk 4,4 | head -1 | cut -f5)
                     somehit_all=$( cat $out | sort -rgk 4,4 | head -1)
-                    echo -e "$rea\t$reaName\t$ec\t$somehit_all" >> reactions.tbl 
+                    #echo -e "$rea\t$reaName\t$ec\t$somehit_all" >> reactions.tbl 
                     echo -e '\t'NO good blast hit: $rea $reaName $ec"\n\t\t(best one: id=$someIdentity bit=$someBitscore cov=$someCoverage)"
                     if [[ -n "$dbhit" ]];then
                         dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
