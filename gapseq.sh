@@ -381,9 +381,12 @@ do
                     bestIdentity=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f2)
                     bestBitscore=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f4)
                     bestCoverage=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f5)
-                    besthit_all=$(echo "$bhit" | sort -rgk 4,4 | head -1)
-                    echo -e "$rea\t$reaName\t$ec\t$besthit_all" >> reactions.tbl 
-                    echo -e '\t'Blast hit: $rea $reaName $ec"\n\t\tbit=$bestBitscore, id=$bestIdentity, cov=$bestCoverage"
+                    besthit_all=$(echo "$bhit" | sort -rgk 4,4 | head -3)
+                    bhit_count=$(echo "$bhit" | wc -l)
+                    echo "$besthit_all" | awk -v rea=$rea -v reaName=$reaName -v ec=$ec '{print rea"\t"reaName"\t"ec"\t"$0}' >> reactions.tbl
+                    echo -e '\t'Blast hit \(${bhit_count}x\): $rea $reaName $ec
+                    echo "$besthit_all" | awk '{print "\t\tbit="$2 " id="$4 " cov="$5}'
+                    #echo a"$test"
                     # check if key reactions of pathway
                     if [[ $keyRea = *"$rea"* ]]; then
                         echo -e '\t\t--> KEY reaction found <--'
@@ -391,9 +394,9 @@ do
                     fi
                     #blast hit back to uniprot enzyme database
                     if [ "$blast_back" = true ]; then
-                        echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f9 | sed 's/-/*/g' > "$rea.hit.fasta"
+                        echo "$bhit" | sort -rgk 4,4 | head -3 | cut -f9 | sed 's/-/*/g' > "$rea.hit.fasta"
                         echo "Blast best hit against uniprot db:"
-                        blastp -db $dir/dat/seq/uniprot_sprot -query "$rea.hit.fasta" -outfmt '6 pident bitscore qcovs stitle' > $rea.hit.blast 
+                        blastp -db $dir/dat/seq/uniprot_sprot -query "$rea.hit.fasta" -outfmt '6 pident bitscore qcovs stitle qseqid' > $rea.hit.blast 
                         cat $rea.hit.blast | awk '{if ( $4>50 ) print $0}' | sort -rgk 2,2 | head -n 3
                     fi
                     
@@ -518,7 +521,7 @@ echo -e Candidate reactions found: $(echo "$cand" | wc -w) '\n'
 echo $cand > newReactions.lst
 cp newReactions.lst $curdir/${fastaID}-$output_suffix-Reactions.lst
 cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
-[ -f reactions.tbl ] && echo "rxn\tname\tec\t$(echo $blast_format | tr ' ' '\t')" | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
+[ -f reactions.tbl ] && echo -e "rxn\tname\tec\t$(echo $blast_format | tr ' ' '\t')" | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
 
 
 ps -p $$ -o %cpu,%mem,cmd
