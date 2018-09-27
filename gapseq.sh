@@ -524,5 +524,9 @@ cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
 [ -f reactions.tbl ] && echo -e "rxn\tname\tec\t$(echo $blast_format | tr ' ' '\t')" | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
 
 
+# cleaning
+[[ -s $tmp_fasta ]] && rm $tmp_fasta
+
+
 ps -p $$ -o %cpu,%mem,cmd
 times
