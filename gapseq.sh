@@ -13,7 +13,7 @@ verbose=0
 taxonomy="Bacteria"
 bitcutoff=50 # cutoff blast: min bit score
 identcutoff=0   # cutoff blast: min identity
-identcutoff_exception=80  # min identity for enzymes marked as false friends (hight seq similarity but different function)
+identcutoff_exception=70  # min identity for enzymes marked as false friends (hight seq similarity but different function)
 covcutoff=75 # cutoff blast: min coverage
 strictCandidates=false
 completenessCutoff=66 # consider pathway to be present if other hints (e.g. key enzyme present) are avaiable and pathway completeness is at least as high as completenessCutoff (requires strictCandidates=false)
@@ -383,10 +383,9 @@ do
                     bestCoverage=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f5)
                     besthit_all=$(echo "$bhit" | sort -rgk 4,4 | head -3)
                     bhit_count=$(echo "$bhit" | wc -l)
-                    echo "$besthit_all" | awk -v rea=$rea -v reaName=$reaName -v ec=$ec '{print rea"\t"reaName"\t"ec"\t"$0}' >> reactions.tbl
+                    echo "$besthit_all" | awk -v rea=$rea -v reaName="$reaName" -v ec=$ec '{print rea"\t"reaName"\t"ec"\t"$0}' >> reactions.tbl
                     echo -e '\t'Blast hit \(${bhit_count}x\): $rea $reaName $ec
                     echo "$besthit_all" | awk '{print "\t\tbit="$2 " id="$4 " cov="$5}'
-                    #echo a"$test"
                     # check if key reactions of pathway
                     if [[ $keyRea = *"$rea"* ]]; then
                         echo -e '\t\t--> KEY reaction found <--'
