@@ -31,7 +31,7 @@ usage()
     echo "$0 -p keyword / -e ec [-d database] [-t taxonomy] file.fasta."
     echo "  -p keywords such as pathways or subsystems (for example amino,nucl,cofactor,carbo,polyamine)"
     echo "  -e search by ec numbers (comma separated)"
-    echo "  -r search by enzyme name (comma separated)"
+    echo "  -r search by enzyme name (colon separated)"
     echo "  -d database: vmh or seed (default: $database)"
     echo "  -t taxonomic range for sequences to be downloaded (default: $taxonomy)"
     echo "  -b bit score cutoff for local alignment (default: $bitcutoff)"
@@ -520,7 +520,7 @@ echo -e Candidate reactions found: $(echo "$cand" | wc -w) '\n'
 echo $cand > newReactions.lst
 cp newReactions.lst $curdir/${fastaID}-$output_suffix-Reactions.lst
 cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
-[ -f reactions.tbl ] && echo -e "rxn\tname\tec\t$(echo $blast_format | tr ' ' '\t')" | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
+[ -f reactions.tbl ] && echo "rxn name ec $blast_format" | tr ' ' '\t' | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
 
 
 # cleaning

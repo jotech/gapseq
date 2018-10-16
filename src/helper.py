@@ -62,5 +62,5 @@ def getReferenceMod(ReaList):
         rea.lower_bound = lb
         rea.upper_bound = ub
 
-    print "Reference model for gapfilling with", len(refmod.reactions), "reactions and", len(refmod.metabolites), "metabolites"
+    print("Reference model for gapfilling with", len(refmod.reactions), "reactions and", len(refmod.metabolites), "metabolites")
     return(refmod)
