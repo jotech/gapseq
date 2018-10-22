@@ -50,7 +50,7 @@ correct_seed_rxnDB <- function(script.path) {
   mseed <- mseed[order(id)]
   
   # apply correction
-  mseed.corr <- fread(paste0(script.dir,"/../dat/corrections_seed_reactionDB.tsv"), header= T, stringsAsFactors = F)
+  mseed.corr <- fread(paste0(script.dir,"/../dat/corrections_seed_reactionDB.tsv"), header= T, stringsAsFactors = F, quote="")
   if(system(paste0("grep \\\"\\\" ",script.path,"/../dat/corrections_seed_reactionDB.tsv"), ignore.stdout = T)==0) {
     stop("Error in seed-reactions corrections file: Double quotes!")
   }

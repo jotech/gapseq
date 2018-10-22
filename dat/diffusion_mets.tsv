@@ -2,14 +2,15 @@ met	diffrxn	comment
 cpd00001	rxn05319	water
 cpd00011	rxn05467	CO2
 cpd00007	rxn05468	Oxygen
+cpd00013	rxn05466	NH3
 cpd01861	rxn07919	
 cpd00453	rxn07921	
 cpd00071	rxn08032	
 cpd00150	rxn08276	
 cpd08021	rxn08358	
 cpd00450	rxn08359	
-cpd00363	rxn08428	
-cpd00055	rxn08461	
+cpd00363	rxn08428	Ethanol
+cpd00055	rxn08461	Formaldehyde
 cpd00448	rxn08635	
 cpd00025	rxn08685	H2O2
 cpd00239	rxn08689	HS
@@ -22,3 +23,5 @@ cpd00371	rxn09169
 cpd00811	rxn09317	
 cpd00029	rxn05488	The salt (protonated) acetate can pass.
 cpd00141	rxn05634	The salt (protonated) propionate can pass.
+cpd01947	rxn11322	Butanediol (N.A. Michael Eskin, ?Fereidoon Shahidi - 2012 - ?Technology & Engineering)
+cpd00361	rxn11319	Acetoin (N.A. Michael Eskin, ?Fereidoon Shahidi - 2012 - ?Technology & Engineering)

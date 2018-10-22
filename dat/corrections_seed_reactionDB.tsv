@@ -1443,7 +1443,6 @@ rxn13310		TRUE		[SW] Carbonic acid diffusion across membrane unlikely	https://ww
 rxn29060		TRUE		[SW] Carbonic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
 rxn29238		TRUE		[SW] Carbonic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
 rxn31553		TRUE		[SW] Carbonic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
-rxn11322		TRUE		[SW] (R,R)-butanediol diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
 rxn13195		TRUE		[SW] 2-oxobutyrate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
 rxn29351		TRUE		[SW] 2-oxobutyrate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
 rxn08534		TRUE		[SW] Fructoselysine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
@@ -1461,7 +1460,6 @@ rxn09848		TRUE		[SW] Palmitate diffusion across membrane unlikely	https://www.nc
 rxn31182		TRUE		[SW] Palmitate diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
 rxn09196		TRUE		[SW] psicoselysine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
 rxn29172		TRUE		[SW] psicoselysine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
-rxn11319		TRUE		[SW] Acetoin diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
 rxn11320		TRUE		[SW] Acetyllactic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
 rxn13114		TRUE		[SW] Acetyllactic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
 rxn32770		TRUE		[SW] Acetyllactic acid diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
@@ -1573,8 +1571,8 @@ rxn13321	>			H+-coupled transport w/o chemical transformation of transported mol
 rxn13314	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn13411	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn05526	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
-									
-									
+rxn05511	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.					
+rxn10426	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.					
 									
 									
 rxn10156			-1:cpd00067:1:0:"H+";-1:cpd00130:1:0:"L-Malate";1:cpd00067:0:0:"H+";1:cpd00130:0:0:"L-Malate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
