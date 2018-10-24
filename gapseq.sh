@@ -385,7 +385,7 @@ do
                     bhit_count=$(echo "$bhit" | wc -l)
                     echo "$besthit_all" | awk -v rea=$rea -v reaName="$reaName" -v ec=$ec '{print rea"\t"reaName"\t"ec"\t"$0}' >> reactions.tbl
                     echo -e '\t'Blast hit \(${bhit_count}x\): $rea $reaName $ec
-                    echo "$besthit_all" | awk '{print "\t\tbit="$2 " id="$4 " cov="$5}'
+                    echo "$besthit_all" | awk '{print "\t\tbit="$4 " id="$2 " cov="$5}'
                     # check if key reactions of pathway
                     if [[ $keyRea = *"$rea"* ]]; then
                         echo -e '\t\t--> KEY reaction found <--'
@@ -414,7 +414,7 @@ do
                     someBitscore=$(cat $out | sort -rgk 4,4 | head -1 | cut -f4)
                     someCoverage=$(cat $out | sort -rgk 4,4 | head -1 | cut -f5)
                     somehit_all=$( cat $out | sort -rgk 4,4 | head -1)
-                    #echo -e "$rea\t$reaName\t$ec\t$somehit_all" >> reactions.tbl 
+                    echo -e "$rea\t$reaName\t$ec\t$somehit_all" >> reactions.tbl 
                     echo -e '\t'NO good blast hit: $rea $reaName $ec"\n\t\t(best one: id=$someIdentity bit=$someBitscore cov=$someCoverage)"
                     if [[ -n "$dbhit" ]];then
                         dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
@@ -520,7 +520,7 @@ echo -e Candidate reactions found: $(echo "$cand" | wc -w) '\n'
 echo $cand > newReactions.lst
 cp newReactions.lst $curdir/${fastaID}-$output_suffix-Reactions.lst
 cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
-[ -f reactions.tbl ] && echo "rxn name ec $blast_format" | tr ' ' '\t' | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
+echo "rxn name ec $blast_format" | tr ' ' '\t' | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
 
 
 # cleaning
