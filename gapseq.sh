@@ -383,10 +383,10 @@ do
                     bestCoverage=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f5)
                     besthit_all=$(echo "$bhit" | sort -rgk 4,4 | head -3)
                     bhit_count=$(echo "$bhit" | wc -l)
-                    echo "$besthit_all" | awk -v rea=$rea -v reaName="$reaName" -v ec=$ec '{print rea"\t"reaName"\t"ec"\t"$0}' >> reactions.tbl
                     echo -e '\t'Blast hit \(${bhit_count}x\): $rea $reaName $ec
-                    echo "$besthit_all" | awk '{print "\t\tbit="$4 " id="$2 " cov="$5}'
+                    echo "$besthit_all" | awk '{print "\t\tbit="$4 " id="$2 " cov="$5 " hit="$1}'
                     # check if key reactions of pathway
+                    is_bidihit=NA
                     if [[ $keyRea = *"$rea"* ]]; then
                         echo -e '\t\t--> KEY reaction found <--'
                         keyReaFound="$keyReaFound $rea"
@@ -394,10 +394,25 @@ do
                     #blast hit back to uniprot enzyme database
                     if [ "$blast_back" = true ]; then
                         echo "$bhit" | sort -rgk 4,4 | head -3 | cut -f9 | sed 's/-/*/g' > "$rea.hit.fasta"
-                        echo "Blast best hit against uniprot db:"
-                        blastp -db $dir/dat/seq/uniprot_sprot -query "$rea.hit.fasta" -outfmt '6 pident bitscore qcovs stitle qseqid' > $rea.hit.blast 
-                        cat $rea.hit.blast | awk '{if ( $4>50 ) print $0}' | sort -rgk 2,2 | head -n 3
+                        echo -e "\t\tBlast best hit against uniprot db:"
+                        blastp -db $dir/dat/seq/uniprot_sprot -query "$rea.hit.fasta" -outfmt '6 pident bitscore qcovs sseqid qseqid' > $rea.hit.blast 
+
+                        forward_hit=$(echo "$bhit" | sort -rgk 4,4 | cut -f1 | sed 's/UniRef90_//g' | sort | uniq | tr '\n' '|' | sed 's/|$//g')
+
+                        back_hit=$(cat "$rea.hit.blast" | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}' | sort -rgk 2,2 | cut -f4)
+                        
+                        bidihit=$(echo "$back_hit" | grep -Eo "$forward_hit" | sort | uniq | tr '\n' '|' | sed 's/|$//g')
+                        #echo forward: $forward_hit
+                        #echo bidihit: $bidihit
+                        if [ -n "$bidihit" ]; then
+                            echo -e "\t\t\t--> BIDIRECTIONAL hit found <--"
+                            grep -E $bidihit $dir/dat/seq/uniprot_sprot.fasta | sed -e 's/^/\t\t\t/'
+                            is_bidihit=true
+                        else
+                            is_bidihit=false
+                        fi
                     fi
+                    echo "$besthit_all" | awk -v rea=$rea -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0}' >> reactions.tbl
                     
                     if [ -n "$dbhit" ]; then
                         dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
@@ -414,7 +429,7 @@ do
                     someBitscore=$(cat $out | sort -rgk 4,4 | head -1 | cut -f4)
                     someCoverage=$(cat $out | sort -rgk 4,4 | head -1 | cut -f5)
                     somehit_all=$( cat $out | sort -rgk 4,4 | head -1)
-                    echo -e "$rea\t$reaName\t$ec\t$somehit_all" >> reactions.tbl 
+                    echo -e "$rea\t$reaName\t$ec\tNA\t$somehit_all" >> reactions.tbl 
                     echo -e '\t'NO good blast hit: $rea $reaName $ec"\n\t\t(best one: id=$someIdentity bit=$someBitscore cov=$someCoverage)"
                     if [[ -n "$dbhit" ]];then
                         dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
@@ -520,7 +535,7 @@ echo -e Candidate reactions found: $(echo "$cand" | wc -w) '\n'
 echo $cand > newReactions.lst
 cp newReactions.lst $curdir/${fastaID}-$output_suffix-Reactions.lst
 cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
-echo "rxn name ec $blast_format" | tr ' ' '\t' | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
+echo "rxn name ec bihit $blast_format" | tr ' ' '\t' | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
 
 
 # cleaning
