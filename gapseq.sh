@@ -332,6 +332,7 @@ do
         reaName=$(echo $reaNames | awk -v j=$j -F ';' '{print $j}' | tr -d '|')
         re="([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
         EC_test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
+        echo -e '\t'$rea $reaName $ec
         [[ -z "$rea" ]] && { continue; }
         [[ -n "$ec" ]] && [[ -n "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw -e "$ec" -e "$reaName" $dir/dat/exception.tbl | wc -l); }
         ( [[ -z "$ec" ]] || [[ -z "$EC_test" ]] ) && [[ -n "$reaName" ]] && { is_exception=$(grep -Fw "$reaName" $dir/dat/exception.tbl | wc -l); }
@@ -364,26 +365,56 @@ do
         if [ -s "$query" ]; then
             out=$rea.blast #$ec.blast
             if [ ! -f $out ]; then # check if there is a former hit
-                csplit -s -z "$query" '/>/' '{*}' # split multiple fasta file and skip further testing if a significant hit is found
-                for q in `ls xx*`
+                subunits=$(cat $query | sed -n 's/^>//p' | grep -oP 'subunit [0-9]' | sort | uniq) # check for subunits
+                iterations=1
+                if [ -n "$subunits" ]; then
+                    iterations=$(echo "$subunits" | wc -l) # every subunit will get a own iteration
+                fi
+                #echo -e '\t'subunits found: $iterations
+                subunits_found=0
+                for iter in `seq $iterations`
                 do
-                    tblastn -db orgdb -query $q -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" >> $out 
-                    bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
-                    if [ -n "$bhit" ]; then
-                        break
+                    if [ -n "$subunits" ]; then
+                        # apt install exonerate
+                        fastaindex $query query.idx
+                        cat $query | grep "subunit $iter" | awk '{print $1}' | sed 's/^>//g' > query_subunit_header
+                        fastafetch -f $query -i query.idx -Fq <(sort -u query_subunit_header) > query_subunit.fasta
+                        rm query.idx query_subunit_header
+                    else
+                        cp $query query_subunit.fasta
                     fi
+                    csplit -s -z query_subunit.fasta '/>/' '{*}' # split multiple fasta file and skip further testing if a significant hit is found
+                    for q in `ls xx*`
+                    do
+                        tblastn -db orgdb -query $q -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" > query.blast
+                        cat query.blast >> $out
+                        bhit=$(cat query.blast | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
+                        rm query.blast
+                        if [ -n "$bhit" ]; then
+                            bestsubunithit=$(echo "$bhit" | sort -rgk 4,4 | head -1)
+                            hit_id=$(echo $bestsubunithit | awk '{print $1}')
+                            #echo -e '\t'subunit $iter found: $hit_id
+                            [[ $iterations -gt 1 ]] && cat $q | head -1 | sed "s/^/\t\tcomplex $iter hit: /" 
+                            ((subunits_found++))
+                            break
+                        fi
+                    done
+                    rm xx*
                 done
-                rm xx*
+                [[ $iterations -gt 1 ]] && echo -e '\t'total subunits found: $subunits_found / $iterations
             fi
             if [ -s $out ]; then
                 bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
+
+
+
                 if [ -n "$bhit" ]; then
                     bestIdentity=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f2)
                     bestBitscore=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f4)
                     bestCoverage=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f5)
                     besthit_all=$(echo "$bhit" | sort -rgk 4,4 | head -3)
                     bhit_count=$(echo "$bhit" | wc -l)
-                    echo -e '\t'Blast hit \(${bhit_count}x\): $rea $reaName $ec
+                    echo -e '\t\t'Blast hit \(${bhit_count}x\)
                     echo "$besthit_all" | awk '{print "\t\tbit="$4 " id="$2 " cov="$5 " hit="$1}'
                     # check if key reactions of pathway
                     is_bidihit=NA
@@ -406,7 +437,7 @@ do
                         #echo bidihit: $bidihit
                         if [ -n "$bidihit" ]; then
                             echo -e "\t\t\t--> BIDIRECTIONAL hit found <--"
-                            grep -E $bidihit $dir/dat/seq/uniprot_sprot.fasta | sed -e 's/^/\t\t\t/'
+                            grep -E $bidihit $dir/dat/seq/uniprot_sprot.fasta | head -3 | sed -e 's/^/\t\t\t/'
                             is_bidihit=true
                         else
                             is_bidihit=false
