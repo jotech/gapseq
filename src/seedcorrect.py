@@ -1,6 +1,5 @@
 from cobra.io import read_sbml_model
 from cobra.io import write_sbml_model
-from cobra.flux_analysis.gapfilling import GapFiller
 from pandas import read_csv
 from cobra import Model, Reaction, Metabolite
 import re
@@ -14,7 +13,7 @@ if len(sys.argv) < 2:
   sys.exit(0)
 
 dir = os.path.dirname(__file__)
-print "working on:", sys.argv[1]
+print("working on:", sys.argv[1])
 mod = read_sbml_model(sys.argv[1])
 
 seed_rea = read_csv(dir+"/../dat/seed_reactions_corrected.tsv", sep="\t")
@@ -62,10 +61,10 @@ for r in set(mod.reactions).difference(mod.exchanges + obj):
                     new_met += 1
             replace = {mod.metabolites.get_by_id(m):new[m] for m in new}
         except:
-            print "ERROR", sys.exc_info()[0]
-            print r
-            print org
-            print new
+            print( "ERROR", sys.exc_info()[0])
+            print( r)
+            print( org)
+            print( new)
             sys.exit(1)
         r.subtract_metabolites(r.metabolites)
         r.add_metabolites(replace)
@@ -92,12 +91,12 @@ for r in set(mod.reactions).difference(mod.exchanges + obj):
         #    print "Cannot grow anymore after fixing reversibility:", r
         #    sys.exit(0)
 
-print "\tfixed reversibility:", fix_dir
-print "\tfixed stoichiometry:", fix_stoich
-print "\tremoved reactions  :", fix_rm
-print "\tNot in DB:", obsolete
-print "\tNot assessed:", na_rm
-print "\tNew metabobolites:", new_met
+print( "\tfixed reversibility:", fix_dir)
+print( "\tfixed stoichiometry:", fix_stoich)
+print( "\tremoved reactions  :", fix_rm)
+print( "\tNot in DB:", obsolete)
+print( "\tNot assessed:", na_rm)
+print( "\tNew metabobolites:", new_met)
 
 #print mod.summary()
 
