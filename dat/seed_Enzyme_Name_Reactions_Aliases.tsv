@@ -1,3 +1,6 @@
 seed.rxn.id	enzyme.name
 rxn90011	2-keto-3-deoxy-L-fuconate dehydrogenase
 rxn90012	2,4-diketo-3-deoxy-l-fuconate hydrolase
+rxn01273	4-trimethylaminobutyraldehyde dehydrogenase
+rxn01297	purine hydroxylase
+rxn25797	dimethylsulfoxide reductase
