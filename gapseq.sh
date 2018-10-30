@@ -6,6 +6,8 @@
 # TODO: handle incomplete/unspecific ecs from metacyc (e.g. get ec from kegg, update maually or get genes from metacyc)
 # TODO: if taxonomic range is not bacteria, then sequence data must be updated!
 
+start_time=`date +%s`
+
 pathways=""
 database="seed"
 pwyDatabase="metacyc,custom"
@@ -15,6 +17,7 @@ bitcutoff=50 # cutoff blast: min bit score
 identcutoff=0   # cutoff blast: min identity
 identcutoff_exception=70  # min identity for enzymes marked as false friends (hight seq similarity but different function)
 covcutoff=75 # cutoff blast: min coverage
+subunit_cutoff=50 # more than this % of subunits must be found 
 strictCandidates=false
 completenessCutoff=66 # consider pathway to be present if other hints (e.g. key enzyme present) are avaiable and pathway completeness is at least as high as completenessCutoff (requires strictCandidates=false)
 completenessCutoffNoHints=80 # consider pathway to be present if no hints are avaiable (requires stricCandidates=false)
@@ -339,7 +342,7 @@ do
         [[ -n "$ec" ]] && [[ -z "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw "$ec" $dir/dat/exception.tbl | wc -l); }
         if [[ $is_exception -gt 0 ]] && [[ $identcutoff -lt $identcutoff_exception ]];then # take care of similair enzymes with different function
             identcutoff_tmp=$identcutoff_exception
-            echo -e "\tUsing higher identity cutoff for $rea"
+            echo -e "\t\tUsing higher identity cutoff for $rea"
         else
             identcutoff_tmp=$identcutoff
         fi
@@ -362,7 +365,9 @@ do
             fi
         fi
         [[ "$skipBlast" = true ]] && { echo -e "\t"$rea $reaName $ec; continue; }
+
         if [ -s "$query" ]; then
+            echo -e "\t\t$query" 
             out=$rea.blast #$ec.blast
             if [ ! -f $out ]; then # check if there is a former hit
                 subunits=$(cat $query | sed -n 's/^>//p' | grep -oP 'subunit [0-9]' | sort | uniq) # check for subunits
@@ -383,10 +388,16 @@ do
                     else
                         cp $query query_subunit.fasta
                     fi
-                    csplit -s -z query_subunit.fasta '/>/' '{*}' # split multiple fasta file and skip further testing if a significant hit is found
-                    for q in `ls xx*`
+                    #csplit -s -z query_subunit.fasta '/>/' '{*}' # split multiple fasta file and skip further testing if a significant hit is found
+                    $dir/src/fasta-splitter.pl --n-parts 10 query_subunit.fasta >/dev/null
+                    #for q in `ls xx*`
+                    for q in `ls query_subunit.part-*.fasta`
                     do
-                        tblastn -db orgdb -query $q -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" > query.blast
+                        if ! [ -x "$(command -v parallel)" ]; then # try to use parallelized version
+                            tblastn -db orgdb -query $q -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" > query.blast
+                        else
+                            cat $q | parallel --will-cite --block 50k --recstart '>' --pipe tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt \'"6 $blast_format"\' -query - > query.blast
+                        fi
                         cat query.blast >> $out
                         bhit=$(cat query.blast | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
                         rm query.blast
@@ -399,23 +410,22 @@ do
                             break
                         fi
                     done
-                    rm xx*
+                    #rm xx*
+                    rm query_subunit.part-*.fasta*
                 done
-                [[ $iterations -gt 1 ]] && echo -e '\t'total subunits found: $subunits_found / $iterations
+                [[ $iterations -gt 1 ]] && echo -e '\t\t'total subunits found: $subunits_found / $iterations
             fi
             if [ -s $out ]; then
                 bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
-
-
-
-                if [ -n "$bhit" ]; then
+                subunit_fraction=$(echo "100*$subunits_found/$iterations" | bc)
+                if [ -n "$bhit" ] && [ $subunit_fraction -gt $subunit_cutoff ] ; then
                     bestIdentity=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f2)
                     bestBitscore=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f4)
                     bestCoverage=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f5)
                     besthit_all=$(echo "$bhit" | sort -rgk 4,4 | head -3)
                     bhit_count=$(echo "$bhit" | wc -l)
                     echo -e '\t\t'Blast hit \(${bhit_count}x\)
-                    echo "$besthit_all" | awk '{print "\t\tbit="$4 " id="$2 " cov="$5 " hit="$1}'
+                    echo "$besthit_all" | awk '{print "\t\t\tbit="$4 " id="$2 " cov="$5 " hit="$1}'
                     # check if key reactions of pathway
                     is_bidihit=NA
                     if [[ $keyRea = *"$rea"* ]]; then
@@ -461,23 +471,27 @@ do
                     someCoverage=$(cat $out | sort -rgk 4,4 | head -1 | cut -f5)
                     somehit_all=$( cat $out | sort -rgk 4,4 | head -1)
                     echo -e "$rea\t$reaName\t$ec\tNA\t$somehit_all" >> reactions.tbl 
-                    echo -e '\t'NO good blast hit: $rea $reaName $ec"\n\t\t(best one: id=$someIdentity bit=$someBitscore cov=$someCoverage)"
+                    if [ $subunit_fraction -gt $subunit_cutoff ] || [ $iterations -eq 1 ] ; then
+                        echo -e '\t\t'NO good blast hit"\n\t\t\t(best one: id=$someIdentity bit=$someBitscore cov=$someCoverage)"
+                    else
+                        echo -e '\t\t'NO hit because of missing subunits
+                    fi 
                     if [[ -n "$dbhit" ]];then
                         dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
                         pwyNoHitFound="$pwyNoHitFound$dbhit "
                     fi
                 fi
             else
-                echo -e '\t'NO blast hit: $rea $reaName $ec
-                echo -e "\t$query" 
+                echo -e '\t\t'NO blast hit
+                #echo -e "\t\t$query" 
                 if [[ -n "$dbhit" ]];then
                     dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
                     pwyNoHitFound="$pwyNoHitFound$dbhit "
                 fi
             fi
         else
-            echo -e "\tNO sequence data found for $rea $reaName $ec ..skipping.."
-            echo -e "\t$query" 
+            echo -e "\t\tNO sequence data found"
+            #echo -e "\t\t$query" 
             #echo -e "\t\t$(basename $query)" 
             ((vague++))
             [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
@@ -574,4 +588,5 @@ cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
 
 
 ps -p $$ -o %cpu,%mem,cmd
-times
+end_time=`date +%s`
+echo Running time: `expr $end_time - $start_time` s.
