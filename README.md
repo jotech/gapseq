@@ -8,7 +8,7 @@ Informed curation and gapfilling of metabolic networks
 * Draft model (xml)
 
 2) Seed database corrections
-* python src/seedcorrect.py dat/myb71.xml
+* python3 src/seedcorrect.py dat/myb71.xml
 
 3) Obtaining candidate reactions
 * ./gapseq.sh -p core dat/myb71.fna
