@@ -518,7 +518,7 @@ if(opt$sbml.output)
 mod.out.rxns.added <- setdiff(mod.out@react_id, mod.orig@react_id)
 cat(mod.out.rxns.added, file = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled.rxnlst"))
 
-mod.out.rxns.added.without.seq <- setdiff(gsub("_.0","",mod.out.rxns.added), rxn.weights[bitscore>min.bs.for.core])
+mod.out.rxns.added.without.seq <- setdiff(gsub("_.0","",mod.out.rxns.added), rxn.weights[bitscore>min.bs.for.core, seed])
 cat(mod.out.rxns.added.without.seq, file = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled.without.seq.rxnlst"))
 
 saveRDS(mod.out, file = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled.RDS"))
