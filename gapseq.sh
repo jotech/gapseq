@@ -21,7 +21,7 @@ subunit_cutoff=50 # more than this % of subunits must be found
 strictCandidates=false
 completenessCutoff=66 # consider pathway to be present if other hints (e.g. key enzyme present) are avaiable and pathway completeness is at least as high as completenessCutoff (requires strictCandidates=false)
 completenessCutoffNoHints=80 # consider pathway to be present if no hints are avaiable (requires stricCandidates=false)
-blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
+blast_format="qseqid pident evalue bitscore qcovs stitle sstart send"
 blast_back=false
 noSuperpathways=true
 vagueCutoff=0.3 # cutoff for vague reactions. If the amount of vague reactions in a pathways is more then this their influence will not be recognized even with strictCandidates=false
@@ -375,7 +375,7 @@ do
                 subunits=$(cat $query | sed -n 's/^>//p' | grep -oE 'subunit [0-9]|(alpha|beta|gamma|delta|epsilon) subunit' | sort | uniq) # check for subunits
                 subunits=$(echo -e "$subunits\nother" | sed '/^$/d') # add default
                 iterations=$(echo -e "$subunits"| wc -l) # every subunit will get a own iteration
-                echo -e '\t'subunits found: $iterations
+                [[ $iteractions -gt 1 ]] && echo -e '\t\t'check subunits: $subunits
                 subunits_found=0
                 for iter in `seq $iterations`
                 do
@@ -460,7 +460,6 @@ do
                             is_bidihit=false
                         fi
                     fi
-                    echo "$besthit_all" | awk -v rea=$rea -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0}' >> reactions.tbl
                     
                     if [ -n "$dbhit" ]; then
                         dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
@@ -470,6 +469,7 @@ do
                     else
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO candidate reaction found for import
                     fi
+                    echo "$besthit_all" | awk -v rea=$rea -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0"\t"pwy"\t""seq_based""\t""NA""\t"dbhit}' >> reactions.tbl
                     ((countex++))
                     countexList="$countexList$rea "
                 else
@@ -477,7 +477,7 @@ do
                     someBitscore=$(cat $out | sort -rgk 4,4 | head -1 | cut -f4)
                     someCoverage=$(cat $out | sort -rgk 4,4 | head -1 | cut -f5)
                     somehit_all=$( cat $out | sort -rgk 4,4 | head -1)
-                    echo -e "$rea\t$reaName\t$ec\tNA\t$somehit_all" >> reactions.tbl 
+                    echo -e "$rea\t$reaName\t$ec\tNA\t$somehit_all\t$pwy\tbad_blast\tNA\t$dbhit" >> reactions.tbl 
                     if [ $subunit_fraction -gt $subunit_cutoff ] || [ $iterations -eq 1 ] ; then
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO good blast hit"\n\t\t\t(best one: id=$someIdentity bit=$someBitscore cov=$someCoverage)"
                     else
@@ -494,6 +494,7 @@ do
                 if [[ -n "$dbhit" ]];then
                     dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
                     pwyNoHitFound="$pwyNoHitFound$dbhit "
+                    echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit" >> reactions.tbl 
                 fi
             fi
         else
@@ -503,6 +504,7 @@ do
             ((vague++))
             [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
             [[ $keyRea = *"$rea"* ]] && vagueKeyReaFound="$vagueKeyReaFound $rea"
+            echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_seq_data\tNA\t$dbhit" >> reactions.tbl 
         fi
         [[ verbose -ge 2 ]] && echo -e "\t\tCandidate reactions: $dbhit"
     done # pathway
@@ -554,20 +556,27 @@ do
         prediction=true
         cand="$cand$pwyVage "
         bestPwy="$bestPwy$name\n"
+        pwy_status="full"
     # B) Consider as complete pathway because of completeness treshold (key enzymes should be present too)
     elif [[ $completeness -ge $completenessCutoffNoHints ]] && [[ "$KeyReaFracAvail" -eq 1 ]] && [[ "$strictCandidates" = false ]]; then
+        pwy_status="treshold"
         [[ verbose -ge 1 ]] && echo "Consider pathway to be present because of completeness treshold!"
         prediction=true
         cand="$cand$pwyVage$pwyNoHitFound "
-        bestPwy="$bestPwy$name ($completeness% completeness, added because of treshhold)\n"
+        bestPwy="$bestPwy$name ($completeness% completeness, added because of completeness treshhold)\n"
     # C) Consider as complete pathway because of key enzymes (lower treshold)
     elif [[ $CountKeyReaFound -ge 1 ]] && [[ $CountKeyReaFound -eq $CountTotalKeyRea ]] && [[ $completeness -ge $completenessCutoff ]] && [[ "$strictCandidates" = false ]]; then
+        pwy_status="keyenzyme"
         [[ verbose -ge 1 ]] && echo "Consider pathway to be present because of key enzyme!"
         prediction=true
         cand="$cand$pwyVage$pwyNoHitFound "
         bestPwy="$bestPwy$name ($completeness% completeness, added because of key enzyme)\n"
     fi
     
+    if [[ "$prediction" = true ]];then # update output for reactions when pathway is completete 
+        awk -i inplace -v pwy="$pwy" -v pwy_status="$pwy_status" 'BEGIN {OFS=FS="\t"} $13==pwy {$15=pwy_status} 1' reactions.tbl
+    fi
+
     echo -e "$pwy\t$name\t$prediction\t$completeness\t$vague\t$CountTotalKeyRea\t$CountKeyReaFound\t$countexList" >> output.tbl # write down some statistics
 
 done
@@ -585,9 +594,9 @@ fi
 # export found reactions 
 [[ verbose -ge 1 ]] && echo -e Candidate reactions found: $(echo "$cand" | wc -w) '\n'
 echo $cand > newReactions.lst
-cp newReactions.lst $curdir/${fastaID}-$output_suffix-Reactions.lst
+#cp newReactions.lst $curdir/${fastaID}-$output_suffix-Reactions.lst # not needed anymore
 cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
-[[ -s reactions.tbl ]] && echo "rxn name ec bihit $blast_format" | tr ' ' '\t' | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-blast.tbl # add header and remove duplicates
+[[ -s reactions.tbl ]] && echo "rxn name ec bihit $blast_format pathway status pathway.status dbhit" | tr ' ' '\t' | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-Reactions.tbl # add header and remove duplicates
 
 
 # cleaning
