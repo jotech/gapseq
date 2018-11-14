@@ -371,19 +371,25 @@ do
             [[ verbose -ge 1 ]] && echo -e "\t\t$query" 
             out=$rea.blast #$ec.blast
             if [ ! -f $out ]; then # check if there is a former hit
-                subunits=$(cat $query | sed -n 's/^>//p' | grep -oP 'subunit [0-9]' | sort | uniq) # check for subunits
-                iterations=1
-                if [ -n "$subunits" ]; then
-                    iterations=$(echo "$subunits" | wc -l) # every subunit will get a own iteration
-                fi
-                #echo -e '\t'subunits found: $iterations
+                #subunits=$(cat $query | sed -n 's/^>//p' | grep -oP 'subunit [0-9]' | sort | uniq) # check for subunits
+                subunits=$(cat $query | sed -n 's/^>//p' | grep -oE 'subunit [0-9]|(alpha|beta|gamma|delta|epsilon) subunit' | sort | uniq) # check for subunits
+                subunits=$(echo -e "$subunits\nother" | sed '/^$/d') # add default
+                iterations=$(echo -e "$subunits"| wc -l) # every subunit will get a own iteration
+                echo -e '\t'subunits found: $iterations
                 subunits_found=0
                 for iter in `seq $iterations`
                 do
-                    if [ -n "$subunits" ]; then
+                    if [ $iterations -gt 1 ]; then 
                         # apt install exonerate
                         fastaindex $query query.idx
-                        cat $query | grep "subunit $iter" | awk '{print $1}' | sed 's/^>//g' > query_subunit_header
+                        if [ "$subunit_key" == "other" ];then
+                            subunit_key=$(echo "$subunits" | tr '\n' '|' | sed 's/|$//g')
+                            cat $query | sed -n 's/^>//p' | grep -vE "$subunit_key" | awk '{print $1}' | sed 's/^>//g' > query_subunit_header
+                        else
+                            subunit_key=$(echo "$subunits" | sed -n ${iter}p)
+                            cat $query | grep "$subunit_key" | awk '{print $1}' | sed 's/^>//g' > query_subunit_header
+                        fi
+                        #echo -e $iter "\n"
                         fastafetch -f $query -i query.idx -Fq <(sort -u query_subunit_header) > query_subunit.fasta
                         rm query.idx query_subunit_header
                     else
@@ -406,7 +412,7 @@ do
                             bestsubunithit=$(echo "$bhit" | sort -rgk 4,4 | head -1)
                             hit_id=$(echo $bestsubunithit | awk '{print $1}')
                             #echo -e '\t'subunit $iter found: $hit_id
-                            [[ $iterations -gt 1 ]] && cat $q | head -1 | sed "s/^/\t\tcomplex $iter hit: /" 
+                            [[ $iterations -gt 1 ]] && cat $q | head -1 | sed "s/^/\t\t$subunit_key hit: /" 
                             ((subunits_found++))
                             break
                         fi
