@@ -349,6 +349,7 @@ do
         fi
         ((count++))
         getDBhit # get db hits for this reactions
+        dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
         if [[ -n "$EC_test" ]]; then
             query=$seqpath/$ec.fasta
             if [ ! -f "$query" ]; then # check if sequence is not available => try to download
@@ -462,14 +463,13 @@ do
                     fi
                     
                     if [ -n "$dbhit" ]; then
-                        dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
                         [[ verbose -ge 1 ]] && echo -e '\t\t'Candidate reaction for import: `echo "$dbhit" | wc -w`
                         pwyCand="$pwyCand$dbhit " # remember candidate reaction
                         ((countdb++))
                     else
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO candidate reaction found for import
                     fi
-                    echo "$besthit_all" | awk -v rea=$rea -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0"\t"pwy"\t""seq_based""\t""NA""\t"dbhit}' >> reactions.tbl
+                    echo "$besthit_all" | awk -v rea=$rea -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit}' >> reactions.tbl
                     ((countex++))
                     countexList="$countexList$rea "
                 else
@@ -484,7 +484,6 @@ do
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO hit because of missing subunits
                     fi 
                     if [[ -n "$dbhit" ]];then
-                        dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
                         pwyNoHitFound="$pwyNoHitFound$dbhit "
                     fi
                 fi
@@ -492,7 +491,6 @@ do
                 [[ verbose -ge 1 ]] && echo -e '\t\t'NO blast hit
                 #echo -e "\t\t$query" 
                 if [[ -n "$dbhit" ]];then
-                    dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
                     pwyNoHitFound="$pwyNoHitFound$dbhit "
                     echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit" >> reactions.tbl 
                 fi
