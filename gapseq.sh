@@ -370,7 +370,9 @@ do
 
         if [ -s "$query" ]; then
             [[ verbose -ge 1 ]] && echo -e "\t\t$query" 
-            out=$rea.blast #$ec.blast
+            #out=$rea.blast #$ec.blast
+            query_id=$(basename $query)
+            out="${query_id%.*}".blast
             if [ ! -f $out ]; then # check if there is a former hit
                 #subunits=$(cat $query | sed -n 's/^>//p' | grep -oP 'subunit [0-9]' | sort | uniq) # check for subunits
                 subunits=$(cat $query | sed -n 's/^>//p' | grep -oE 'subunit [0-9]|(alpha|beta|gamma|delta|epsilon) subunit' | sort | uniq) # check for subunits
