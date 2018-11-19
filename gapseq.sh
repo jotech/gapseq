@@ -373,13 +373,13 @@ do
             #out=$rea.blast #$ec.blast
             query_id=$(basename $query)
             out="${query_id%.*}".blast
+            subunits_found=0
             if [ ! -f $out ]; then # check if there is a former hit
                 #subunits=$(cat $query | sed -n 's/^>//p' | grep -oP 'subunit [0-9]' | sort | uniq) # check for subunits
                 subunits=$(cat $query | sed -n 's/^>//p' | grep -oE 'subunit [0-9]|(alpha|beta|gamma|delta|epsilon) subunit' | sort | uniq) # check for subunits
                 subunits=$(echo -e "$subunits\nother" | sed '/^$/d') # add default
                 iterations=$(echo -e "$subunits"| wc -l) # every subunit will get a own iteration
                 [[ $iteractions -gt 1 ]] && echo -e '\t\t'check subunits: $subunits
-                subunits_found=0
                 for iter in `seq $iterations`
                 do
                     if [ $iterations -gt 1 ]; then 
@@ -420,10 +420,15 @@ do
                             break
                         fi
                     done
-                    #rm xx*
                     rm query_subunit.part-*.fasta*
                 done
                 [[ $iterations -gt 1 ]] && [[ verbose -ge 1 ]] &&  echo -e '\t\t'total subunits found: $subunits_found / $iterations
+                echo -e $out'\t'$subunits_found'\t'$iterations >> subunits.log # save subunits found
+            else
+                # get subunit fraction from former run
+                subunits_found=$(cat subunits.log | awk -F "\t" -v out=$out '$1==out { print $2 }')
+                iterations=$(cat subunits.log | awk -F "\t" -v out=$out '$1==out { print $3 }')
+                #echo test:$subunits_found $iterations
             fi
             if [ -s $out ]; then
                 bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
@@ -481,7 +486,7 @@ do
                     somehit_all=$( cat $out | sort -rgk 4,4 | head -1)
                     echo -e "$rea\t$reaName\t$ec\tNA\t$somehit_all\t$pwy\tbad_blast\tNA\t$dbhit" >> reactions.tbl 
                     if [ $subunit_fraction -gt $subunit_cutoff ] || [ $iterations -eq 1 ] ; then
-                        [[ verbose -ge 1 ]] && echo -e '\t\t'NO good blast hit"\n\t\t\t(best one: id=$someIdentity bit=$someBitscore cov=$someCoverage)"
+                        [[ verbose -ge 1 ]] && echo -e '\t\t'NO good blast hit"\n\t\t\t(best one: bit=$someBitscore id=$someIdentity cov=$someCoverage)"
                     else
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO hit because of missing subunits
                     fi 
