@@ -1,5 +1,5 @@
 gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, min.bs.for.core = 50,
-                     dummy.weight = 10000, script.dir, core.only = FALSE, verbose=verbose) {
+                     dummy.weight = 10000, script.dir, core.only = FALSE, verbose=verbose, gs.origin = NA) {
   source(paste0(script.dir, "/src/sysBiolAlg_mtfClass2.R"))
   # backup model
   mod.orig.bak <- mod.orig
@@ -158,7 +158,15 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, min.bs.for.c
                          lb = ifelse(is.rev, -1000, 0),
                          reactName = mseed[i, name.x],
                          metName = met.name)
-    mod.orig@react_attr[which(mod.orig@react_id==paste0(mseed[i,id],"_c0")),"gapfill"] <- 1
+    mod.orig@react_attr[which(mod.orig@react_id == paste0(mseed[i,id],"_c0")),c("gs.origin","seed")] <- data.frame(gs.origin = gs.origin,
+                                                                                                                   seed = mseed[i,id],
+                                                                                                                   stringsAsFactors = F)
+    tmp.id <- mseed[i,id]
+    if(tmp.id %in% rxn.weights$seed) {
+      c.names <- intersect(colnames(rxn.weights), colnames(mod.orig@react_attr))
+      mod.orig@react_attr[which(mod.orig@react_id == paste0(mseed[i,id],"_c0")), c.names] <- rxn.weights[seed == tmp.id, ..c.names]
+    }
+    
   }
   mod.orig <- add_missing_exchanges(mod.orig)
   

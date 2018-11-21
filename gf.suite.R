@@ -73,7 +73,7 @@ quick.gf         <- opt$quick.gf
 min.bs.for.core  <- opt$min.bs.for.core
 
 # Parameters:
-dummy.weight <- 10
+dummy.weight <- 100
 min.obj.val  <- 0.05
 sbml.export  <- FALSE 
 
@@ -127,9 +127,6 @@ mod.orig@obj_coef <- rep(0,mod.orig@react_num)
 # add metabolite objective + sink
 mod.orig <- add_met_sink(mod.orig, target.met, obj = 1)
 
-# keeping track of which reactions are added during gapfilling -> store in reaction attributes data.frame
-mod.orig@react_attr <- data.frame(gapfill=rep(0,mod.orig@react_num))
-
 # Perform gapfill
 cat("\n\n1. Initial gapfilling: Make model grow on given media using all reactions\n")
 mod.fill.lst <- gapfill4(mod.orig = mod.orig, 
@@ -139,7 +136,8 @@ mod.fill.lst <- gapfill4(mod.orig = mod.orig,
                          min.bs.for.core = min.bs.for.core,
                          dummy.weight = dummy.weight,
                          script.dir = script.dir,
-                         verbose=verbose)
+                         verbose=verbose,
+                         gs.origin = 1)
 
 mod.fill1 <- constrain.model(mod.fill.lst$model, media.file = media.file, scaling.fac = 1)
 mod.out <- mod.fill1
@@ -158,7 +156,7 @@ if(nrow(mseed.t)==0)
   cat("No more core reactions in list, that could be added to the model. Skipping gapfilling-steps 2,2b,3, and 4.\n")
 
 if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not contain any new reactions.
-  if ( TRUE ){
+  if ( !quick.gf ){
     cat("\n\n2. Biomass gapfilling using core reactions only\n")
     
     mod.orig2 <- mod.out
@@ -217,7 +215,8 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
                                     dummy.weight = dummy.weight,
                                     script.dir = script.dir,
                                     core.only = TRUE,
-                                    verbose=verbose) ))
+                                    verbose=verbose,
+                                    gs.origin = 2) ))
         new.reactions <- mod.fill2.lst$rxns.added
         if( length(new.reactions) > 0 ){
           if( verbose ) cat("Added reactions:", new.reactions, "\n")
@@ -243,7 +242,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   }
   
   
-  if ( TRUE ){
+  if ( !quick.gf ){
     cat("\n\n2b. Anaerobic biomass gapfilling using core reactions only\n")
     
     mod.orig2 <- mod.out
@@ -303,7 +302,8 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
                                     dummy.weight = dummy.weight,
                                     script.dir = script.dir,
                                     core.only = TRUE,
-                                    verbose=verbose) ))
+                                    verbose=verbose,
+                                    gs.origin = 2) ))
         new.reactions <- mod.fill2.lst$rxns.added
         if( length(new.reactions) > 0 ){
           if( verbose ) cat("Added reactions:", new.reactions, "\n")
@@ -345,7 +345,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   
   
   if ( !quick.gf ){
-    cat("\n\n3. Carbon source gapfilling with core reactions only\n")
+    cat("\n\n3. Energy source gapfilling with core reactions only\n")
     
     mod.orig3 <- mod.out
     media.org <- fread(paste0(script.dir,"/dat/media/MM_glu.csv")) # use minimal medium
@@ -405,7 +405,8 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
                                                             dummy.weight = dummy.weight,
                                                             script.dir = script.dir,
                                                             core.only = TRUE,
-                                                            verbose=verbose) ))
+                                                            verbose=verbose,
+                                                            gs.origin = 3) ))
         new.reactions <- mod.fill3.lst$rxns.added
         if( length(new.reactions) > 0 ){
           if( verbose ) cat("Added reactions:", new.reactions, "\n")
@@ -431,7 +432,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   
   
   if ( !quick.gf ){
-    cat("\n\n4. Checking for fermentation products with core reactions only\n")
+    cat("\n\n4. Checking for potential metabolic products with core reactions only\n")
     
     mod.orig4 <- mod.out
     media.org <- fread(paste0(script.dir,"/dat/media/MM_glu.csv")) # use minimal medium
@@ -477,7 +478,8 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
                                                             dummy.weight = dummy.weight,
                                                             script.dir = script.dir,
                                                             core.only = TRUE,
-                                                            verbose=verbose) ))
+                                                            verbose=verbose,
+                                                            gs.origin = 4) ))
         new.reactions <- mod.fill4.lst$rxns.added
         if( length(new.reactions) > 0 ){
           if( verbose ) cat("Added reactions:", new.reactions, "\n")
