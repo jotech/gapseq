@@ -26,6 +26,11 @@ add_missing_exchanges <- function(mod, ub = 1000) {
                     lb = 0,
                     reactName = paste0(ex.mets.name[i], " Exchange"), 
                     metName = ex.mets.name[i])
+    if("gs.origin" %in% colnames(mod@react_attr)) {
+      mod@react_attr[which(mod@react_id == paste0("EX_",gsub("\\[.*\\]","",ex.mets.ids[i]),"_e0")),c("gs.origin","seed")] <- data.frame(gs.origin = 7,
+                                                                                                                                        seed = paste0("EX_",gsub("\\[.*\\]","",ex.mets.ids[i]),"_e0"),
+                                                                                                                                        stringsAsFactors = F)
+    }
   }
   
   return(mod)
@@ -68,13 +73,13 @@ add_met_sink <- function(mod, cpd, obj = 0) {
 
 add_missing_diffusion <- function(mod, ub = 1000){
   diff.mets <- fread(paste0(script.dir, "/dat/diffusion_mets.tsv"), header=T, stringsAsFactors = F)
-  mod <- add_reaction_from_db(mod, react = diff.mets$diffrxn)
+  mod <- add_reaction_from_db(mod, react = diff.mets$diffrxn, gs.origin = 8)
   mod <- add_missing_exchanges(mod)
   
   return(mod)
 }
 
-add_reaction_from_db <- function(mod, react) {
+add_reaction_from_db <- function(mod, react, gs.origin = NA) {
   mseed <- fread(paste0(script.dir, "/dat/seed_reactions_corrected.tsv"), header=T, stringsAsFactors = F)
   mseed <- mseed[gapseq.status %in% c("approved","corrected")]
   mseed <- mseed[order(id)]
@@ -114,6 +119,8 @@ add_reaction_from_db <- function(mod, react) {
     
     met.name[ind.new.mets] <- mod@met_name[ind.old.mets]
     
+    new.react <- !any(grepl(paste0(mseed[i,id],"_c0"),mod@react_id))
+    
     mod <- addReact(model = mod, 
                     id = paste0(mseed[i,id],"_c0"), 
                     met = met.ids,
@@ -124,10 +131,16 @@ add_reaction_from_db <- function(mod, react) {
                     lb = ifelse(is.rev, -1000, 0),
                     reactName = mseed[i, name], 
                     metName = met.name)
+    if(new.react) {
+      mod@react_attr[which(mod@react_id == paste0(mseed[i,id],"_c0")),c("gs.origin","seed")] <- data.frame(gs.origin = gs.origin,
+                                                                                                           seed = mseed[i,id],
+                                                                                                           stringsAsFactors = F)
+    }
   }
   return(mod)
 }
 
+# do I still use this?
 add_exchanges <- function(mod, cpd, ub = 1000, metname=NA) {
   metname <- ifelse(!is.na(metname),paste0(metname,"-e0"),metname)
   
@@ -151,7 +164,9 @@ add_exchanges <- function(mod, cpd, ub = 1000, metname=NA) {
                     lb = 0,
                     reactName = paste0(ex.mets.name, " Exchange"), 
                     metName = ex.mets.name)
-    
+    mod@react_attr[which(mod@react_id == ex.id), c("gs.origin","seed")] <- data.frame(gs.origin = 7,
+                                                                                      seed = ex.id,
+                                                                                      stringsAsFactors = F)
   }
   
   return(mod)

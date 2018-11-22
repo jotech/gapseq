@@ -1,29 +1,29 @@
 library(getopt)
-library(stringr)
-library(stringi)
+suppressMessages(library(stringr))
+suppressMessages(library(stringi))
 
 # test data
-#blast.res <- "../sw.locale/GCA_000020425.1-all-blast.tbl"
-#gram <- "auto"
-#genome.seq <- "../sw.locale/GCA_000020425.1.fna.gz"
-#high.evi.rxn.BS <- 200
-#topology.evidence <- "../sw.locale/GCA_000020425.1-all-Reactions.lst,../sw.locale/GCA_000020425.1-Transporter.lst"
+# blast.res <- "../CarveMe-tests/faa/GCF_000005845.2_ASM584v2_genomic-all-Reactions.tbl"
+# gram <- "auto"
+# genome.seq <- "../CarveMe-tests/faa/GCF_000005845.2_ASM584v2_genomic.fna.gz"
+# high.evi.rxn.BS <- 200
+# topology.evidence <- "../CarveMe-tests/faa/GCF_000005845.2_ASM584v2_genomic-Transporter.lst"
 
 # Please note: If Game-Staining is set to "auto" it requires the external programms barrnap, usearch and bedtools
 build_draft_model_from_blast_results <- function(blast.res, topo.evi = NA, gram = "auto", model.name = NA, genome.seq = NA, script.dir, high.evi.rxn.BS = 200) {
-  require(data.table)
-  require(stringr)
-  require(sybil)
+  suppressMessages(require(data.table))
+  suppressMessages(require(stringr))
+  suppressMessages(require(sybil))
   
   if(is.na(model.name))
-    model.name <- gsub("-all-blast.tbl","",basename(blast.res), fixed = T)
+    model.name <- gsub("-all-Reactions.tbl","",basename(blast.res), fixed = T)
   
   if(is.na(topo.evi[1]))
     topo.evi <- c()
   
   if(gram=="auto") {
     if(grepl("\\.gz$", genome.seq)) {
-      require(R.utils)
+      suppressMessages(require(R.utils))
       genome.seq <- gunzip(genome.seq, remove = F, temporary = T, overwrite = T)
     } else {
       
@@ -39,52 +39,128 @@ build_draft_model_from_blast_results <- function(blast.res, topo.evi = NA, gram 
     cat("\nPredicted gram staining: ",gram,"\n")
   }
   
-  seed_x_ec <- fread("../dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv", header=T)
-  seed_x_name <- fread("../dat/seed_reactions_corrected.tsv", header=T, stringsAsFactors = F)
-  seed_x_metCyc <- fread("../dat/mnxref_seed-other.tsv", header = T)
-  seed_x_aliases <- fread("../dat/seed_Enzyme_Name_Reactions_Aliases.tsv", header=T)
+  seed_x_ec <- fread(paste0(script.dir,"/../dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv"), header=T)
+  seed_x_name <- fread(paste0(script.dir,"/../dat/seed_reactions_corrected.tsv"), header=T, stringsAsFactors = F)
+  seed_x_metCyc <- fread(paste0(script.dir,"/../dat/mnxref_seed-other.tsv"), header = T)
+  seed_x_aliases <- fread(paste0(script.dir,"/../dat/seed_Enzyme_Name_Reactions_Aliases.tsv"), header=T)
   
   
   dt <- fread(blast.res, header=T)
-  dt <- dt[,.(rxn, name, ec, qseqid, pident, evalue, bitscore, qcovs, stitle, sstart, send)]
-  dt[str_count(ec,"\\.")==1, ec := paste0(ec,".-.-")]
-  dt[str_count(ec,"\\.")==2, ec := paste0(ec,".-")]
+  dt <- dt[,.(rxn, name, ec, qseqid, pident, evalue, bitscore, qcovs, stitle, sstart, send, pathway, status, pathway.status, dbhit)]
+  #dt[str_count(ec,"\\.")==1, ec := paste0(ec,".-.-")] # TODO: RM
+  #dt[str_count(ec,"\\.")==2, ec := paste0(ec,".-")] # TODO: RM
   
+  # A specific fix for the issue with reactions 1.3.8.1 and 1.3.8.13
+  calc_seq_overlap <- function(astart, aend, bstart, bend) {
+    return(length(intersect(astart:aend,bstart:bend))/((length(astart:aend)+length(bstart:bend))/2))
+  }
   
-  # 1. assign modelSEED ID via ec-number
-  dt_1 <- merge(dt, seed_x_ec[,.(`External ID`,seed=`MS ID`)], by.x = "ec", by.y = "External ID")
+  # if("1.3.8.1" %in% dt$ec & "1.3.8.13" %in% dt$ec) {
+  #    rm.ids <- c()
+  #    one.hits.id <- which(dt$ec == "1.3.8.1" & !is.na(dt$bitscore))
+  #    two.hits.id <- which(dt$ec == "1.3.8.13" & !is.na(dt$bitscore))
+  #    if(length(one.hits.id)>0 & length(two.hits.id)>0) {
+  #      for(i in one.hits.id) {
+  #        for(j in two.hits.id) {
+  #          ol <- calc_seq_overlap(dt[i,sstart],dt[i,send],dt[j,sstart],dt[j,send])
+  #          if(ol > 0.2) {
+  #            if(dt[i, bitscore] > max(dt[two.hits.id, bitscore]))
+  #              rm.ids <- c(rm.ids, j)
+  #            if(dt[j, bitscore] > max(dt[one.hits.id, bitscore]))
+  #              rm.ids <- c(rm.ids, i)
+  #          }
+  #        }
+  #      }
+  #    }
+  #    rm.ids <- unique(rm.ids)
+  #    dt <- dt[-rm.ids]
+  # }
+
   
-  # 2. assign modelSEED ID via mnxref namespace
-  dt_2 <- merge(dt, seed_x_metCyc[,.(seed, other)] , by.x = "rxn", by.y = "other")
+  # # Add those reactions that are going to be added due to pathway completion
+  # if(!is.na(pwy.pred)) {
+  #   dt.pwy <- fread(pwy.pred, header=T, stringsAsFactors = F)
+  #   pres.pwys <- dt.pwy[Prediction==TRUE, ID] # all present pathways
+  #   
+  #   # next, get all reactions associated with present pathways
+  #   dt.pwy1 <- fread(paste0(script.dir,"/../dat/meta_pwy.tbl"), header=T, stringsAsFactors = F)
+  #   dt.pwy2 <- fread(paste0(script.dir,"/../dat/custom_pwy.tbl"), header=T, stringsAsFactors = F)
+  #   dt.pwy <- rbind(dt.pwy1, dt.pwy2, fill = T)
+  #   dt.pwy <- dt.pwy[id %in% pres.pwys]
+  #   
+  #   dt.pwy.topo.rea <- data.table(rxn = character(0),name = character(0), ec = character(0), topo.evidence = character(0))
+  #   for(i in 1:nrow(dt.pwy)) {
+  #     tmp.rxn  <- unlist(str_split(dt.pwy[i, reaId],","))
+  #     name.str <- dt.pwy[i, reaName]
+  #     name.str <- str_replace_all(name.str, "&Delta;","&Delta$")
+  #     tmp.name <- unlist(str_split(name.str,";"))
+  #     tmp.name <- str_replace_all(tmp.name,"&Delta$", "&Delta;")
+  #     tmp.ec   <- unlist(str_split(dt.pwy[i, reaEc],","))
+  #     
+  #     if(length(tmp.rxn) != length(tmp.name) | length(tmp.rxn) != length(tmp.ec))
+  #       stop(paste("Error: Number ob EC numbers, reactions IDs and/or reaction names not identical for Pathway:",dt.pwy[i,id]))
+  #     
+  #     dt.tmp <- data.table(rxn = tmp.rxn, name = tmp.name, ec = tmp.ec, topo.evidence = paste("Topology Evidence:",dt.pwy[i,id]))
+  #     dt.pwy.topo.rea <- rbind(dt.pwy.topo.rea, dt.tmp)
+  #   }
+  #   
+  #   dt.pwy.topo.rea <- dt.pwy.topo.rea[!duplicated(paste(rxn,name,sep="$$"))]
+  #   
+  #   dt <- merge(dt, dt.pwy.topo.rea[,.(rxn,topo.evidence)], by = "rxn", all.x = T)
+  #   
+  #   dt <- rbind(dt, dt.pwy.topo.rea[!(rxn %in% dt[,rxn])], fill=T)
+  # } else {
+  #   dt[,topo.evidence := NA_character_]
+  # }
+  # 
+  # 
+  # # 1. assign modelSEED ID via ec-number
+  # dt_1 <- merge(dt, seed_x_ec[,.(`External ID`,seed=`MS ID`)], by.x = "ec", by.y = "External ID")
+  # 
+  # # 2. assign modelSEED ID via mnxref namespace
+  # dt_2 <- merge(dt, seed_x_metCyc[,.(seed, other)] , by.x = "rxn", by.y = "other")
+  # 
+  # # for remaining unmapped MetaCyc reaction try this:
+  # # 3. assign modelSEED ID via reaction name
+  # matches <- unique(c(dt_1[,paste(rxn, name, sep = "$")], dt_2[,paste(rxn, name, sep = "$")]))
+  # dt_3 <- merge(dt[!(paste(rxn,name,sep="$") %in% matches)], seed_x_name[,.(seed=id,name)] , by.x = "name", by.y = "name")
+  # matches <- c(matches, dt_3[,paste(rxn, name, sep = "$")])
+  # dt_4 <- merge(dt[!(paste(rxn,name,sep="$") %in% matches)], seed_x_aliases[,.(seed=seed.rxn.id,enzyme.name)], by.x = "name",by.y = "enzyme.name")
+  # matches <- c(matches, dt_4[,paste(rxn, name, sep = "$")])
+  # 
+  # dt_seed <- rbindlist(list(dt_1,dt_2,dt_3,dt_4))
+  # dt_seed <- splitcol2rows_mget(dt_seed, "seed", "|")
+  # 
+  # #TODO: for developing purposes (will be removed later on.) Write file with unmapped meta-cyc reactions (to seed DB)
+  # dt_unmap <- dt[!(paste(rxn,name,sep="$") %in% matches), .(rxn, name,ec, bitscore)]
+  # fwrite(dt_unmap, file=paste0(blast.res,"_unmapps_MCrxns.csv"), quote = FALSE, sep="\t")
   
-  # for remaining unmapped MetaCyc reaction try this:
-  # 3. assign modelSEED ID via reaction name
-  matches <- unique(c(dt_1[,paste(rxn, name, sep = "$")], dt_2[,paste(rxn, name, sep = "$")]))
-  dt_3 <- merge(dt[!(paste(rxn,name,sep="$") %in% matches)], seed_x_name[,.(seed=id,name)] , by.x = "name", by.y = "name")
-  matches <- c(matches, dt_3[,paste(rxn, name, sep = "$")])
-  dt_4 <- merge(dt[!(paste(rxn,name,sep="$") %in% matches)], seed_x_aliases[,.(seed=seed.rxn.id,enzyme.name)], by.x = "name",by.y = "enzyme.name")
-  matches <- c(matches, dt_4[,paste(rxn, name, sep = "$")])
-  
-  dt_seed <- rbindlist(list(dt_1,dt_2,dt_3,dt_4))
-  dt_seed <- splitcol2rows_mget(dt_seed, "seed", "|")
-  
-  #TODO: for developing purposes (will be removed later on.) Write file with unmapped meta-cyc reactions (to seed DB)
-  dt_unmap <- dt[!(paste(rxn,name,sep="$") %in% matches), .(rxn, name,ec, bitscore)]
-  fwrite(dt_unmap, file=paste0(blast.res,"_unmapps_MCrxns.csv"), quote = FALSE, sep="\t")
+  names(dt)[names(dt) == "dbhit"] = "seed" 
+  dt <- splitcol2rows_mget(dt, "seed", " ")
   
   mseed <- seed_x_name
   mseed <- mseed[gapseq.status %in% c("approved","corrected")]
   mseed <- mseed[order(id)]
   
-  rxns <- unique(dt_seed[bitscore >= high.evi.rxn.BS,seed])
+  # Get all reactions that have either high sequence evidence (bitscore) or pathway-topology evidence (pathway status)
+  dt_seed_single_and_there <- copy(dt[bitscore >= high.evi.rxn.BS | pathway.status %in% c("full","treshold","keyenzyme")])
+  dt_seed_single_and_there <- dt_seed_single_and_there[order(seed,-bitscore)]
+  dt_seed_single_and_there <- dt_seed_single_and_there[!duplicated(seed)]
+  
+  rxns <- unique(dt_seed_single_and_there[,seed])
   
   mseed <- mseed[(id %in% rxns) | (id %in% topo.evi)]
+  #mseed <- mseed[(id %in% rxns)]
   
   #remove duplicate reactions
   mseed[, rxn.hash := generate_rxn_stoich_hash(stoichiometry, reversibility)]
-  mseed <- mseed[order(rxn.hash,id)]
+  mseed <- mseed[order(id, rxn.hash)]
+  mseed <- mseed[!duplicated(rxn.hash)]
   
   mod <- modelorg(name = model.name,id = model.name)
+  mod@react_attr <- data.frame(rxn = character(0), name = character(0), ec = character(0), qseqid = character(0), pident = numeric(0), evalue = numeric(0),
+                               bitscore = numeric(0), qcovs = numeric(0), stitle = character(0), sstart = numeric(0), send = numeric(0),
+                               pathway = character(0), status = character(0), pathway.status = character(0), seed = character(0), stringsAsFactors = F)
   for(i in (1:nrow(mseed))) {
     cat("\r",i,"/",nrow(mseed))
     rxn.info <- str_split(unlist(str_split(string = mseed[i,stoichiometry],pattern = ";")), pattern = ":", simplify = T)
@@ -120,7 +196,12 @@ build_draft_model_from_blast_results <- function(blast.res, topo.evi = NA, gram 
                     lb = ifelse(is.rev, -1000, 0),
                     reactName = mseed[i, name], 
                     metName = met.name)
+    if(mseed[i,id] %in% dt_seed_single_and_there[,seed])
+      mod@react_attr[which(mod@react_id == paste0(mseed[i,id],"_c0")),] <- as.data.frame(dt_seed_single_and_there[seed == mseed[i,id]])
   }
+  mod@react_attr$gs.origin <- 0
+  mod@react_attr$gs.origin[mod@react_attr$bitscore < high.evi.rxn.BS] <- 9 # Added due to Pathway Topology criteria
+  mod@react_attr$gs.origin[is.na(mod@react_attr$bitscore) & is.na(mod@react_attr$topo.evidence)] <- 5 # Transporter
   cat("\n")
   
   # Adding Biomass reaction
@@ -131,15 +212,14 @@ build_draft_model_from_blast_results <- function(blast.res, topo.evi = NA, gram 
   
   mod <- addReact(mod,id = "bio1", met = dt.bm$id, Scoef = dt.bm$stoich, reversible = F, lb = 0, ub = 1000, obj = 1, 
                   reactName = paste0("Biomass reaction ",ifelse(gram=="neg","(gram -)","(gram +)")), metName = dt.bm$name, metComp = dt.bm$comp)
+  mod@react_attr[which(mod@react_id == "bio1"),c("gs.origin","seed")] <- data.frame(gs.origin = 6, seed = "bio1", stringsAsFactors = F)
   
   mod <- add_missing_exchanges(mod) 
   
-  # get human readlible model/bacterium name
-  assembly.names <- fread("/nuuk/2018/bacref/metadata/assemblyTaxo.tsv", quote = "", fill = T)
-  mod@mod_desc <- assembly.names[AssemblyID == model.name, ScientificName]
-  
+  #
   # construct gapfill candidate reactions and their weight
-  dt.cand <- dt_seed[bitscore < high.evi.rxn.BS]
+  #
+  dt.cand <- dt[bitscore < high.evi.rxn.BS]
   dt.cand[, max.bs := max(bitscore), by = "seed"]
   dt.cand <- dt.cand[max.bs == bitscore]
   dt.cand <- dt.cand[!duplicated(seed)]
@@ -208,7 +288,7 @@ high.evi.rxn.BS   <- opt$high.evi.rxn.BS
 topology.evidence <- opt$topology.evidence
 
 if(is.na(model.name))
-  model.name <- gsub("-all-blast.tbl","",basename(blast.res), fixed = T)
+  model.name <- gsub("-all-Reactions.tbl","",basename(blast.res), fixed = T)
 
 # loading transporters and reactions with topology evidence
 topo.evi <- c()
