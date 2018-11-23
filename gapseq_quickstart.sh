@@ -1,7 +1,7 @@
 #!/bin/bash
 
 fasta=$1
-model="${fasta/.fna*/}"
+model="${fasta%.*}"
 media=$2
 
 path=$(readlink -f "$0")
