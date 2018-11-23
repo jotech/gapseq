@@ -21,12 +21,12 @@ subunit_cutoff=50 # more than this % of subunits must be found
 strictCandidates=false
 completenessCutoff=66 # consider pathway to be present if other hints (e.g. key enzyme present) are avaiable and pathway completeness is at least as high as completenessCutoff (requires strictCandidates=false)
 completenessCutoffNoHints=80 # consider pathway to be present if no hints are avaiable (requires stricCandidates=false)
-blast_format="qseqid pident evalue bitscore qcovs stitle sstart send"
 blast_back=false
 noSuperpathways=true
 vagueCutoff=0.3 # cutoff for vague reactions. If the amount of vague reactions in a pathways is more then this their influence will not be recognized even with strictCandidates=false
 onlyList=false
 skipBlast=false
+includeSeq=false
 
 usage()
 {
@@ -47,6 +47,8 @@ usage()
     echo "  -l Select the pathway database (MetaCyc, KEGG, SEED, all; default: $pwyDatabase)"
     echo "  -o Only list pathways found for keyword; default $onlyList)"
     echo "  -x Do not blast only list pathways, reactions and check for available sequences; default $skipBlast"
+    echo "  -q Include sequences of hits in log files; default $includeSeq"
+
     echo "  -v verbose level, 0 for nothing, 1 for pathway infos, 2 for full (default $verbose)"
 exit 1
 }
@@ -75,7 +77,7 @@ seedEnzymesNames=$dir/dat/seed_Enzyme_Name_Reactions_Aliases.tsv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:ox" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxq" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -129,6 +131,9 @@ while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:ox" opt; do
     x)
         skipBlast=true
         ;;
+    q)
+        includeSeq=true
+        ;;
     esac
 done
 shift $((OPTIND-1))
@@ -137,6 +142,12 @@ shift $((OPTIND-1))
 # after parsing arguments, only fasta file shoud be there
 [ "$#" -ne 1 ] && { usage; }
 
+# blast format
+if [ "$includeSeq" = true ]; then
+    blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
+else
+    blast_format="qseqid pident evalue bitscore qcovs stitle sstart send"
+fi
 
 # tmp working directory
 fasta=$(readlink -f "$1") # save input file before changing to temporary directory
@@ -240,8 +251,8 @@ fi
 
 # function to get database hits for ec number
 getDBhit(){
-    kegg=$(grep -wF "$rea" $metaRea | awk -F "\t" {'print $5'})
-    
+    kegg=$(grep -wFe "$rea" $metaRea | awk -F "\t" {'print $5'})
+
     # 1) search in reaction db by EC
     if [[ -n "$EC_test" ]]; then
         if [ "$database" == "vmh" ]; then
@@ -273,17 +284,17 @@ getDBhit(){
 
     # 4) search in bigg db by metacyc id (does only make sense for vmh/bigg namespace)
     if [ "$database" == "vmh" ]; then
-        dbhit="$dbhit $(grep -wF "$rea" $reaDB2 | awk '{print $1}')"
+        dbhit="$dbhit $(grep -wFe "$rea" $reaDB2 | awk '{print $1}')"
     fi
 
     # 5) match reaction using mnxref namespace
     if [ "$database" == "seed" ]; then
-        dbhit="$dbhit $(grep -wF "$rea" $reaDB5 | awk '{print $2}')"
+        dbhit="$dbhit $(grep -wFe "$rea" $reaDB5 | awk '{print $2}')"
     fi
    
     # 6) match reaction using custom enzyme-name - seedID mapping
     if [ "$database" == "seed" ]; then
-        dbhit="$dbhit $(grep -wF "$reaName" $seedEnzymesNames | awk -F '\t' ' {print $1}')"
+        dbhit="$dbhit $(grep -wFe "$reaName" $seedEnzymesNames | awk -F '\t' ' {print $1}')"
     fi
 
     [ "$dbhit" == " " ] && dbhit=""
@@ -476,7 +487,7 @@ do
                     else
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO candidate reaction found for import
                     fi
-                    echo "$besthit_all" | awk -v rea=$rea -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit}' >> reactions.tbl
+                    echo "$besthit_all" | awk -v rea="$rea" -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit}' >> reactions.tbl
                     ((countex++))
                     countexList="$countexList$rea "
                 else
