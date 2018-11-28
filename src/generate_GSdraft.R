@@ -1,6 +1,8 @@
 library(getopt)
 suppressMessages(library(stringr))
 suppressMessages(library(stringi))
+library(methods)
+options(error=traceback)
 
 # test data
 # blast.res <- "../CarveMe-tests/faa/GCF_000005845.2_ASM584v2_genomic-all-Reactions.tbl"
@@ -13,7 +15,7 @@ suppressMessages(library(stringi))
 build_draft_model_from_blast_results <- function(blast.res, topo.evi = NA, gram = "auto", model.name = NA, genome.seq = NA, script.dir, high.evi.rxn.BS = 200) {
   suppressMessages(require(data.table))
   suppressMessages(require(stringr))
-  suppressMessages(require(sybil))
+  #suppressMessages(require(sybil))
   
   if(is.na(model.name))
     model.name <- gsub("-all-Reactions.tbl","",basename(blast.res), fixed = T)
@@ -28,8 +30,10 @@ build_draft_model_from_blast_results <- function(blast.res, topo.evi = NA, gram 
     } else {
       
     }
-    system(paste0("barrnap --quiet ",genome.seq, " | grep 16S > ", genome.seq, ".gff"))
-    system(paste0("bedtools getfasta -fi ",genome.seq," -bed ", genome.seq,".gff > ", genome.seq, ".16S.fasta"))
+    system(paste0("cat ",genome.seq, " | sed '/^[[:space:]]*$/d' > ", genome.seq, ".tmp")) # remove empty lines => problems with bedtools
+    system(paste0("barrnap --quiet ",genome.seq, ".tmp | grep 16S > ", genome.seq, ".gff"))
+    system(paste0("bedtools getfasta -fi ",genome.seq,".tmp -bed ", genome.seq,".gff -fo ", genome.seq, ".16S.fasta"))
+    #system(paste0("rnammer -S bac -m ssu -f ",genome.seq,".16S.fasta ",genome.seq))
     system(paste0("usearch -sinaps ",genome.seq,".16S.fasta -db " ,script.dir,"/../dat/seq/Bacteria/16S_graminfo/16S_gramposinfo.fna -attr grampos -tabbedout ",genome.seq,".graminfo.tsv -strand plus"))
     
     gram.dt <- fread(paste0(genome.seq,".graminfo.tsv"), header = F)
@@ -37,6 +41,12 @@ build_draft_model_from_blast_results <- function(blast.res, topo.evi = NA, gram 
     gram.dt <- gram.dt[V3 > max.score * .95]
     gram <- names(sort(table(gram.dt$V2),decreasing=TRUE)[1])
     cat("\nPredicted gram staining: ",gram,"\n")
+    
+    # clean up
+    system(paste0("rm ", genome.seq, ".tmp"))
+    system(paste0("rm ", genome.seq, ".tmp.fai"))
+    system(paste0("rm ", genome.seq, ".gff"))
+    system(paste0("rm ", genome.seq, ".16S.fasta"))
   }
   
   seed_x_ec <- fread(paste0(script.dir,"/../dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv"), header=T)
@@ -157,7 +167,7 @@ build_draft_model_from_blast_results <- function(blast.res, topo.evi = NA, gram 
   mseed <- mseed[order(id, rxn.hash)]
   mseed <- mseed[!duplicated(rxn.hash)]
   
-  mod <- modelorg(name = model.name,id = model.name)
+  mod <- sybil::modelorg(name = model.name, id = model.name)
   mod@react_attr <- data.frame(rxn = character(0), name = character(0), ec = character(0), qseqid = character(0), pident = numeric(0), evalue = numeric(0),
                                bitscore = numeric(0), qcovs = numeric(0), stitle = character(0), sstart = numeric(0), send = numeric(0),
                                pathway = character(0), status = character(0), pathway.status = character(0), seed = character(0), stringsAsFactors = F)
@@ -186,7 +196,7 @@ build_draft_model_from_blast_results <- function(blast.res, topo.evi = NA, gram 
     
     met.name[ind.new.mets] <- mod@met_name[ind.old.mets]
     
-    mod <- addReact(model = mod, 
+    mod <- sybil::addReact(model = mod, 
                     id = paste0(mseed[i,id],"_c0"), 
                     met = met.ids,
                     Scoef = met.scoef,
@@ -210,7 +220,7 @@ build_draft_model_from_blast_results <- function(blast.res, topo.evi = NA, gram 
   if(gram == "pos")
     dt.bm <- fread(paste0(script.dir, "/../dat/seed_biomass.DT_gramPos.tsv"))
   
-  mod <- addReact(mod,id = "bio1", met = dt.bm$id, Scoef = dt.bm$stoich, reversible = F, lb = 0, ub = 1000, obj = 1, 
+  mod <- sybil::addReact(mod,id = "bio1", met = dt.bm$id, Scoef = dt.bm$stoich, reversible = F, lb = 0, ub = 1000, obj = 1, 
                   reactName = paste0("Biomass reaction ",ifelse(gram=="neg","(gram -)","(gram +)")), metName = dt.bm$name, metComp = dt.bm$comp)
   mod@react_attr[which(mod@react_id == "bio1"),c("gs.origin","seed")] <- data.frame(gs.origin = 6, seed = "bio1", stringsAsFactors = F)
   

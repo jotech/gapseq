@@ -16,7 +16,7 @@ add_missing_exchanges <- function(mod, ub = 1000) {
   
   for(i in 1:length(ex.mets.ids)) {
     #cat("Adding new exchange reaction for: ",ex.mets.ids[i],"\n")
-    mod <- addReact(model = mod,
+    mod <- sybil::addReact(model = mod,
                     id = paste0("EX_",gsub("\\[.*\\]","",ex.mets.ids[i]),"_e0"), 
                     met = ex.mets.ids[i],
                     Scoef = -1,
@@ -42,7 +42,7 @@ add_sinks <- function(mod, ub = 1000) {
   in.mets.name <- mod@met_name[in.mets.ind]
   
   for(i in 1:length(in.mets.ids)) {
-    mod <- addReact(model = mod,
+    mod <- sybil::addReact(model = mod,
                     id = paste0("SINK_",gsub("\\[.*\\]","",in.mets.ids[i]),"_c0"), 
                     met = in.mets.ids[i],
                     Scoef = -1,
@@ -57,7 +57,7 @@ add_sinks <- function(mod, ub = 1000) {
 }
 
 add_met_sink <- function(mod, cpd, obj = 0) {
-  mod <- addReact(mod,
+  mod <- sybil::addReact(mod,
                   id = paste0("EX_",cpd,"_c0"),
                   met = paste0(cpd,"[c0]"),
                   Scoef = -1,
@@ -121,7 +121,7 @@ add_reaction_from_db <- function(mod, react, gs.origin = NA) {
     
     new.react <- !any(grepl(paste0(mseed[i,id],"_c0"),mod@react_id))
     
-    mod <- addReact(model = mod, 
+    mod <- sybil::addReact(model = mod, 
                     id = paste0(mseed[i,id],"_c0"), 
                     met = met.ids,
                     Scoef = met.scoef,
@@ -154,7 +154,7 @@ add_exchanges <- function(mod, cpd, ub = 1000, metname=NA) {
       ex.mets.name <- mod@met_name[ex.mets.ind]
     else
       ex.mets.name <- metname[match(m, cpd)]
-    mod <- addReact(model = mod,
+    mod <- sybil::addReact(model = mod,
                     id = ex.id, 
                     met = ex.met.id,
                     Scoef = -1,
