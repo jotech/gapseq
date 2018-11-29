@@ -34,12 +34,14 @@ build_draft_model_from_blast_results <- function(blast.res, topo.evi = NA, gram 
     system(paste0("barrnap --quiet ",genome.seq, ".tmp | grep 16S > ", genome.seq, ".gff"))
     system(paste0("bedtools getfasta -fi ",genome.seq,".tmp -bed ", genome.seq,".gff -fo ", genome.seq, ".16S.fasta"))
     #system(paste0("rnammer -S bac -m ssu -f ",genome.seq,".16S.fasta ",genome.seq))
-    system(paste0("usearch -sinaps ",genome.seq,".16S.fasta -db " ,script.dir,"/../dat/seq/Bacteria/16S_graminfo/16S_gramposinfo.fna -attr grampos -tabbedout ",genome.seq,".graminfo.tsv -strand plus"))
+    #system(paste0("usearch -sinaps ",genome.seq,".16S.fasta -db " ,script.dir,"/../dat/seq/Bacteria/16S_graminfo/16S_gramposinfo.fna -attr grampos -tabbedout ",genome.seq,".graminfo.tsv -strand plus"))
     
-    gram.dt <- fread(paste0(genome.seq,".graminfo.tsv"), header = F)
-    gram.dt[, max.score := max(V3)]
-    gram.dt <- gram.dt[V3 > max.score * .95]
-    gram <- names(sort(table(gram.dt$V2),decreasing=TRUE)[1])
+    gram <- system(paste0(script.dir,"/./predict_Gram_staining_from16S.sh ",genome.seq,".16S.fasta"), intern = T)
+    
+    #gram.dt <- fread(paste0(genome.seq,".graminfo.tsv"), header = F)
+    #gram.dt[, max.score := max(V3)]
+    #gram.dt <- gram.dt[V3 > max.score * .95]
+    #gram <- names(sort(table(gram.dt$V2),decreasing=TRUE)[1])
     cat("\nPredicted gram staining: ",gram,"\n")
     
     # clean up
