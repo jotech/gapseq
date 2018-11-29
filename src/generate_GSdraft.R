@@ -43,6 +43,9 @@ build_draft_model_from_blast_results <- function(blast.res, topo.evi = NA, gram 
     #gram.dt <- gram.dt[V3 > max.score * .95]
     #gram <- names(sort(table(gram.dt$V2),decreasing=TRUE)[1])
     cat("\nPredicted gram staining: ",gram,"\n")
+    if(gram == "ambiguous") {
+      stop("ERROR: Gram-staining prediction failed or ambiguous result. Please check whether genome sequence contains 16S rRNA gene(s).")
+    }
     
     # clean up
     system(paste0("rm ", genome.seq, ".tmp"))
