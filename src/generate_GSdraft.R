@@ -30,9 +30,9 @@ build_draft_model_from_blast_results <- function(blast.res, topo.evi = NA, gram 
     } else {
       
     }
-    system(paste0("cat ",genome.seq, " | sed '/^[[:space:]]*$/d' > ", genome.seq, ".tmp")) # remove empty lines => problems with bedtools
+    system(paste0("cat ",genome.seq, " | sed '/^[[:space:]]*$/d' | tr -d '\15\32' > ", genome.seq, ".tmp")) # remove empty lines => problems with bedtools
     system(paste0("barrnap --quiet ",genome.seq, ".tmp | grep 16S > ", genome.seq, ".gff"))
-    system(paste0("bedtools getfasta -fi ",genome.seq,".tmp -bed ", genome.seq,".gff -fo ", genome.seq, ".16S.fasta"))
+    system(paste0("bedtools getfasta -s -name+ -fi ",genome.seq,".tmp -bed ", genome.seq,".gff -fo ", genome.seq, ".16S.fasta"))
     #system(paste0("rnammer -S bac -m ssu -f ",genome.seq,".16S.fasta ",genome.seq))
     #system(paste0("usearch -sinaps ",genome.seq,".16S.fasta -db " ,script.dir,"/../dat/seq/Bacteria/16S_graminfo/16S_gramposinfo.fna -attr grampos -tabbedout ",genome.seq,".graminfo.tsv -strand plus"))
     
@@ -70,26 +70,26 @@ build_draft_model_from_blast_results <- function(blast.res, topo.evi = NA, gram 
     return(length(intersect(astart:aend,bstart:bend))/((length(astart:aend)+length(bstart:bend))/2))
   }
   
-  # if("1.3.8.1" %in% dt$ec & "1.3.8.13" %in% dt$ec) {
-  #    rm.ids <- c()
-  #    one.hits.id <- which(dt$ec == "1.3.8.1" & !is.na(dt$bitscore))
-  #    two.hits.id <- which(dt$ec == "1.3.8.13" & !is.na(dt$bitscore))
-  #    if(length(one.hits.id)>0 & length(two.hits.id)>0) {
-  #      for(i in one.hits.id) {
-  #        for(j in two.hits.id) {
-  #          ol <- calc_seq_overlap(dt[i,sstart],dt[i,send],dt[j,sstart],dt[j,send])
-  #          if(ol > 0.2) {
-  #            if(dt[i, bitscore] > max(dt[two.hits.id, bitscore]))
-  #              rm.ids <- c(rm.ids, j)
-  #            if(dt[j, bitscore] > max(dt[one.hits.id, bitscore]))
-  #              rm.ids <- c(rm.ids, i)
-  #          }
-  #        }
-  #      }
-  #    }
-  #    rm.ids <- unique(rm.ids)
-  #    dt <- dt[-rm.ids]
-  # }
+  if("1.3.8.1" %in% dt$ec & "1.3.8.13" %in% dt$ec) {
+     rm.ids <- c()
+     one.hits.id <- which(dt$ec == "1.3.8.1" & !is.na(dt$bitscore))
+     two.hits.id <- which(dt$ec == "1.3.8.13" & !is.na(dt$bitscore))
+     if(length(one.hits.id)>0 & length(two.hits.id)>0) {
+       for(i in one.hits.id) {
+         for(j in two.hits.id) {
+           ol <- calc_seq_overlap(dt[i,sstart],dt[i,send],dt[j,sstart],dt[j,send])
+           if(ol > 0.2) {
+             if(dt[i, bitscore] > max(dt[two.hits.id, bitscore]))
+               rm.ids <- c(rm.ids, j)
+             if(dt[j, bitscore] > max(dt[one.hits.id, bitscore]))
+               rm.ids <- c(rm.ids, i)
+           }
+         }
+       }
+     }
+     rm.ids <- unique(rm.ids)
+     dt <- dt[-rm.ids]
+  }
 
   
   # # Add those reactions that are going to be added due to pathway completion

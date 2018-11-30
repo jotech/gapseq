@@ -20,6 +20,11 @@ elif [[ $posc = $negc ]]; then
   res="ambiguous"
 fi
 
+if [[ $res == "ambiguous"]]; then
+  restmp=`head -n 1  $name.grpred.tmp`
+  res="${restmp#"="}"
+fi
+
 rm $name.grpred.tmp
 
 echo $res
