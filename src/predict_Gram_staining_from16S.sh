@@ -20,9 +20,11 @@ elif [[ $posc = $negc ]]; then
   res="ambiguous"
 fi
 
-if [[ $res == "ambiguous" & `grep -c "" $name.grpred.tmp` > 0 ]]; then
-  restmp=`head -n 1  $name.grpred.tmp`
-  res="${restmp#"="}"
+if [[ $res == "ambiguous" ]]; then
+  if [[ `grep -c "" $name.grpred.tmp` > 0 ]]; then
+    restmp=`head -n 1  $name.grpred.tmp`
+    res="${restmp#"="}"
+  fi
 fi
 
 rm $name.grpred.tmp
