@@ -8,3 +8,4 @@ FUCDEGRA-NP	L-Fucose degradation 		|CARBOXYLATES-DEG|,|Acetate-Formation|,|Degra
 MASS-SYNTHESIS	massetolide A biosynthesis		|Biosynthesis|,|SECONDARY-METABOLITE-BIOSYNTHESIS|,|Antibiotic-Biosynthesis|		rxn1,rxn2,rxn3	,,		massA;massB;massC
 VISC-SYNTHESIS	viscosin biosynthesis		|Biosynthesis|,|SECONDARY-METABOLITE-BIOSYNTHESIS|,|Antibiotic-Biosynthesis|		rxn1,rxn2,rxn3	,,		viscA;viscB;viscC
 AGMA-TRANSP	Agmatine Transport		|Transport|		rxn1			Agmatine Transporter
+AGMA-PROD	Agmatine extracellular biosynthesis		|Agmatine-Synthesis|		rxn1			Agmatine extracellular biosynthesis
