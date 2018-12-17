@@ -5,11 +5,11 @@ library(methods)
 options(error=traceback)
 
 # test data
-# blast.res <- "../CarveMe-tests/faa/GCF_000005845.2_ASM584v2_genomic-all-Reactions.tbl"
+# blast.res <- "../CarveMe-tests/faa/GCF_000011985.1_ASM1198v1_genomic-all-Reactions.tbl"
 # gram <- "auto"
-# genome.seq <- "../CarveMe-tests/faa/GCF_000005845.2_ASM584v2_genomic.fna.gz"
+# genome.seq <- "../CarveMe-tests/faa/GCF_000011985.1_ASM1198v1_genomic.fna.gz"
 # high.evi.rxn.BS <- 200
-# topology.evidence <- "../CarveMe-tests/faa/GCF_000005845.2_ASM584v2_genomic-Transporter.lst"
+# topology.evidence <- "../CarveMe-tests/faa/GCF_000011985.1_ASM1198v1_genomic-Transporter.lst"
 
 # Please note: If Game-Staining is set to "auto" it requires the external programms barrnap, usearch and bedtools
 build_draft_model_from_blast_results <- function(blast.res, topo.evi = NA, gram = "auto", model.name = NA, genome.seq = NA, script.dir, high.evi.rxn.BS = 200) {
@@ -88,7 +88,8 @@ build_draft_model_from_blast_results <- function(blast.res, topo.evi = NA, gram 
        }
      }
      rm.ids <- unique(rm.ids)
-     dt <- dt[-rm.ids]
+     if(length(rm.ids > 0))
+       dt <- dt[-rm.ids]
   }
 
   
