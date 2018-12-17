@@ -1,13 +1,57 @@
 #
-# TODO: use same cutoffs as in gapseq
 # TODO: update sub2pwy to contain more linked substances
 #
 
+bitcutoff=50 # cutoff blast: min bit score
+identcutoff=0   # cutoff blast: min identity
+covcutoff=0 # cutoff blast: min coverage
 use_alternatives=true
+includeSeq=false
+
+usage()
+{
+    echo "Usage"
+    echo "$0 file.fasta."
+    echo "  -b bit score cutoff for local alignment (default: $bitcutoff)"
+    echo "  -i identity cutoff for local alignment (default: $identcutoff)"
+    echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
+    echo "  -q Include sequences of hits in log files; default $includeSeq"
+exit 1
+}
+
+OPTIND=1         # Reset in case getopts has been used previously in the shell.
+while getopts "h?i:b:c:q" opt; do
+    case "$opt" in
+    h|\?)
+        usage
+        exit 0
+        ;;
+    b)
+        bitcutoff=$OPTARG
+        ;;
+    i)
+        identcutoff=$OPTARG
+        ;;
+    c)
+        covcutoff=$OPTARG
+        ;;
+    q)
+        includeSeq=true
+        ;;
+    esac
+done
+shift $((OPTIND-1))
+[ "$1" = "--" ] && shift
+# after parsing arguments, only fasta file shoud be there
+[ "$#" -ne 1 ] && { usage; }
 
 curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
+tcdb=$dir/dat/seq/tcdb.fasta
+otherDB=$dir/dat/seq/transporter.fasta
+subDB=$dir/dat/sub2pwy.csv
+seedDB=$dir/dat/seed_transporter.tbl
 
 # tmp working directory
 fasta=$(readlink -f "$1") # save input file before changing to temporary directory
@@ -23,10 +67,13 @@ fi
 
 tmpvar=$(basename $fasta)
 fastaid=${tmpvar%.*}
-tcdb=$dir/dat/seq/tcdb.fasta
-otherDB=$dir/dat/seq/transporter.fasta
-subDB=$dir/dat/sub2pwy.csv
-seedDB=$dir/dat/seed_transporter.tbl
+
+# blast format
+if [ "$includeSeq" = true ]; then
+    blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
+else
+    blast_format="qseqid pident evalue bitscore qcovs stitle sstart send"
+fi
 
 cat $tcdb $otherDB > all.fasta # join transporter databases
 grep -e ">" all.fasta > tcdb_header
@@ -43,9 +90,10 @@ fastafetch -f all.fasta -i tcdb.idx -Fq <(sort -u hits ) > tcdbsmall.fasta
 #
 makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
 
-tblastn -db orgdb -query tcdbsmall.fasta -outfmt '6 qseqid sseqid pident evalue bitscore stitle' > out 
+#tblastn -db orgdb -query tcdbsmall.fasta -outfmt "6 $blast_format" > out 
+cat tcdbsmall.fasta | parallel --will-cite --block 500k --recstart '>' --pipe tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt \'"6 $blast_format"\' -query - > out
 
-IDtcdb=$(cat out | awk '{if ($5>=50) print $1}' | cut -d "|" -f 3 | sort | uniq) 
+IDtcdb=$(cat out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $5>=covcutoff && $4>=bitcutoff) print $1}' | cut -d "|" -f 3 | sort | uniq) 
 
 TC[1]="1.Channels and pores"
 TC[2]="2.Electrochemical potential-driven transporters"
@@ -61,21 +109,23 @@ do
     type=${TC[$i]}
     [ -z "$tc" ] && continue
     subl=$(echo "$descr" | grep -wEio "$key" | grep -if - redSubDB | awk -F ',' '{ if ($2 != "") print $2; else print $1}') # could be more then one hit (e.g. transporter with two substances)
-    for sub in $subl
+    for subst in $subl
     do
-        echo -e $sub"\t"$type"\t"$tc"\t"$descr >> newTransporter.tbl
-        exmetall=$(cat $subDB | grep -w "$sub" | awk -F ',' '{if ($8 != "NA") print $8}')
+        #echo -e $subst"\t"$type"\t"$tc"\t"$descr >> newTransporter.tbl
+        exmetall=$(cat $subDB | grep -w "$subst" | awk -F ',' '{if ($8 != "NA") print $8}')
         for exmet in $exmetall
         do
-            exid=$(cat $subDB | grep -w "$sub" | awk -F ',' '{if ($7 != "NA") print $7}')
-            sublist="$sublist;$sub"
-            echo $id,$tc,$sub,$exmet,$exid,$type,$descr >> `echo "$sub" | tr '[:upper:]' '[:lower:]'`
+            exid=$(cat $subDB | grep -w "$subst" | awk -F ',' '{if ($7 != "NA") print $7}')
+            sublist="$sublist;$subst"
+            echo $id,$tc,$subst,$exmet,$exid,$type,$descr >> `echo "$subst" | tr '[:upper:]' '[:lower:]'`
             cat $seedDB | awk -F '\t' -v type="$type" -v exmet="$exmet" '{if($3==type && $4==exmet) print $0}' > tr_cand
             if [ -s tr_cand ]; then
                 rea=$(cat tr_cand | awk -F '\t' '{print $1}')
                 #echo -e "\t"Found: $rea
                 cand="$cand $rea $exid"
-                sublist2="$sublist2;$sub"
+                sublist2="$sublist2;$subst"
+                rea_export=$(echo "$rea" | tr '\n' ',' | sed 's/,$//g')
+                cat out | grep -w $id | sort -rgk 4,4 | head -1 | awk -v id="$id" -v tc="$tc" -v subst="$subst" -v exid="$exid" -v rea=$rea_export '{print id"\t"tc"\t"subst"\t"exid"\t"rea"\t"$0}' >> transporter.tbl 
             fi
         done
     done
@@ -115,4 +165,5 @@ cand="$(echo $cand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')"
 #echo $cand
 echo $cand > newTransporter.lst
 cp newTransporter.lst $curdir/${fastaid}-Transporter.lst
-cp newTransporter.tbl $curdir/${fastaid}-Transporter.tbl
+#cp newTransporter.tbl $curdir/${fastaid}-Transporter.tbl
+cp transporter.tbl $curdir/${fastaid}-Transporter.tbl
