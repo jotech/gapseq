@@ -104,7 +104,7 @@ TC[4]="4.Group translocators"
 for id in $IDtcdb
 do
     descr=$(grep $id tcdb_header | grep -P "(?<= ).*" -o) # extract description
-    tc=$(grep $id tcdb_header | grep -Pw "([1-4]\\.[A-Z]+\\.[0-9]+\\.[0-9]+)" -o) # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
+    tc=$(grep $id tcdb_header | grep -Pw "([1-4]\\.[A-Z]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | uniq | tr '\n' ',' | sed 's/,$//g') # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
     i=$(echo $tc | head -c1) # get first character of TC number => transporter type
     type=${TC[$i]}
     [ -z "$tc" ] && continue
@@ -125,7 +125,8 @@ do
                 cand="$cand $rea $exid"
                 sublist2="$sublist2;$subst"
                 rea_export=$(echo "$rea" | tr '\n' ',' | sed 's/,$//g')
-                cat out | grep -w $id | sort -rgk 4,4 | head -1 | awk -v id="$id" -v tc="$tc" -v subst="$subst" -v exid="$exid" -v rea=$rea_export '{print id"\t"tc"\t"subst"\t"exid"\t"rea"\t"$0}' >> transporter.tbl 
+                exid_export=$(echo "$exid" | tr '\n' ',' | sed 's/,$//g')
+                cat out | grep -w $id | sort -rgk 4,4 | head -1 | awk -v id="$id" -v tc="$tc" -v subst="$subst" -v exid="$exid_export" -v rea=$rea_export '{print id"\t"tc"\t"subst"\t"exid"\t"rea"\t"$0}' >> transporter.tbl 
             fi
         done
     done
@@ -167,3 +168,4 @@ echo $cand > newTransporter.lst
 cp newTransporter.lst $curdir/${fastaid}-Transporter.lst
 #cp newTransporter.tbl $curdir/${fastaid}-Transporter.tbl
 cp transporter.tbl $curdir/${fastaid}-Transporter.tbl
+[[ -s transporter.tbl ]] && echo "id tc sub exid rea $blast_format" | tr ' ' '\t' | cat - transporter.tbl | awk '!a[$0]++' > $curdir/${fastaid}-Transporter.tbl # add header and remove duplicates
