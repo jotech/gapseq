@@ -125,7 +125,7 @@ mod.orig <- constrain.model(mod.orig, media.file = media.file)
 mod.orig@obj_coef <- rep(0,mod.orig@react_num)
 
 # add metabolite objective + sink
-mod.orig <- add_met_sink(mod.orig, target.met, obj = 1)
+mod.orig <- add_met_sink(mod.orig, target.met, obj = 1) # TODO: add gs.origin
 
 # Perform gapfill
 cat("\n\n1. Initial gapfilling: Make model grow on given media using all reactions\n")
