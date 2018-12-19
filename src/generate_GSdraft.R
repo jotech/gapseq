@@ -66,11 +66,16 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   dt.trans[bitscore >= high.evi.rxn.BS, status := "good_blast"]
   dt.trans[bitscore <  high.evi.rxn.BS, status := "bad_blast"]
   
-  # A specific fix for the issue with reactions 1.3.8.1 and 1.3.8.13
+  # a little helper function to calculate the overlap of two genetic regions
   calc_seq_overlap <- function(astart, aend, bstart, bend) {
-    return(length(intersect(astart:aend,bstart:bend))/((length(astart:aend)+length(bstart:bend))/2))
+    out <- numeric(length = length(bstart))
+    for(i in seq_along(bstart)){
+      out[i] <- length(intersect(astart:aend,bstart[i]:bend[i]))/((length(astart:aend)+length(bstart[i]:bend[i]))/2)
+    }
+    return(out)
   }
   
+  # A specific fix for the issue with reactions 1.3.8.1 and 1.3.8.13
   if("1.3.8.1" %in% dt$ec & "1.3.8.13" %in% dt$ec) {
      rm.ids <- c()
      one.hits.id <- which(dt$ec == "1.3.8.1" & !is.na(dt$bitscore))
@@ -109,8 +114,27 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   dt_seed_single_and_there <- dt_seed_single_and_there[!duplicated(seed)]
   
   # create gene list and attribute table
+  cat("Creating Gene-Reaction list... \n")
   dt_genes <- copy(dt[!is.na(bitscore)])
   dt_genes[, gene := paste(sstart,send, sep = ":")]
+  dt_genes <- dt_genes[!duplicated(paste(stitle,seed,gene,sep = "$"))]
+  dt_genes <- dt_genes[order(stitle,seed,-bitscore)]
+  dt_genes[, rm := F]
+  dt_genes$itmp <- 1:nrow(dt_genes)
+  
+  for(i in 1:nrow(dt_genes)) {
+    astart <- dt_genes[i, sstart]
+    aend <- dt_genes[i, send]
+    astitle <- dt_genes[i, stitle]
+    aseed <- dt_genes[i, seed]
+    dt_g_tmp <- dt_genes[i < itmp & rm==F & stitle == astitle & seed == aseed]
+    if(nrow(dt_g_tmp)>0) {
+      dt_g_tmp[calc_seq_overlap(astart, aend, sstart, send) > 0.5, rm := T]
+      ind.rm <- dt_g_tmp[rm==T, itmp]
+      dt_genes[itmp %in% ind.rm, rm := T]
+    }
+  }
+  
   
   # create subsys list and attribute table
   dt_subsys <- copy(dt[!is.na(pathway)])
@@ -125,6 +149,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   mseed <- mseed[order(id, rxn.hash)]
   mseed <- mseed[!duplicated(rxn.hash)]
   
+  cat("Constructing draft model: \n")
   mod <- sybil::modelorg(name = model.name, id = model.name)
   mod@react_attr <- data.frame(rxn = character(0), name = character(0), ec = character(0), tc = character(0), qseqid = character(0),
                                pident = numeric(0), evalue = numeric(0), bitscore = numeric(0), qcovs = numeric(0),
@@ -187,6 +212,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   }
   mod@react_attr$gs.origin <- 0
   mod@react_attr$gs.origin[mod@react_attr$bitscore < high.evi.rxn.BS] <- 9 # Added due to Pathway Topology criteria
+  mod <- add_reaction_from_db(mod, react = c("rxn13782","rxn13783","rxn13784"), gs.origin = 6) # Adding pseudo-reactions for Protein biosynthesis, DNA replication and RNA transcription
   #mod@genes_table <- copy(dt[bitscore>0])
   cat("\n")
   
