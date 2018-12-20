@@ -592,7 +592,8 @@ do
     fi
     
     if [[ "$prediction" = true ]];then # update output for reactions when pathway is completete 
-        awk -i inplace -v pwy="$pwy" -v pwy_status="$pwy_status" 'BEGIN {OFS=FS="\t"} $13==pwy {$15=pwy_status} 1' reactions.tbl
+        #awk -i inplace -v pwy="$pwy" -v pwy_status="$pwy_status" 'BEGIN {OFS=FS="\t"} $13==pwy {$15=pwy_status} 1' reactions.tbl
+        awk -v pwy="$pwy" -v pwy_status="$pwy_status" 'BEGIN {OFS=FS="\t"} $13==pwy {$15=pwy_status} 1' reactions.tbl > reactions.tmp.tbl && mv reactions.tmp.tbl reactions.tbl
     fi
 
     echo -e "$pwy\t$name\t$prediction\t$completeness\t$vague\t$CountTotalKeyRea\t$CountKeyReaFound\t$countexList" >> output.tbl # write down some statistics
