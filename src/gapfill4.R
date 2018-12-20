@@ -87,11 +87,30 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, min.bs.for.c
   c.coef.dt[is.na(weight), weight := 0.00001]
   c.coef.dt[id %in% pres.rxns, weight := 0.00001]
 
-  modj_warm <- sysBiolAlg(mod,
-                          algorithm = "mtf2",
-                          costcoeffw = c.coef.dt$weight,
-                          pFBAcoeff = 1e-3)
-  sol.fba <- optimizeProb(modj_warm)
+  if(gs.origin==1) {
+    sol.tmp   <- 0
+    max.iter  <- 10
+    n.iter    <- 1
+    pFBAcoeff <- 1e-3
+    while(sol.tmp <= 0 & n.iter <= max.iter) {
+      modj_warm <- sysBiolAlg(mod,
+                              algorithm = "mtf2",
+                              costcoeffw = c.coef.dt$weight,
+                              pFBAcoeff = pFBAcoeff)
+      sol.fba <- optimizeProb(modj_warm)
+      
+      n.iter  <- n.iter + 1
+      sol.tmp <- sol.fba$obj
+      if(sol.tmp <= 0)
+        pFBAcoeff <- pFBAcoeff / 2
+    }
+  } else {
+    modj_warm <- sysBiolAlg(mod,
+                            algorithm = "mtf2",
+                            costcoeffw = c.coef.dt$weight,
+                            pFBAcoeff = 1e-3)
+    sol.fba <- optimizeProb(modj_warm)
+  }
 
   if(sol.fba$stat!=ok){
     warning("pFBA did not end successfully.")

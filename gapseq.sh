@@ -214,6 +214,7 @@ esac
 
 
 # squence directory
+export LC_NUMERIC="en_US.UTF-8"
 seqpath=$dir/dat/seq/$taxonomy/unipac$(printf %.0f $(echo "$uniprotIdentity * 100" | bc -l))
 mkdir -p $seqpath
 

@@ -4,7 +4,7 @@
 
 bitcutoff=50 # cutoff blast: min bit score
 identcutoff=0   # cutoff blast: min identity
-covcutoff=0 # cutoff blast: min coverage
+covcutoff=75 # cutoff blast: min coverage
 use_alternatives=true
 includeSeq=false
 
@@ -93,7 +93,8 @@ makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
 #tblastn -db orgdb -query tcdbsmall.fasta -outfmt "6 $blast_format" > out 
 cat tcdbsmall.fasta | parallel --will-cite --block 500k --recstart '>' --pipe tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt \'"6 $blast_format"\' -query - > out
 
-IDtcdb=$(cat out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $5>=covcutoff && $4>=bitcutoff) print $1}' | cut -d "|" -f 3 | sort | uniq) 
+#IDtcdb=$(cat out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $5>=covcutoff && $4>=bitcutoff) print $1}' | cut -d "|" -f 3 | sort | uniq) 
+IDtcdb=$(cat out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $5>=covcutoff) print $1}' | cut -d "|" -f 3 | sort | uniq) 
 
 TC[1]="1.Channels and pores"
 TC[2]="2.Electrochemical potential-driven transporters"

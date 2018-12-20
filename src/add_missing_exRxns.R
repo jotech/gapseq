@@ -72,7 +72,9 @@ add_met_sink <- function(mod, cpd, obj = 0) {
 }
 
 add_missing_diffusion <- function(mod, ub = 1000){
-  diff.mets <- fread(paste0(script.dir, "/dat/diffusion_mets.tsv"), header=T, stringsAsFactors = F)
+  rxndb.path <- paste0(script.dir, "/dat/diffusion_mets.tsv")
+  rxndb.path <- str_replace_all(rxndb.path, "/src","")
+  diff.mets <- fread(rxndb.path, header=T, stringsAsFactors = F)
   mod <- add_reaction_from_db(mod, react = diff.mets$diffrxn, gs.origin = 8)
   mod <- add_missing_exchanges(mod)
   
@@ -80,7 +82,9 @@ add_missing_diffusion <- function(mod, ub = 1000){
 }
 
 add_reaction_from_db <- function(mod, react, gs.origin = NA) {
-  mseed <- fread(paste0(script.dir, "/dat/seed_reactions_corrected.tsv"), header=T, stringsAsFactors = F)
+  rxndb.path <- paste0(script.dir, "/dat/seed_reactions_corrected.tsv")
+  rxndb.path <- str_replace_all(rxndb.path, "/src","")
+  mseed <- fread(rxndb.path, header=T, stringsAsFactors = F)
   mseed <- mseed[gapseq.status %in% c("approved","corrected")]
   mseed <- mseed[order(id)]
   
