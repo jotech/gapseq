@@ -6,7 +6,8 @@ if [[ $fasta == *.gz ]]; then # in case fasta is in a archive
     gunzip -c $fasta > $tmp_fasta
     fasta=$tmp_fasta
 fi
-model="${fasta%.*}"
+model=$(basename $fasta)
+model="${model%.*}"
 media=$2
 
 path=$(readlink -f "$0")
