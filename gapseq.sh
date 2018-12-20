@@ -27,6 +27,7 @@ vagueCutoff=0.3 # cutoff for vague reactions. If the amount of vague reactions i
 onlyList=false
 skipBlast=false
 includeSeq=false
+use_parallel=true
 
 usage()
 {
@@ -50,6 +51,7 @@ usage()
     echo "  -q Include sequences of hits in log files; default $includeSeq"
 
     echo "  -v verbose level, 0 for nothing, 1 for pathway infos, 2 for full (default $verbose)"
+    echo "  -k do not use parallel"
 exit 1
 }
 
@@ -77,7 +79,7 @@ seedEnzymesNames=$dir/dat/seed_Enzyme_Name_Reactions_Aliases.tsv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxq" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxqk" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -133,6 +135,9 @@ while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxq" opt; do
         ;;
     q)
         includeSeq=true
+        ;;
+    k)
+        use_parallel=false
         ;;
     esac
 done
@@ -416,7 +421,7 @@ do
                     #for q in `ls xx*`
                     for q in `ls query_subunit.part-*.fasta`
                     do
-                        if ! [ -x "$(command -v parallel)" ]; then # try to use parallelized version
+                        if ! [ -x "$(command -v parallel)" ] || [ "$use_parallel" = false ]; then # try to use parallelized version
                             tblastn -db orgdb -query $q -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" > query.blast
                         else
                             cat $q | parallel --gnu --will-cite --block 50k --recstart '>' --pipe tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt \'"6 $blast_format"\' -query - > query.blast
