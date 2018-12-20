@@ -389,7 +389,8 @@ do
             if [ ! -f $out ]; then # check if there is a former hit
                 #subunits=$(cat $query | sed -n 's/^>//p' | grep -oP 'subunit [0-9]' | sort | uniq) # check for subunits
                 subunits=$(cat $query | sed -n 's/^>//p' | grep -oE 'subunit [0-9]|(alpha|beta|gamma|delta|epsilon) subunit' | sort | uniq) # check for subunits
-                subunits=$(echo -e "$subunits\nother" | sed '/^$/d') # add default
+                undefined=$(cat $query | sed -n 's/^>//p' | grep -oEv 'subunit [0-9]|(alpha|beta|gamma|delta|epsilon) subunit' | sort | uniq) # check for sequences which do not follow regular expression => will be treated as other (i.e. one additional subunit)
+                [ -n "$undefined" ] && subunits=$(echo -e "$subunits\nother" | sed '/^$/d') # add default case for undefined subunits
                 iterations=$(echo -e "$subunits"| wc -l) # every subunit will get a own iteration
                 [[ $iteractions -gt 1 ]] && echo -e '\t\t'check subunits: $subunits
                 for iter in `seq $iterations`
