@@ -28,6 +28,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
       
     }
     system(paste0("cat ",genome.seq, " | sed '/^[[:space:]]*$/d' | tr -d '\15\32' > ", genome.seq, ".tmp")) # remove empty lines => problems with bedtools
+    system(paste0("awk '/^>/{print \">\" ++i; next}{print}' ",genome.seq,".tmp > ",genome.seq,".tmp2 && mv ",genome.seq,".tmp2 ",genome.seq,".tmp"))
     system(paste0("barrnap --quiet ",genome.seq, ".tmp | grep 16S > ", genome.seq, ".gff"))
     system(paste0("bedtools getfasta -s -name -fi ",genome.seq,".tmp -bed ", genome.seq,".gff -fo ", genome.seq, ".16S.fasta"))
     #system(paste0("rnammer -S bac -m ssu -f ",genome.seq,".16S.fasta ",genome.seq))
@@ -213,6 +214,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   mod@react_attr$gs.origin <- 0
   mod@react_attr$gs.origin[mod@react_attr$bitscore < high.evi.rxn.BS] <- 9 # Added due to Pathway Topology criteria
   mod <- add_reaction_from_db(mod, react = c("rxn13782","rxn13783","rxn13784"), gs.origin = 6) # Adding pseudo-reactions for Protein biosynthesis, DNA replication and RNA transcription
+  mod <- add_missing_diffusion(mod)
   #mod@genes_table <- copy(dt[bitscore>0])
   cat("\n")
   
