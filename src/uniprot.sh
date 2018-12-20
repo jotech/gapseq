@@ -8,6 +8,7 @@ metaPwy=$dir/../dat/meta_pwy.tbl
 identity=0.9 # clustered uniprot database (0.5 or 0.9)
 taxonomy=Bacteria
 overwrite=false
+get_all=false
 
 # default core metabolism
 pwyKey="Amino-Acid-Biosynthesis|Nucleotide-Biosynthesis|Cofactor-Biosynthesis|Carbohydrates-Degradation|CARBO-BIOSYNTHESIS|Polyamine-Biosynthesis|Fatty-acid-biosynthesis|Energy-Metabolism|Terpenoid-Biosynthesis|Chorismate-Biosynthesis"
@@ -22,10 +23,11 @@ usage()
     echo "  -t taxonomic range (default: $taxonomy)"
     echo "  -o Should existing files be overwritten (default: $overwrite)"
     echo "  -i identity of clustered uniprot database (0.5 or 0.9; default: $identity)"
+    echo "  -a get all sequences by default (usually swissprot is taken first and only without hits also unreviewed sequences are taken)"
 exit 1
 }
 
-while getopts "h?p:e:t:oi:r:" opt; do
+while getopts "h?p:e:t:oi:r:a" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -49,10 +51,16 @@ while getopts "h?p:e:t:oi:r:" opt; do
     r)
         reaNames=$OPTARG
         ;;
+    a)
+        get_all=true
+        ;;
     esac
 done
 shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
+
+# after parsing arguments, only fasta file shoud be there
+[ "$#" -ne 0 ] && { usage; }
 
 # path for saving sequences
 numeric_old=$LC_NUMERIC
@@ -89,13 +97,17 @@ if [ -n "$ecnumber" ]; then
         if [ -n "$test" ]; then # check if valid ec
             if [ -f "$ec.fasta" ] &&  [ "$overwrite" = false ]; then # do not update existing files
                 continue
+            else
+                rm $ec.fasta
             fi
             echo -en " ... Downloading $ec \t\t"
-            if [ ! -f "$ec.fasta" ]; then # fasta doesn't exist?
+            if [ ! -f "$ec.fasta" ] && [ "$get_all" = false ]; then # fasta doesn't exist?
+                echo swissprot
                 url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
                 wget -q $url -O $ec.fasta
             fi
-            if [ ! -s "$ec.fasta" ]; then # fasta is empty?
+            if [ ! -s "$ec.fasta" ] || [ "$get_all" = true ]; then # fasta is empty?
+                echo unreviewed
                 url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
                 wget -q $url -O $ec.fasta
             fi
@@ -115,13 +127,15 @@ if [ -n "$reaNames" ]; then
         echo -en "\r$i/$reas_max"
         if [ -f "$reaNameHash.fasta" ] &&  [ "$overwrite" = false ]; then # do not update existing files
             continue
+        else
+            rm $reaNameHash.fasta
         fi
         echo -en " ... Downloading $rea $reaNameHash\t\t"
-        if [ ! -f "$reaNameHash.fasta" ]; then # fasta doesn't exist?
+        if [ ! -f "$reaNameHash.fasta" ] && [ "$get_all" = false ]; then # fasta doesn't exist?
             url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
             wget  -q "$url" -O "$reaNameHash.fasta"
         fi
-        if [ ! -s "$reaNameHash.fasta" ]; then # fasta is empty?
+        if [ ! -s "$reaNameHash.fasta" ] || [ "$get_all" = true ]; then # fasta is empty?
             url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
             wget -q "$url" -O "$reaNameHash.fasta"
         fi
