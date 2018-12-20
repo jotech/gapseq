@@ -419,7 +419,7 @@ do
                         if ! [ -x "$(command -v parallel)" ]; then # try to use parallelized version
                             tblastn -db orgdb -query $q -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" > query.blast
                         else
-                            cat $q | parallel --will-cite --block 50k --recstart '>' --pipe tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt \'"6 $blast_format"\' -query - > query.blast
+                            cat $q | parallel --gnu --will-cite --block 50k --recstart '>' --pipe tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt \'"6 $blast_format"\' -query - > query.blast
                         fi
                         cat query.blast >> $out
                         bhit=$(cat query.blast | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')

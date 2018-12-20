@@ -94,7 +94,7 @@ makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
 if ! [ -x "$(command -v parallel)" ]; then # try to use parallelized version
     tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" -query tcdbsmall.fasta > out
 else
-    cat tcdbsmall.fasta | parallel --will-cite --block 500k --recstart '>' --pipe tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt \'"6 $blast_format"\' -query - > out
+    cat tcdbsmall.fasta | parallel --gnu --will-cite --block 500k --recstart '>' --pipe tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt \'"6 $blast_format"\' -query - > out
 fi
 
 #IDtcdb=$(cat out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $5>=covcutoff && $4>=bitcutoff) print $1}' | cut -d "|" -f 3 | sort | uniq) 
