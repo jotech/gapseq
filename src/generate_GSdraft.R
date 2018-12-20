@@ -27,10 +27,11 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
     } else {
       
     }
-    system(paste0("cat ",genome.seq, " | sed '/^[[:space:]]*$/d' | tr -d '\15\32' > ", genome.seq, ".tmp")) # remove empty lines => problems with bedtools
-    system(paste0("awk '/^>/{print \">\" ++i; next}{print}' ",genome.seq,".tmp > ",genome.seq,".tmp2 && mv ",genome.seq,".tmp2 ",genome.seq,".tmp"))
-    system(paste0("barrnap --quiet ",genome.seq, ".tmp | grep 16S > ", genome.seq, ".gff"))
-    system(paste0("bedtools getfasta -s -name -fi ",genome.seq,".tmp -bed ", genome.seq,".gff -fo ", genome.seq, ".16S.fasta"))
+    genome.seq.base <- basename(genome.seq)
+    system(paste0("cat ",genome.seq, " | sed '/^[[:space:]]*$/d' | tr -d '\15\32' > ", genome.seq.base, ".tmp")) # remove empty lines => problems with bedtools
+    system(paste0("awk '/^>/{print \">\" ++i; next}{print}' ",genome.seq.base,".tmp > ",genome.seq.base,".tmp2 && mv ",genome.seq.base,".tmp2 ",genome.seq.base,".tmp"))
+    system(paste0("barrnap --quiet ",genome.seq.base, ".tmp | grep 16S > ", genome.seq.base, ".gff"))
+    system(paste0("bedtools getfasta -s -name -fi ",genome.seq.base,".tmp -bed ", genome.seq.base,".gff -fo ", genome.seq.base, ".16S.fasta"))
     #system(paste0("rnammer -S bac -m ssu -f ",genome.seq,".16S.fasta ",genome.seq))
     #system(paste0("usearch -sinaps ",genome.seq,".16S.fasta -db " ,script.dir,"/../dat/seq/Bacteria/16S_graminfo/16S_gramposinfo.fna -attr grampos -tabbedout ",genome.seq,".graminfo.tsv -strand plus"))
     
@@ -46,10 +47,10 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
     }
     
     # clean up
-    system(paste0("rm ", genome.seq, ".tmp"))
-    system(paste0("rm ", genome.seq, ".tmp.fai"))
-    system(paste0("rm ", genome.seq, ".gff"))
-    system(paste0("rm ", genome.seq, ".16S.fasta"))
+    system(paste0("rm ", genome.seq.base, ".tmp"))
+    system(paste0("rm ", genome.seq.base, ".tmp.fai"))
+    system(paste0("rm ", genome.seq.base, ".gff"))
+    system(paste0("rm ", genome.seq.base, ".16S.fasta"))
   }
   
   seed_x_ec <- fread(paste0(script.dir,"/../dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv"), header=T)
