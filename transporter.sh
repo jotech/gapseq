@@ -7,6 +7,7 @@ identcutoff=0   # cutoff blast: min identity
 covcutoff=75 # cutoff blast: min coverage
 use_alternatives=true
 includeSeq=false
+use_parallel=true
 
 usage()
 {
@@ -16,6 +17,7 @@ usage()
     echo "  -i identity cutoff for local alignment (default: $identcutoff)"
     echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
     echo "  -q Include sequences of hits in log files; default $includeSeq"
+    echo "  -k do not use parallel"
 exit 1
 }
 
@@ -37,6 +39,9 @@ while getopts "h?i:b:c:q" opt; do
         ;;
     q)
         includeSeq=true
+        ;;
+    k)
+        use_parallel=false
         ;;
     esac
 done
@@ -91,7 +96,7 @@ fastafetch -f all.fasta -i tcdb.idx -Fq <(sort -u hits ) > tcdbsmall.fasta
 makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
 
 #tblastn -db orgdb -query tcdbsmall.fasta -outfmt "6 $blast_format" > out 
-if ! [ -x "$(command -v parallel)" ]; then # try to use parallelized version
+if ! [ -x "$(command -v parallel)" ] || [ "$use_parallel" = false ]; then # try to use parallelized version
     tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" -query tcdbsmall.fasta > out
 else
     cat tcdbsmall.fasta | parallel --gnu --will-cite --block 500k --recstart '>' --pipe tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt \'"6 $blast_format"\' -query - > out
