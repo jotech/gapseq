@@ -515,7 +515,7 @@ do
             fi
         else
             [[ verbose -ge 1 ]] && echo -e "\t\tNO sequence data found"
-            #echo -e "\t\t$query" 
+            echo -e "\t\t$query" 
             #echo -e "\t\t$(basename $query)" 
             ((vague++))
             [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
