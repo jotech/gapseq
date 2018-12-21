@@ -35,7 +35,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
     #system(paste0("rnammer -S bac -m ssu -f ",genome.seq,".16S.fasta ",genome.seq))
     #system(paste0("usearch -sinaps ",genome.seq,".16S.fasta -db " ,script.dir,"/../dat/seq/Bacteria/16S_graminfo/16S_gramposinfo.fna -attr grampos -tabbedout ",genome.seq,".graminfo.tsv -strand plus"))
     
-    gram <- system(paste0(script.dir,"/./predict_Gram_staining_from16S.sh ",genome.seq,".16S.fasta"), intern = T)
+    gram <- system(paste0(script.dir,"/./predict_Gram_staining_from16S.sh ",genome.seq.base,".16S.fasta"), intern = T)
     
     #gram.dt <- fread(paste0(genome.seq,".graminfo.tsv"), header = F)
     #gram.dt[, max.score := max(V3)]
