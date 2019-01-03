@@ -9,3 +9,5 @@ MASS-SYNTHESIS	massetolide A biosynthesis		|Biosynthesis|,|SECONDARY-METABOLITE-
 VISC-SYNTHESIS	viscosin biosynthesis		|Biosynthesis|,|SECONDARY-METABOLITE-BIOSYNTHESIS|,|Antibiotic-Biosynthesis|		rxn1,rxn2,rxn3	,,		viscA;viscB;viscC
 AGMA-TRANSP	Agmatine Transport		|Transport|		rxn1			Agmatine Transporter
 AGMA-PROD	Agmatine extracellular biosynthesis		|Agmatine-Synthesis|		rxn1			Agmatine extracellular biosynthesis
+NADP-RED-FD-NADH	Coupled NADP reduction via ferredoxin and NADH		|THINGS|,|FRAMES|,|Pathways|,|Biosynthesis|,|Cofactor-Biosynthesis|,|NAD-Metabolism|	|TAX-2|	rxn90018	1.6.1.4		coupled NADP reduction via ferredoxin and NADH
+FD-NADH-OXIDO	Ferredoxin:NAD+ oxidoreductase		|THINGS|,|FRAMES|,|Pathways|,|Biosynthesis|,|Cofactor-Biosynthesis|,|NAD-Metabolism|	|TAX-2|	FERREDOXIN-NAD+-REDUCTASE-RXN	1.18.1.3		Ferredoxin:NADP+ oxidoreductase
