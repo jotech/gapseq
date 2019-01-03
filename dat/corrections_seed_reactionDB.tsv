@@ -631,6 +631,25 @@ rxn08180		TRUE		[SW] Stoichiometry incorrect. Correct corresponding reaction: rx
 rxn02931	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=24-DIAMINOPENTANOATE-DEHYDROGENASE-RXN				
 rxn04790	>			[SW] direction changed according to Reference.	doi: 10.1099/mic.0.26795-0 				
 rxn00741		TRUE		[SW] Reaction not found in MetaCyc or RHEA. Removing reactions.					
+rxn01361	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=OROTATE-REDUCTASE-NADH-RXN				
+rxn09483			-1:cpd00015:0:0:"FAD";-1:cpd00041:0:0:"L-Aspartate";1:cpd00982:0:0:"FADH2";1:cpd03470:0:0:"Iminoaspartate"	[SW] Corrected metabolite compartments.					
+rxn00548				[SW] Previous abbreviation referred to wrong KEGG identifier and caused wrong assignment to ec-number 4.1.2.9			F6p-p-ketolase		
+rxn15060				[SW] Previous abbreviation referred to wrong KEGG identifier and caused wrong assignment to ec-number 4.1.2.9			F6p-p-ketolase		
+rxn00782	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.2.1.13-RXN				
+rxn02424	>		-1:cpd00003:0:0:"NAD";-1:cpd00010:0:0:"CoA";-1:cpd00287:0:0:"3-Oxo-2-methylpropanoate";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd00086:0:0:"Propionyl-CoA";1:cpd00242:0:0:"H2CO3"	[SW] Reaction equation changes according to MetaCyc and RHEA	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.2.1.27-RXN				
+rxn12822	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUTAMATE-SYNTHASE-FERREDOXIN-RXN				
+									
+									
+rxn08783		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
+rxn08792		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
+rxn08793		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
+rxn10900		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
+rxn13717		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
+rxn13718		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
+rxn13719		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
+rxn13720		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
+rxn36711		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
+rxn37677		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
 									
 rxn08448	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd01107:1:0:"Decanoate";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";1:cpd03128:0:0:"Decanoyl-CoA";2:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248				
 rxn08449	>		-1:cpd00067:1:0:"H+";-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd01741:1:0:"ddca";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";2:cpd00067:0:0:"H+";1:cpd01260:0:0:"Lauroyl-CoA"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7248				
@@ -919,7 +938,7 @@ rxn06424	<		-1:cpd00001:0:0:"H2O";-1:cpd01099:0:0:"Calcidiol";-2:cpd11621:0:0:"O
 rxn06451	<		-1:cpd03509:0:0:"(3Z)-Phytochromobilin";-2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd00067:0:0:"H+";1:cpd00389:0:0:"Biliverdin";2:cpd11620:0:0:"Reducedferredoxin"						
 rxn06507	>		-1:cpd00007:0:0:"O2";-2:cpd00067:0:0:"H+";-1:cpd02047:0:0:"DOC";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00001:0:0:"H2O";1:cpd01450:0:0:"Corticosterone";2:cpd11621:0:0:"Oxidizedferredoxin"						
 rxn06926	>		-2:cpd00001:0:0:"H2O";-2:cpd00002:0:0:"ATP";-2:cpd00067:0:0:"H+";-1:cpd01090:0:0:"Ethyne";-2:cpd11620:0:0:"Reducedferredoxin";2:cpd00008:0:0:"ADP";2:cpd00009:0:0:"Phosphate";1:cpd03956:0:0:"Ethylene";2:cpd11621:0:0:"Oxidizedferredoxin"						
-rxn07189	=		-1:cpd00001:0:0:"H2O";-1:cpd00204:0:0:"CO";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";3:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"						
+rxn07189	>		-1:cpd00001:0:0:"H2O";-1:cpd00204:0:0:"CO";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";3:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"						
 rxn07191	>		-1:cpd00001:0:0:"H2O";-1:cpd00102:0:0:"Glyceraldehyde3-phosphate";-2:cpd11621:0:0:"Oxidizedferredoxin";3:cpd00067:0:0:"H+";1:cpd00169:0:0:"3-Phosphoglycerate";2:cpd11620:0:0:"Reducedferredoxin"		https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.2.7.5-RXN				
 rxn13775	=		-2:cpd00047:0:0:"Formate";-2:cpd11621:0:0:"Oxidizedferredoxin";-1:cpd00003:0:0:"NAD";2:cpd00011:0:0:"CO2";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"		http://www.rhea-db.org/reaction?id=46952				
 rxn14108	>		-1:cpd00001:0:0:"H2O";-1:cpd00448:0:0:"D-Glyceraldehyde";-2:cpd11621:0:0:"Oxidizedferredoxin";3:cpd00067:0:0:"H+";1:cpd00223:0:0:"Glycerate";2:cpd11620:0:0:"Reducedferredoxin"		https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.2.7.5-RXN				
@@ -1632,7 +1651,9 @@ rxn90015	>		-1:cpd00047:0:0:"Formate";-1:cpd00067:0:0:"H+";-1:cpd00038:0:0:"GTP"
 rxn90016	>		-1:cpd00047:0:0:"Formate";-1:cpd00067:0:0:"H+";-1:cpd00062:0:0:"UTP";1:cpd00358:0:0:"dUTP";1:cpd00001:0:0:"H2O";1:cpd00011:0:0:"CO2"	[SW] New Reaction. anaerobic ribonucleoside-triphosphate reductase.	https://metacyc.org/META/substring-search?type=NIL&object=1.1.98.6&quickSearch=Quick+Search		UTP-rd	Anaerobic Uridine desoxribonucleotide-triphosphate reductase	
 									
 rxn90017	>		-1:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd00069:0:0:"L-Tyrosine";-1:cpd00005:0:0:"NADPH";1:cpd00060:0:0:"L-Methionine";1:cpd00067:0:0:"H+";1:cpd01042:0:0:"p-Cresol";1:cpd03091:0:0:"5'-Deoxyadenosine";1:cpd14545:0:0:"Iminoglycine";1:cpd00006:0:0:"NADP"	[SW] New Reaction. Important for Thiman biosynthesis.	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-11319&detail-level=3		2-iminoacetate synthase	2-iminoacetate synthase	
+rxn90018	=		-2:cpd11620:0:0:"Reducedferredoxin";-2:cpd00006:0:0:"NADP";-1:cpd00004:0:0:"NADH";-1:cpd00067:0:0:"H+";2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd00005:0:0:"NADPH";1:cpd00003:0:0:"NAD"	[SW] New Reaction. Electron-Bifurcating Enzyme Complex (see reference)	Shuning Wang, Haiyan Huang, Johanna Moll, Rudolf K. Thauer (2010) Journal of Bacteriology		NfnAB	Coupled NADP reduction via ferredoxin and NADH	
 									
 rxn35560				[SW] Important for Lacto-N-tetraose degradatiion					TRUE
 rxn22385				[SW] Important for Rhmanose degradatiion without phosphorylated intermediates.					TRUE
 rxn22386				[SW] Important for Rhmanose degradatiion without phosphorylated intermediates.					TRUE
+rxn39175				[SW] Diffusion of butanol					TRUE
