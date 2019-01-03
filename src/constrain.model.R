@@ -19,6 +19,7 @@ constrain.model <- function(mod, media.file=NA, media=NA, scaling.fac = 1, ub = 
   media2 <- copy(media[is.na(mod.rxn.id)])
   media2[,compounds2 := gsub("EX_","",compounds)]
   media2[,compounds2 := gsub("_.0","",compounds2)]
+  gs.origin.tag <- !is.null(mod@react_attr$gs.origin) # If this tag exists in reaction attribute table, use it!
   if(nrow(media2)>0) {
     for(i in 1:nrow(media2)) {
       mod <- addReact(model = mod,
@@ -31,6 +32,9 @@ constrain.model <- function(mod, media.file=NA, media=NA, scaling.fac = 1, ub = 
                       lb = -media2[i, maxFlux] * scaling.fac,
                       reactName = paste0(media2[i,name], " Exchange"), 
                       metName = media2[i,name])
+      if(gs.origin.tag)
+        mod@react_attr[which(mod@react_id == media2[i,compounds]),c("gs.origin","seed")] <- c(7,gsub("_.0","",media2[i,compounds]))
+      
     }
   }
   return(mod)

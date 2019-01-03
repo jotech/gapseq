@@ -5,7 +5,7 @@
 correct_seed_rxnDB <- function(script.path) {
   require(data.table)
   require(stringr)
-  require(sybil)
+  #require(sybil)
   source(paste0(script.dir, "/generate_rxn_stoich_hash.R"))
   
   mseed <- fread(paste0(script.dir,"/../dat/seed_reactions.tsv"), header=T, stringsAsFactors = F, 
@@ -86,6 +86,11 @@ correct_seed_rxnDB <- function(script.path) {
     if(mseed.corr[i, rm.rxn]==TRUE) {
       mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id], 
             gapseq.status := "removed"]
+    }
+    # new abbreviation?
+    if(mseed.corr[i, abbreviation]!="" & !is.na(mseed.corr[i, abbreviation])) {
+      mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id], 
+            abbreviation := mseed.corr[i, abbreviation]]
     }
     # New reaction?
     if(!(mseed.corr[i, rnx.id] %in% mseed$id) & mseed.corr[i, rnx.id] != "" & !is.na(mseed.corr[i, rnx.id])) {

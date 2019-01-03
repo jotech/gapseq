@@ -99,6 +99,7 @@ carbon.source <- fread(paste0(script.dir, "/dat/sub2pwy.csv"))
 # read full model & target model
 cat("Loading model files", mod.file, "\n")
 mod        <- readRDS(fullmod.file)
+#mod        <- changeBounds(mod, react = "rxn00102_c0", lb = -0.1)
 if ( toupper(file_ext(mod.file)) == "RDS" ){
   mod.orig <- readRDS(mod.file)
 }else{ 
