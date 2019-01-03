@@ -61,6 +61,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   # Read reaction blast results
   dt <- fread(blast.res, header=T, stringsAsFactors = F)
   dt <- dt[,.(rxn, name, ec, tc = NA_character_, qseqid, pident, evalue, bitscore, qcovs, stitle, sstart, send, pathway, status, pathway.status, seed = dbhit)]
+
   # Read transporter blast results
   dt.trans <- fread(transporter.res, header=T, stringsAsFactors = F)
   dt.trans <- dt.trans[,.(rxn = id, name = paste("transport",tc,sub,sep="-"), ec = NA_character_, tc, qseqid, pident, evalue, bitscore, qcovs, stitle, 
@@ -100,6 +101,29 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
        dt <- dt[-rm.ids]
   }
 
+  # A specific fix for the issue with reactions 4.1.2.9 and 4.1.2.22
+  if("4.1.2.9" %in% dt$ec & "4.1.2.22" %in% dt$ec) {
+    rm.ids <- c()
+    one.hits.id <- which(dt$ec == "4.1.2.9" & !is.na(dt$bitscore))
+    two.hits.id <- which(dt$ec == "4.1.2.22" & !is.na(dt$bitscore))
+    if(length(one.hits.id)>0 & length(two.hits.id)>0) {
+      for(i in one.hits.id) {
+        for(j in two.hits.id) {
+          ol <- calc_seq_overlap(dt[i,sstart],dt[i,send],dt[j,sstart],dt[j,send])
+          if(ol > 0.2) {
+            if(dt[i, bitscore] > max(dt[two.hits.id, bitscore]))
+              rm.ids <- c(rm.ids, j)
+            if(dt[j, bitscore] > max(dt[one.hits.id, bitscore]))
+              rm.ids <- c(rm.ids, i)
+          }
+        }
+      }
+    }
+    rm.ids <- unique(rm.ids)
+    if(length(rm.ids > 0))
+      dt <- dt[-rm.ids]
+  }
+  
   # prepare reaction/transporter blast results table
   dt <- splitcol2rows_mget(dt, "seed", " ")
   dt.trans <- splitcol2rows_mget(dt.trans, "seed", ",")
@@ -116,7 +140,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   dt_seed_single_and_there <- dt_seed_single_and_there[!duplicated(seed)]
   
   # create gene list and attribute table
-  cat("Creating Gene-Reaction list... \n")
+  cat("Creating Gene-Reaction list... ")
   dt_genes <- copy(dt[!is.na(bitscore)])
   dt_genes[, gene := paste(sstart,send, sep = ":")]
   dt_genes <- dt_genes[!duplicated(paste(stitle,seed,gene,sep = "$"))]
@@ -124,6 +148,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   dt_genes[, rm := F]
   dt_genes$itmp <- 1:nrow(dt_genes)
   
+  # Calculating overlaps
   for(i in 1:nrow(dt_genes)) {
     astart <- dt_genes[i, sstart]
     aend <- dt_genes[i, send]
@@ -137,6 +162,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
     }
   }
   
+  cat(length(unique(dt_genes[rm == F, paste(stitle, gene, sep="$")])),"unique genes on",length(unique(dt_genes[rm == F, stitle])),"genetic elements\n")
   
   # create subsys list and attribute table
   dt_subsys <- copy(dt[!is.na(pathway)])
