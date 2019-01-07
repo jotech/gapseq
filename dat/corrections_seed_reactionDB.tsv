@@ -350,11 +350,11 @@ rxn13893			-1:cpd00791:0:0:"ProtoporphyrinogenIX";-3:cpd15500:0:0:"Menaquinone 8
 rxn04396		TRUE		[SW] Not needed for microbial reconstructions.					
 rxn11670		TRUE		[SW] Not needed for microbial reconstructions.					
 rxn04160	>		-2:cpd00001:0:0:"H2O";-2:cpd00002:0:0:"ATP";-2:cpd11620:0:0:"Reducedferredoxin";-1:cpd01845:0:0:"Protochlorophyllide";2:cpd00008:0:0:"ADP";2:cpd00009:0:0:"Phosphate";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd01449:0:0:"Chlorophyllide"	[SW] Stoichiometry & rev. changed for charge balance according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11902				
-rxn04397			-2:cpd00006:0:0:"NADP";-1:cpd06619:0:0:"(-)-Epicatechin";2:cpd00005:0:0:"NADPH";4:cpd00067:0:0:"H+";1:cpd03502:0:0:"IdB 1027"	[SW] Reaction completely wrong? Correct version stored in reaction ???rxn11671??	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9725				
-rxn04398			-2:cpd00006:0:0:"NADP";-1:cpd08918:0:0:"(-)-Epigallocatechin";2:cpd00005:0:0:"NADPH";4:cpd00067:0:0:"H+";1:cpd03505:0:0:"Ephdine"	[SW] Reaction completely wrong? Correct version stored in reaction "rxn11672??	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9723				
+rxn04397			-2:cpd00006:0:0:"NADP";-1:cpd06619:0:0:"(-)-Epicatechin";2:cpd00005:0:0:"NADPH";4:cpd00067:0:0:"H+";1:cpd03502:0:0:"IdB 1027"	[SW] Reaction completely wrong? Correct version stored in reaction rxn11671	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9725				
+rxn04398			-2:cpd00006:0:0:"NADP";-1:cpd08918:0:0:"(-)-Epigallocatechin";2:cpd00005:0:0:"NADPH";4:cpd00067:0:0:"H+";1:cpd03505:0:0:"Ephdine"	[SW] Reaction completely wrong? Correct version stored in reaction rxn11672	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9723				
 rxn04915	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-1.14.14.1				
 rxn00645	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=CYSTEINE-DIOXYGENASE-RXN				
-rxn12866			-1:cpd00006:0:0:"NADP";-1:cpd00517:0:0:"1-Acyl-sn-glycerol 3-phosphate";1:cpd00005:0:0:"NADPH";2:cpd00067:0:0:"H+";1:cpd12300:0:0:"Acylglycerone phosphate"	[SW] Reaction completely wrong? Correct version stored in reaction ?rxn06233?????	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17728				
+rxn12866			-1:cpd00006:0:0:"NADP";-1:cpd00517:0:0:"1-Acyl-sn-glycerol 3-phosphate";1:cpd00005:0:0:"NADPH";2:cpd00067:0:0:"H+";1:cpd12300:0:0:"Acylglycerone phosphate"	[SW] Reaction completely wrong? Correct version stored in reaction rxn06233	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17728				
 rxn04881		TRUE		[SW] Reaction unbalanced and causes futile cycles.					
 rxn10947		TRUE		[SW] Reaction unbalanced and causes futile cycles.					
 rxn09180	>			[SW] New direction according to Metacyc (via EC)	https://metacyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-1.3.3.4				
@@ -1657,3 +1657,4 @@ rxn35560				[SW] Important for Lacto-N-tetraose degradatiion					TRUE
 rxn22385				[SW] Important for Rhmanose degradatiion without phosphorylated intermediates.					TRUE
 rxn22386				[SW] Important for Rhmanose degradatiion without phosphorylated intermediates.					TRUE
 rxn39175				[SW] Diffusion of butanol					TRUE
+rxn36810				[SW] EC 1.6.5.3					TRUE
