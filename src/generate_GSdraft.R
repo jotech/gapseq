@@ -135,7 +135,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   
   # Get all reactions / transporters that have either high sequence evidence (bitscore)
   # TODO: Here we are currently loosing the information of isozymes
-  dt_seed_single_and_there <- copy(dt[bitscore >= high.evi.rxn.BS | pathway.status %in% c("full","treshold","keyenzyme")])
+  dt_seed_single_and_there <- copy(dt[(bitscore >= high.evi.rxn.BS & status != "bad_blast") | pathway.status %in% c("full","treshold","keyenzyme")])
   dt_seed_single_and_there <- dt_seed_single_and_there[order(seed,-bitscore)]
   dt_seed_single_and_there <- dt_seed_single_and_there[!duplicated(seed)]
   
@@ -260,11 +260,13 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   #
   # construct gapfill candidate reactions and their weight
   #
-  dt.cand <- dt[bitscore < high.evi.rxn.BS]
+  dt.cand <- copy(dt[bitscore < high.evi.rxn.BS | (bitscore >= high.evi.rxn.BS & status == "bad_blast")])
+  dt.cand[bitscore > high.evi.rxn.BS, bitscore := bitscore / 2] # apply penalty to the bitscore of exception reactions
   dt.cand[, max.bs := max(bitscore), by = "seed"]
   dt.cand <- dt.cand[max.bs == bitscore]
   dt.cand <- dt.cand[!duplicated(seed)]
   dt.cand[, max.bs := NULL]
+  dt.cand[bitscore > high.evi.rxn.BS, bitscore := high.evi.rxn.BS - 1]
   dt.cand[, weight := 1 - (bitscore / high.evi.rxn.BS)]
   
   return(list(mod=mod, cand.rxns=dt.cand))
