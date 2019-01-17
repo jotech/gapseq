@@ -55,8 +55,6 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
 
     }
     
-    stop("asd")
-    
     # clean up
     system(paste0("rm ", genome.seq.base, ".tmp"))
     system(paste0("rm ", genome.seq.base, ".tmp.fai"))
