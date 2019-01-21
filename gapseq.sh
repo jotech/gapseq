@@ -392,12 +392,18 @@ do
             out="${query_id%.*}".blast
             subunits_found=0
             if [ ! -f $out ]; then # check if there is a former hit
-                #subunits=$(cat $query | sed -n 's/^>//p' | grep -oP 'subunit [0-9]' | sort | uniq) # check for subunits
-                subunits=$(cat $query | sed -n 's/^>//p' | grep -oE 'subunit [0-9]|(alpha|beta|gamma|delta|epsilon) subunit' | sort | uniq) # check for subunits
-                undefined=$(cat $query | sed -n 's/^>//p' | grep -oEv 'subunit [0-9]|(alpha|beta|gamma|delta|epsilon) subunit' | sort | uniq) # check for sequences which do not follow regular expression => will be treated as other (i.e. one additional subunit)
+                subunit_prescan=$(cat $query | sed -n 's/^>//p' | grep -E 'subunit|chain' | wc -l) # prescan if subunits can be found because detection script is time intensive
+                if [ $subunit_prescan -gt 0 ]; then
+                    Rscript $dir/src/complex_detection.R $query subunit_tmp.fasta # set new fasta header with consistent subunit classification (avoid mix of arabic,latin and greek numbers)
+                    query=$(readlink -f subunit_tmp.fasta)
+                fi
+
+                #subunits=$(cat $query | sed -n 's/^>//p' | grep -oE 'subunit [0-9]|(alpha|beta|gamma|delta|epsilon) subunit' | sort | uniq) # check for subunits
+                subunits=$(cat $query | sed -n 's/^>//p' | grep -oE 'Subunit [0-9]+' | sort | uniq) # check for subunits
+                undefined=$(cat $query | sed -n 's/^>//p' | grep -Ev 'Subunit [0-9]+' | sort | uniq) # check for sequences which do not follow regular expression => will be treated as other (i.e. one additional subunit)
                 [ -n "$undefined" ] && subunits=$(echo -e "$subunits\nother" | sed '/^$/d') # add default case for undefined subunits
                 iterations=$(echo -e "$subunits"| wc -l) # every subunit will get a own iteration
-                [[ $iteractions -gt 1 ]] && echo -e '\t\t'check subunits: $subunits
+                [[ $iterations -gt 1 ]] && echo -e '\t\t'check subunits: $iterations
                 for iter in `seq $iterations`
                 do
                     if [ $iterations -gt 1 ]; then 
