@@ -37,7 +37,9 @@ seq.id <- names(seq)
 #hits <- str_extract(seq.id, "(subunit|chain|polypeptide) [1-9]+([A-Z])?\\b|(subunit|chain|polypeptide) [A-Z]+\\b|\\b[A-Z]+ (subunit|chain|polypeptide)|(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma) (subunit|chain|polypeptide)")
 
 # TODO:
-# wrongly matches: Respiratory-chain NADH dehydrogenase --> because of 'chain' ...)
+# - wrongly matches: Respiratory-chain NADH dehydrogenase --> because of 'chain' ...)
+# - gene names -> causing too many artefacts...
+# - how to handle sub-sub-complexes?
 
 # patterns
 com.synonymes <- "(\\bsubunit\\b|\\bchain\\b|\\bpolypeptide\\b)"
@@ -77,7 +79,7 @@ hits <- str_replace_all(hits, setNames(replace2, pattern2))
 #hits[1949]
 
 # other corrections
-hits <- str_replace(hits, "(Subunit [0-9]+)[A-Z]", "\\1")
+hits <- str_replace(hits, "(Subunit [0-9]+)[A-z]", "\\1") # how to handle sub-sub-complexes?
 
 
 #length(unique(hits))
@@ -93,6 +95,15 @@ if( dim(hits.tab)>0 & mean(hits.tab) >= 10 ){
   hits[which(hits %in% hits.low)] <- NA
 }
 #seq.id[which(is.na(hits))][1]
+
+# try to get high quality (i.e. ordered subunits) and remove everything else if coverage is high enough
+hits.tab <- table(hits)
+hits.sel <- grep("Subunit [0-9]+", names(hits.tab), value=T)
+hits.sel.cov <- sum(hits.tab[which(names(hits.tab) %in% hits.sel)])
+hits.sel.quali <- hits.sel.cov / length(seq.id)
+if( hits.sel.quali >= 0.66 ){
+  hits[which(!hits %in% hits.sel)] <- NA
+}
 
 #print(table(hits))
 

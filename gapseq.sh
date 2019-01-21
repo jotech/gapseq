@@ -400,8 +400,8 @@ do
                 fi
 
                 #subunits=$(cat $query | sed -n 's/^>//p' | grep -oE 'subunit [0-9]|(alpha|beta|gamma|delta|epsilon) subunit' | sort | uniq) # check for subunits
-                subunits=$(cat $query | sed -n 's/^>//p' | grep -oE 'Subunit \w+' | sort | uniq) # check for subunits
-                undefined=$(cat $query | sed -n 's/^>//p' | grep -Ev 'Subunit \w+' | sort | uniq) # check for sequences which do not follow regular expression => will be treated as other (i.e. one additional subunit)
+                subunits=$(cat $query | sed -n 's/^>//p' | grep -oE 'Subunit \w+$' | sort | uniq) # check for subunits
+                undefined=$(cat $query | sed -n 's/^>//p' | grep -Ev 'Subunit \w+$' | sort | uniq) # check for sequences which do not follow regular expression => will be treated as other (i.e. one additional subunit)
                 [ -n "$undefined" ] && subunits=$(echo -e "$subunits\nOther subunits" | sed '/^$/d') # add default case for undefined subunits
                 iterations=$(echo -e "$subunits"| wc -l) # every subunit will get a own iteration
                 [[ $iterations -gt 1 ]] && echo -e '\t\t'check subunits: $iterations
