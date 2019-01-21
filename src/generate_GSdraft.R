@@ -269,7 +269,8 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   dt.cand[bitscore > high.evi.rxn.BS, bitscore := high.evi.rxn.BS - 1]
   dt.cand[, weight := 1 - (bitscore / high.evi.rxn.BS)]
   
-  return(list(mod=mod, cand.rxns=dt.cand))
+  
+  return(list(mod=mod, cand.rxns=dt.cand, rxn_x_genes=dt_genes))
 }
 
 splitcol2rows_mget <- function(dtInput, col2split, sep){
@@ -341,6 +342,7 @@ mod <- build_draft_model_from_blast_results(blast.res = blast.res,
                                             high.evi.rxn.BS = high.evi.rxn.BS,
                                             script.dir = script.dir)
 
-# save draft model and reaction weights
+# save draft model and reaction weights and rxn-gene-table
 saveRDS(mod$mod,file = paste0(model.name, ".RDS"))
 saveRDS(mod$cand.rxns,file = paste0(model.name, "-rxnWeights.RDS"))
+saveRDS(mod$rxn_x_genes,file = paste0(model.name, "-rxnXgenes.RDS"))
