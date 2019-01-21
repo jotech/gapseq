@@ -10,10 +10,11 @@ cpd00048,Sulfate,100
 cpd00254,Mg,100
 cpd00063,Ca2+,100
 cpd10515,Fe2+,100
-cpd10516,fe3,0.01
+cpd10516,fe3,100
 cpd00058,Cu2+,100
 cpd00034,Zn2+,100
 cpd00149,Co2+,100
+cpd00030,Mn2+,100
 cpd00013,NH3,100
-cpd00054,L-Serine,0.1
-cpd00280,galacturate,0.1
+cpd00054,L-Serine,1
+cpd00280,galacturonate,1
