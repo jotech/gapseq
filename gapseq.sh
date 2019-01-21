@@ -399,9 +399,9 @@ do
                 fi
 
                 #subunits=$(cat $query | sed -n 's/^>//p' | grep -oE 'subunit [0-9]|(alpha|beta|gamma|delta|epsilon) subunit' | sort | uniq) # check for subunits
-                subunits=$(cat $query | sed -n 's/^>//p' | grep -oE 'Subunit [0-9]+' | sort | uniq) # check for subunits
-                undefined=$(cat $query | sed -n 's/^>//p' | grep -Ev 'Subunit [0-9]+' | sort | uniq) # check for sequences which do not follow regular expression => will be treated as other (i.e. one additional subunit)
-                [ -n "$undefined" ] && subunits=$(echo -e "$subunits\nother" | sed '/^$/d') # add default case for undefined subunits
+                subunits=$(cat $query | sed -n 's/^>//p' | grep -oE 'Subunit \w+' | sort | uniq) # check for subunits
+                undefined=$(cat $query | sed -n 's/^>//p' | grep -Ev 'Subunit \w+' | sort | uniq) # check for sequences which do not follow regular expression => will be treated as other (i.e. one additional subunit)
+                [ -n "$undefined" ] && subunits=$(echo -e "$subunits\nOther subunits" | sed '/^$/d') # add default case for undefined subunits
                 iterations=$(echo -e "$subunits"| wc -l) # every subunit will get a own iteration
                 [[ $iterations -gt 1 ]] && echo -e '\t\t'check subunits: $iterations
                 for iter in `seq $iterations`
@@ -409,12 +409,13 @@ do
                     if [ $iterations -gt 1 ]; then 
                         # apt install exonerate
                         fastaindex $query query.idx
-                        if [ "$subunit_key" == "other" ];then
-                            subunit_key=$(echo "$subunits" | tr '\n' '|' | sed 's/|$//g')
-                            cat $query | sed -n 's/^>//p' | grep -vE "$subunit_key" | awk '{print $1}' | sed 's/^>//g' > query_subunit_header
+                        subunit_id=$(echo "$subunits" | sed -n ${iter}p)
+                        #echo $subunit_id
+                        if [ "$subunit_id" == "Other subunits" ];then
+                            subunit_id2=$(echo "$subunits" | tr '\n' '|' | sed 's/|$//g') # inverse search
+                            cat $query | sed -n 's/^>//p' | grep -Ev "$subunit_id2" | awk '{print $1}' | sed 's/^>//g' > query_subunit_header
                         else
-                            subunit_key=$(echo "$subunits" | sed -n ${iter}p)
-                            cat $query | grep "$subunit_key" | awk '{print $1}' | sed 's/^>//g' > query_subunit_header
+                            cat $query | grep "$subunit_id" | awk '{print $1}' | sed 's/^>//g' > query_subunit_header
                         fi
                         #echo -e $iter "\n"
                         fastafetch -f $query -i query.idx -Fq <(sort -u query_subunit_header) > query_subunit.fasta
@@ -439,7 +440,7 @@ do
                             bestsubunithit=$(echo "$bhit" | sort -rgk 4,4 | head -1)
                             hit_id=$(echo $bestsubunithit | awk '{print $1}')
                             #echo -e '\t'subunit $iter found: $hit_id
-                            [[ $iterations -gt 1 ]] && cat $q | head -1 | sed "s/^/\t\t$subunit_key hit: /" 
+                            [[ $iterations -gt 1 ]] && cat $q | head -1 | sed "s/^/\t\t$subunit_id hit: /" 
                             ((subunits_found++))
                             break
                         fi

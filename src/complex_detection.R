@@ -17,14 +17,32 @@ suppressMessages(library(Biostrings))
 suppressMessages(library(stringr))
 suppressMessages(library(methods))
 
-#seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.6.5.3.fasta")
-#seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.9.3.1.fasta")
+#seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.6.5.3.fasta") # complex1
+#seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.9.3.1.fasta") # complex4
+#seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.2.4.1.fasta") # PDH
+#seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/4.1.1.39.fasta") # rubisco
 seq <- readAAStringSet(args[1])
 seq.id <- names(seq)
 
 # duplicated hits in seq.id (247,249,300) with str_extract_all
 #hits <- str_extract(seq.id, "chain [1-9]+([A-Z])?|subunit [1-9]+([A-Z])?\\b|subunit [A-Z]+\\b|\\b[A-Z]+ subunit|chain [A-Z]+\\b|(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma) subunit")
-hits <- str_extract(seq.id, "(subunit|chain|polypeptide) [1-9]+([A-Z])?\\b|(subunit|chain|polypeptide) [A-Z]+\\b|\\b[A-Z]+ (subunit|chain|polypeptide)|(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma) (subunit|chain|polypeptide)")
+#hits <- str_extract(seq.id, "(subunit|chain|polypeptide) [1-9]+([A-Z])?\\b|(subunit|chain|polypeptide) [A-Z]+\\b|\\b[A-Z]+ (subunit|chain|polypeptide)|(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma) (subunit|chain|polypeptide)")
+
+# TODO:
+# wrongly matches: Respiratory-chain NADH dehydrogenase --> because of 'chain' ...)
+
+# patterns
+com.synonymes <- "(\\bsubunit\\b|\\bchain\\b|\\bpolypeptide\\b)"
+com.pat1  <- paste0(com.synonymes, " [1-9]+([A-Z])?\\b")
+com.pat2  <- paste0(com.synonymes, " [A-Z]+\\b")
+com.pat3  <- paste0("\\b[A-Z]+ ", com.synonymes)
+com.pat4  <- paste0("(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma) ", com.synonymes)
+com.pat5  <- paste0(com.synonymes, " (alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma)")
+com.pat6  <- paste0(com.synonymes, " [A-Z][A-z]+\\b")
+hits <- str_extract(seq.id, paste0(com.pat1,"|",com.pat2,"|",com.pat3,"|",com.pat4,"|",com.pat5,"|",com.pat6))
+
+#str_extract(seq.id[863], paste0(com.pat1,"|",com.pat2,"|",com.pat3,"|",com.pat4,"|",com.pat5))
+
 hits <- gsub("subunit|chain|polypeptide", "Subunit", hits)
 
 # change order (alpha subunit => subunit alpha)
@@ -56,12 +74,13 @@ hits <- str_replace(hits, "(Subunit [0-9]+)[A-Z]", "\\1")
 
 #length(unique(hits))
 #table(hits)
-#seq.id[which(hits=="Subunit 12")]
+#seq.id[which(hits=="Subunit of")][1:5]
+#hits[which(hits=="Subunit NADH")][1:5]
 
 # remove subunit hits with low amount of sequences (~false hits)
 hits.tab <- table(hits)
 #print(hits.tab)
-if( mean(hits.tab) >= 10 ){
+if( dim(hits.tab)>0 & mean(hits.tab) >= 10 ){
   hits.low <- names(hits.tab)[which( hits.tab < 5 )]
   hits[which(hits %in% hits.low)] <- NA
 }
