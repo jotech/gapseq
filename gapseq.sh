@@ -237,7 +237,8 @@ if [ -n "$ecnumber" ] || [ -n "$reaname" ]; then
     fi
     rea_id=$(seq 1 $rea_count | awk '{print "reaction"$1}' |tr '\n' ',')
     pwyKey="custom"
-    pwyDB=$(echo -e "custom\t$ecnumber\t\t\t\t${rea_id::-1}\t$ecnumber\t\t$reaname")
+    #pwyDB=$(echo -e "custom\t$ecnumber\t\t\t\t${rea_id::-1}\t$ecnumber\t\t$reaname") # slicing is incompatible?
+    pwyDB=$(echo -e "custom\t$ecnumber\t\t\t\t${rea_id}\t$ecnumber\t\t$reaname")
     pathways="custom"
 else
     pwyDatabase=$(echo $pwyDatabase | tr '[:upper:]' '[:lower:]')
