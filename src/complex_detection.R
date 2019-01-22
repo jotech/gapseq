@@ -29,6 +29,7 @@ suppressMessages(library(methods))
 #seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.9.3.1.fasta") # complex4
 #seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.2.4.1.fasta") # PDH
 #seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/4.1.1.39.fasta") # rubisco
+#seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.2.7.1.fasta") # PFOR
 seq <- readAAStringSet(args[1])
 seq.id <- names(seq)
 

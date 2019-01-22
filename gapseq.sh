@@ -392,8 +392,9 @@ do
             query_id=$(basename $query)
             out="${query_id%.*}".blast
             subunits_found=0
+            subunits_undefined_found=0
             if [ ! -f $out ]; then # check if there is a former hit
-                subunit_prescan=$(cat $query | sed -n 's/^>//p' | grep -E 'subunit|chain' | wc -l) # prescan if subunits can be found because detection script is time intensive
+                subunit_prescan=$(cat $query | sed -n 's/^>//p' | grep -E 'subunit|chain|polypeptide' | wc -l) # prescan if subunits can be found because detection script is time intensive
                 if [ $subunit_prescan -gt 0 ]; then
                     Rscript $dir/src/complex_detection.R $query subunit_tmp.fasta # set new fasta header with consistent subunit classification (avoid mix of arabic,latin and greek numbers)
                     query=$(readlink -f subunit_tmp.fasta)
@@ -401,10 +402,11 @@ do
 
                 #subunits=$(cat $query | sed -n 's/^>//p' | grep -oE 'subunit [0-9]|(alpha|beta|gamma|delta|epsilon) subunit' | sort | uniq) # check for subunits
                 subunits=$(cat $query | sed -n 's/^>//p' | grep -oE 'Subunit \w+$' | sort | uniq) # check for subunits
+                subunits_count=$(echo -e "$subunits"| wc -l) 
                 undefined=$(cat $query | sed -n 's/^>//p' | grep -Ev 'Subunit \w+$' | sort | uniq) # check for sequences which do not follow regular expression => will be treated as other (i.e. one additional subunit)
-                [ -n "$undefined" ] && subunits=$(echo -e "$subunits\nOther subunits" | sed '/^$/d') # add default case for undefined subunits
+                [[ -n "$undefined" ]] && subunits=$(echo -e "$subunits\nSubunit undefined" | sed '/^$/d') # add default case for undefined subunits
+                [[ $subunits_count -gt 1 ]] && echo -e '\t\t'check subunits: $subunits_count
                 iterations=$(echo -e "$subunits"| wc -l) # every subunit will get a own iteration
-                [[ $iterations -gt 1 ]] && echo -e '\t\t'check subunits: $iterations
                 for iter in `seq $iterations`
                 do
                     if [ $iterations -gt 1 ]; then 
@@ -412,7 +414,7 @@ do
                         fastaindex $query query.idx
                         subunit_id=$(echo "$subunits" | sed -n ${iter}p)
                         #echo $subunit_id
-                        if [ "$subunit_id" == "Other subunits" ];then
+                        if [ "$subunit_id" == "Subunit undefined" ];then
                             subunit_id2=$(echo "$subunits" | tr '\n' '|' | sed 's/|$//g') # inverse search
                             cat $query | sed -n 's/^>//p' | grep -Ev "$subunit_id2" | awk '{print $1}' | sed 's/^>//g' > query_subunit_header
                         else
@@ -443,12 +445,14 @@ do
                             #echo -e '\t'subunit $iter found: $hit_id
                             [[ $iterations -gt 1 ]] && cat $q | head -1 | sed "s/^/\t\t$subunit_id hit: /" 
                             ((subunits_found++))
+                            [[ "$subunit_id" == "Subunit undefined" ]] && ((subunits_undefined_found++))
                             break
                         fi
                     done
                     rm query_subunit.part-*.fasta*
                 done
-                [[ $iterations -gt 1 ]] && [[ verbose -ge 1 ]] &&  echo -e '\t\t'total subunits found: $subunits_found / $iterations
+                [[ $iterations -gt 1 ]] && [[ verbose -ge 1 ]] &&  echo -e '\t\t'total subunits found: `echo $subunits_found - $subunits_undefined_found | bc` / $subunits_count
+                [[ $iterations -gt 1 ]] && [[ verbose -ge 1 ]] && [[ $subunits_undefined_found -eq 1 ]] && echo -e '\t\tUndefined subunit found' 
                 echo -e $out'\t'$subunits_found'\t'$iterations >> subunits.log # save subunits found
             else
                 # get subunit fraction from former run
@@ -458,8 +462,9 @@ do
             fi
             if [ -s $out ]; then
                 bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
-                subunit_fraction=$(echo "100*$subunits_found/$iterations" | bc)
-                if [ -n "$bhit" ] && [ $subunit_fraction -gt $subunit_cutoff ] ; then
+                subunit_fraction=$(echo "100*$subunits_found/$subunits_count" | bc)
+                [[ $subunit_fraction -eq $subunit_cutoff ]] && [[ $subunits_undefined_found -eq 1 ]] && [[ verbose -ge 1 ]] && echo -e '\t\t\tUndefined subunit caused that threshold is passed' # undefined subunit can have bonus effect
+                if [ -n "$bhit" ] && ( [ $subunit_fraction -gt $subunit_cutoff ] || ( [ $subunit_fraction -eq $subunit_cutoff ] && [ $subunits_undefined_found -eq 1 ] ) ); then
                     bestIdentity=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f2)
                     bestBitscore=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f4)
                     bestCoverage=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f5)
