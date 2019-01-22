@@ -98,7 +98,7 @@ if [ -n "$ecnumber" ]; then
             if [ -f "$ec.fasta" ] &&  [ "$overwrite" = false ]; then # do not update existing files
                 continue
             else
-                rm $ec.fasta
+                rm -f $ec.fasta
             fi
             echo -en " ... Downloading $ec \t\t"
             if [ ! -f "$ec.fasta" ] && [ "$get_all" = false ]; then # fasta doesn't exist?
@@ -128,7 +128,7 @@ if [ -n "$reaNames" ]; then
         if [ -f "$reaNameHash.fasta" ] &&  [ "$overwrite" = false ]; then # do not update existing files
             continue
         else
-            rm $reaNameHash.fasta
+            rm -f $reaNameHash.fasta
         fi
         echo -en " ... Downloading $rea $reaNameHash\t\t"
         if [ ! -f "$reaNameHash.fasta" ] && [ "$get_all" = false ]; then # fasta doesn't exist?
