@@ -1,6 +1,7 @@
 library(getopt)
 suppressMessages(library(stringr))
 suppressMessages(library(stringi))
+suppressMessages(library(R.utils))
 library(methods)
 options(error=traceback)
 
@@ -25,7 +26,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   if(gram=="auto") {
     if(grepl("\\.gz$", genome.seq)) {
       suppressMessages(require(R.utils))
-      genome.seq <- gunzip(genome.seq, remove = F, temporary = T, overwrite = T)
+      genome.seq <- R.utils::gunzip(genome.seq, remove = F, temporary = T, overwrite = T)
     } else {
       
     }
