@@ -231,11 +231,11 @@ if [ -n "$ecnumber" ] || [ -n "$reaname" ]; then
         ecnumber=$(echo $reaname | grep -o ";" | tr ';' ',') # get dummy empty comma seperated ec numbers
     elif [[ -z "$reaname" ]]; then
         rea_count=$(echo $ecnumber | tr ',' '\n' | wc -l)
-        reaname=$(echo $ecnumber | grep -o "," | tr ',' ';') # get dummy empty colon seperated reaction names
+        reaname=$(echo $ecnumber | grep -o "," | tr -d '\n' | tr ',' ';') # get dummy empty colon seperated reaction names
     else  
         rea_count=$(echo $ecnumber | tr ',' '\n' | wc -l)
     fi
-    rea_id=$(seq 1 $rea_count | awk '{print "reaction"$1}' |tr '\n' ',')
+    rea_id=$(seq 1 $rea_count | awk '{print "reaction"$1}' | tr '\n' ',' | sed 's/,$//g')
     pwyKey="custom"
     #pwyDB=$(echo -e "custom\t$ecnumber\t\t\t\t${rea_id::-1}\t$ecnumber\t\t$reaname") # slicing is incompatible?
     pwyDB=$(echo -e "custom\t$ecnumber\t\t\t\t${rea_id}\t$ecnumber\t\t$reaname")
