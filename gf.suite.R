@@ -104,8 +104,15 @@ if ( toupper(file_ext(mod.file)) == "RDS" ){
   mod.orig <- readRDS(mod.file)
 }else{ 
   mod.orig <- readSBMLmod(mod.file)}
-mod.orig   <- add_missing_exchanges(mod.orig)
 
+# This here is needed if another draft than GapSeq's own draft networks are gapfilled
+if((!"gs.origin" %in% colnames(mod.orig@react_attr))) {
+  mod.orig@react_attr <- data.frame(seed      = gsub("_.0","",mod.orig@react_id),
+                                    gs.origin = 0,
+                                    stringsAsFactors = F)
+}
+
+mod.orig   <- add_missing_exchanges(mod.orig)
 
 # add diffusion reactions
 mod.orig       <- add_missing_diffusion(mod.orig)
