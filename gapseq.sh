@@ -393,6 +393,8 @@ do
             out="${query_id%.*}".blast
             subunits_found=0
             subunits_undefined_found=0
+            subunit_prescan=0
+            iteractions=0
             if [ ! -f $out ]; then # check if there is a former hit
                 subunit_prescan=$(cat $query | sed -n 's/^>//p' | grep -E 'subunit|chain|polypeptide' | wc -l) # prescan if subunits can be found because detection script is time intensive
                 if [ $subunit_prescan -gt 0 ]; then
@@ -440,19 +442,19 @@ do
                         bhit=$(cat query.blast | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
                         rm query.blast
                         if [ -n "$bhit" ]; then
-                            bestsubunithit=$(echo "$bhit" | sort -rgk 4,4 | head -1)
-                            hit_id=$(echo $bestsubunithit | awk '{print $1}')
-                            #echo -e '\t'subunit $iter found: $hit_id
-                            [[ $iterations -gt 1 ]] && cat $q | head -1 | sed "s/^/\t\t$subunit_id hit: /" 
+                            bestsubunithit=$(echo "$bhit" | sort -rgk 4,4 | head -3)
+                            [[ $iterations -gt 1 ]] && cat $q | head -1 | sed "s/^/\t\t\t$subunit_id hit: /" 
                             ((subunits_found++))
                             [[ "$subunit_id" == "Subunit undefined" ]] && ((subunits_undefined_found++))
+                            is_bidihit=NA # TODO: bidirectional blast not implemented for subunits!!
+                            [[ $iterations -gt 1 ]] && echo "$bestsubunithit" | awk -v subunit="$subunit_id" -v rea="$rea" -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t"subunit}' >> reactions.tbl
                             break
                         fi
                     done
                     rm query_subunit.part-*.fasta*
                 done
                 [[ $iterations -gt 1 ]] && [[ verbose -ge 1 ]] &&  echo -e '\t\t'total subunits found: `echo $subunits_found - $subunits_undefined_found | bc` / $subunits_count
-                [[ $iterations -gt 1 ]] && [[ verbose -ge 1 ]] && [[ $subunits_undefined_found -eq 1 ]] && echo -e '\t\tUndefined subunit found' 
+                #[[ $iterations -gt 1 ]] && [[ verbose -ge 1 ]] && [[ $subunits_undefined_found -eq 1 ]] && echo -e '\t\tUndefined subunit found' 
                 echo -e $out'\t'$subunits_found'\t'$iterations >> subunits.log # save subunits found
             else
                 # get subunit fraction from former run
@@ -471,7 +473,7 @@ do
                     besthit_all=$(echo "$bhit" | sort -rgk 4,4 | head -3)
                     bhit_count=$(echo "$bhit" | wc -l)
                     [[ verbose -ge 1 ]] && echo -e '\t\t'Blast hit \(${bhit_count}x\)
-                    [[ verbose -ge 1 ]] && echo "$besthit_all" | awk '{print "\t\t\tbit="$4 " id="$2 " cov="$5 " hit="$1}'
+                    [[ verbose -ge 1 ]] && [[ $iterations -le 1 ]] && echo "$besthit_all" | awk '{print "\t\t\tbit="$4 " id="$2 " cov="$5 " hit="$1}' # only for non-subunit hits
                     # check if key reactions of pathway
                     is_bidihit=NA
                     if [[ $keyRea = *"$rea"* ]]; then
@@ -507,7 +509,7 @@ do
                     else
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO candidate reaction found for import
                     fi
-                    echo "$besthit_all" | awk -v rea="$rea" -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit}' >> reactions.tbl
+                    [[ $iterations -le 1 ]] && echo "$besthit_all" | awk -v rea="$rea" -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t""NA"}' >> reactions.tbl # only for non-subunit hits
                     ((countex++))
                     countexList="$countexList$rea "
                 else
@@ -515,7 +517,7 @@ do
                     someBitscore=$(cat $out | sort -rgk 4,4 | head -1 | cut -f4)
                     someCoverage=$(cat $out | sort -rgk 4,4 | head -1 | cut -f5)
                     somehit_all=$( cat $out | sort -rgk 4,4 | head -1)
-                    echo -e "$rea\t$reaName\t$ec\tNA\t$somehit_all\t$pwy\tbad_blast\tNA\t$dbhit" >> reactions.tbl 
+                    echo -e "$rea\t$reaName\t$ec\tNA\t$somehit_all\t$pwy\tbad_blast\tNA\t$dbhit\tNA" >> reactions.tbl 
                     if [ $subunit_fraction -gt $subunit_cutoff ] || [ $iterations -eq 1 ] ; then
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO good blast hit"\n\t\t\t(best one: bit=$someBitscore id=$someIdentity cov=$someCoverage)"
                     else
@@ -530,7 +532,7 @@ do
                 #echo -e "\t\t$query" 
                 if [[ -n "$dbhit" ]];then
                     pwyNoHitFound="$pwyNoHitFound$dbhit "
-                    echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit" >> reactions.tbl 
+                    echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\tNA" >> reactions.tbl 
                 fi
             fi
         else
@@ -540,7 +542,7 @@ do
             ((vague++))
             [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
             [[ $keyRea = *"$rea"* ]] && vagueKeyReaFound="$vagueKeyReaFound $rea"
-            echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_seq_data\tNA\t$dbhit" >> reactions.tbl 
+            echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_seq_data\tNA\t$dbhit\tNA" >> reactions.tbl 
         fi
         [[ verbose -ge 2 ]] && echo -e "\t\tCandidate reactions: $dbhit"
     done # pathway
@@ -633,7 +635,7 @@ fi
 echo $cand > newReactions.lst
 #cp newReactions.lst $curdir/${fastaID}-$output_suffix-Reactions.lst # not needed anymore
 cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
-[[ -s reactions.tbl ]] && echo "rxn name ec bihit $blast_format pathway status pathway.status dbhit" | tr ' ' '\t' | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-Reactions.tbl # add header and remove duplicates
+[[ -s reactions.tbl ]] && echo "rxn name ec bihit $blast_format pathway status pathway.status dbhit complex" | tr ' ' '\t' | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-Reactions.tbl # add header and remove duplicates
 
 
 # cleaning
