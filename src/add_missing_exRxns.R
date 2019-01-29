@@ -87,7 +87,6 @@ add_reaction_from_db <- function(mod, react, gs.origin = NA) {
   mseed <- fread(rxndb.path, header=T, stringsAsFactors = F)
   mseed <- mseed[gapseq.status %in% c("approved","corrected")]
   mseed <- mseed[order(id)]
-  
   mseed <- mseed[id %in% react]
   
   if(nrow(mseed)==0) {
