@@ -13,4 +13,5 @@ required R-packages
 - getopt
 - Biostrings (via Bioconductor)
 - stringr
+- R.utils
 
