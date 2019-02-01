@@ -447,7 +447,7 @@ do
                             ((subunits_found++))
                             [[ "$subunit_id" == "Subunit undefined" ]] && ((subunits_undefined_found++))
                             is_bidihit=NA # TODO: bidirectional blast not implemented for subunits!!
-                            [[ $iterations -gt 1 ]] && echo "$bestsubunithit" | awk -v subunit="$subunit_id" -v rea="$rea" -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t"subunit}' >> reactions.tbl
+                            [[ $iterations -gt 1 ]] && echo "$bestsubunithit" | awk -v exception="$is_exception" -v subunit="$subunit_id" -v rea="$rea" -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t"subunit"\t"exception}' >> reactions.tbl
                             break
                         fi
                     done
@@ -509,7 +509,7 @@ do
                     else
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO candidate reaction found for import
                     fi
-                    [[ $iterations -le 1 ]] && echo "$besthit_all" | awk -v rea="$rea" -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t""NA"}' >> reactions.tbl # only for non-subunit hits
+                    [[ $iterations -le 1 ]] && echo "$besthit_all" | awk -v exception="$is_exception" -v rea="$rea" -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t""NA""\t"exception}' >> reactions.tbl # only for non-subunit hits
                     ((countex++))
                     countexList="$countexList$rea "
                 else
@@ -517,7 +517,7 @@ do
                     someBitscore=$(cat $out | sort -rgk 4,4 | head -1 | cut -f4)
                     someCoverage=$(cat $out | sort -rgk 4,4 | head -1 | cut -f5)
                     somehit_all=$( cat $out | sort -rgk 4,4 | head -1)
-                    echo -e "$rea\t$reaName\t$ec\tNA\t$somehit_all\t$pwy\tbad_blast\tNA\t$dbhit\tNA" >> reactions.tbl 
+                    echo -e "$rea\t$reaName\t$ec\tNA\t$somehit_all\t$pwy\tbad_blast\tNA\t$dbhit\tNA\t$is_exception" >> reactions.tbl 
                     if [ $subunit_fraction -gt $subunit_cutoff ] || [ $iterations -eq 1 ] ; then
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO good blast hit"\n\t\t\t(best one: bit=$someBitscore id=$someIdentity cov=$someCoverage)"
                     else
@@ -532,7 +532,7 @@ do
                 #echo -e "\t\t$query" 
                 if [[ -n "$dbhit" ]];then
                     pwyNoHitFound="$pwyNoHitFound$dbhit "
-                    echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\tNA" >> reactions.tbl 
+                    echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\tNA\t$is_exception" >> reactions.tbl 
                 fi
             fi
         else
@@ -542,7 +542,7 @@ do
             ((vague++))
             [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
             [[ $keyRea = *"$rea"* ]] && vagueKeyReaFound="$vagueKeyReaFound $rea"
-            echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_seq_data\tNA\t$dbhit\tNA" >> reactions.tbl 
+            echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_seq_data\tNA\t$dbhit\tNA\t$is_exception" >> reactions.tbl 
         fi
         [[ verbose -ge 2 ]] && echo -e "\t\tCandidate reactions: $dbhit"
     done # pathway
@@ -635,7 +635,7 @@ fi
 echo $cand > newReactions.lst
 #cp newReactions.lst $curdir/${fastaID}-$output_suffix-Reactions.lst # not needed anymore
 cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
-[[ -s reactions.tbl ]] && echo "rxn name ec bihit $blast_format pathway status pathway.status dbhit complex" | tr ' ' '\t' | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-Reactions.tbl # add header and remove duplicates
+[[ -s reactions.tbl ]] && echo "rxn name ec bihit $blast_format pathway status pathway.status dbhit complex exception" | tr ' ' '\t' | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-Reactions.tbl # add header and remove duplicates
 
 
 # cleaning
