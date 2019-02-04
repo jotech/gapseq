@@ -98,7 +98,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, min.bs.for.c
                               costcoeffw = c.coef.dt$weight,
                               pFBAcoeff = pFBAcoeff)
       sol.fba <- optimizeProb(modj_warm)
-      
+
       n.iter  <- n.iter + 1
       sol.tmp <- sol.fba$obj
       if(sol.tmp <= 0)

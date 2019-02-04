@@ -76,8 +76,11 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt.cand <- dt.cand[max.bs == bitscore]
   dt.cand <- dt.cand[!duplicated(seed)]
   dt.cand[, max.bs := NULL]
-  dt.cand[bitscore >= high.evi.rxn.BS, bitscore := high.evi.rxn.BS - 1]
-  dt.cand[, weight := 1 - (bitscore / high.evi.rxn.BS)]
+  #dt.cand[bitscore >= high.evi.rxn.BS, bitscore := high.evi.rxn.BS - 1]
+  dt.cand[, bs.tmp := bitscore]
+  dt.cand[bs.tmp >= high.evi.rxn.BS, bs.tmp := high.evi.rxn.BS - 1]
+  dt.cand[, weight := 1 - (bs.tmp / high.evi.rxn.BS)]
+  dt.cand[, bs.tmp := NULL]
   
   return(list(dt = dt, dt.cand = dt.cand))
 }
