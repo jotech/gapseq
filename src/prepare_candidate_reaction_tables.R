@@ -72,9 +72,11 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   #  dt.cand <- copy(dt[bitscore < high.evi.rxn.BS | (bitscore >= high.evi.rxn.BS & status == "bad_blast")])
   #  dt.cand[bitscore > high.evi.rxn.BS, bitscore := bitscore / 2] # apply penalty to the bitscore of exception reactions
   #}
-  dt.cand[status == "bad_blast" & pathway.status %in% c("full","treshold","keyenzyme"), bitscore := high.evi.rxn.BS] # Those reactions are considered candidate reactions due to toplogy criteria
-  
-  dt.cand[, max.bs := max(bitscore), by = "seed"]
+  dt.cand[status %in% c("bad_blast","no_blast") & pathway.status %in% c("full","treshold","keyenzyme"), bitscore := high.evi.rxn.BS] # Those reactions are considered candidate reactions due to toplogy criteria
+
+  dt.cand[, all.na := all(is.na(bitscore)), by = "seed"]
+  dt.cand <- dt.cand[all.na == FALSE] # remove reactions which have no bitscore at all
+  dt.cand[, max.bs := max(bitscore, na.rm=TRUE), by = "seed"]
   dt.cand <- dt.cand[max.bs == bitscore]
   dt.cand <- dt.cand[!duplicated(seed)]
   dt.cand[, max.bs := NULL]
