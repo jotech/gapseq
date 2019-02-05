@@ -30,6 +30,10 @@ suppressMessages(library(methods))
 #seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.2.4.1.fasta") # PDH
 #seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/4.1.1.39.fasta") # rubisco
 #seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.2.7.1.fasta") # PFOR
+#seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/6.6.1.2.fasta") # b12
+
+#seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/2.2.1.6.fasta") # 
+
 seq <- readAAStringSet(args[1])
 seq.id <- names(seq)
 
@@ -50,7 +54,8 @@ com.pat3  <- paste0("\\b[A-Z]+ ", com.synonymes)
 com.pat4  <- paste0("(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma) ", com.synonymes)
 com.pat5  <- paste0(com.synonymes, " (alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma)")
 com.pat6  <- paste0(com.synonymes, " [A-Z][A-z]+\\b")
-hits <- str_extract(seq.id, paste0(com.pat1,"|",com.pat2,"|",com.pat3,"|",com.pat4,"|",com.pat5,"|",com.pat6))
+com.pat7  <- paste0("(large|small) ", com.synonymes)
+hits <- str_extract(seq.id, paste0(com.pat1,"|",com.pat2,"|",com.pat3,"|",com.pat4,"|",com.pat5,"|",com.pat6,"|",com.pat7))
 
 #str_extract(seq.id[863], paste0(com.pat1,"|",com.pat2,"|",com.pat3,"|",com.pat4,"|",com.pat5))
 
@@ -59,6 +64,7 @@ hits <- gsub("subunit|chain|polypeptide", "Subunit", hits)
 # change order (alpha subunit => subunit alpha)
 hits <- str_replace(hits, "([A-Z]+) Subunit", "Subunit \\1")
 hits <- str_replace(hits, "(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma) Subunit", "Subunit \\1")
+hits <- str_replace(hits, "(large|small) Subunit", "Subunit \\1")
 #hits[1949]
 
 # latin numbers
@@ -79,14 +85,19 @@ replace2 <- as.character(1:17)
 hits <- str_replace_all(hits, setNames(replace2, pattern2))
 #hits[1949]
 
+#
+pattern3 <- c("large", "small")
+replace3 <- as.character(1:2)
+hits <- str_replace_all(hits, setNames(replace3, pattern3))
+
 # other corrections
 hits <- str_replace(hits, "(Subunit [0-9]+)[A-z]", "\\1") # how to handle sub-sub-complexes?
 
 
 #length(unique(hits))
 #table(hits)
-#seq.id[which(hits=="Subunit of")][1:5]
-#hits[which(hits=="Subunit NADH")][1:5]
+#seq.id[which(hits=="Subunit 8")][1:5]
+#hits[which(hits=="Subunit 8")][1:5]
 
 # remove subunit hits with low amount of sequences (~false hits)
 hits.tab <- table(hits)
