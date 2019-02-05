@@ -51,7 +51,7 @@ if(is.na(model.name))
 
 # Get Candidate reaction list for gapfilling algorithm
 cand.rxn.out <- prepare_candidate_reaction_tables(blast.res = blast.res, transporter.res = transporter.res,
-                                                  high.evi.rxn.BS = high.evi.rxn.BS, for.GS.draft = F)
+                                                  high.evi.rxn.BS = high.evi.rxn.BS)
 
 cand.rxn.gf <- cand.rxn.out$dt.cand
 

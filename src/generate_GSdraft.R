@@ -69,7 +69,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   seed_x_aliases <- fread(paste0(script.dir,"/../dat/seed_Enzyme_Name_Reactions_Aliases.tsv"), header=T)
   
   # Prepare candidate reaction tables for draft network and gapfilling
-  dt.cand.tmp <- prepare_candidate_reaction_tables(blast.res, transporter.res, high.evi.rxn.BS, for.GS.draft = T)
+  dt.cand.tmp <- prepare_candidate_reaction_tables(blast.res, transporter.res, high.evi.rxn.BS)
   dt      <- dt.cand.tmp$dt
   dt.cand <- dt.cand.tmp$dt.cand
   
@@ -177,7 +177,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
     }
   }
   
-  cat(length(unique(dt_genes[rm == F, paste(stitle, gene, sep="$")])),"unique genes on",length(unique(dt_genes[rm == F, stitle])),"genetic elements\n")
+  cat(length(unique(dt_genes[rm == F, paste(stitle, gene, sep="$")])),"unique genes on",length(unique(dt_genes[rm == F, stitle])),"genetic element(s)\n")
   
   # create subsys list and attribute table
   dt_subsys <- copy(dt[!is.na(pathway)])

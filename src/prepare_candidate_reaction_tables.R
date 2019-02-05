@@ -1,4 +1,4 @@
-prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.evi.rxn.BS, for.GS.draft = FALSE) {
+prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.evi.rxn.BS) {
   # Read reaction blast results
   require(data.table)
   
@@ -66,12 +66,7 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   #
   # construct gapfill candidate reactions and their weight
   #
-  #if(!for.GS.draft) {
   dt.cand <- copy(dt)
-  #} else {
-  #  dt.cand <- copy(dt[bitscore < high.evi.rxn.BS | (bitscore >= high.evi.rxn.BS & status == "bad_blast")])
-  #  dt.cand[bitscore > high.evi.rxn.BS, bitscore := bitscore / 2] # apply penalty to the bitscore of exception reactions
-  #}
   dt.cand[status %in% c("bad_blast","no_blast") & pathway.status %in% c("full","treshold","keyenzyme"), bitscore := high.evi.rxn.BS] # Those reactions are considered candidate reactions due to toplogy criteria
 
   dt.cand[, all.na := all(is.na(bitscore)), by = "seed"]
