@@ -431,6 +431,7 @@ do
                     #csplit -s -z query_subunit.fasta '/>/' '{*}' # split multiple fasta file and skip further testing if a significant hit is found
                     $dir/src/fasta-splitter.pl --n-parts 10 query_subunit.fasta >/dev/null
                     #for q in `ls xx*`
+                    subunits_found_old=$subunits_found
                     for q in `ls query_subunit.part-*.fasta`
                     do
                         if ! [ -x "$(command -v parallel)" ] || [ "$use_parallel" = false ]; then # try to use parallelized version
@@ -440,7 +441,6 @@ do
                         fi
                         cat query.blast >> $out
                         bhit=$(cat query.blast | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
-                        rm query.blast
                         if [ -n "$bhit" ]; then
                             bestsubunithit=$(echo "$bhit" | sort -rgk 4,4 | head -3)
                             [[ $iterations -gt 1 ]] && cat $q | head -1 | sed "s/^/\t\t\t$subunit_id hit: /" 
@@ -450,7 +450,9 @@ do
                             [[ $iterations -gt 1 ]] && echo "$bestsubunithit" | awk -v exception="$is_exception" -v subunit="$subunit_id" -v rea="$rea" -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t"subunit"\t"exception"\t""NA"}' >> reactions.tbl
                             break
                         fi
+                        rm query.blast
                     done
+                    [[ $subunits_found -eq $subunits_found_old ]] && [[ $iterations -gt 1 ]] && echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\t$subunit_id\t$is_exception\tNA" >> reactions.tbl # subunit not found 
                     rm query_subunit.part-*.fasta*
                 done
                 [[ $iterations -gt 1 ]] && [[ verbose -ge 1 ]] &&  echo -e '\t\t'total subunits found: `echo $subunits_found - $subunits_undefined_found | bc` / $subunits_count
@@ -520,9 +522,9 @@ do
                     someBitscore=$(cat $out | sort -rgk 4,4 | head -1 | cut -f4)
                     someCoverage=$(cat $out | sort -rgk 4,4 | head -1 | cut -f5)
                     somehit_all=$( cat $out | sort -rgk 4,4 | head -1)
-                    echo -e "$rea\t$reaName\t$ec\tNA\t$somehit_all\t$pwy\tbad_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
                     if [ $subunit_fraction -gt $subunit_cutoff ] || [ $iterations -eq 1 ] ; then
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO good blast hit"\n\t\t\t(best one: bit=$someBitscore id=$someIdentity cov=$someCoverage)"
+                        echo -e "$rea\t$reaName\t$ec\tNA\t$somehit_all\t$pwy\tbad_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
                     else
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO hit because of missing subunits
                     fi 
