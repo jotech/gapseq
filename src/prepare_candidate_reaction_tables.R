@@ -1,14 +1,14 @@
-prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.evi.rxn.BS) {
+prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.evi.rxn.BS, min.bs.for.core, curve.alpha = 1) {
   # Read reaction blast results
   require(data.table)
   
   dt <- fread(blast.res, header=T, stringsAsFactors = F)
-  dt <- dt[,.(rxn, name, ec, tc = NA_character_, qseqid, pident, evalue, bitscore, qcovs, stitle, sstart, send, pathway, status, pathway.status, seed = dbhit)]
+  dt <- dt[,.(rxn, name, ec, tc = NA_character_, qseqid, pident, evalue, bitscore, qcovs, stitle, sstart, send, pathway, status, pathway.status, seed = dbhit, complex, exception, complex.status)]
   
   # Read transporter blast results
   dt.trans <- fread(transporter.res, header=T, stringsAsFactors = F)
   dt.trans <- dt.trans[,.(rxn = id, name = paste("transport",tc,sub,sep="-"), ec = NA_character_, tc, qseqid, pident, evalue, bitscore, qcovs, stitle, 
-                          sstart, send, pathway = NA_character_, status = NA_character_, pathway.status = NA_character_, seed = rea)]
+                          sstart, send, pathway = NA_character_, status = NA_character_, pathway.status = NA_character_, seed = rea, complex = NA_character_, exception = 0, complex.status = NA_integer_)]
   dt.trans[bitscore >= high.evi.rxn.BS, status := "good_blast"]
   dt.trans[bitscore <  high.evi.rxn.BS, status := "bad_blast"]
   
@@ -69,18 +69,30 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt.cand <- copy(dt)
   dt.cand[status %in% c("bad_blast","no_blast") & pathway.status %in% c("full","treshold","keyenzyme"), bitscore := high.evi.rxn.BS] # Those reactions are considered candidate reactions due to toplogy criteria
 
-  dt.cand[, all.na := all(is.na(bitscore)), by = "seed"]
+  #dt.cand <- dt.cand[!(is.na(complex) & is.na(complex.status))] # TODO: This removes the rows in blast table that correspond to the whole complex -> remove here. The filter needs to be adjusted after Johannes has changed that part (6.2.19)
+  # TODO: better line above
+  dt.cand[, all.na := all(is.na(bitscore)), by = c("seed","complex")]
   dt.cand <- dt.cand[all.na == FALSE] # remove reactions which have no bitscore at all
+  dt.cand[, all.na := NULL]
+  dt.cand[, max.bs := max(bitscore, na.rm=TRUE), by = c("seed","complex")]
+  dt.cand <- dt.cand[max.bs == bitscore]
+  dt.cand <- dt.cand[!duplicated(paste(seed,complex, sep = "$"))]
+  dt.cand[, max.bs := NULL]
+  dt.cand[!is.na(complex) & complex != "Subunit undefined", min.bs := min(bitscore, na.rm = T), by = "seed"]
+  dt.cand <- dt.cand[bitscore == min.bs | is.na(min.bs)]
+  dt.cand[, min.bs := NULL]
   dt.cand[, max.bs := max(bitscore, na.rm=TRUE), by = "seed"]
   dt.cand <- dt.cand[max.bs == bitscore]
-  dt.cand <- dt.cand[!duplicated(seed)]
   dt.cand[, max.bs := NULL]
-  #dt.cand[bitscore >= high.evi.rxn.BS, bitscore := high.evi.rxn.BS - 1]
+  dt.cand <- dt.cand[!duplicated(seed)]
   dt.cand[, bs.tmp := bitscore]
-  dt.cand[bs.tmp >= high.evi.rxn.BS, bs.tmp := high.evi.rxn.BS - 1]
-  dt.cand[, weight := 1 - (bs.tmp / high.evi.rxn.BS)]
+  dt.cand[bs.tmp > high.evi.rxn.BS, bs.tmp := high.evi.rxn.BS] # if bitscore is higher than the bitscore threshold then assign a weight, that woulb be close to 0. 
+  dt.cand[, weight := 1 - ((bs.tmp - min.bs.for.core) / high.evi.rxn.BS)] # assign normalised weight
+  dt.cand[weight > 1, weight := 1]
+  dt.cand[, weight := weight^curve.alpha]
+  dt.cand[, weight := (weight + 0.005) / (1 + 0.005)]
   dt.cand[, bs.tmp := NULL]
-  
+
   return(list(dt = dt, dt.cand = dt.cand))
 }
 

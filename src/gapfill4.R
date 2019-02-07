@@ -1,11 +1,11 @@
-gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, min.bs.for.core = 50,
-                     dummy.weight = 10000, script.dir, core.only = FALSE, verbose=verbose, gs.origin = NA) {
+gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
+                     dummy.weight = 100, script.dir, core.only = FALSE, verbose=verbose, gs.origin = NA) {
   source(paste0(script.dir, "/src/sysBiolAlg_mtfClass2.R"))
   # backup model
   mod.orig.bak <- mod.orig
   
   # square transformation of reaction weights
-  rxn.weights[, weight := weight^2*dummy.weight]
+  rxn.weights[, weight := weight*dummy.weight]
   
   # linear transformation of reaction weights
   #rxn.weights[, weight := weight*dummy.weight]
@@ -27,7 +27,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, min.bs.for.c
   mseed[, core.rxn := !is.na(weight)] # reactions without blast hit are not considered core reactions for gapfill
   mseed[is.na(weight), weight := dummy.weight]
   
-  mseed[core.rxn == T & bitscore < min.bs.for.core, core.rxn := F] # reactions with a blast hit bitscore below min.bs.for.core are not considered core reactions for gapfill
+  mseed[core.rxn == T & bitscore < bcore, core.rxn := F] # reactions with a blast hit bitscore below "bcore" are not considered core reactions for gapfill
   
   if(core.only==T) {
     mseed <- mseed[core.rxn==T]

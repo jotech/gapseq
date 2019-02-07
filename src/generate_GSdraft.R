@@ -6,14 +6,16 @@ library(methods)
 options(error=traceback)
 
 # test data
-# blast.res <- "../CarveMe-tests/faa/GCF_000005845.2_ASM584v2_genomic-all-Reactions.tbl"
-# gram <- "auto"
-# genome.seq <- "../CarveMe-tests/faa/GCF_000005845.2_ASM584v2_genomic.fna.gz"
-# high.evi.rxn.BS <- 200
-# transporter.res <- "../CarveMe-tests/faa/GCF_000005845.2_ASM584v2_genomic-Transporter.tbl"
+#blast.res <- "../gapseq.publication/gene.essent/GCF_000005845.2_ASM584v2_genomic-all-Reactions.tbl"
+#gram <- "auto"
+#genome.seq <- "../gapseq.publication/gene.essent/GCF_000005845.2_ASM584v2_genomic.fna.gz"
+#high.evi.rxn.BS <- 200
+#transporter.res <- "../gapseq.publication/gene.essent/GCF_000005845.2_ASM584v2_genomic-Transporter.tbl"
 
 # Please note: If Game-Staining is set to "auto" it requires the external programms barrnap, usearch and bedtools
-build_draft_model_from_blast_results <- function(blast.res, transporter.res, gram = "auto", model.name = NA, genome.seq = NA, script.dir, high.evi.rxn.BS = 200, pathway.pred = NA) {
+build_draft_model_from_blast_results <- function(blast.res, transporter.res, gram = "auto", model.name = NA, genome.seq = NA, 
+                                                 script.dir, high.evi.rxn.BS = 200, pathway.pred = NA, min.bs.for.core = 50, 
+                                                 curve.alpha = 1) {
   suppressMessages(require(data.table))
   suppressMessages(require(stringr))
   #suppressMessages(require(sybil))
@@ -40,10 +42,6 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
     
     gram <- system(paste0(script.dir,"/./predict_Gram_staining_from16S.sh ",genome.seq.base,".16S.fasta"), intern = T)
     
-    #gram.dt <- fread(paste0(genome.seq,".graminfo.tsv"), header = F)
-    #gram.dt[, max.score := max(V3)]
-    #gram.dt <- gram.dt[V3 > max.score * .95]
-    #gram <- names(sort(table(gram.dt$V2),decreasing=TRUE)[1])
     cat("\nPredicted gram staining: ",gram,"\n")
     if(gram == "ambiguous" & !is.na(pathway.pred)) {
         cat("Trying to predict gram stainig by metabolic network similarity\n")
@@ -69,80 +67,11 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   seed_x_aliases <- fread(paste0(script.dir,"/../dat/seed_Enzyme_Name_Reactions_Aliases.tsv"), header=T)
   
   # Prepare candidate reaction tables for draft network and gapfilling
-  dt.cand.tmp <- prepare_candidate_reaction_tables(blast.res, transporter.res, high.evi.rxn.BS)
+  dt.cand.tmp <- prepare_candidate_reaction_tables(blast.res, transporter.res, high.evi.rxn.BS, min.bs.for.core, curve.alpha)
   dt      <- dt.cand.tmp$dt
   dt.cand <- dt.cand.tmp$dt.cand
   
-  # Read reaction blast results
-  # dt <- fread(blast.res, header=T, stringsAsFactors = F)
-  # dt <- dt[,.(rxn, name, ec, tc = NA_character_, qseqid, pident, evalue, bitscore, qcovs, stitle, sstart, send, pathway, status, pathway.status, seed = dbhit)]
-  # 
-  # # Read transporter blast results
-  # dt.trans <- fread(transporter.res, header=T, stringsAsFactors = F)
-  # dt.trans <- dt.trans[,.(rxn = id, name = paste("transport",tc,sub,sep="-"), ec = NA_character_, tc, qseqid, pident, evalue, bitscore, qcovs, stitle, 
-  #                         sstart, send, pathway = NA_character_, status = NA_character_, pathway.status = NA_character_, seed = rea)]
-  # dt.trans[bitscore >= high.evi.rxn.BS, status := "good_blast"]
-  # dt.trans[bitscore <  high.evi.rxn.BS, status := "bad_blast"]
-  # 
-  # # a little helper function to calculate the overlap of two genetic regions
-  # calc_seq_overlap <- function(astart, aend, bstart, bend) {
-  #   out <- numeric(length = length(bstart))
-  #   for(i in seq_along(bstart)){
-  #     out[i] <- length(intersect(astart:aend,bstart[i]:bend[i]))/((length(astart:aend)+length(bstart[i]:bend[i]))/2)
-  #   }
-  #   return(out)
-  # }
-  # 
-  # # A specific fix for the issue with reactions 1.3.8.1 and 1.3.8.13
-  # if("1.3.8.1" %in% dt$ec & "1.3.8.13" %in% dt$ec) {
-  #    rm.ids <- c()
-  #    one.hits.id <- which(dt$ec == "1.3.8.1" & !is.na(dt$bitscore))
-  #    two.hits.id <- which(dt$ec == "1.3.8.13" & !is.na(dt$bitscore))
-  #    if(length(one.hits.id)>0 & length(two.hits.id)>0) {
-  #      for(i in one.hits.id) {
-  #        for(j in two.hits.id) {
-  #          ol <- calc_seq_overlap(dt[i,sstart],dt[i,send],dt[j,sstart],dt[j,send])
-  #          if(ol > 0.2) {
-  #            if(dt[i, bitscore] > max(dt[two.hits.id, bitscore]))
-  #              rm.ids <- c(rm.ids, j)
-  #            if(dt[j, bitscore] > max(dt[one.hits.id, bitscore]))
-  #              rm.ids <- c(rm.ids, i)
-  #          }
-  #        }
-  #      }
-  #    }
-  #    rm.ids <- unique(rm.ids)
-  #    if(length(rm.ids > 0))
-  #      dt <- dt[-rm.ids]
-  # }
-  # 
-  # # A specific fix for the issue with reactions 4.1.2.9 and 4.1.2.22
-  # if("4.1.2.9" %in% dt$ec & "4.1.2.22" %in% dt$ec) {
-  #   rm.ids <- c()
-  #   one.hits.id <- which(dt$ec == "4.1.2.9" & !is.na(dt$bitscore))
-  #   two.hits.id <- which(dt$ec == "4.1.2.22" & !is.na(dt$bitscore))
-  #   if(length(one.hits.id)>0 & length(two.hits.id)>0) {
-  #     for(i in one.hits.id) {
-  #       for(j in two.hits.id) {
-  #         ol <- calc_seq_overlap(dt[i,sstart],dt[i,send],dt[j,sstart],dt[j,send])
-  #         if(ol > 0.2) {
-  #           if(dt[i, bitscore] > max(dt[two.hits.id, bitscore]))
-  #             rm.ids <- c(rm.ids, j)
-  #           if(dt[j, bitscore] > max(dt[one.hits.id, bitscore]))
-  #             rm.ids <- c(rm.ids, i)
-  #         }
-  #       }
-  #     }
-  #   }
-  #   rm.ids <- unique(rm.ids)
-  #   if(length(rm.ids > 0))
-  #     dt <- dt[-rm.ids]
-  # }
-  # 
-  # # prepare reaction/transporter blast results table
-  # dt <- splitcol2rows_mget(dt, "seed", " ")
-  # dt.trans <- splitcol2rows_mget(dt.trans, "seed", ",")
-  # dt <- rbind(dt, dt.trans)
+  dt[!is.na(complex) & is.na(complex.status), complex.status := 0] # incomplete complexes
   
   mseed <- seed_x_name
   mseed <- mseed[gapseq.status %in% c("approved","corrected")]
@@ -151,6 +80,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   # Get all reactions / transporters that have either high sequence evidence (bitscore)
   # TODO: Here we are currently loosing the information of isozymes
   dt_seed_single_and_there <- copy(dt[(bitscore >= high.evi.rxn.BS & status != "bad_blast") | pathway.status %in% c("full","treshold","keyenzyme")])
+  dt_seed_single_and_there <- dt_seed_single_and_there[complex.status != 0]
   dt_seed_single_and_there <- dt_seed_single_and_there[order(seed,-bitscore)]
   dt_seed_single_and_there <- dt_seed_single_and_there[!duplicated(seed)]
   
@@ -159,7 +89,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   dt_genes <- copy(dt[!is.na(bitscore)])
   dt_genes[, gene := paste(sstart,send, sep = ":")]
   dt_genes <- dt_genes[!duplicated(paste(stitle,seed,gene,sep = "$"))]
-  dt_genes <- dt_genes[order(stitle,seed,-bitscore)]
+  dt_genes <- dt_genes[order(stitle,seed,complex,-bitscore)] # TODO: Make sure the subunits with notation "subunit undefined" is last row per seed-reaction id "seed"
   dt_genes[, rm := F]
   dt_genes$itmp <- 1:nrow(dt_genes)
   
@@ -197,7 +127,8 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   mod@react_attr <- data.frame(rxn = character(0), name = character(0), ec = character(0), tc = character(0), qseqid = character(0),
                                pident = numeric(0), evalue = numeric(0), bitscore = numeric(0), qcovs = numeric(0),
                                stitle = character(0), sstart = numeric(0), send = numeric(0), pathway = character(0),
-                               status = character(0), pathway.status = character(0), seed = character(0), stringsAsFactors = F)
+                               status = character(0), pathway.status = character(0), complex = character(0), exception = numeric(0),
+                               complex.status = numeric(0), seed = character(0), stringsAsFactors = F)
   mod@subSys <- Matrix::Matrix(F,nrow = 0, ncol = length(subsys_unique),sparse = T)
   colnames(mod@subSys) <- subsys_unique
   for(i in (1:nrow(mseed))) {
@@ -225,8 +156,11 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
     
     met.name[ind.new.mets] <- mod@met_name[ind.old.mets]
     
-    # get reaction-associated strechtes of dna 
+    # get reaction-associated stretches of DNA 
     # TODO: handle mutli-contig genomes
+    #dtg.tmp <- copy(dt_genes[seed == mseed[i,id]])
+    #if(any())
+    
     dtg.tmp <- dt_genes[seed == mseed[i,id] & bitscore >= high.evi.rxn.BS, gene]
     dtg.tmp <- unique(dtg.tmp)
     if(length(dtg.tmp > 0))
@@ -259,7 +193,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   mod <- add_missing_diffusion(mod)
   #mod@genes_table <- copy(dt[bitscore>0])
   cat("\n")
-  
+  warnings()
   # Adding Biomass reaction
   if(gram == "neg")
     dt.bm <- fread(paste0(script.dir, "/../dat/seed_biomass.DT_gramNeg.tsv"))
@@ -271,19 +205,6 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   mod@react_attr[which(mod@react_id == "bio1"),c("gs.origin","seed")] <- data.frame(gs.origin = 6, seed = "bio1", stringsAsFactors = F)
   
   mod <- add_missing_exchanges(mod) 
-  
-  #
-  # construct gapfill candidate reactions and their weight
-  #
-  # dt.cand <- copy(dt[bitscore < high.evi.rxn.BS | (bitscore >= high.evi.rxn.BS & status == "bad_blast")])
-  # dt.cand[bitscore > high.evi.rxn.BS, bitscore := bitscore / 2] # apply penalty to the bitscore of exception reactions
-  # dt.cand[, max.bs := max(bitscore), by = "seed"]
-  # dt.cand <- dt.cand[max.bs == bitscore]
-  # dt.cand <- dt.cand[!duplicated(seed)]
-  # dt.cand[, max.bs := NULL]
-  # dt.cand[bitscore > high.evi.rxn.BS, bitscore := high.evi.rxn.BS - 1]
-  # dt.cand[, weight := 1 - (bitscore / high.evi.rxn.BS)]
-  
   
   return(list(mod=mod, cand.rxns=dt.cand, rxn_x_genes=dt_genes))
 }
@@ -309,10 +230,12 @@ spec <- matrix(c(
   'gram', 'g', 2, "character", "Gram \"pos\" OR \"neg\" OR \"auto\"? Default: \"auto\". Please note: if set to \"auto\", the external programms barrnap, usearch, and bedtools are required.",
   'model.name', 'n', 2, "character", "Name of draft model network. Default: the basename of \"blast.res\"",
   'genome.seq', 'c', 2, "character", "If gram is set to \"auto\", the genome sequence is required to search for 16S genes, which are used to predict gram-staining.",
-  'high.evi.rxn.BS', "b", 2, "numeric", "Reactions with an associated blast-hit with a bitscore above this value will be added to the draft model as core reactions (i.e. high-sequence-evidence reactions)",
+  'high.evi.rxn.BS', "u", 2, "numeric", "Reactions with an associated blast-hit with a bitscore above this value will be added to the draft model as core reactions (i.e. high-sequence-evidence reactions)",
+  'min.bs.for.core', "l", 2, "numeric", "Reactions with an associated blast-hit with a bitscore below this value will be considered just as reactions that have no blast hit.",
   'output.dir', 'o', 2, "character", "Directory to store results. Default: \".\" (alternatives not yet implemented)",
   'sbml.output', 's', 2, "logical", "Should the gapfilled model be saved as sbml? Default: FALSE (export not yet implemented)",
-  'pathway.pred', 'p', 1, "character", "Pathway-results table generated by gapseq.sh."
+  'pathway.pred', 'p', 2, "character", "Pathway-results table generated by gapseq.sh.",
+  'curve.alpha', 'a', 2, "numeric", "Exponent coefficient for transformation of bitscores to reaction weights for gapfilling. (Default: 1 (neg-linear))"
 ), ncol = 5, byrow = T)
 
 opt <- getopt(spec)
@@ -328,8 +251,10 @@ if ( is.null(opt$model.name) ) { opt$model.name = NA_character_ }
 if ( is.null(opt$output.dir) ) { opt$output.dir = "." }
 if ( is.null(opt$sbml.output) ) { opt$sbml.output = F }
 if ( is.null(opt$high.evi.rxn.BS) ) { opt$high.evi.rxn.BS = 200 }
+if ( is.null(opt$min.bs.for.core) ) { opt$min.bs.for.core = 50 }
 if ( is.null(opt$gram) ) { opt$gram = "auto" }
 if ( is.null(opt$pathway.pred) ) { opt$pathway.pred = NA }
+if ( is.null(opt$curve.alpha) ) { opt$curve.alpha = 1 }
 
 # Arguments:
 blast.res         <- opt$blast.res
@@ -339,7 +264,9 @@ gram              <- opt$gram
 output.dir        <- opt$output.dir
 genome.seq        <- opt$genome.seq
 high.evi.rxn.BS   <- opt$high.evi.rxn.BS
+min.bs.for.core   <- opt$min.bs.for.core
 pathway.pred      <- opt$pathway.pred
+curve.alpha       <- opt$curve.alpha
 
 if(is.na(model.name))
   model.name <- gsub("-all-Reactions.tbl","",basename(blast.res), fixed = T)
@@ -351,9 +278,10 @@ mod <- build_draft_model_from_blast_results(blast.res = blast.res,
                                             model.name = model.name, 
                                             genome.seq = genome.seq, 
                                             high.evi.rxn.BS = high.evi.rxn.BS,
-                                            
+                                            min.bs.for.core = min.bs.for.core,
                                             script.dir = script.dir,
-                                            pathway.pred = pathway.pred)
+                                            pathway.pred = pathway.pred,
+                                            curve.alpha = curve.alpha)
 
 # save draft model and reaction weights and rxn-gene-table
 saveRDS(mod$mod,file = paste0(model.name, ".RDS"))
