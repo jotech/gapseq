@@ -17,6 +17,6 @@ $dir/./gapseq.sh -b 200 -p all $fasta
 
 $dir/./transporter.sh -b 200 $fasta
 
-Rscript $dir/src/generate_GSdraft.R -r $model-all-Reactions.tbl -t "$model-Transporter.tbl" -c $fasta -b 200
+Rscript $dir/src/generate_GSdraft.R -r $model-all-Reactions.tbl -t "$model-Transporter.tbl" -c $fasta -u 200 -l 100 -a 2
 
 Rscript $dir/gf.suite.R -m $model.RDS -n $media -c $model-rxnWeights.RDS -b 100
