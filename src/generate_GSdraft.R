@@ -87,7 +87,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   # create gene list and attribute table
   cat("Creating Gene-Reaction list... ")
   dt_genes <- copy(dt[!is.na(bitscore)])
-  dt_genes[, gene := paste(sstart,send, sep = ":")]
+  dt_genes[, gene := paste0(gsub(" .*","",stitle),"_",paste(sstart,send, sep = ":"))]
   dt_genes <- dt_genes[!duplicated(paste(stitle,seed,gene,sep = "$"))]
   dt_genes <- dt_genes[order(stitle,seed,complex,-bitscore)] # TODO: Make sure the subunits with notation "subunit undefined" is last row per seed-reaction id "seed"
   dt_genes[, rm := F]
@@ -107,7 +107,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
     }
   }
   
-  cat(length(unique(dt_genes[rm == F, paste(stitle, gene, sep="$")])),"unique genes on",length(unique(dt_genes[rm == F, stitle])),"genetic element(s)\n")
+  cat(length(unique(dt_genes[rm == F, paste(gene, sep="$")])),"unique genes on",length(unique(dt_genes[rm == F, stitle])),"genetic element(s)\n")
   
   # create subsys list and attribute table
   dt_subsys <- copy(dt[!is.na(pathway)])
@@ -157,14 +157,19 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
     met.name[ind.new.mets] <- mod@met_name[ind.old.mets]
     
     # get reaction-associated stretches of DNA 
-    # TODO: handle mutli-contig genomes
     #dtg.tmp <- copy(dt_genes[seed == mseed[i,id]])
     #if(any())
     
-    dtg.tmp <- dt_genes[seed == mseed[i,id] & bitscore >= high.evi.rxn.BS, gene]
-    dtg.tmp <- unique(dtg.tmp)
-    if(length(dtg.tmp > 0))
-      gpr.tmp <- paste(dtg.tmp, collapse = " | ")
+    # dtg.tmp <- dt_genes[seed == mseed[i,id] & bitscore >= high.evi.rxn.BS & rm == F, gene]
+    # dtg.tmp <- unique(dtg.tmp)
+    # if(length(dtg.tmp > 0))
+    #   gpr.tmp <- paste(dtg.tmp, collapse = " | ")
+    # else
+    #   gpr.tmp <- ""
+    
+    dtg.tmp <- dt_genes[seed == mseed[i,id] & bitscore >= high.evi.rxn.BS & rm == F, .(complex,gene)]
+    if(nrow(dtg.tmp)>0)
+      gpr.tmp <- get_gene_logic_string(dtg.tmp$complex, dtg.tmp$gene)
     else
       gpr.tmp <- ""
     
@@ -222,6 +227,7 @@ if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
 source(paste0(script.dir,"/add_missing_exRxns.R"))
 source(paste0(script.dir,"/generate_rxn_stoich_hash.R"))
 source(paste0(script.dir,"/prepare_candidate_reaction_tables.R"))
+source(paste0(script.dir,"/get_gene_logic_string.R"))
 
 # get options first
 spec <- matrix(c(
