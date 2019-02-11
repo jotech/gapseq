@@ -5,7 +5,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
   mod.orig.bak <- mod.orig
   
   # square transformation of reaction weights
-  rxn.weights[, weight := weight*dummy.weight]
+  #rxn.weights[, weight := weight*dummy.weight]
   
   # linear transformation of reaction weights
   #rxn.weights[, weight := weight*dummy.weight]
@@ -205,7 +205,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
   #ko.dt <- ko.dt[order(core, rnorm(.N))] # Randomization here
   #ko.dt <- ko.dt[order(!core, dummy.rxn,decreasing = T)] # No Randomization here
   #ko.dt <- ko.dt[order(core, dummy.rxn,decreasing = F)] # No Randomization here
-  ko.dt <- ko.dt[order(core, abs(flux))] # no randomization. Sorting by abs flux # BEST CHOICE as it preferrably removes reactions that carry only small flux
+  #ko.dt <- ko.dt[order(core, abs(flux))] # no randomization. Sorting by abs flux # BEST CHOICE as it preferrably removes reactions that carry only small flux
   ko.dt <- ko.dt[order(core, -dummy.weight)]
   ko.dt[, keep := F]
   #if(core.only ==F)
