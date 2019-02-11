@@ -198,8 +198,8 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     mod.fill2.names <- c()
     
     if( !verbose ) options(warn=-1)
-    for( i in seq_along(bm.met.inds) ){
-      cat("\r",i,"/",length(bm.met.inds))
+    for( i in seq_along(bm.met) ){
+      cat("\r",i,"/",length(bm.met))
       target.new <- bm.met[i]
       
       # add metabolite objective + sink
@@ -285,8 +285,8 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     mod.fill2.names <- c()
     
     if( !verbose ) options(warn=-1)
-    for( i in seq_along(bm.met.inds) ){
-      cat("\r",i,"/",length(bm.met.inds))
+    for( i in seq_along(bm.met) ){
+      cat("\r",i,"/",length(bm.met))
       target.new <- bm.met[i]
       
       # add metabolite objective + sink

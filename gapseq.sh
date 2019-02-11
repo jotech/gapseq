@@ -407,7 +407,7 @@ do
                 subunits_count=$(echo -e "$subunits"| wc -l) 
                 undefined=$(cat $query | sed -n 's/^>//p' | grep -Ev 'Subunit \w+$' | sort | uniq) # check for sequences which do not follow regular expression => will be treated as other (i.e. one additional subunit)
                 [[ -n "$undefined" ]] && subunits=$(echo -e "$subunits\nSubunit undefined" | sed '/^$/d') # add default case for undefined subunits
-                [[ $subunits_count -gt 1 ]] && echo -e '\t\t'check subunits: $subunits_count
+                [[ verbose -ge 1 ]] && [[ $subunits_count -gt 1 ]] && echo -e '\t\t'check subunits: $subunits_count
                 iterations=$(echo -e "$subunits"| wc -l) # every subunit will get a own iteration
                 for iter in `seq $iterations`
                 do
@@ -443,7 +443,7 @@ do
                         bhit=$(cat query.blast | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
                         if [ -n "$bhit" ]; then
                             bestsubunithit=$(echo "$bhit" | sort -rgk 4,4 | head -3)
-                            [[ $iterations -gt 1 ]] && cat $q | head -1 | sed "s/^/\t\t\t$subunit_id hit: /" 
+                            [[ verbose -ge 1 ]] && [[ $iterations -gt 1 ]] && cat $q | head -1 | sed "s/^/\t\t\t$subunit_id hit: /" 
                             ((subunits_found++))
                             [[ "$subunit_id" == "Subunit undefined" ]] && ((subunits_undefined_found++))
                             is_bidihit=NA # TODO: bidirectional blast not implemented for subunits!!
