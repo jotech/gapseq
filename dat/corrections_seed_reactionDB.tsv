@@ -638,7 +638,10 @@ rxn15060				[SW] Previous abbreviation referred to wrong KEGG identifier and cau
 rxn00782	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.2.1.13-RXN				
 rxn02424	>		-1:cpd00003:0:0:"NAD";-1:cpd00010:0:0:"CoA";-1:cpd00287:0:0:"3-Oxo-2-methylpropanoate";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd00086:0:0:"Propionyl-CoA";1:cpd00242:0:0:"H2CO3"	[SW] Reaction equation changes according to MetaCyc and RHEA	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.2.1.27-RXN				
 rxn12822	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUTAMATE-SYNTHASE-FERREDOXIN-RXN				
-									
+rxn00928	<			[SW] direction changed according to MetaCyc	https://ecocyc.org/ECOLI/NEW-IMAGE?type=REACTION&object=PYRROLINECARBREDUCT-RXN				
+rxn00929	<			[SW] direction changed according to MetaCyc	https://ecocyc.org/ECOLI/NEW-IMAGE?type=REACTION&object=PYRROLINECARBREDUCT-RXN				
+rxn00930	<			[SW] direction changed according to MetaCyc	https://ecocyc.org/ECOLI/NEW-IMAGE?type=REACTION&object=PYRROLINECARBREDUCT-RXN				
+rxn00931	<			[SW] direction changed according to MetaCyc	https://ecocyc.org/ECOLI/NEW-IMAGE?type=REACTION&object=PYRROLINECARBREDUCT-RXN				
 									
 rxn08783		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
 rxn08792		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
