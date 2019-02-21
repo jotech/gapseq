@@ -341,6 +341,7 @@ do
     reaids=$(echo "$line" | awk -F "\t" '{print $6}')
     reaNames=$(echo -e "$line" | awk -F "\t" '{print $9}')
     keyRea=$(echo "$line" | awk -F "\t" '{print $8}' | tr ',' ' ')
+    spontRea=$(echo "$line" | awk -F "\t" '{print $14}' | tr ',' ' ')
     pwyHierarchy=$(echo "$line" | awk -F "\t" '{print $4}' | sed 's/|\|THINGS\|Generalized-Reactions\|Pathways\|FRAMES//g' | sed 's/,,//g')
     [[ verbose -ge 1 ]] && echo -e '\n'$i/$pwyNr: Checking for pathway $pwy $name
     [[ verbose -ge 1 ]] && echo "($pwyHierarchy)"
@@ -365,9 +366,14 @@ do
         else
             identcutoff_tmp=$identcutoff
         fi
-        ((count++))
         getDBhit # get db hits for this reactions
         dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
+        if [[ $spontRea = *"$rea"* ]]; then # detect spontaneous reactions
+            [[ verbose -ge 1 ]] && echo -e '\t\t--> Spontaneous reaction <--'
+            echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tspontaneous\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
+            continue
+        fi
+        ((count++))
         if [[ -n "$EC_test" ]]; then
             query=$seqpath/$ec.fasta
             if [ ! -f "$query" ]; then # check if sequence is not available => try to download
