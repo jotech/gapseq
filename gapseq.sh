@@ -539,16 +539,14 @@ do
                     fi
                 fi
             else
-                [[ verbose -ge 1 ]] && echo -e '\t\t'NO blast hit
-                #echo -e "\t\t$query" 
+                [[ verbose -ge 1 ]] && echo -e '\t\t'NO blast hit && echo -e "\t\t$query" 
                 if [[ -n "$dbhit" ]];then
                     pwyNoHitFound="$pwyNoHitFound$dbhit "
                     echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
                 fi
             fi
         else
-            [[ verbose -ge 1 ]] && echo -e "\t\tNO sequence data found"
-            echo -e "\t\t$query" 
+            [[ verbose -ge 1 ]] && echo -e "\t\tNO sequence data found" && echo -e "\t\t$query" 
             #echo -e "\t\t$(basename $query)" 
             ((vague++))
             [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
