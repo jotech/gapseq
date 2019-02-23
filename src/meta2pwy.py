@@ -53,12 +53,14 @@ def getReaInfos(pwy):
     reaName_list = []
     rea_counter = 0 # count non-spontanous reactions
     rea_spont_counter = 0
+    spont_list = []
    
     for r in rea_list:
         #print("START:",r)
         if meta[r]["spontaneous_p"]:
             rea_spont_counter +=1
-            continue # skip if reaction is spontaneous
+            spont_list.append(r.replace("|",""))
+            #continue # skip if reaction is spontaneous
         ec  = meta[r]["ec_number"]
         #if ec != None and str(",".join(ec)).replace("|","").replace("EC-","") in ec_list:
         #    continue # skip if ec number is already added
@@ -82,9 +84,9 @@ def getReaInfos(pwy):
                 active_enz = next(iter(diff2)) # can there be more than one enzyme found??
                 reaName = meta.enzyme_activity_name(dic[active_enz], r)
             else:
-                reaName = r
+                reaName = r.replace("|","")
         else:
-            reaName = r
+            reaName = r.replace("|","")
         # substitute html chars in name
         sub_dic = { "&mdash;":"-",
                      "&ndash;":"-",
@@ -130,10 +132,11 @@ def getReaInfos(pwy):
         #print("END:", r,reaName,ec)
     ec_col = (",".join(ec_list))
     rea_col= (",".join(reaId_list)) 
+    spont_col = (",".join(spont_list))
     reaName_col= (";".join(reaName_list)) 
     status = rea_counter == len(ec_list) # check if all reactions are covered by EC numbers
     ec_counter = len([ec for ec in ec_list if ec!=""])
-    return([ec_col, rea_col, status, rea_counter, isSuperPwy, keyRea, reaName_col, ec_counter])
+    return([ec_col, rea_col, status, rea_counter, isSuperPwy, keyRea, reaName_col, ec_counter, spont_col])
 
 #getReaInfos("|ENTBACSYN-PWY|")
 #getReaInfos("|PWY-6381|")
@@ -167,13 +170,14 @@ for p in meta.all_pathways():
     keyRea  = reaInf[5]
     reaName = reaInf[6]
     ecN     = reaInf[7]
+    spont   = reaInf[8]
     # TODO: causes problems somehow?
     #taxrange = ",".join([meta[t].common_name.replace("|","") for t in pwy.taxonomic_range])
     if pwy.taxonomic_range != None:
         taxrange = ",".join(pwy.taxonomic_range)
     else:
         taxrange = ""
-    ofile.write(p + "\t" + name + "\t" + altname + "\t" + hierarchy + "\t" + taxrange + "\t" + reaId + "\t" + reaEc + "\t" + keyRea + "\t" + reaName + "\t" + str(reaN) + "\t" + str(ecN) + "\t" + str(superPwy) +"\t" + str(status)  + "\n")
+    ofile.write(p + "\t" + name + "\t" + altname + "\t" + hierarchy + "\t" + taxrange + "\t" + reaId + "\t" + reaEc + "\t" + keyRea + "\t" + reaName + "\t" + str(reaN) + "\t" + str(ecN) + "\t" + str(superPwy) +"\t" + str(status)  + "\t" + spont + "\n")
 ofile.close()
 # sort file!!
 # sort -k 1 dat/meta_pwy.tbl
