@@ -105,7 +105,9 @@ def getReaInfos(pwy):
                      "&omega;":"omega",
                    }
         for sub in sub_dic:
-            reaName = reaName.replace(sub, sub_dic[sub])
+            #reaName = reaName.replace(sub, sub_dic[sub])
+            sub_tmp = re.compile(re.escape(sub), re.IGNORECASE) # case insensitive substitution
+            reaName = sub_tmp.sub(sub_dic[sub], reaName)
         cleanr = re.compile('<.*?>')
         reaName = re.sub(cleanr, '', reaName)
         if ec == None:
@@ -148,7 +150,7 @@ def getReaInfos(pwy):
 
 
 ofile = open("./meta_pwy.tbl", "w")
-ofile.write("id" + "\t" + "name" + "\t" + "altname" + "\t" + "hierarchy" + "\t" + "taxrange" + "\t" + "reaId" + "\t" + "reaEc" + "\t" + "keyRea" + "\t"+ "reaName" + "\t" + "reaNr" + "\t" + "ecNr" + "\t" + "superpathway" + "\t" "status" + "\n")
+ofile.write("id" + "\t" + "name" + "\t" + "altname" + "\t" + "hierarchy" + "\t" + "taxrange" + "\t" + "reaId" + "\t" + "reaEc" + "\t" + "keyRea" + "\t"+ "reaName" + "\t" + "reaNr" + "\t" + "ecNr" + "\t" + "superpathway" + "\t" + "status" + "\t" + "spont" + "\n")
 meta = pythoncyc.select_organism('meta')
 pythoncyc.sendQueryToPTools("(select-organism :org-id 'META)")
 for p in meta.all_pathways():
@@ -179,5 +181,6 @@ for p in meta.all_pathways():
         taxrange = ""
     ofile.write(p + "\t" + name + "\t" + altname + "\t" + hierarchy + "\t" + taxrange + "\t" + reaId + "\t" + reaEc + "\t" + keyRea + "\t" + reaName + "\t" + str(reaN) + "\t" + str(ecN) + "\t" + str(superPwy) +"\t" + str(status)  + "\t" + spont + "\n")
 ofile.close()
-# sort file!!
-# sort -k 1 dat/meta_pwy.tbl
+print("Don't forget to sort the file!!")
+print("sort -k 1 dat/meta_pwy.tbl")
+print("and move header back to the top")
