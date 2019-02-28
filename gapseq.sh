@@ -74,6 +74,7 @@ reaDB5=$dir/dat/mnxref_seed-other.tsv
 brenda=$dir/dat/brenda_ec.csv
 seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
 seedEnzymesNames=$dir/dat/seed_Enzyme_Name_Reactions_Aliases.tsv
+altecdb=$dir/dat/altec.csv
 
 
 # A POSIX variable
@@ -280,7 +281,8 @@ getDBhit(){
 
     # 3) search in reaction db by alternative EC
     if [[ -n "$EC_test" ]]; then
-        altec=$(grep -wF $ec $brenda | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -v $ec)
+        altec=$(grep -wF $ec $altecdb | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -v $ec)
+        [[ -z "$altec" ]] && { altec=$(grep -wF $ec $brenda | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -v $ec); }
         if [ "$database" == "vmh" ]; then
             [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')" # take care of multiple EC numbers
         elif [ "$database" == "seed" ]; then
