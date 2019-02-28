@@ -70,7 +70,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   dt.cand.tmp <- prepare_candidate_reaction_tables(blast.res, transporter.res, high.evi.rxn.BS, min.bs.for.core, curve.alpha)
   dt      <- dt.cand.tmp$dt
   dt.cand <- dt.cand.tmp$dt.cand
-  
+  print(dt.cand[status=="spontaneous"])
   dt[!is.na(complex) & is.na(complex.status), complex.status := 0] # incomplete complexes
   
   mseed <- seed_x_name
@@ -78,9 +78,8 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   mseed <- mseed[order(id)]
   
   # Get all reactions / transporters that have either high sequence evidence (bitscore)
-  # TODO: Here we are currently loosing the information of isozymes
   dt_seed_single_and_there <- copy(dt[(bitscore >= high.evi.rxn.BS & status != "bad_blast") | pathway.status %in% c("full","treshold","keyenzyme")])
-  dt_seed_single_and_there <- dt_seed_single_and_there[complex.status != 0]
+  dt_seed_single_and_there <- dt_seed_single_and_there[complex.status != 0 | is.na(complex.status)]
   dt_seed_single_and_there <- dt_seed_single_and_there[order(seed,-bitscore)]
   dt_seed_single_and_there <- dt_seed_single_and_there[!duplicated(seed)]
   
@@ -157,16 +156,6 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
     met.name[ind.new.mets] <- mod@met_name[ind.old.mets]
     
     # get reaction-associated stretches of DNA 
-    #dtg.tmp <- copy(dt_genes[seed == mseed[i,id]])
-    #if(any())
-    
-    # dtg.tmp <- dt_genes[seed == mseed[i,id] & bitscore >= high.evi.rxn.BS & rm == F, gene]
-    # dtg.tmp <- unique(dtg.tmp)
-    # if(length(dtg.tmp > 0))
-    #   gpr.tmp <- paste(dtg.tmp, collapse = " | ")
-    # else
-    #   gpr.tmp <- ""
-    
     dtg.tmp <- dt_genes[seed == mseed[i,id] & bitscore >= high.evi.rxn.BS & rm == F, .(complex,gene)]
     if(nrow(dtg.tmp)>0)
       gpr.tmp <- get_gene_logic_string(dtg.tmp$complex, dtg.tmp$gene)
@@ -196,6 +185,12 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   mod@react_attr$gs.origin[mod@react_attr$bitscore < high.evi.rxn.BS] <- 9 # Added due to Pathway Topology criteria
   mod <- add_reaction_from_db(mod, react = c("rxn13782","rxn13783","rxn13784"), gs.origin = 6) # Adding pseudo-reactions for Protein biosynthesis, DNA replication and RNA transcription
   mod <- add_missing_diffusion(mod)
+  
+  # Add spontaneous reactions
+  # sponti_rxns <- fread(paste0(script.dir, "/../dat/seed_spontaneous_reactions.tbl"), header = F)
+  # sponti_rxns <- sponti_rxns$V1
+  # mod <- add_reaction_from_db(mod, react = sponti_rxns, gs.origin = 5)
+  
   #mod@genes_table <- copy(dt[bitscore>0])
   cat("\n")
   warnings()
