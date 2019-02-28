@@ -355,7 +355,7 @@ do
         reaName=$(echo $reaNames | awk -v j=$j -F ';' '{print $j}' | tr -d '|')
         re="([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
         EC_test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
-        [[ verbose -ge 1 ]] && echo -e '\t'$rea $reaName $ec
+        [[ verbose -ge 1 ]] && echo -e "\t$j) $rea $reaName $ec"
         [[ -z "$rea" ]] && { continue; }
         [[ -n "$ec" ]] && [[ -n "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw -e "$ec" -e "$reaName" $dir/dat/exception.tbl | wc -l); }
         ( [[ -z "$ec" ]] || [[ -z "$EC_test" ]] ) && [[ -n "$reaName" ]] && { is_exception=$(grep -Fw "$reaName" $dir/dat/exception.tbl | wc -l); }
@@ -463,11 +463,13 @@ do
                 done
                 [[ $iterations -gt 1 ]] && [[ verbose -ge 1 ]] &&  echo -e '\t\t'total subunits found: `echo $subunits_found - $subunits_undefined_found | bc` / $subunits_count
                 #[[ $iterations -gt 1 ]] && [[ verbose -ge 1 ]] && [[ $subunits_undefined_found -eq 1 ]] && echo -e '\t\tUndefined subunit found' 
-                echo -e $out'\t'$subunits_found'\t'$iterations >> subunits.log # save subunits found
+                echo -e $out'\t'$subunits_found'\t'$iterations'\t'$subunits_count'\t'$subunits_undefined_found >> subunits.log # save subunits found
             else
                 # get subunit fraction from former run
                 subunits_found=$(cat subunits.log | awk -F "\t" -v out=$out '$1==out { print $2 }')
                 iterations=$(cat subunits.log | awk -F "\t" -v out=$out '$1==out { print $3 }')
+                subunits_count=$(cat subunits.log | awk -F "\t" -v out=$out '$1==out { print $4 }')
+                subunits_undefined_found=$(cat subunits.log | awk -F "\t" -v out=$out '$1==out { print $5 }')
                 #echo test:$subunits_found $iterations
             fi
             if [ -s $out ]; then
@@ -539,7 +541,7 @@ do
                     fi
                 fi
             else
-                [[ verbose -ge 1 ]] && { echo -e '\t\t'NO blast hit; echo -e "\t\t$query"; }
+                [[ verbose -ge 1 ]] && { echo -e '\t\t'NO blast hit; }
                 if [[ -n "$dbhit" ]];then
                     pwyNoHitFound="$pwyNoHitFound$dbhit "
                     echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
