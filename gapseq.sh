@@ -382,6 +382,12 @@ do
                 [[ verbose -ge 1 ]] && echo -e '\t'Downloading sequence for: $ec 
                 $dir/src/uniprot.sh -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
             fi
+            # if an alternative ec numbers exists and has additional sequence data merge both files
+            if [[ -s $seqpath/$altec.fasta ]]; then
+                [[ verbose -ge 1 ]] && { echo -e "\t\tMerge sequence data from `basename $query` and $altec.fasta (alternative ec numbers)";  }
+                cat $seqpath/$ec.fasta $seqpath/$altec.fasta | awk '/^>/{f=!d[$1];d[$1]=1}f' > ${rea}_merged.fasta
+                query=$(echo `pwd`/${rea}_merged.fasta)
+            fi
         fi
         # if no EC number is available or no sequence was found for EC number then use reaction name instead for sequence search
         if [[ -n "$reaName" ]] && ( [[ -z "$EC_test" ]] || [[ ! -s "$query" ]] );then
