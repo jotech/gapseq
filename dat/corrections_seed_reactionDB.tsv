@@ -642,6 +642,7 @@ rxn00928	<			[SW] direction changed according to MetaCyc	https://ecocyc.org/ECOL
 rxn00929	<			[SW] direction changed according to MetaCyc	https://ecocyc.org/ECOLI/NEW-IMAGE?type=REACTION&object=PYRROLINECARBREDUCT-RXN				
 rxn00930	<			[SW] direction changed according to MetaCyc	https://ecocyc.org/ECOLI/NEW-IMAGE?type=REACTION&object=PYRROLINECARBREDUCT-RXN				
 rxn00931	<			[SW] direction changed according to MetaCyc	https://ecocyc.org/ECOLI/NEW-IMAGE?type=REACTION&object=PYRROLINECARBREDUCT-RXN				
+rxn03910	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=NIL&object=RXN0-302&redirect=T				
 									
 rxn08783		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
 rxn08792		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
@@ -1661,3 +1662,5 @@ rxn22385				[SW] Important for Rhmanose degradatiion without phosphorylated inte
 rxn22386				[SW] Important for Rhmanose degradatiion without phosphorylated intermediates.					TRUE
 rxn39175				[SW] Diffusion of butanol					TRUE
 rxn36810				[SW] EC 1.6.5.3					TRUE
+rxn26477									TRUE
+rxn26102									TRUE

@@ -1,5 +1,5 @@
 gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
-                     dummy.weight = 100, script.dir, core.only = FALSE, verbose=verbose, gs.origin = NA) {
+                     dummy.weight = 100, script.dir, core.only = FALSE, verbose=verbose, gs.origin = NA, rXg.tab) {
   source(paste0(script.dir, "/src/sysBiolAlg_mtfClass2.R"))
   # backup model
   mod.orig.bak <- mod.orig
@@ -167,6 +167,15 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
     
     met.name[ind.new.mets] <- mod.orig@met_name[ind.old.mets]
     
+    # get gene associations if any
+    #dtg.tmp <- rXg.tab[seed == mseed[i,id] & rm == F, .(complex,gene)]
+    #dtg.tmp <- rXg.tab[seed == mseed[i,id] & rm == F][order(-bitscore)][1, .(complex,gene)]
+    dtg.tmp <- data.table()
+    if(nrow(dtg.tmp)>0)
+      gpr.tmp <- get_gene_logic_string(dtg.tmp$complex, dtg.tmp$gene)
+    else
+      gpr.tmp <- ""
+    
     mod.orig <- addReact(model = mod.orig,
                          id = paste0(mseed[i,id],"_c0"),
                          met = met.ids,
@@ -176,7 +185,9 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
                          ub = ifelse(only.backwards, 0, 1000),
                          lb = ifelse(is.rev, -1000, 0),
                          reactName = mseed[i, name.x],
-                         metName = met.name)
+                         metName = met.name#,
+                         #gprAssoc = gpr.tmp
+                         )
     mod.orig@react_attr[which(mod.orig@react_id == paste0(mseed[i,id],"_c0")),c("gs.origin","seed")] <- data.frame(gs.origin = gs.origin,
                                                                                                                    seed = mseed[i,id],
                                                                                                                    stringsAsFactors = F)

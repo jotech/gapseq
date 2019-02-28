@@ -126,8 +126,13 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt.cand.mono[, max.bs := NULL]
   dt.cand.mono <- dt.cand.mono[!duplicated(seed)]
   
+  # 3.5. Handling of spontaneous reactions
+  dt.cand.spon <- copy(dt[status=="spontaneous" & is.na(bitscore)])
+  dt.cand.spon[, bitscore := high.evi.rxn.BS]
+  dt.cand.spon <- dt.cand.spon[!duplicated(seed)]
+  
   # 4. Combine all three parts and choose highest support
-  dt.cand <- rbindlist(list(dt.cand.clpx, dt.cand.mono, dt.cand.topo))
+  dt.cand <- rbindlist(list(dt.cand.clpx, dt.cand.mono, dt.cand.topo, dt.cand.spon))
   dt.cand[, max.bs := max(bitscore, na.rm=TRUE), by = "seed"]
   dt.cand <- dt.cand[max.bs == bitscore]
   dt.cand[, max.bs := NULL]
