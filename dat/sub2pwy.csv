@@ -1,150 +1,360 @@
-name,altname,exid,id,guild,metacyc,exid_seed,id_seed
-alpha-Cyclodextrin,,,,Polymers,,NA,NA
-Dextrin,,EX_dextrin(e),dextrin[e],Polymers,,EX_cpd11594_e0,cpd11594[e0]
-Glycogen,,EX_glycogen(e),glycogen[e],Polymers,,EX_cpd00155_e0,cpd00155[e0]
-Tween 40,,,,Polymers,,NA,NA
-Tween 80,,,,Polymers,,NA,NA
-N-Acetyl-D-Galactosamine,N-acetylgalactosamine,EX_acgal(e),acgal[e],Carbohydrates,PWY-7077,EX_cpd00832_e0,cpd00832[e0]
-N-Acetyl-D-Glucosamine,,EX_acgam(e),acgam[e],Carbohydrates,PWY-7586,EX_cpd00122_e0,cpd00122[e0]
-Adonitol,,,,Carbohydrates,RIBITOLUTIL-PWY,NA,NA
-L-Arabinose,arabinose,EX_arab_L(e),arab_L[e],Carbohydrates,ARABCAT-PWY;PWY-5515;PWY-5517;PWY-7295,EX_cpd00224_e0,cpd00224[e0]
-D-Arabitol,arabitol,EX_abt_D(e),abt_D[e],Carbohydrates,DARABITOLUTIL-PWY,NA,NA
-D-Cellobiose,cellobiose,EX_cellb(e),cellb[e],Carbohydrates,,EX_cpd00158_e0,cpd00158[e0]
-i-Erythritol,,,,Carbohydrates,PWY-7789;PWY-7788,NA,NA
-D-Fructose,fructose,EX_fru(e),fru[e],Carbohydrates,PWY0-1314,EX_cpd00082_e0,cpd00082[e0]
-L-Fucose,fucose,EX_fuc_L(e),fuc_L[e],Carbohydrates,FUCCAT-PWY,EX_cpd00751_e0,cpd00751[e0]
-D-Galactose,galactose,EX_gal(e),gal[e],Carbohydrates,PWY-6317;PWY-6693;GALDEG-PWY;PWY66-422;PWY-3821,EX_cpd00108_e0,cpd00108[e0]
-Gentiobiose,,,,Carbohydrates,,NA,NA
-alpha-D-Glucose,glucose,EX_glc(e),glc_D[e],Carbohydrates,GLYCOLYSIS;ANAGLYCOLYSIS-PWY;P341-PWY;NPGLUCAT-PWY;PWY-2221;ENTNER-DOUDOROFF-PWY,EX_cpd00027_e0,cpd00027[e0]
-m-Inositol,inositol,EX_inost(e),inost[e],Carbohydrates,P562-PWY;PWY-7241,EX_cpd00121_e0,cpd00121[e0]
-alpha-D-Lactose,lactose,EX_lcts(e),lcts[e],Carbohydrates,LACTOSEUTIL-PWY;BGALACT-PWY;LACTOSECAT-PWY,EX_cpd00208_e0,cpd00208[e0]
-Lactulose,,,,Carbohydrates,,EX_cpd04349_e0,cpd04349[e0]
-Maltose,maltose,EX_malt(e),malt[e],Carbohydrates,MALTOSECAT-PWY,EX_cpd00179_e0,cpd00179[e0]
-D-Mannitol,mannitol,EX_mnl(e),mnl[e],Carbohydrates,PWY-3861;MANNIDEG-PWY,EX_cpd00314_e0,cpd00314[e0]
-D-Mannose,mannose,EX_man(e),man[e],Carbohydrates,MANNCAT-PWY,EX_cpd00138_e0,cpd00138[e0]
-D-Melibiose,melibiose,EX_melib(e),melib[e],Carbohydrates,PWY0-1301,EX_cpd03198_e0,cpd03198[e0]
-beta-Methyl-D-Glucoside,,,,Carbohydrates,,NA,NA
-D-Psicose,,,,Carbohydrates,,NA,NA
-D-Raffinose,raffinose,EX_raffin(e),raffin[e],Carbohydrates,,EX_cpd00382_e0,cpd00382[e0]
-L-Rhamnose,rhamnose,EX_rmn(e),rmn[e],Carbohydrates,PWY-6714;RHAMCAT-PWY;PWY-6713,EX_cpd00396_e0,cpd00396[e0]
-D-Sorbitol,sorbitol,EX_sbt-d(e),sbt_D[e],Carbohydrates,PWY-4101;SORBDEG-PWY,EX_cpd00588_e0,cpd00588[e0]
-Sucrose,sucrose,EX_sucr(e),sucr[e],Carbohydrates,SUCUTIL-PWY;SUCROSEUTIL2-PWY;PWY-3801;PWY-621;PWY66-373;PWY-5384,EX_cpd00076_e0,cpd00076[e0]
-D-Trehalose,trehalose,EX_tre(e),tre[e],Carbohydrates,TREDEGLOW-PWY;PWY-2723;PWY0-1182;PWY-2721;PWY0-1466;PWY-2722,EX_cpd00794_e0,cpd00794[e0]
-Turanose,,EX_tur(e),tur[e],Carbohydrates,,EX_cpd20885_e0,cpd20885[e0]
-Xylitol,,EX_xylt(e),xylt[e],Carbohydrates,LARABITOLUTIL-PWY,EX_cpd00306_e0,cpd00306[e0]
-Methyl Pyruvate,pyruvate,EX_pyr(e),pyr[e],Carbohydrates,,EX_cpd00020_e0,cpd00020[e0]
-Mono-Methyl-Succinate,,,,Carbohydrates,,NA,NA
-Acetic Acid,acetate,EX_ac(e),ac[e],Carboxylic acids,,EX_cpd00029_e0,cpd00029[e0]
-Cis-Aconitic Acid,,,,Carboxylic acids,,NA,NA
-Citric Acid,citrate,EX_cit(e),cit[e],Carboxylic acids,,EX_cpd00137_e0,cpd00137[e0]
-Formic Acid,formate,EX_for(e),for[e],Carboxylic acids,,EX_cpd00047_e0,cpd00047[e0]
-D-Galactonic Acid Lactone,,,,Carboxylic acids,,NA,NA
-D-Galacturonic Acid,,,,Carboxylic acids,,NA,NA
-D-Gluconic Acid,,,,Carboxylic acids,,NA,NA
-D-Glucosaminic Acid,,,,Carboxylic acids,,NA,NA
-D-Glucuronic Acid,,,,Carboxylic acids,,NA,NA
-alpha-Hydroxy Butyric Acid,,,,Carboxylic acids,,NA,NA
-beta-Hydroxy Butyric Acid,,,,Carboxylic acids,,NA,NA
-gamma-Hydroxy Butyric Acid,,,,Carboxylic acids,,NA,NA
-p-Hydroxy Phenylacetic Acid,,,,Carboxylic acids,,NA,NA
-Itaconic Acid,,,,Carboxylic acids,,NA,NA
-alpha-Keto Butyric Acid,,,,Carboxylic acids,,NA,NA
-alpha-Keto Glutaric Acid,,,,Carboxylic acids,,NA,NA
-alpha-Keto Valeric Acid,,,,Carboxylic acids,,NA,NA
-D-L-Lactic Acid,,,,Carboxylic acids,,EX_cpd00159_e0,cpd00159[e0]
-Malonic Acid,,,,Carboxylic acids,,NA,NA
-Propionic Acid,propionate,EX_ppa(e),ppa[e],Carboxylic acids,,EX_cpd00141_e0,cpd00141[e0]
-Quinic Acid,,,,Carboxylic acids,,NA,NA
-D-Saccharic Acid,,,,Carboxylic acids,,NA,NA
-Sebacic Acid,,,,Carboxylic acids,,NA,NA
-Succinic Acid,succinate,EX_succ(e),succ[e],Carboxylic acids,,EX_cpd00036_e0,cpd00036[e0]
-Bromo Succinic Acid,,,,Miscellaneous,,NA,NA
-Succinamic Acid,,,,Amines/amides,,NA,NA
-Glucuronamide,,,,Amines/amides,,NA,NA
-L-Alaninamide,,,,Amines/amides,,NA,NA
-D-Alanine,,,,Amino acids,,NA,NA
-L-Alanine,alanine,EX_ala_L(e),ala_L[e],Amino acids,,EX_cpd00035_e0,cpd00035[e0]
-L-Arginine,arginine,EX_arg_L(e),arg_L[e],Amino acids,,EX_cpd00051_e0,cpd00051[e0]
-L-Alanylglycine,,,,Amino acids,,NA,NA
-L-Asparagine,asparagine,EX_asn_L(e),asn_L[e],Amino acids,,EX_cpd00132_e0,cpd00132[e0]
-L-Aspartic Acid,aspartate,EX_asp_L(e),asp_L[e],Amino acids,,EX_cpd00041_e0,cpd00041[e0]
-L-Cysteine,cysteine,EX_cys_L(e),cys_L[e],Amino acids,,EX_cpd00084_e0,cpd00084[e0]
-L-Glutamic Acid,glutamate,EX_glu_L(e),glu_L[e],Amino acids,,EX_cpd00023_e0,cpd00023[e0]
-L-Glutamine,glutamine,EX_gln_L(e),gln_L[e],Amino acids,,EX_cpd00053_e0,cpd00053[e0]
-L-Glycine,glycine,EX_gly_L(e),gly_L[e],Amino acids,,EX_cpd00033_e0,cpd00033[e0]
-Glycyl-L-Aspartic Acid,,,,Amino acids,,NA,NA
-Glycyl-L-Glutamic Acid,,,,Amino acids,,NA,NA
-L-Histidine,histidine,EX_his_L(e),his_L[e],Amino acids,,EX_cpd00119_e0,cpd00119[e0]
-Hydroxy-L-Proline,,,,Amino acids,,NA,NA
-L-Isoleucine,isoleucine,EX_ile_L(e),ile_L[e],Amino acids,,EX_cpd00322_e0,cpd00322[e0]
-L-Leucine,leucine,EX_leu_L(e),leu_L[e],Amino acids,,EX_cpd00107_e0,cpd00107[e0]
-L-Lysine,lysine,EX_lys_L(e),lys_L[e],Amino acids,,EX_cpd00039_e0,cpd00039[e0]
-L-Methionine,methionine,EX_met_L(e),met_L[e],Amino acids,,EX_cpd00060_e0,cpd00060[e0]
-L-Ornithine,ornithine,EX_orn(e),orn[e],Amino acids,,EX_cpd00064_e0,cpd00064[e0]
-L-Phenylalanine,phenylalanine,EX_phe_L(e),phe_L[e],Amino acids,,EX_cpd00066_e0,cpd00066[e0]
-L-Proline,proline,EX_pro_L(e),pro_L[e],Amino acids,,EX_cpd00129_e0,cpd00129[e0]
-L-Pyroglutamic Acid,,,,Amino acids,,NA,NA
-D-Serine,,,,Amino acids,,NA,NA
-L-Serine,serine,EX_ser_L(e),ser_L[e],Amino acids,,EX_cpd00054_e0,cpd00054[e0]
-L-Threonine,threonine,EX_thr_L(e),thr_L[e],Amino acids,,EX_cpd00161_e0,cpd00161[e0]
-L-Tryptophan,tryptophan,EX_trp_L(e),trp_L[e],Amino acids,,EX_cpd00065_e0,cpd00065[e0]
-L-Tyrosine,tyrosine,EX_tyr_L(e),try_L[e],Amino acids,,EX_cpd00069_e0,cpd00069[e0]
-L-Valine,valine,EX_val_L(e),val_L[e],Amino acids,,EX_cpd00156_e0,cpd00156[e0]
-D-L-Carnitine,carnitine,EX_crn(e),crn[e],Amino acids,,EX_cpd00266_e0,cpd00266[e0]
-gamma-Amino Butyric Acid,,,,Amino acids,,NA,NA
-Urocanic Acid,,,,Miscellaneous,,NA,NA
-Inosine,,EX_ins(e),ins[e],Miscellaneous,,EX_cpd00246_e0,cpd00246[e0]
-Uridine,,EX_uri(e),uri[e],Miscellaneous,,EX_cpd00249_e0,cpd00249[e0]
-Thymidine,,EX_thymd(e),thymd[e],Miscellaneous,,EX_cpd00184_e0,cpd00184[e0]
-Phenyethylamine,,,,Amines/amides,,NA,NA
-Putrescine,,,,Amines/amides,,NA,NA
-2-Aminoethanol,,,,Amines/amides,,NA,NA
-2-3-Butanediol,,,,Miscellaneous,,NA,NA
-Glycerol,,,,Miscellaneous,,NA,NA
-D-L-alpha-Glycerol Phosphate,,,,Miscellaneous,,NA,NA
-Glucose-1-Phosphate,,,,Miscellaneous,,NA,NA
-Glucose-6-Phosphate,,,,Miscellaneous,,NA,NA
-Acetoin,,EX_actn_R(e),actn_R[e],,,EX_cpd00361_e0,cpd00361[e0]
-Butanediol,,EX_btd_RR(e),btd_RR[e],,,EX_cpd01947_e0,cpd01947[e0]
-Butanol,,EX_btoh(e),btoh[e],,,EX_cpd03662_e0,cpd03662[e0]
-Butyrate,,EX_but(e),but[e],,,EX_cpd00211_e0,cpd00211[e0]
-Cholesterol,,EX_chsterol(e),chsterol[e],,,EX_cpd00160_e0,cpd00160[e0]
-D-Arabinose,arabinose,EX_arab_D(e),arab_D[e],,,EX_cpd00185_e0,cpd00185[e0]
-D-glucosamine,glucosamine,EX_gam(e),gam[e],,,EX_cpd00276_e0,cpd00276[e0]
-D-Lactate,,EX_lac_D(e),lac_D[e],,,EX_cpd00221_e0,cpd00221[e0]
-Ethanol,,EX_etoh(e),etoh[e],,,EX_cpd00363_e0,cpd00363[e0]
-Ribitol,,EX_rbt(e),rbt[e],,,EX_cpd00366_e0,cpd00366[e0]
-Galacturonate,,EX_galur(e),galur[e],,,EX_cpd00280_e0,cpd00280[e0]
-Gluconate,,EX_glcn(e),glcn[e],,,EX_cpd00222_e0,cpd00222[e0]
-Glucuronate,,EX_glcur(e),glcur[e],,,EX_cpd00164_e0,cpd00164[e0]
-Glycerol,,EX_glyc(e),glyc[e],,,EX_cpd00100_e0,cpd00100[e0]
-Hydrogen,,EX_h2(e),h2[e],,,EX_cpd11640_e0,cpd11640[e0]
-Hydrogen sulfide,,EX_h2s(e),h2s[e],,,EX_cpd00239_e0,cpd00239[e0]
-Indole,,EX_indole(e),indole[e],,,EX_cpd00359_e0,cpd00359[e0]
-Isobutyrate,,EX_isobut(e),isobut[e],,,EX_cpd01711_e0,cpd01711[e0]
-Isovalerate,,EX_isoval(e),isoval[e],,,NA,NA
-L-Lactate,,EX_lac_L(e),lac_L[e],,,EX_cpd00159_e0,cpd00159[e0]
-Lyxose,,EX_lyx_L(e),lyx_L[e],,,EX_cpd01067_e0,cpd01067[e0]
-Matohextrin,,EX_malthx(e),malthx[e],,,EX_cpd01329_e0,cpd01329[e0]
-Methane,,EX_ch4(e),ch4[e],,,EX_cpd01024_e0,cpd01024[e0]
-N-Acetylneuraminate,acetylneuraminate,EX_acnam(e),acnam[e],,,EX_cpd00232_e0,cpd00232[e0]
-Phenylacetate,,EX_4hphac(e),4hphac[e],,,EX_cpd00489_e0,cpd00489[e0]
-Ribose,,EX_rib_D(e),rib_D[e],,,EX_cpd00105_e0,cpd00105[e0]
-Salicin,,EX_salcn(e),salcn[e],,,EX_cpd01030_e0,cpd01030[e0]
-Xylose,,EX_xyl_D(e),xyl_D[e],,,EX_cpd00154_e0,cpd00154[e0]
-Chloride,,EX_cl(e),cl[e],Minerals,,EX_cpd00099_e0,cpd00099[e0]
-Cobalt,,EX_cobalt2(e),cobalt2[e],Minerals,,EX_cpd00149_e0,cpd00149[e0]
-Potassium,,EX_k(e),k[e],Minerals,,EX_cpd00205_e0,cpd00205[e0]
-Phosphate,,EX_pi(e),pi[e],Minerals,,EX_cpd00009_e0,cpd00009[e0]
-Magnesium,,EX_mg2(e),mg2[e],Minerals,,EX_cpd00254_e0,cpd00254[e0]
-Calcium,,EX_ca2(e),ca2[e],Minerals,,EX_cpd00063_e0,cpd00063[e0]
-Iron,,EX_fe2(e),fe2[e],Minerals,,EX_cpd10515_e0,cpd10515[e0]
-Zinc,,EX_zn2(e),zn2[e],Minerals,,EX_cpd00034_e0,cpd00034[e0]
-Manganese,,EX_mn2(e),mn2[e],Minerals,,EX_cpd00030_e0,cpd00030[e0]
-Copper,,EX_cu2(e),cu2[e],Minerals,,EX_cpd00058_e0,cpd00058[e0]
-Melitose,raffinose,EX_raffin(e),raffin[e],Carbohydrates,,EX_cpd00382_e0,cpd00382[e0]
-Benzoate,,EX_bz(e),bz[e],Aromates,,EX_cpd00153_e0,cpd00153[e0]
-Sulfate,,EX_so4(e),so4[e],Minerals,,EX_cpd00048_e0,cpd00048[e0]
-Sulfite,,EX_so3(e),so3[e],Minerals,,EX_cpd00081_e0,cpd00081[e0]
-Nitrate,,EX_no3(e),no3[e],Minerals,,EX_cpd00209_e0,cpd00209[e0]
-Nitrite,,EX_no2(e),no2[e],Minerals,,EX_cpd00075_e0,cpd00075[e0]
+name	altname	exid	id	guild	metacyc	exid_seed	id_seed
+alpha-Cyclodextrin				Polymers			
+Dextrin		EX_dextrin(e)	dextrin[e]	Polymers		EX_cpd11594_e0	cpd11594[e0]
+Glycogen		EX_glycogen(e)	glycogen[e]	Polymers		EX_cpd00155_e0	cpd00155[e0]
+Tween 40				Polymers			
+Tween 80				Polymers			
+N-Acetyl-D-Galactosamine	N-acetylgalactosamine	EX_acgal(e)	acgal[e]	Carbohydrates	PWY-7077	EX_cpd00832_e0	cpd00832[e0]
+N-Acetyl-D-Glucosamine		EX_acgam(e)	acgam[e]	Carbohydrates	PWY-7586	EX_cpd00122_e0	cpd00122[e0]
+Adonitol				Carbohydrates	RIBITOLUTIL-PWY		
+L-Arabinose	arabinose	EX_arab_L(e)	arab_L[e]	Carbohydrates	ARABCAT-PWY;PWY-5515;PWY-5517;PWY-7295	EX_cpd00224_e0	cpd00224[e0]
+D-Arabitol	arabitol	EX_abt_D(e)	abt_D[e]	Carbohydrates	DARABITOLUTIL-PWY		
+D-Cellobiose	cellobiose	EX_cellb(e)	cellb[e]	Carbohydrates		EX_cpd00158_e0	cpd00158[e0]
+i-Erythritol				Carbohydrates	PWY-7789;PWY-7788		
+D-Fructose	fructose	EX_fru(e)	fru[e]	Carbohydrates	PWY0-1314	EX_cpd00082_e0	cpd00082[e0]
+L-Fucose	fucose	EX_fuc_L(e)	fuc_L[e]	Carbohydrates	FUCCAT-PWY	EX_cpd00751_e0	cpd00751[e0]
+D-Galactose	galactose	EX_gal(e)	gal[e]	Carbohydrates	PWY-6317;PWY-6693;GALDEG-PWY;PWY66-422;PWY-3821	EX_cpd00108_e0	cpd00108[e0]
+Gentiobiose				Carbohydrates			
+alpha-D-Glucose	glucose	EX_glc(e)	glc_D[e]	Carbohydrates	GLYCOLYSIS;ANAGLYCOLYSIS-PWY;P341-PWY;NPGLUCAT-PWY;PWY-2221;ENTNER-DOUDOROFF-PWY	EX_cpd00027_e0	cpd00027[e0]
+m-Inositol	inositol	EX_inost(e)	inost[e]	Carbohydrates	P562-PWY;PWY-7241	EX_cpd00121_e0	cpd00121[e0]
+alpha-D-Lactose	lactose	EX_lcts(e)	lcts[e]	Carbohydrates	LACTOSEUTIL-PWY;BGALACT-PWY;LACTOSECAT-PWY	EX_cpd00208_e0	cpd00208[e0]
+Lactulose				Carbohydrates		EX_cpd04349_e0	cpd04349[e0]
+Maltose	maltose	EX_malt(e)	malt[e]	Carbohydrates	MALTOSECAT-PWY	EX_cpd00179_e0	cpd00179[e0]
+D-Mannitol	mannitol	EX_mnl(e)	mnl[e]	Carbohydrates	PWY-3861;MANNIDEG-PWY	EX_cpd00314_e0	cpd00314[e0]
+D-Mannose	mannose	EX_man(e)	man[e]	Carbohydrates	MANNCAT-PWY	EX_cpd00138_e0	cpd00138[e0]
+D-Melibiose	melibiose	EX_melib(e)	melib[e]	Carbohydrates	PWY0-1301	EX_cpd03198_e0	cpd03198[e0]
+beta-Methyl-D-Glucoside				Carbohydrates			
+D-Psicose				Carbohydrates			
+D-Raffinose	raffinose	EX_raffin(e)	raffin[e]	Carbohydrates		EX_cpd00382_e0	cpd00382[e0]
+L-Rhamnose	rhamnose	EX_rmn(e)	rmn[e]	Carbohydrates	PWY-6714;RHAMCAT-PWY;PWY-6713	EX_cpd00396_e0	cpd00396[e0]
+D-Sorbitol	sorbitol	EX_sbt-d(e)	sbt_D[e]	Carbohydrates	PWY-4101;SORBDEG-PWY	EX_cpd00588_e0	cpd00588[e0]
+Sucrose	sucrose	EX_sucr(e)	sucr[e]	Carbohydrates	SUCUTIL-PWY;SUCROSEUTIL2-PWY;PWY-3801;PWY-621;PWY66-373;PWY-5384	EX_cpd00076_e0	cpd00076[e0]
+D-Trehalose	trehalose	EX_tre(e)	tre[e]	Carbohydrates	TREDEGLOW-PWY;PWY-2723;PWY0-1182;PWY-2721;PWY0-1466;PWY-2722	EX_cpd00794_e0	cpd00794[e0]
+Turanose		EX_tur(e)	tur[e]	Carbohydrates		EX_cpd20885_e0	cpd20885[e0]
+Xylitol		EX_xylt(e)	xylt[e]	Carbohydrates	LARABITOLUTIL-PWY	EX_cpd00306_e0	cpd00306[e0]
+Methyl Pyruvate	pyruvate	EX_pyr(e)	pyr[e]	Carbohydrates		EX_cpd00020_e0	cpd00020[e0]
+Mono-Methyl-Succinate				Carbohydrates			
+Acetic Acid	acetate	EX_ac(e)	ac[e]	Carboxylic acids		EX_cpd00029_e0	cpd00029[e0]
+Cis-Aconitic Acid				Carboxylic acids			
+Citric Acid	citrate	EX_cit(e)	cit[e]	Carboxylic acids		EX_cpd00137_e0	cpd00137[e0]
+Formic Acid	formate	EX_for(e)	for[e]	Carboxylic acids		EX_cpd00047_e0	cpd00047[e0]
+D-Galactonic Acid Lactone				Carboxylic acids			
+D-Galacturonic Acid				Carboxylic acids			
+D-Gluconic Acid				Carboxylic acids			
+D-Glucosaminic Acid				Carboxylic acids			
+D-Glucuronic Acid				Carboxylic acids			
+alpha-Hydroxy Butyric Acid				Carboxylic acids			
+beta-Hydroxy Butyric Acid				Carboxylic acids			
+gamma-Hydroxy Butyric Acid				Carboxylic acids			
+p-Hydroxy Phenylacetic Acid				Carboxylic acids			
+Itaconic Acid				Carboxylic acids			
+alpha-Keto Butyric Acid				Carboxylic acids			
+alpha-Keto Glutaric Acid				Carboxylic acids			
+alpha-Keto Valeric Acid				Carboxylic acids			
+D-L-Lactic Acid				Carboxylic acids		EX_cpd00159_e0	cpd00159[e0]
+Malonic Acid				Carboxylic acids			
+Propionic Acid	propionate	EX_ppa(e)	ppa[e]	Carboxylic acids		EX_cpd00141_e0	cpd00141[e0]
+Quinic Acid				Carboxylic acids			
+D-Saccharic Acid				Carboxylic acids			
+Sebacic Acid				Carboxylic acids			
+Succinic Acid	succinate	EX_succ(e)	succ[e]	Carboxylic acids		EX_cpd00036_e0	cpd00036[e0]
+Bromo Succinic Acid				Miscellaneous			
+Succinamic Acid				Amines/amides			
+Glucuronamide				Amines/amides			
+L-Alaninamide				Amines/amides			
+D-Alanine				Amino acids			
+L-Alanine	alanine	EX_ala_L(e)	ala_L[e]	Amino acids		EX_cpd00035_e0	cpd00035[e0]
+L-Arginine	arginine	EX_arg_L(e)	arg_L[e]	Amino acids		EX_cpd00051_e0	cpd00051[e0]
+L-Alanylglycine				Amino acids			
+L-Asparagine	asparagine	EX_asn_L(e)	asn_L[e]	Amino acids		EX_cpd00132_e0	cpd00132[e0]
+L-Aspartic Acid	aspartate	EX_asp_L(e)	asp_L[e]	Amino acids		EX_cpd00041_e0	cpd00041[e0]
+L-Cysteine	cysteine	EX_cys_L(e)	cys_L[e]	Amino acids		EX_cpd00084_e0	cpd00084[e0]
+L-Glutamic Acid	glutamate	EX_glu_L(e)	glu_L[e]	Amino acids		EX_cpd00023_e0	cpd00023[e0]
+L-Glutamine	glutamine	EX_gln_L(e)	gln_L[e]	Amino acids		EX_cpd00053_e0	cpd00053[e0]
+L-Glycine	glycine	EX_gly_L(e)	gly_L[e]	Amino acids		EX_cpd00033_e0	cpd00033[e0]
+Glycyl-L-Aspartic Acid				Amino acids			
+Glycyl-L-Glutamic Acid				Amino acids			
+L-Histidine	histidine	EX_his_L(e)	his_L[e]	Amino acids		EX_cpd00119_e0	cpd00119[e0]
+Hydroxy-L-Proline				Amino acids			
+L-Isoleucine	isoleucine	EX_ile_L(e)	ile_L[e]	Amino acids		EX_cpd00322_e0	cpd00322[e0]
+L-Leucine	leucine	EX_leu_L(e)	leu_L[e]	Amino acids		EX_cpd00107_e0	cpd00107[e0]
+L-Lysine	lysine	EX_lys_L(e)	lys_L[e]	Amino acids		EX_cpd00039_e0	cpd00039[e0]
+L-Methionine	methionine	EX_met_L(e)	met_L[e]	Amino acids		EX_cpd00060_e0	cpd00060[e0]
+L-Ornithine	ornithine	EX_orn(e)	orn[e]	Amino acids		EX_cpd00064_e0	cpd00064[e0]
+L-Phenylalanine	phenylalanine	EX_phe_L(e)	phe_L[e]	Amino acids		EX_cpd00066_e0	cpd00066[e0]
+L-Proline	proline	EX_pro_L(e)	pro_L[e]	Amino acids		EX_cpd00129_e0	cpd00129[e0]
+L-Pyroglutamic Acid				Amino acids			
+D-Serine				Amino acids			
+L-Serine	serine	EX_ser_L(e)	ser_L[e]	Amino acids		EX_cpd00054_e0	cpd00054[e0]
+L-Threonine	threonine	EX_thr_L(e)	thr_L[e]	Amino acids		EX_cpd00161_e0	cpd00161[e0]
+L-Tryptophan	tryptophan	EX_trp_L(e)	trp_L[e]	Amino acids		EX_cpd00065_e0	cpd00065[e0]
+L-Tyrosine	tyrosine	EX_tyr_L(e)	try_L[e]	Amino acids		EX_cpd00069_e0	cpd00069[e0]
+L-Valine	valine	EX_val_L(e)	val_L[e]	Amino acids		EX_cpd00156_e0	cpd00156[e0]
+D-L-Carnitine	carnitine	EX_crn(e)	crn[e]	Amino acids		EX_cpd00266_e0	cpd00266[e0]
+gamma-Amino Butyric Acid				Amino acids			
+Urocanic Acid				Miscellaneous			
+Inosine		EX_ins(e)	ins[e]	Miscellaneous		EX_cpd00246_e0	cpd00246[e0]
+Uridine		EX_uri(e)	uri[e]	Miscellaneous		EX_cpd00249_e0	cpd00249[e0]
+Thymidine		EX_thymd(e)	thymd[e]	Miscellaneous		EX_cpd00184_e0	cpd00184[e0]
+Phenyethylamine				Amines/amides			
+Putrescine				Amines/amides			
+2-Aminoethanol				Amines/amides			
+2-3-Butanediol				Miscellaneous			
+Glycerol				Miscellaneous			
+D-L-alpha-Glycerol Phosphate				Miscellaneous			
+Glucose-1-Phosphate				Miscellaneous			
+Glucose-6-Phosphate				Miscellaneous			
+Acetoin		EX_actn_R(e)	actn_R[e]			EX_cpd00361_e0	cpd00361[e0]
+Butanediol		EX_btd_RR(e)	btd_RR[e]			EX_cpd01947_e0	cpd01947[e0]
+Butanol		EX_btoh(e)	btoh[e]			EX_cpd03662_e0	cpd03662[e0]
+Butyrate		EX_but(e)	but[e]			EX_cpd00211_e0	cpd00211[e0]
+Cholesterol		EX_chsterol(e)	chsterol[e]			EX_cpd00160_e0	cpd00160[e0]
+D-Arabinose	arabinose	EX_arab_D(e)	arab_D[e]			EX_cpd00185_e0	cpd00185[e0]
+D-glucosamine	glucosamine	EX_gam(e)	gam[e]			EX_cpd00276_e0	cpd00276[e0]
+D-Lactate		EX_lac_D(e)	lac_D[e]			EX_cpd00221_e0	cpd00221[e0]
+Ethanol		EX_etoh(e)	etoh[e]			EX_cpd00363_e0	cpd00363[e0]
+Ribitol		EX_rbt(e)	rbt[e]			EX_cpd00366_e0	cpd00366[e0]
+Galacturonate		EX_galur(e)	galur[e]			EX_cpd00280_e0	cpd00280[e0]
+Gluconate		EX_glcn(e)	glcn[e]			EX_cpd00222_e0	cpd00222[e0]
+Glucuronate		EX_glcur(e)	glcur[e]			EX_cpd00164_e0	cpd00164[e0]
+Glycerol		EX_glyc(e)	glyc[e]			EX_cpd00100_e0	cpd00100[e0]
+Hydrogen		EX_h2(e)	h2[e]			EX_cpd11640_e0	cpd11640[e0]
+Hydrogen sulfide		EX_h2s(e)	h2s[e]			EX_cpd00239_e0	cpd00239[e0]
+Indole		EX_indole(e)	indole[e]			EX_cpd00359_e0	cpd00359[e0]
+Isobutyrate		EX_isobut(e)	isobut[e]			EX_cpd01711_e0	cpd01711[e0]
+Isovalerate		EX_isoval(e)	isoval[e]				
+L-Lactate		EX_lac_L(e)	lac_L[e]			EX_cpd00159_e0	cpd00159[e0]
+Lyxose		EX_lyx_L(e)	lyx_L[e]			EX_cpd01067_e0	cpd01067[e0]
+Matohextrin		EX_malthx(e)	malthx[e]			EX_cpd01329_e0	cpd01329[e0]
+Methane		EX_ch4(e)	ch4[e]			EX_cpd01024_e0	cpd01024[e0]
+N-Acetylneuraminate	acetylneuraminate	EX_acnam(e)	acnam[e]			EX_cpd00232_e0	cpd00232[e0]
+Phenylacetate		EX_4hphac(e)	4hphac[e]			EX_cpd00489_e0	cpd00489[e0]
+Ribose		EX_rib_D(e)	rib_D[e]			EX_cpd00105_e0	cpd00105[e0]
+Salicin		EX_salcn(e)	salcn[e]			EX_cpd01030_e0	cpd01030[e0]
+Xylose		EX_xyl_D(e)	xyl_D[e]			EX_cpd00154_e0	cpd00154[e0]
+Chloride		EX_cl(e)	cl[e]	Minerals		EX_cpd00099_e0	cpd00099[e0]
+Cobalt		EX_cobalt2(e)	cobalt2[e]	Minerals		EX_cpd00149_e0	cpd00149[e0]
+Potassium		EX_k(e)	k[e]	Minerals		EX_cpd00205_e0	cpd00205[e0]
+Phosphate		EX_pi(e)	pi[e]	Minerals		EX_cpd00009_e0	cpd00009[e0]
+Magnesium		EX_mg2(e)	mg2[e]	Minerals		EX_cpd00254_e0	cpd00254[e0]
+Calcium		EX_ca2(e)	ca2[e]	Minerals		EX_cpd00063_e0	cpd00063[e0]
+Iron		EX_fe2(e)	fe2[e]	Minerals		EX_cpd10515_e0	cpd10515[e0]
+Zinc		EX_zn2(e)	zn2[e]	Minerals		EX_cpd00034_e0	cpd00034[e0]
+Manganese		EX_mn2(e)	mn2[e]	Minerals		EX_cpd00030_e0	cpd00030[e0]
+Copper		EX_cu2(e)	cu2[e]	Minerals		EX_cpd00058_e0	cpd00058[e0]
+Melitose	raffinose	EX_raffin(e)	raffin[e]	Carbohydrates		EX_cpd00382_e0	cpd00382[e0]
+Benzoate		EX_bz(e)	bz[e]	Aromates		EX_cpd00153_e0	cpd00153[e0]
+Sulfate		EX_so4(e)	so4[e]	Minerals		EX_cpd00048_e0	cpd00048[e0]
+Sulfite		EX_so3(e)	so3[e]	Minerals		EX_cpd00081_e0	cpd00081[e0]
+Nitrate		EX_no3(e)	no3[e]	Minerals		EX_cpd00209_e0	cpd00209[e0]
+Nitrite		EX_no2(e)	no2[e]	Minerals		EX_cpd00075_e0	cpd00075[e0]
+NAD		EX_nad(e)	nad[e]			EX_cpd00003_e0	cpd00003
+NADP		EX_nadp(e)	nadp[e]			EX_cpd00006_e0	cpd00006
+CoA		EX_coa(e)	coa[e]			EX_cpd00010_e0	cpd00010
+Pyrophosphate		EX_ppi(e)	ppi[e]			EX_cpd00012_e0	cpd00012
+Ammonia		EX_nh4(e)	nh4[e]			EX_cpd00013_e0	cpd00013
+FAD		EX_fad(e)	fad[e]			EX_cpd00015_e0	cpd00015
+Pyridoxal phosphate		EX_pydx5p(e)	pydx5p[e]			EX_cpd00016_e0	cpd00016
+S-Adenosyl-L-methionine		EX_amet(e)	amet[e]			EX_cpd00017_e0	cpd00017
+2-Oxoglutarate		EX_akg(e)	akg[e]			EX_cpd00024_e0	cpd00024
+Hydrogen peroxide		EX_h2o2(e)	h2o2[e]			EX_cpd00025_e0	cpd00025
+Heme		EX_pheme(e)	pheme[e]			EX_cpd00028_e0	cpd00028
+GTP		EX_gtp(e)	gtp[e]			EX_cpd00038_e0	cpd00038
+GSH		EX_gthrd(e)	gthrd[e]			EX_cpd00042_e0	cpd00042
+CTP		EX_ctp(e)	ctp[e]			EX_cpd00052_e0	cpd00052
+Formaldehyde		EX_fald(e)	fald[e]			EX_cpd00055_e0	cpd00055
+TPP		EX_thmpp(e)	thmpp[e]			EX_cpd00056_e0	cpd00056
+L-Ascorbate		EX_ascb(e)	ascb[e]			EX_cpd00059_e0	cpd00059
+UTP		EX_utp(e)	utp[e]			EX_cpd00062_e0	cpd00062
+Malonyl-CoA		EX_malcoa(e)	malcoa[e]			EX_cpd00070_e0	cpd00070
+Acetaldehyde		EX_acald(e)	acald[e]			EX_cpd00071_e0	cpd00071
+Urea		EX_urea(e)	urea[e]			EX_cpd00073_e0	cpd00073
+Succinyl-CoA		EX_succoa(e)	succoa[e]			EX_cpd00078_e0	cpd00078
+D-glucose-6-phosphate		EX_g6p(e)	g6p[e]			EX_cpd00079_e0	cpd00079
+Glycerol-3-phosphate		EX_glyc3p(e)	glyc3p[e]			EX_cpd00080_e0	cpd00080
+Tetrahydrofolate		EX_thf(e)	thf[e]			EX_cpd00087_e0	cpd00087
+Uracil		EX_ura(e)	ura[e]			EX_cpd00092_e0	cpd00092
+Choline		EX_chol(e)	chol[e]			EX_cpd00098_e0	cpd00098
+Biotin		EX_btn(e)	btn[e]			EX_cpd00104_e0	cpd00104
+Fumarate		EX_fum(e)	fum[e]			EX_cpd00106_e0	cpd00106
+dATP		EX_datp(e)	datp[e]			EX_cpd00115_e0	cpd00115
+D-Alanine		EX_ala_D(e)	ala_D[e]			EX_cpd00117_e0	cpd00117
+Putrescine		EX_ptrc(e)	ptrc[e]			EX_cpd00118_e0	cpd00118
+5-10-Methylenetetrahydrofolate		EX_mlthf(e)	mlthf[e]			EX_cpd00125_e0	cpd00125
+L-Malate		EX_mal_L(e)	mal_L[e]			EX_cpd00130_e0	cpd00130
+Nicotinamide		EX_ncam(e)	ncam[e]			EX_cpd00133_e0	cpd00133
+4-Hydroxybenzoate		EX_4hbz(e)	4hbz[e]			EX_cpd00136_e0	cpd00136
+Glycolate		EX_glyclt(e)	glyclt[e]			EX_cpd00139_e0	cpd00139
+Acetoacetate		EX_acac(e)	acac[e]			EX_cpd00142_e0	cpd00142
+Hydrogen cyanide		EX_cyan(e)	cyan[e]			EX_cpd00150_e0	cpd00150
+Aminoethanol		EX_etha(e)	etha[e]			EX_cpd00162_e0	cpd00162
+Calomide		EX_adocbl(e)	adocbl[e]			EX_cpd00166_e0	cpd00166
+2-keto-3-deoxygluconate		EX_2ddglcn(e)	2ddglcn[e]			EX_cpd00176_e0	cpd00176
+Adenosine		EX_adn(e)	adn[e]			EX_cpd00182_e0	cpd00182
+Arachidonate		EX_arachd(e)	arachd[e]			EX_cpd00188_e0	cpd00188
+10-Formyltetrahydrofolate		EX_10fthf(e)	10fthf[e]			EX_cpd00201_e0	cpd00201
+Taurine		EX_taur(e)	taur[e]			EX_cpd00210_e0	cpd00210
+Palmitate		EX_hdca(e)	hdca[e]			EX_cpd00214_e0	cpd00214
+Pyridoxal		EX_pydx(e)	pydx[e]			EX_cpd00215_e0	cpd00215
+Niacin		EX_nac(e)	nac[e]			EX_cpd00218_e0	cpd00218
+Riboflavin		EX_ribflv(e)	ribflv[e]			EX_cpd00220_e0	cpd00220
+HYXN		EX_hxan(e)	hxan[e]			EX_cpd00226_e0	cpd00226
+D-mannose-6-phosphate		EX_man6p(e)	man6p[e]			EX_cpd00235_e0	cpd00235
+dGTP		EX_dgtp(e)	dgtp[e]			EX_cpd00241_e0	cpd00241
+Nickel		EX_ni2(e)	ni2[e]			EX_cpd00244_e0	cpd00244
+Pyridoxol		EX_pydxn(e)	pydxn[e]			EX_cpd00263_e0	cpd00263
+Spermidine		EX_spmd(e)	spmd[e]			EX_cpd00264_e0	cpd00264
+Thiosulfate		EX_tsul(e)	tsul[e]			EX_cpd00268_e0	cpd00268
+Deoxyguanosine		EX_dgsn(e)	dgsn[e]			EX_cpd00277_e0	cpd00277
+GABA		EX_4abut(e)	4abut[e]			EX_cpd00281_e0	cpd00281
+Urate		EX_urate(e)	urate[e]			EX_cpd00300_e0	cpd00300
+Thiamin		EX_thm(e)	thm[e]			EX_cpd00305_e0	cpd00305
+Cytosine		EX_csn(e)	csn[e]			EX_cpd00307_e0	cpd00307
+Xanthine		EX_xan(e)	xan[e]			EX_cpd00309_e0	cpd00309
+Guanosine		EX_gsn(e)	gsn[e]			EX_cpd00311_e0	cpd00311
+5-Methyltetrahydrofolate		EX_5mthf(e)	5mthf[e]			EX_cpd00345_e0	cpd00345
+Nicotinamide ribonucleotide		EX_nmn(e)	nmn[e]			EX_cpd00355_e0	cpd00355
+dCTP		EX_dctp(e)	dctp[e]			EX_cpd00356_e0	cpd00356
+TTP		EX_dttp(e)	dttp[e]			EX_cpd00357_e0	cpd00357
+Retinol		EX_retinol(e)	retinol[e]			EX_cpd00365_e0	cpd00365
+Cytidine		EX_cytd(e)	cytd[e]			EX_cpd00367_e0	cpd00367
+Propanal		EX_ppal(e)	ppal[e]			EX_cpd00371_e0	cpd00371
+Folate		EX_fol(e)	fol[e]			EX_cpd00393_e0	cpd00393
+L-Cysteate		EX_Lcyst(e)	Lcyst[e]			EX_cpd00395_e0	cpd00395
+Deoxyuridine		EX_duri(e)	duri[e]			EX_cpd00412_e0	cpd00412
+Nitric oxide		EX_no(e)	no[e]			EX_cpd00418_e0	cpd00418
+Pyridoxamine		EX_pydam(e)	pydam[e]			EX_cpd00419_e0	cpd00419
+Cob(II)alamin		EX_cbl2(e)	cbl2[e]			EX_cpd00423_e0	cpd00423
+Deoxyadenosine		EX_dad_2(e)	dad_2[e]			EX_cpd00438_e0	cpd00438
+Trimethylamine		EX_tma(e)	tma[e]			EX_cpd00441_e0	cpd00441
+4-Aminobenzoate		EX_4abz(e)	4abz[e]			EX_cpd00443_e0	cpd00443
+D-Glyceraldehyde		EX_glyald(e)	glyald[e]			EX_cpd00448_e0	cpd00448
+Methyl sulfide		EX_dms(e)	dms[e]			EX_cpd00450_e0	cpd00450
+1,2-Propanediol		EX_12ppd-S(e)	12ppd-S[e]			EX_cpd00453_e0	cpd00453
+meso-2,6-Diaminopimelate		EX_26dap_M(e)	26dap_M[e]			EX_cpd00516_e0	cpd00516
+Mercury		EX_hg2(e)	hg2[e]			EX_cpd00531_e0	cpd00531
+Betaine		EX_glyb(e)	glyb[e]			EX_cpd00540_e0	cpd00540
+D-Serine		EX_ser_D(e)	ser_D[e]			EX_cpd00550_e0	cpd00550
+Siroheme		EX_sheme(e)	sheme[e]			EX_cpd00557_e0	cpd00557
+L-Idonate		EX_idon_L(e)	idon_L[e]			EX_cpd00573_e0	cpd00573
+D-Glucarate		EX_glcr(e)	glcr[e]			EX_cpd00609_e0	cpd00609
+Cob(I)alamin		EX_cbl1(e)	cbl1[e]			EX_cpd00635_e0	cpd00635
+D-Methionine		EX_met_D(e)	met_D[e]			EX_cpd00637_e0	cpd00637
+Pantothenic acid		EX_pnto_R(e)	pnto_R[e]			EX_cpd00644_e0	cpd00644
+D-Mucic acid		EX_galct_D(e)	galct_D[e]			EX_cpd00652_e0	cpd00652
+D-Galactonate		EX_galctn_D(e)	galctn_D[e]			EX_cpd00653_e0	cpd00653
+Deoxycytidine		EX_dcyt(e)	dcyt[e]			EX_cpd00654_e0	cpd00654
+Galactomannan		EX_galmannan(e)	galmannan[e]			EX_cpd00656_e0	cpd00656
+Nitrous oxide		EX_n2o(e)	n2o[e]			EX_cpd00659_e0	cpd00659
+Choline sulfate		EX_chols(e)	chols[e]			EX_cpd00681_e0	cpd00681
+Thiamine phosphate		EX_thmmp(e)	thmmp[e]			EX_cpd00793_e0	cpd00793
+(R)-3-Hydroxybutanoate		EX_bhb(e)	bhb[e]			EX_cpd00797_e0	cpd00797
+Trimethylamine N-oxide		EX_tmao(e)	tmao[e]			EX_cpd00811_e0	cpd00811
+Provitamin D3		EX_vitd3(e)	vitd3[e]			EX_cpd00857_e0	cpd00857
+gamma-butyrobetaine		EX_gbbtn(e)	gbbtn[e]			EX_cpd00870_e0	cpd00870
+Sodium		EX_na1(e)	na1[e]			EX_cpd00971_e0	cpd00971
+Cadmium		EX_cd2(e)	cd2[e]			EX_cpd01012_e0	cpd01012
+Cyanate		EX_cynt(e)	cynt[e]			EX_cpd01015_e0	cpd01015
+Cys-Gly		EX_cgly(e)	cgly[e]			EX_cpd01017_e0	cpd01017
+Arsenate		EX_aso4(e)	aso4[e]			EX_cpd01048_e0	cpd01048
+ocdca		EX_ocdca(e)	ocdca[e]			EX_cpd01080_e0	cpd01080
+Allantoin		EX_alltn(e)	alltn[e]			EX_cpd01092_e0	cpd01092
+Decanoate		EX_dca(e)	dca[e]			EX_cpd01107_e0	cpd01107
+Hexanoate		EX_hxa(e)	hxa[e]			EX_cpd01113_e0	cpd01113
+Linoleate		EX_lnlc(e)	lnlc[e]			EX_cpd01122_e0	cpd01122
+Stachyose		EX_stys(e)	stys[e]			EX_cpd01133_e0	cpd01133
+Cadaverine		EX_15dap(e)	15dap[e]			EX_cpd01155_e0	cpd01155
+Dulcose		EX_galt(e)	galt[e]			EX_cpd01171_e0	cpd01171
+Lanosterol		EX_lanost(e)	lanost[e]			EX_cpd01188_e0	cpd01188
+Xanthosine		EX_xtsn(e)	xtsn[e]			EX_cpd01217_e0	cpd01217
+Thyminose		EX_drib(e)	drib[e]			EX_cpd01242_e0	cpd01242
+Amylotriose		EX_malttr(e)	malttr[e]			EX_cpd01262_e0	cpd01262
+beta-Lactose		EX_cll_395(e)	cll_395[e]			EX_cpd01354_e0	cpd01354
+Maltotetraose		EX_maltttr(e)	maltttr[e]			EX_cpd01399_e0	cpd01399
+Vitamin K1		EX_phyQ(e)	phyQ[e]			EX_cpd01401_e0	cpd01401
+beta-Carotene		EX_caro(e)	caro[e]			EX_cpd01420_e0	cpd01420
+Vitamin E		EX_avite1(e)	avite1[e]			EX_cpd01628_e0	cpd01628
+gamma-Tocopherol		EX_yvite(e)	yvite[e]			EX_cpd01631_e0	cpd01631
+Dodecanoic acid		EX_ddca(e)	ddca[e]			EX_cpd01741_e0	cpd01741
+(R)-1,2-Propanediol		EX_12ppd-R(e)	12ppd-R[e]			EX_cpd01861_e0	cpd01861
+L-Fucose 1-phosphate		EX_fuc1p_L(e)	fuc1p_L[e]			EX_cpd01912_e0	cpd01912
+L-Methionine S-oxide		EX_metsox_S_L(e)	metsox_S_L[e]			EX_cpd01914_e0	cpd01914
+5-Methylthio-D-ribose		EX_5mtr(e)	5mtr[e]			EX_cpd01981_e0	cpd01981
+Bactoprenyl diphosphate		EX_udcpdp(e)	udcpdp[e]			EX_cpd02229_e0	cpd02229
+S-Adenosyl-4-methylthio-2-oxobutanoate		EX_amob(e)	amob[e]			EX_cpd02701_e0	cpd02701
+Isethionate		EX_isetac(e)	isetac[e]			EX_cpd03048_e0	cpd03048
+Deoxyinosine		EX_din(e)	din[e]			EX_cpd03279_e0	cpd03279
+Phenylpropanoate		EX_pppn(e)	pppn[e]			EX_cpd03343_e0	cpd03343
+Selenate		EX_sel(e)	sel[e]			EX_cpd03396_e0	cpd03396
+Vitamin B12		EX_adpcbl(e)	adpcbl[e]			EX_cpd03424_e0	cpd03424
+2-Octaprenyl-6-hydroxyphenol		EX_2ohph(e)	2ohph[e]			EX_cpd03445_e0	cpd03445
+kdo2-lipid iva		EX_kdo2lipid4(e)	kdo2lipid4[e]			EX_cpd03586_e0	cpd03586
+Ursin		EX_arbt(e)	arbt[e]			EX_cpd03696_e0	cpd03696
+Ferrichrome		EX_fecrm(e)	fecrm[e]			EX_cpd03724_e0	cpd03724
+Fe(III)dicitrate		EX_fe3dcit(e)	fe3dcit[e]			EX_cpd03725_e0	cpd03725
+2,3-Diaminopropionate		EX_23dappa(e)	23dappa[e]			EX_cpd03828_e0	cpd03828
+octanoate		EX_octa(e)	octa[e]			EX_cpd03846_e0	cpd03846
+Myristic acid		EX_ttdca(e)	ttdca[e]			EX_cpd03847_e0	cpd03847
+Arachidic acid		EX_arach(e)	arach[e]			EX_cpd03848_e0	cpd03848
+Linolenate		EX_lnlnca(e)	lnlnca[e]			EX_cpd03850_e0	cpd03850
+Docosahexaenoic acid		EX_crvnc(e)	crvnc[e]			EX_cpd03852_e0	cpd03852
+Lead		EX_pb(e)	pb[e]			EX_cpd04097_e0	cpd04097
+Arsenite		EX_aso3(e)	aso3[e]			EX_cpd04098_e0	cpd04098
+Erucic acid		EX_doco13ac(e)	doco13ac[e]			EX_cpd05231_e0	cpd05231
+Nervonic acid		EX_nrvnc(e)	nrvnc[e]			EX_cpd05238_e0	cpd05238
+Dimethyl sulfoxide		EX_dmso(e)	dmso[e]			EX_cpd08021_e0	cpd08021
+methanesulfonate		EX_mso3(e)	mso3[e]			EX_cpd08023_e0	cpd08023
+crotonobetaine		EX_ctbt(e)	ctbt[e]			EX_cpd08305_e0	cpd08305
+Butyro-betaine		EX_gbbtn(e)	gbbtn[e]			EX_cpd08306_e0	cpd08306
+4-5-dihydroxy-2-3-pentanedione		EX_dhptd(e)	dhptd[e]			EX_cpd08636_e0	cpd08636
+Sulfoacetate		EX_sulfac(e)	sulfac[e]			EX_cpd09878_e0	cpd09878
+fe3		EX_fe3(e)	fe3[e]			EX_cpd10516_e0	cpd10516
+Menaquinol 7		EX_mql7(e)	mql7[e]			EX_cpd11451_e0	cpd11451
+Molybdate		EX_mobd(e)	mobd[e]			EX_cpd11574_e0	cpd11574
+MOPS		EX_mops(e)	mops[e]			EX_cpd11575_e0	cpd11575
+L-methionine R-oxide		EX_metsox_R_L(e)	metsox_R_L[e]			EX_cpd11576_e0	cpd11576
+hexanesulfonate		EX_hexs(e)	hexs[e]			EX_cpd11578_e0	cpd11578
+ethanesulfonate		EX_ethso3(e)	ethso3[e]			EX_cpd11579_e0	cpd11579
+Gly-Gln		EX_glygln(e)	glygln[e]			EX_cpd11580_e0	cpd11580
+gly-asn-L		EX_glyasn(e)	glyasn[e]			EX_cpd11581_e0	cpd11581
+ala-L-Thr-L		EX_alathr(e)	alathr[e]			EX_cpd11582_e0	cpd11582
+Ala-Leu		EX_alaleu(e)	alaleu[e]			EX_cpd11583_e0	cpd11583
+Ala-His		EX_alahis(e)	alahis[e]			EX_cpd11584_e0	cpd11584
+L-alanylglycine		EX_alagly(e)	alagly[e]			EX_cpd11585_e0	cpd11585
+ala-L-glu-L		EX_alaglu(e)	alaglu[e]			EX_cpd11586_e0	cpd11586
+Ala-Gln		EX_alagln(e)	alagln[e]			EX_cpd11587_e0	cpd11587
+gly-pro-L		EX_glypro(e)	glypro[e]			EX_cpd11588_e0	cpd11588
+gly-asp-L		EX_glyasp(e)	glyasp[e]			EX_cpd11589_e0	cpd11589
+met-L-ala-L		EX_metala(e)	metala[e]			EX_cpd11590_e0	cpd11590
+Gly-Met		EX_glymet(e)	glymet[e]			EX_cpd11591_e0	cpd11591
+gly-glu-L		EX_glyglu(e)	glyglu[e]			EX_cpd11592_e0	cpd11592
+ala-L-asp-L		EX_alaasp(e)	alaasp[e]			EX_cpd11593_e0	cpd11593
+chromate		EX_cro4(e)	cro4[e]			EX_cpd11595_e0	cpd11595
+butanesulfonate		EX_butso3(e)	butso3[e]			EX_cpd11596_e0	cpd11596
+ARSENOBETAINE		EX_arsenb(e)	arsenb[e]			EX_cpd11597_e0	cpd11597
+Pectin		EX_pect(e)	pect[e]			EX_cpd11601_e0	cpd11601
+Menaquinone 7		EX_mqn7(e)	mqn7[e]			EX_cpd11606_e0	cpd11606
+Starch		EX_starch(e)	starch[e]			EX_cpd11657_e0	cpd11657
+beta-Glucan		EX_bglc(e)	bglc[e]			EX_cpd11696_e0	cpd11696
+Xylan		EX_xylan(e)	xylan[e]			EX_cpd11732_e0	cpd11732
+Glucomannan		EX_glcmannan(e)	glcmannan[e]			EX_cpd11955_e0	cpd11955
+Arabinoxylan		EX_arabinoxyl(e)	arabinoxyl[e]			EX_cpd11970_e0	cpd11970
+Methylcobalamin		EX_Methylcobalamin(e)	Methylcobalamin[e]			EX_cpd12878_e0	cpd12878
+Stearidonic acid		EX_strdnc(e)	strdnc[e]			EX_cpd15016_e0	cpd15016
+hexadecenoate		EX_hdcea(e)	hdcea[e]			EX_cpd15237_e0	cpd15237
+octadecenoate		EX_ocdcea(e)	ocdcea[e]			EX_cpd15269_e0	cpd15269
+tetradecenoate		EX_ttdcea(e)	ttdcea[e]			EX_cpd15298_e0	cpd15298
+glycogen(n-1)		EX_M03161(e)	M03161[e]			EX_cpd15302_e0	cpd15302
+Maltoheptaose		EX_malthp(e)	malthp[e]			EX_cpd15494_e0	cpd15494
+Ubiquinone-8		EX_q8(e)	q8[e]			EX_cpd15560_e0	cpd15560
+Ubiquinol-8		EX_q8h2(e)	q8h2[e]			EX_cpd15561_e0	cpd15561
+Gly-Leu		EX_glyleu(e)	glyleu[e]			EX_cpd15604_e0	cpd15604
+Gly-Phe		EX_glyphe(e)	glyphe[e]			EX_cpd15605_e0	cpd15605
+Gly-Tyr		EX_glytyr(e)	glytyr[e]			EX_cpd15606_e0	cpd15606
+heptadecanoate (C17:0)		EX_hpdca(e)	hpdca[e]			EX_cpd15609_e0	cpd15609
+pentadecanoate (C15:0)		EX_ptdca(e)	ptdca[e]			EX_cpd15622_e0	cpd15622
+Docosapentaenoic acid		EX_CLPND(e)	CLPND[e]			EX_cpd16301_e0	cpd16301
+Adrenic acid		EX_adrn(e)	adrn[e]			EX_cpd16342_e0	cpd16342
+methymenaquinol 7		EX_mmql7(e)	mmql7[e]			EX_cpd17026_e0	cpd17026
+methylmenaquinone 7		EX_mmqn7(e)	mmqn7[e]			EX_cpd17027_e0	cpd17027
+2-fucosyllactose		EX_2fl(e)	2fl[e]			EX_cpd90001_e0	cpd90001

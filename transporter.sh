@@ -2,6 +2,8 @@
 # TODO: update sub2pwy to contain more linked substances
 #
 
+start_time=`date +%s`
+
 bitcutoff=50 # cutoff blast: min bit score
 identcutoff=0   # cutoff blast: min identity
 covcutoff=75 # cutoff blast: min coverage
@@ -81,17 +83,17 @@ else
 fi
 
 cat $tcdb $otherDB > all.fasta # join transporter databases
+sed -i "s/\(>.*\)/\L\1/" all.fasta # header to lower case
 grep -e ">" all.fasta > tcdb_header
-sed '1d' $subDB | awk -F ',' '{if ($8 != "NA") print $0}' > redSubDB
-key=$(cat redSubDB | awk -F ',' '{if ($2 != "") print $1"|"$2; else print $1}' | paste -s -d '|') # ignore substances without linked exchange reaction
+sed '1d' $subDB | awk -F '\t' '{if ($8 != "NA") print $0}' > redSubDB
+key=$(cat redSubDB | awk -F '\t' '{if ($2 != "") print $1"|"$2; else print $1}' | paste -s -d '|') # ignore substances without linked exchange reaction
 grep -wEi "$key" tcdb_header | awk '{print substr($1,2)}' > hits
-#grep -wEi "arabinose" tcdb_header | awk '{print substr($1,2)}' > hits
+#grep -wEio "$key" tcdb_header | sort | uniq -c # status print
 subhits=$(grep -wEio "$key" tcdb_header | sort | uniq | paste -s -d '|')
-allDBsubs=$(cat redSubDB | grep -wEi "$subhits" | awk -F ',' '{if ($2 != "") print $2; else print $1}' | sort | paste -s -d ';') # list of substances that are covered by DB
+allDBsubs=$(cat redSubDB | grep -wEi "$subhits" | awk -F '\t' '{if ($2 != "") print $2; else print $1}' | sort | paste -s -d ';') # list of substances that are covered by DB
 #apt install exonerate
 fastaindex all.fasta tcdb.idx 
 fastafetch -f all.fasta -i tcdb.idx -Fq <(sort -u hits ) > tcdbsmall.fasta
-
 #
 makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
 
@@ -110,24 +112,25 @@ TC[2]="2.Electrochemical potential-driven transporters"
 TC[3]="3.Primary active transporters"
 TC[4]="4.Group translocators"
 
-
 for id in $IDtcdb
 do
     descr=$(grep $id tcdb_header | grep -P "(?<= ).*" -o) # extract description
-    tc=$(grep $id tcdb_header | grep -Pw "([1-4]\\.[A-Z]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | uniq | tr '\n' ',' | sed 's/,$//g') # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
+    tc=$(grep $id tcdb_header | grep -Pw "([1-4]\\.[A-z]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | uniq | tr '\n' ',' | sed 's/,$//g') # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
     i=$(echo $tc | head -c1) # get first character of TC number => transporter type
     type=${TC[$i]}
     [ -z "$tc" ] && continue
-    subl=$(echo "$descr" | grep -wEio "$key" | grep -if - redSubDB | awk -F ',' '{ if ($2 != "") print $2; else print $1}') # could be more then one hit (e.g. transporter with two substances)
+    subl=$(echo "$descr" | grep -wEio "$key" | grep -if - redSubDB | awk -F '\t' '{ if ($2 != "") print $2; else print $1}' | tr ' ' '_') # could be more then one hit (e.g. transporter with two substances)
+    #echo $id $descr $tc $i $type $subl
     for subst in $subl
     do
+        subst=$(echo "$subst" | tr '_' ' ') # get space character back (was changed for look)
         #echo -e $subst"\t"$type"\t"$tc"\t"$descr >> newTransporter.tbl
-        exmetall=$(cat $subDB | grep -w "$subst" | awk -F ',' '{if ($8 != "NA") print $8}')
+        exmetall=$(cat $subDB | grep -w "$subst" | awk -F '\t' '{if ($8 != "NA") print $8}')
         for exmet in $exmetall
         do
-            exid=$(cat $subDB | grep -w "$subst" | awk -F ',' '{if ($7 != "NA") print $7}')
+            exid=$(cat $subDB | grep -w "$subst" | awk -F '\t' '{if ($7 != "NA") print $7}')
             sublist="$sublist;$subst"
-            echo $id,$tc,$subst,$exmet,$exid,$type,$descr >> `echo "$subst" | tr '[:upper:]' '[:lower:]'`
+            echo $id,$tc,$subst,$exmet,$exid,$type,$descr >> "`echo "$subst" | tr '[:upper:]' '[:lower:]'`"
             cat $seedDB | awk -F '\t' -v type="$type" -v exmet="$exmet" '{if($3==type && $4==exmet) print $0}' > tr_cand
             if [ -s tr_cand ]; then
                 rea=$(cat tr_cand | awk -F '\t' '{print $1}')
@@ -151,12 +154,13 @@ echo ${sublist2:1} | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort | uniq > hi
 cat hit2
 
 echo -e "\nNo transport reactions found in database for:"
-for sub in $(comm -23 hit1 hit2)
+for sub in $(comm -23 hit1 hit2 | tr ' ' '_')
 do
+    sub=$(echo "$sub" | tr '_' ' ')
     cat "$sub" | awk -F ',' '{print $3, $6}' | sort | uniq
     for exmet in $(cat "$sub" | cut -d ',' -f 4 | sort | uniq)
     do
-        alter=$(cat $seedDB | awk -F '\t' -v exmet="$exmet" '{if($4==exmet) print $1}' | sort | uniq)
+        alter=$(cat "$seedDB" | awk -F '\t' -v exmet="$exmet" '{if($4==exmet) print $1}' | sort | uniq)
         if [ -n "$alter" ]; then
             echo -e "\tAlternatives:" $alter
             if [ "$use_alternatives" = true ] ; then
@@ -168,7 +172,7 @@ done
 
 echo -e "\nNo transporter found for compounds (existing transporter/exchanges should be removed?):"
 echo $allDBsubs | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort > hit3
-cat hit1 | tr '\n' '|' | rev | cut -c 2- | rev | grep -f - -iE $subDB | cut -d ',' -f1,2 | tr '[:upper:]' '[:lower:]' | tr ',' '\n' | sort > hit4 # expand hits with substance alternative names to avoid false positive reporting
+cat hit1 | tr '\n' '|' | rev | cut -c 2- | rev | grep -f - -iE $subDB | cut -d '	' -f1,2 | tr '[:upper:]' '[:lower:]' | tr ',' '\n' | sort > hit4 # expand hits with substance alternative names to avoid false positive reporting
 comm -13 hit4 hit3
 
 cand="$(echo $cand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')"
@@ -179,3 +183,6 @@ cp newTransporter.lst $curdir/${fastaid}-Transporter.lst
 #cp newTransporter.tbl $curdir/${fastaid}-Transporter.tbl
 cp transporter.tbl $curdir/${fastaid}-Transporter.tbl
 [[ -s transporter.tbl ]] && echo "id tc sub exid rea $blast_format" | tr ' ' '\t' | cat - transporter.tbl | awk '!a[$0]++' > $curdir/${fastaid}-Transporter.tbl # add header and remove duplicates
+
+end_time=`date +%s`
+echo Running time: `expr $end_time - $start_time` s.
