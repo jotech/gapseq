@@ -28,6 +28,7 @@ onlyList=false
 skipBlast=false
 includeSeq=false
 use_parallel=true
+exhaustive=false
 
 usage()
 {
@@ -52,6 +53,7 @@ usage()
 
     echo "  -v verbose level, 0 for nothing, 1 for pathway infos, 2 for full (default $verbose)"
     echo "  -k do not use parallel"
+    echo "  -g exhaustive search, continue blast even when cutoff is reached (default $exhaustive)"
 exit 1
 }
 
@@ -80,7 +82,7 @@ altecdb=$dir/dat/altec.csv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxqk" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxqkg" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -139,6 +141,9 @@ while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxqk" opt; do
         ;;
     k)
         use_parallel=false
+        ;;
+    g)
+        exhaustive=true
         ;;
     esac
 done
@@ -462,7 +467,7 @@ do
                             [[ "$subunit_id" == "Subunit undefined" ]] && ((subunits_undefined_found++))
                             is_bidihit=NA # TODO: bidirectional blast not implemented for subunits!!
                             [[ $iterations -gt 1 ]] && echo "$bestsubunithit" | awk -v exception="$is_exception" -v subunit="$subunit_id" -v rea="$rea" -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t"subunit"\t"exception"\t""NA"}' >> reactions.tbl
-                            break
+                            [[ "$exhaustive" = false ]] && break 
                         fi
                         rm query.blast
                     done
