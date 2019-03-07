@@ -11,3 +11,6 @@ altec <- data.table(ec.numbers=ec_hit.flat, ec.count=sapply(ec_hit, length), key
 
 altec[ !is.na(keyword) & ec.count>1 ]
 
+altec.out <- sapply(altec[ !is.na(keyword) & ec.count>1, ec.numbers ], function(s){paste0(s,collapse = ",")})
+
+writeLines(altec.out, "~/uni/gapseq/dat/altec.csv")
