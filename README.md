@@ -4,7 +4,8 @@ Informed prediction and analysis of bacteria metabolic pathways and genome-scale
 ## Installation
 ```
 sudo apt install ncbi-blast+ git libglpk-dev r-base-core exonerate bedtools barrnap
-R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "Biostrings", "R.utils", "stringi"))'
+R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi"))'
+R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Biostrings")'
 git clone https://github.com/jotech/gapseq
 cd gapseq
 ```
