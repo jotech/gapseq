@@ -10,9 +10,9 @@ git clone https://github.com/jotech/gapseq
 cd gapseq
 ```
 
-## Quickstart
+## Quickstart (performs the prediction of network candidate reactions, draft model construction and gapfilling)
 ```
-./gapseq_quickstart.sh dat/myb71.fna
+./gapseq_quickstart.sh dat/myb71.fna dat/media/TSBmed.csv
 ```
 
 ## Example workflow
