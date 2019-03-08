@@ -349,7 +349,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   # Add list of exchange reactions for step 3 and 4 in order to check for a wide range of carbon sources or fermentation products
   # (Unused exchanges will be deleted afterwards)
   mod.out <- add_missing_exchanges(mod.out)
-  carbon.source <- carbon.source[!is.na(id_seed) & !is.na(name) & !is.na(exid_seed)]
+  carbon.source <- carbon.source[!is.na(id_seed) & !is.na(name) & !is.na(exid_seed) & exid_seed!=""]
   idx <- which( !carbon.source$exid_seed %in% mod.out@react_id )
   exchanges.new.met  <- carbon.source$id_seed[idx]
   #exchanges.new.name <- carbon.source$name[idx]
@@ -357,8 +357,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   exchanges.new.ids  <- carbon.source$exid_seed[idx]
   exchanges.new.used  <- rep(FALSE, length(exchanges.new.ids))  # delete unused addionally added exchange reactions later
   mod.out       <- add_exchanges(mod.out, exchanges.new.met, metname=exchanges.new.name)
-  
-  
+
   if ( !quick.gf ){
     cat("\n\n3. Energy source gapfilling with core reactions only\n")
     
