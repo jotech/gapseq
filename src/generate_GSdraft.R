@@ -70,7 +70,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   dt.cand.tmp <- prepare_candidate_reaction_tables(blast.res, transporter.res, high.evi.rxn.BS, min.bs.for.core, curve.alpha)
   dt      <- dt.cand.tmp$dt
   dt.cand <- dt.cand.tmp$dt.cand
-  print(dt.cand[status=="spontaneous"])
+  
   dt[!is.na(complex) & is.na(complex.status), complex.status := 0] # incomplete complexes
   
   mseed <- seed_x_name
