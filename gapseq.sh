@@ -264,7 +264,7 @@ fi
 
 # function to get database hits for ec number
 getDBhit(){
-    kegg=$(grep -wFe "$rea" $metaRea | awk -F "\t" {'print $5'})
+    kegg=$(grep -wFe "|$rea" $metaRea | awk -F "\t" {'print $5'})
 
     # 1) search in reaction db by EC
     if [[ -n "$EC_test" ]]; then
@@ -303,7 +303,7 @@ getDBhit(){
 
     # 5) match reaction using mnxref namespace
     if [ "$database" == "seed" ]; then
-        dbhit="$dbhit $(grep -wFe "$rea" $reaDB5 | awk '{print $2}')"
+        dbhit="$dbhit $(grep -wFe "|$rea" $reaDB5 | awk '{print $2}')"
     fi
    
     # 6) match reaction using custom enzyme-name - seedID mapping
