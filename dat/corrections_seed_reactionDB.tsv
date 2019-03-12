@@ -645,6 +645,13 @@ rxn00931	<			[SW] direction changed according to MetaCyc	https://ecocyc.org/ECOL
 rxn03910	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=NIL&object=RXN0-302&redirect=T				
 rxn00541	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=NIL&object=THREONINE-ALDOLASE-RXN&redirect=T				
 rxn01068	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=NIL&object=THREODEHYD-RXN&redirect=T				
+rxn15090		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
+rxn15091		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
+rxn05981		TRUE		[SW] generic reaction.					
+rxn05982		TRUE		[SW] generic reaction.					
+rxn05983		TRUE		[SW] generic reaction.					
+rxn05984		TRUE		[SW] generic reaction.					
+rxn06022	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.1.4.14-RXN				
 									
 rxn08783		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
 rxn08792		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
