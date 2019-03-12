@@ -60,6 +60,32 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
       dt <- dt[-rm.ids]
   }
   
+  # A specific fix for the issue with reactions 2.6.1.13 and 2.6.1.11
+  if("2.6.1.13" %in% dt$ec & "2.6.1.11" %in% dt$ec) {
+    rm.ids <- c()
+    one.hits.id <- which(dt$ec == "2.6.1.13" & !is.na(dt$bitscore))
+    two.hits.id <- which(dt$ec == "2.6.1.11" & !is.na(dt$bitscore))
+    if(length(one.hits.id)>0 & length(two.hits.id)>0) {
+      for(i in one.hits.id) {
+        for(j in two.hits.id) {
+          ol <- calc_seq_overlap(dt[i,sstart],dt[i,send],dt[j,sstart],dt[j,send])
+          if(ol > 0.2) {
+            if(dt[i, bitscore] > max(dt[two.hits.id, bitscore]))
+              rm.ids <- c(rm.ids, j)
+            if(dt[j, bitscore] > max(dt[one.hits.id, bitscore]))
+              rm.ids <- c(rm.ids, i)
+          }
+        }
+      }
+    }
+    rm.ids <- unique(rm.ids)
+    if(length(rm.ids > 0))
+      dt <- dt[-rm.ids]
+  }
+  
+  # Due to BRENDA's alternative ECs theres a mitmatch of metacyc reactions to seed reaction for EC 2.6.1.36 and EC 2.6.1.13 ... remove the mismatches.
+  dt <- dt[!(rxn == "L-LYSINE-AMINOTRANSFERASE-RXN" & grepl("rxn00467|rxn20496|rxn33315", seed))]
+  
   # prepare reaction/transporter blast results table
   dt <- splitcol2rows_mget(dt, "seed", " ")
   dt.trans <- splitcol2rows_mget(dt.trans, "seed", ",")
