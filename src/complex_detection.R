@@ -47,7 +47,7 @@ seq.id <- names(seq)
 # - how to handle sub-sub-complexes?
 
 # patterns
-com.synonymes <- "(\\bsubunit\\b|\\bchain\\b|\\bpolypeptide\\b)"
+com.synonymes <- "(\\bsubunit\\b|\\bchain\\b|\\bpolypeptide\\b|\\bcomponent\\b)"
 com.pat1  <- paste0(com.synonymes, " [1-9]+([A-Z])?\\b")
 com.pat2  <- paste0(com.synonymes, " [A-Z]+\\b")
 com.pat3  <- paste0("\\b[A-Z]+ ", com.synonymes)
@@ -55,15 +55,17 @@ com.pat4  <- paste0("(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|l
 com.pat5  <- paste0(com.synonymes, " (alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma)")
 com.pat6  <- paste0(com.synonymes, " [A-Z][A-z]+\\b")
 com.pat7  <- paste0("(large|small) ", com.synonymes)
-hits <- str_extract(seq.id, paste0(com.pat1,"|",com.pat2,"|",com.pat3,"|",com.pat4,"|",com.pat5,"|",com.pat6,"|",com.pat7))
+com.pat8  <- paste0("(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma)-", com.synonymes)
+hits <- str_extract(seq.id, paste0(com.pat1,"|",com.pat2,"|",com.pat3,"|",com.pat4,"|",com.pat5,"|",com.pat6,"|",com.pat7,"|",com.pat8))
 
 #str_extract(seq.id[863], paste0(com.pat1,"|",com.pat2,"|",com.pat3,"|",com.pat4,"|",com.pat5))
 
-hits <- gsub("subunit|chain|polypeptide", "Subunit", hits)
+hits <- gsub("subunit|chain|polypeptide|component", "Subunit", hits)
 
 # change order (alpha subunit => subunit alpha)
 hits <- str_replace(hits, "([A-Z]+) Subunit", "Subunit \\1")
 hits <- str_replace(hits, "(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma) Subunit", "Subunit \\1")
+hits <- str_replace(hits, "(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma)-Subunit", "Subunit \\1")
 hits <- str_replace(hits, "(large|small) Subunit", "Subunit \\1")
 #hits[1949]
 

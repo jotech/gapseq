@@ -415,7 +415,7 @@ do
             subunit_prescan=0
             iteractions=0
             if [ ! -f $out ]; then # check if there is a former hit
-                subunit_prescan=$(cat $query | sed -n 's/^>//p' | grep -E 'subunit|chain|polypeptide' | wc -l) # prescan if subunits can be found because detection script is time intensive
+                subunit_prescan=$(cat $query | sed -n 's/^>//p' | grep -E 'subunit|chain|polypeptide|component' | wc -l) # prescan if subunits can be found because detection script is time intensive
                 if [ $subunit_prescan -gt 0 ]; then
                     Rscript $dir/src/complex_detection.R $query subunit_tmp.fasta # set new fasta header with consistent subunit classification (avoid mix of arabic,latin and greek numbers)
                     query=$(readlink -f subunit_tmp.fasta)
