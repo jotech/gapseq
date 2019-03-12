@@ -558,6 +558,7 @@ rxn20655		TRUE		[SW] Reaction specific to C4-Plants	https://metacyc.org/META/NEW
 rxn00151		TRUE		[SW] Reaction specific to C4-Plants	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=PYRUVATEORTHOPHOSPHATE-DIKINASE-RXN				
 rxn00641	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.7.7.13-RXN				
 rxn00649	>			[SW] Unsure but seems unlikely to be reversible as reaction is highly exergonic.					
+rxn05733	>			[SW] Unsure but seems unlikely to be reversible as reaction is highly exergonic.					
 rxn00952	>			[SW] Unsure but seems unlikely to be reversible as reaction is highly exergonic.					
 rxn02229	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=MERCAPYSTRANS-RXN				
 rxn02248	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.5.1.51-RXN				
@@ -652,6 +653,7 @@ rxn05982		TRUE		[SW] generic reaction.
 rxn05983		TRUE		[SW] generic reaction.					
 rxn05984		TRUE		[SW] generic reaction.					
 rxn06022	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.1.4.14-RXN				
+rxn06672	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=BIOTIN-CARBOXYL-RXN				
 									
 rxn08783		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
 rxn08792		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
