@@ -289,10 +289,10 @@ getDBhit(){
         altec=$(grep -wF $ec $altecdb | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -v $ec)
         [[ -z "$altec" ]] && { altec=$(grep -wF $ec $brenda | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -v $ec); }
         if [ "$database" == "vmh" ]; then
-            [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')" # take care of multiple EC numbers
+            [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo ${altec//./\\.} | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')" # take care of multiple EC numbers
         elif [ "$database" == "seed" ]; then
-            [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $seedEC | awk -F '\t' '{print $1}' | tr '|' ' ')" # take care of multiple EC numbers
-            [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo $altec | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')" # take care of multiple EC numbers
+            [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo ${altec//./\\.} | tr ' ' '|')" $seedEC | awk -F '\t' '{print $1}' | tr '|' ' ')" # take care of multiple EC numbers
+            [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo ${altec//./\\.} | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')" # take care of multiple EC numbers
         fi
     fi
 
@@ -305,7 +305,7 @@ getDBhit(){
     if [ "$database" == "seed" ]; then
         dbhit="$dbhit $(grep -wFe "|$rea" $reaDB5 | awk '{print $2}')"
     fi
-   
+
     # 6) match reaction using custom enzyme-name - seedID mapping
     if [ "$database" == "seed" ]; then
         dbhit="$dbhit $(grep -wFe "$reaName" $seedEnzymesNames | awk -F '\t' ' {print $1}')"
