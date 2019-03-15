@@ -18,7 +18,7 @@ cd gapseq
 ## Example workflow
 1) Obtaining candidate reactions
 ```
-./gapseq.sh -p -b 200 all dat/myb71.fna
+./gapseq.sh -b 200 -p all dat/myb71.fna
 ./transporter.sh -b 200 dat/myb71.fna
 ```
 
