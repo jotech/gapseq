@@ -654,6 +654,7 @@ rxn05983		TRUE		[SW] generic reaction.
 rxn05984		TRUE		[SW] generic reaction.					
 rxn06022	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.1.4.14-RXN				
 rxn06672	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=BIOTIN-CARBOXYL-RXN				
+rxn02200		TRUE		[SW] No evidence for this reaction in databases.					
 									
 rxn08783		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
 rxn08792		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
