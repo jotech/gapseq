@@ -227,7 +227,8 @@ esac
 # squence directory
 export LC_NUMERIC="en_US.UTF-8"
 seqpath=$dir/dat/seq/$taxonomy/unipac$(printf %.0f $(echo "$uniprotIdentity * 100" | bc -l))
-mkdir -p $seqpath
+seqpath_user=$dir/dat/seq/$taxonomy/user
+mkdir -p $seqpath $seqpath_user
 
 
 if [ -n "$ecnumber" ] || [ -n "$reaname" ]; then
@@ -382,22 +383,40 @@ do
         fi
         ((count++))
         if [[ -n "$EC_test" ]]; then
-            query=$seqpath/$ec.fasta
+            if [ -f "$seqpath_user/$ec.fasta" ]; then # check if user defined sequence file is present
+                seqpath_tmp=$seqpath_user
+                [[ verbose -ge 1 ]] && { echo -e "\t\t--> Found user defined sequence file <--"; }
+            else
+                seqpath_tmp=$seqpath
+            fi
+            query=$seqpath_tmp/$ec.fasta
             if [ ! -f "$query" ]; then # check if sequence is not available => try to download
                 [[ verbose -ge 1 ]] && echo -e '\t'Downloading sequence for: $ec 
                 $dir/src/uniprot.sh -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
             fi
             # if an alternative ec numbers exists and has additional sequence data merge both files
-            if [[ -s $seqpath/$altec.fasta ]]; then
+            if [ -f "$seqpath_user/$altec.fasta" ]; then # check if user defined sequence file is present
+                seqpath_tmp2=$seqpath_user
+                [[ verbose -ge 1 ]] && { echo -e "\t\t--> Found user defined sequence file <--"; }
+            else
+                seqpath_tmp2=$seqpath
+            fi
+            if [[ -s $seqpath_tmp2/$altec.fasta ]]; then
                 [[ verbose -ge 1 ]] && { echo -e "\t\tMerge sequence data from `basename $query` and $altec.fasta (alternative ec numbers)";  }
-                cat $seqpath/$ec.fasta $seqpath/$altec.fasta | awk '/^>/{f=!d[$1];d[$1]=1}f' > ${rea}_merged.fasta
+                cat $seqpath_tmp/$ec.fasta $seqpath_tmp2/$altec.fasta | awk '/^>/{f=!d[$1];d[$1]=1}f' > ${rea}_merged.fasta
                 query=$(echo `pwd`/${rea}_merged.fasta)
             fi
         fi
         # if no EC number is available or no sequence was found for EC number then use reaction name instead for sequence search
         if [[ -n "$reaName" ]] && ( [[ -z "$EC_test" ]] || [[ ! -s "$query" ]] );then
             reaNameHash=$(echo -n "$reaName" | md5sum | awk '{print $1}')
-            query="$seqpath/$reaNameHash.fasta"
+            if [ -f "$seqpath_user/$reaNameHash.fasta" ]; then # check if user defined sequence file is present
+                seqpath_tmp=$seqpath_user
+                [[ verbose -ge 1 ]] && { echo -e "\t\t--> Found user defined sequence file <--"; }
+            else
+                seqpath_tmp=$seqpath
+            fi
+            query="$seqpath_tmp/$reaNameHash.fasta"
             if [ ! -f "$query" ]; then # check if sequence is not available => try to download
                 [[ verbose -ge 1 ]] && echo -e '\t'Downloading sequence for: $reaName "\n\t\t(hash: $reaNameHash)" 
                 $dir/src/uniprot.sh -r "$reaName" -t "$taxonomy" -i $uniprotIdentity >/dev/null
