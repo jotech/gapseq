@@ -30,6 +30,13 @@ vignettes/*.pdf
 *.tbl
 *.lst
 *.fasta
+*.old
+*.tmp
+*.fai
+*.bak
+*.log
+src/graveyard/*
 # R-Studio project files
 .Rproj.user
 gapseq.Rproj
+

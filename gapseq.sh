@@ -29,6 +29,7 @@ skipBlast=false
 includeSeq=false
 use_parallel=true
 exhaustive=false
+sequenceDB_version=d1c2219a5278bfd9db721b511f89b0cb
 
 usage()
 {
@@ -153,6 +154,7 @@ shift $((OPTIND-1))
 # after parsing arguments, only fasta file shoud be there
 [ "$#" -ne 1 ] && { usage; }
 
+
 # blast format
 if [ "$includeSeq" = true ]; then
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
@@ -229,6 +231,15 @@ export LC_NUMERIC="en_US.UTF-8"
 seqpath=$dir/dat/seq/$taxonomy/unipac$(printf %.0f $(echo "$uniprotIdentity * 100" | bc -l))
 seqpath_user=$dir/dat/seq/$taxonomy/user
 mkdir -p $seqpath $seqpath_user
+# extract sequence files archive if necessary
+sequenceDB_status=$(md5sum $seqpath/sequences.tar.gz | awk '{print $1}')
+sequenceDB_n=$(ls $seqpath/*.fasta 2> /dev/null | wc -l)
+if [[ ! "$sequenceDB_status" == "$sequenceDB_version" ]] || [[ $sequenceDB_n -eq 0 ]] ; then
+    echo Extracting sequence files from archive
+    tar xzf $seqpath/sequences.tar.gz -C $seqpath/
+fi
+
+exit 0
 
 
 if [ -n "$ecnumber" ] || [ -n "$reaname" ]; then
