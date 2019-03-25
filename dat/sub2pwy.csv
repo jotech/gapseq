@@ -8,7 +8,7 @@ N-Acetyl-D-Galactosamine	N-acetylgalactosamine	EX_acgal(e)	acgal[e]	Carbohydrate
 N-Acetyl-D-Glucosamine		EX_acgam(e)	acgam[e]	Carbohydrates	PWY-7586	EX_cpd00122_e0	cpd00122[e0]
 Adonitol				Carbohydrates	RIBITOLUTIL-PWY		
 L-Arabinose	arabinose	EX_arab_L(e)	arab_L[e]	Carbohydrates	ARABCAT-PWY;PWY-5515;PWY-5517;PWY-7295	EX_cpd00224_e0	cpd00224[e0]
-D-Arabitol	arabitol	EX_abt_D(e)	abt_D[e]	Carbohydrates	DARABITOLUTIL-PWY		
+D-Arabitol	arabitol	EX_abt_D(e)	abt_D[e]	Carbohydrates	DARABITOLUTIL-PWY	EX_cpd00417_e0	cpd00417[e0]
 D-Cellobiose	cellobiose	EX_cellb(e)	cellb[e]	Carbohydrates		EX_cpd00158_e0	cpd00158[e0]
 i-Erythritol				Carbohydrates	PWY-7789;PWY-7788		
 D-Fructose	fructose	EX_fru(e)	fru[e]	Carbohydrates	PWY0-1314	EX_cpd00082_e0	cpd00082[e0]
@@ -100,10 +100,8 @@ Phenyethylamine				Amines/amides
 Putrescine				Amines/amides			
 2-Aminoethanol				Amines/amides			
 2-3-Butanediol				Miscellaneous			
-Glycerol				Miscellaneous			
 D-L-alpha-Glycerol Phosphate				Miscellaneous			
 Glucose-1-Phosphate				Miscellaneous			
-Glucose-6-Phosphate				Miscellaneous			
 Acetoin		EX_actn_R(e)	actn_R[e]			EX_cpd00361_e0	cpd00361[e0]
 Butanediol		EX_btd_RR(e)	btd_RR[e]			EX_cpd01947_e0	cpd01947[e0]
 Butanol		EX_btoh(e)	btoh[e]			EX_cpd03662_e0	cpd03662[e0]
@@ -156,7 +154,7 @@ Ammonia		EX_nh4(e)	nh4[e]			EX_cpd00013_e0	cpd00013
 FAD		EX_fad(e)	fad[e]			EX_cpd00015_e0	cpd00015
 Pyridoxal phosphate		EX_pydx5p(e)	pydx5p[e]			EX_cpd00016_e0	cpd00016
 S-Adenosyl-L-methionine		EX_amet(e)	amet[e]			EX_cpd00017_e0	cpd00017
-2-Oxoglutarate		EX_akg(e)	akg[e]			EX_cpd00024_e0	cpd00024
+2-Oxoglutarate	α-ketoglutaric acid	EX_akg(e)	akg[e]			EX_cpd00024_e0	cpd00024
 Hydrogen peroxide		EX_h2o2(e)	h2o2[e]			EX_cpd00025_e0	cpd00025
 Heme		EX_pheme(e)	pheme[e]			EX_cpd00028_e0	cpd00028
 GTP		EX_gtp(e)	gtp[e]			EX_cpd00038_e0	cpd00038
@@ -181,7 +179,7 @@ dATP		EX_datp(e)	datp[e]			EX_cpd00115_e0	cpd00115
 D-Alanine		EX_ala_D(e)	ala_D[e]			EX_cpd00117_e0	cpd00117
 Putrescine		EX_ptrc(e)	ptrc[e]			EX_cpd00118_e0	cpd00118
 5-10-Methylenetetrahydrofolate		EX_mlthf(e)	mlthf[e]			EX_cpd00125_e0	cpd00125
-L-Malate		EX_mal_L(e)	mal_L[e]			EX_cpd00130_e0	cpd00130
+L-Malate	Malic acid	EX_mal_L(e)	mal_L[e]			EX_cpd00130_e0	cpd00130
 Nicotinamide		EX_ncam(e)	ncam[e]			EX_cpd00133_e0	cpd00133
 4-Hydroxybenzoate		EX_4hbz(e)	4hbz[e]			EX_cpd00136_e0	cpd00136
 Glycolate		EX_glyclt(e)	glyclt[e]			EX_cpd00139_e0	cpd00139
