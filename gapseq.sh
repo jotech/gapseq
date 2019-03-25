@@ -239,8 +239,6 @@ if [[ ! "$sequenceDB_status" == "$sequenceDB_version" ]] || [[ $sequenceDB_n -eq
     tar xzf $seqpath/sequences.tar.gz -C $seqpath/
 fi
 
-exit 0
-
 
 if [ -n "$ecnumber" ] || [ -n "$reaname" ]; then
     # create dummpy pwy template for given ec number
