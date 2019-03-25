@@ -180,7 +180,7 @@ fastaID="${tmpvar%.*}"
 # select pathway keys to be used in database search
 case $pathways in
     all)
-        pwyKey=Pathways
+        pwyKey="Pathways|seed|kegg"
         ;;
     amino)
         pwyKey=Amino-Acid-Biosynthesis
