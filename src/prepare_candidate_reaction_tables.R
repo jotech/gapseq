@@ -3,6 +3,9 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   require(data.table)
   
   dt <- fread(blast.res, header=T, stringsAsFactors = F)
+  
+  dt <- dt[pathway != "|PWY-6168|"] # pathway exists only in fungi
+  
   dt <- dt[,.(rxn, name, ec, tc = NA_character_, qseqid, pident, evalue, bitscore, qcovs, stitle, sstart, send, pathway, status, 
               pathway.status, seed = dbhit, complex, exception, complex.status)]
   
