@@ -442,6 +442,7 @@ do
             subunits_undefined_found=0
             subunit_prescan=0
             iteractions=0
+            subunits_former_run=false
             if [ ! -f $out ]; then # check if there is a former hit
                 subunit_prescan=$(cat $query | sed -n 's/^>//p' | grep -E 'subunit|chain|polypeptide|component' | wc -l) # prescan if subunits can be found because detection script is time intensive
                 if [ $subunit_prescan -gt 0 ]; then
@@ -507,6 +508,7 @@ do
                 echo -e $out'\t'$subunits_found'\t'$iterations'\t'$subunits_count'\t'$subunits_undefined_found >> subunits.log # save subunits found
             else
                 # get subunit fraction from former run
+                subunits_former_run=true
                 subunits_found=$(cat subunits.log | awk -F "\t" -v out=$out '$1==out { print $2 }')
                 iterations=$(cat subunits.log | awk -F "\t" -v out=$out '$1==out { print $3 }')
                 subunits_count=$(cat subunits.log | awk -F "\t" -v out=$out '$1==out { print $4 }')
@@ -576,6 +578,7 @@ do
                         echo -e "$rea\t$reaName\t$ec\tNA\t$somehit_all\t$pwy\tbad_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
                     else
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO hit because of missing subunits
+                        [[ "$subunits_former_run" = true ]] && echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
                     fi 
                     if [[ -n "$dbhit" ]];then
                         pwyNoHitFound="$pwyNoHitFound$dbhit "
