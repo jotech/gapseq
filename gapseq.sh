@@ -582,6 +582,7 @@ do
                     fi 
                     if [[ -n "$dbhit" ]];then
                         pwyNoHitFound="$pwyNoHitFound$dbhit "
+                        echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\tSubunit undefined\t$is_exception\tNA" >> reactions.tbl # temp. workaround
                     fi
                 fi
             else
