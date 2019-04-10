@@ -58,6 +58,11 @@ Quinic Acid				Carboxylic acids
 D-Saccharic Acid				Carboxylic acids			
 Sebacic Acid				Carboxylic acids			
 Succinic Acid	succinate	EX_succ(e)	succ[e]	Carboxylic acids		EX_cpd00036_e0	cpd00036[e0]
+Fumaric Acid	fumarate	EX_fum(e)	fum[e]	Carboxylic acids		EX_cpd00106_e0	cpd00106[e0]
+C4-dicarboxylate	fumarate	EX_fum(e)	fum[e]	Carboxylic acids		EX_cpd00106_e0	cpd00106[e0]
+C4-dicarboxylate	succinate	EX_succ(e)	succ[e]	Carboxylic acids		EX_cpd00036_e0	cpd00036[e0]
+C4-dicarboxylate	aspartate	EX_asp_L(e)	asp_L[e]	Amino acids		EX_cpd00041_e0	cpd00041[e0]
+C4-dicarboxylate	malate	EX_mal_L(e)	mal_L[e]	Amino acids		EX_cpd00130_e0	cpd00130[e0]
 Bromo Succinic Acid				Miscellaneous			
 Succinamic Acid				Amines/amides			
 Glucuronamide				Amines/amides			
@@ -174,7 +179,6 @@ Tetrahydrofolate		EX_thf(e)	thf[e]			EX_cpd00087_e0	cpd00087
 Uracil		EX_ura(e)	ura[e]			EX_cpd00092_e0	cpd00092
 Choline		EX_chol(e)	chol[e]			EX_cpd00098_e0	cpd00098
 Biotin		EX_btn(e)	btn[e]			EX_cpd00104_e0	cpd00104
-Fumarate		EX_fum(e)	fum[e]			EX_cpd00106_e0	cpd00106
 dATP		EX_datp(e)	datp[e]			EX_cpd00115_e0	cpd00115
 D-Alanine		EX_ala_D(e)	ala_D[e]			EX_cpd00117_e0	cpd00117
 Putrescine		EX_ptrc(e)	ptrc[e]			EX_cpd00118_e0	cpd00118
