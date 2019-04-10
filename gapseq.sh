@@ -578,7 +578,10 @@ do
                         echo -e "$rea\t$reaName\t$ec\tNA\t$somehit_all\t$pwy\tbad_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
                     else
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO hit because of missing subunits
-                        [[ "$subunits_former_run" = true ]] && echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
+                        if [[ "$subunits_former_run" = true ]];then # log also subunits from former run
+                            tmp_log=$(cat reactions.tbl | awk -F '\t' -v rea="$rea" -v reaName="$reaName" -v ec="$ec" -v pwy="$pwy" '{OFS=FS} $1==rea && $2==reaName && $3==ec {$13=pwy; print}')
+                            echo "$tmp_log" >> reactions.tbl
+                        fi
                     fi 
                     if [[ -n "$dbhit" ]];then
                         pwyNoHitFound="$pwyNoHitFound$dbhit "
