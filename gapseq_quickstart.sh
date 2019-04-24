@@ -19,4 +19,4 @@ $dir/./transporter.sh -b 200 $fasta
 
 Rscript $dir/src/generate_GSdraft.R -r $model-all-Reactions.tbl -t "$model-Transporter.tbl" -c $fasta -u 200 -l 100 -a 2
 
-Rscript $dir/gf.suite.R -m $model.RDS -n $media -c $model-rxnWeights.RDS -b 100
+Rscript $dir/gf.suite.R -m $model.RDS -n $media -c $model-rxnWeights.RDS -g $model-rxnXgenes.RDS -b 100
