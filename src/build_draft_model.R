@@ -19,6 +19,7 @@ build_draft_model_from_reaction_list <- function(rxns, gram, model.name = "draft
   #mseed <- mseed[!duplicated(rxn.hash)]
   
   mod <- modelorg(name = model.name,id = model.name)
+  mod@mod_desc <- model.name
   for(i in (1:nrow(mseed))) {
     cat("\r",i,"/",nrow(mseed))
     rxn.info <- str_split(unlist(str_split(string = mseed[i,stoichiometry],pattern = ";")), pattern = ":", simplify = T)

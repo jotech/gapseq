@@ -9,6 +9,7 @@ construct_full_model <- function(script.path) {
   mseed <- mseed[order(id)]
   
   mod <- modelorg(name = "Full Dummy model with all approved/corrected ModelSEED reactions",id = "dummy")
+  mod@mod_desc <- "Full Dummy model"
   for(i in (1:nrow(mseed))) {
     cat("\r",i,"/",nrow(mseed))
     rxn.info <- str_split(unlist(str_split(string = mseed[i,stoichiometry],pattern = ";")), pattern = ":", simplify = T)

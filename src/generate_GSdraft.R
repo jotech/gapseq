@@ -123,6 +123,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   
   cat("Constructing draft model: \n")
   mod <- sybil::modelorg(name = model.name, id = model.name)
+  mod@mod_desc <- model.name
   mod@react_attr <- data.frame(rxn = character(0), name = character(0), ec = character(0), tc = character(0), qseqid = character(0),
                                pident = numeric(0), evalue = numeric(0), bitscore = numeric(0), qcovs = numeric(0),
                                stitle = character(0), sstart = numeric(0), send = numeric(0), pathway = character(0),
