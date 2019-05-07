@@ -5,6 +5,7 @@ constrain.model <- function(mod, media.file=NA, media=NA, scaling.fac = 1, ub = 
     warning("Media file and media data frame provided. Data frame will be used.")
   if( all(is.na(media)) )
     media <- fread(media.file, stringsAsFactors = F, header = T)
+  if( is.na(media.file) ) media <- copy(media) # copy data.table before changing it
   
   ex.rxns <- grep("^EX_",mod@react_id, fixed = F)
   mod@lowbnd[ex.rxns] <- 0
