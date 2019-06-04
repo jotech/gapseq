@@ -393,6 +393,7 @@ rxn12994	>			[SW] Reversible according to Metacyc & BRENDA.	http://www.brenda-en
 rxn08808	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-15035				
 rxn05813		TRUE		[SW] Unbalanced and generic reaction.					
 rxn06015		TRUE		[SW] Unbalanced and generic reaction.					
+rxn06016		TRUE		[SW] Unbalanced and generic reaction.					
 rxn08801	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-15035				
 rxn00946	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-16540				
 rxn08053	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ACYLCOADEHYDROG-RXN				
@@ -436,7 +437,7 @@ rxn13842		TRUE		[SW] Enzyme/Proton Pump only exists in the mucus in stomachs of 
 rxn00082	>		-1:cpd00005:0:0:"NADPH";-2:cpd00007:0:0:"O2";-2:cpd03527:0:0:"N-(omega)-Hydroxyarginine";2:cpd00001:0:0:"H2O";1:cpd00006:0:0:"NADP";1:cpd00067:0:0:"H+";2:cpd00274:0:0:"Citrulline";2:cpd00418:0:0:"NO"	[SW] Stoichiometry and reversibility corrected according to RHEA DB.	https://www.rhea-db.org/reaction?id=24664				
 rxn05126	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-3922				
 rxn05127	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-3922				
-rxn06413	<		-1:cpd00001:0:0:"H2O";-1:cpd01042:0:0:"p-Cresol";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00007:0:0:"O2";1:cpd01034:0:0:"Toluol";2:cpd11935:0:0:"Ferredoxin"	[SW] Direction and stoichiomentry changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=TOLUENE-SIDE-CHAIN-MONOOXYGENASE-RXN				
+rxn06413		TRUE		[SW] Reaction incorrect. It should be benzyl alcohol and not p-cresol (different sum formula)	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=TOLUENE-SIDE-CHAIN-MONOOXYGENASE-RXN				
 rxn10123	>			[SW] Direction and stoichiomentry changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NADH-DEHYDROG-A-RXN				
 rxn10124	>			[SW] Direction and stoichiomentry changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NADH-DEHYDROG-A-RXN				
 rxn08978	>			[SW] direction changed according to MetaCyc and rxn08977	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-271				
@@ -652,9 +653,111 @@ rxn05981		TRUE		[SW] generic reaction.
 rxn05982		TRUE		[SW] generic reaction.					
 rxn05983		TRUE		[SW] generic reaction.					
 rxn05984		TRUE		[SW] generic reaction.					
-rxn06022	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.1.4.14-RXN				
+rxn06022	>		-1:cpd00001:0:0:"H2O";-1:cpd11493:0:0:"ACP";1:cpd00067:0:0:"H+";1:cpd00834:0:0:"Phosphopantetheine";1:cpd12370:0:0:"apo-ACP"	[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.1.4.14-RXN				
 rxn06672	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=BIOTIN-CARBOXYL-RXN				
 rxn02200		TRUE		[SW] No evidence for this reaction in databases.					
+rxn14361		TRUE		[SW] “sugar” as metabolite too generic					
+rxn11025		TRUE		[SW] Uses erroneous compound definition for 1,3-bpg					
+rxn11052		TRUE		[SW] Uses erroneous compound definition for 1,3-bpg					
+rxn05322			-1:cpd00003:0:0:"NAD";-1:cpd11464:0:0:"Butyryl-ACP";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd11465:0:0:"But-2-enoyl-[acyl-carrier protein]"	[SW] Stoichiometry changed according to MetaCyc and iAF1260	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9657				
+rxn05323			-1:cpd00003:0:0:"NAD";-1:cpd11466:0:0:"Myristoyl-ACP";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd11467:0:0:"(2E)-Tetradecenoyl-[acp]"	[SW] Stoichiometry changed according to MetaCyc and iAF1260	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9662				
+rxn05356			-1:cpd00006:0:0:"NADP";-1:cpd11474:0:0:"Decanoyl-ACP";1:cpd00005:0:0:"NADPH";1:cpd00067:0:0:"H+";1:cpd11475:0:0:"(2E)-Decenoyl-[acp]"	[SW] Stoichiometry changed according to MetaCyc and iAF1260	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9530				
+rxn05355			-1:cpd00006:0:0:"NADP";-1:cpd11468:0:0:"Dodecanoyl-ACP";1:cpd00005:0:0:"NADPH";1:cpd00067:0:0:"H+";1:cpd11469:0:0:"(2E)-Dodecenoyl-[acp]"	[SW] Stoichiometry changed according to MetaCyc and iAF1260	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9534				
+rxn05353			-1:cpd00006:0:0:"NADP";-1:cpd11464:0:0:"Butyryl-ACP";1:cpd00005:0:0:"NADPH";1:cpd00067:0:0:"H+";1:cpd11465:0:0:"But-2-enoyl-[acyl-carrier protein]"	[SW] Stoichiometry changed according to MetaCyc and iAF1260	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9515				
+rxn05351			-1:cpd00006:0:0:"NADP";-1:cpd11466:0:0:"Myristoyl-ACP";1:cpd00005:0:0:"NADPH";1:cpd00067:0:0:"H+";1:cpd11467:0:0:"(2E)-Tetradecenoyl-[acp]"	[SW] Stoichiometry changed according to MetaCyc and iAF1260	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9538				
+rxn04046			-1:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd08368:0:0:"Cobalt-precorrin 2";1:cpd00019:0:0:"S-Adenosyl-homocysteine";1:cpd00067:0:0:"H+";1:cpd08369:0:0:"Cobalt-precorrin 3"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=17997				
+rxn04052			-1:cpd08375:0:0:"Cobalt-precorrin 8";1:cpd03421:0:0:"Cobyrinate"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=16209				
+rxn04750			-1:cpd00003:0:0:"NAD";-1:cpd09844:0:0:"(3S)-3-Hydroxyadipyl-CoA";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd01507:0:0:"3-Oxoadipyl-CoA"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=34854				
+rxn05324			-1:cpd00003:0:0:"NAD";-1:cpd11468:0:0:"Dodecanoyl-ACP";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd11469:0:0:"(2E)-Dodecenoyl-[acp]"	[SW] Stoichiometry changed according to MetaCyc and iAF1260	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9661				
+rxn05327			-1:cpd00003:0:0:"NAD";-1:cpd11474:0:0:"Decanoyl-ACP";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd11475:0:0:"(2E)-Decenoyl-[acp]"	[SW] Stoichiometry changed according to MetaCyc and iAF1260	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9660				
+rxn05336			-1:cpd00006:0:0:"NADP";-1:cpd11481:0:0:"R-3-hydroxypalmitoyl-acyl-carrierprotein-";1:cpd00005:0:0:"NADPH";1:cpd11485:0:0:"3-oxohexadecanoyl-acp";1:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41904				
+rxn05337			-1:cpd00006:0:0:"NADP";-1:cpd11479:0:0:"D-3-Hydroxyhexanoyl-[acp]";1:cpd00005:0:0:"NADPH";1:cpd11486:0:0:"3-Oxohexanoyl-[acp]";1:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41824				
+rxn05339			-1:cpd00006:0:0:"NADP";-1:cpd11478:0:0:"(R)-3-Hydroxybutanoyl-[acyl-carrier protein]";1:cpd00005:0:0:"NADPH";1:cpd11488:0:0:"Acetoacetyl-ACP";1:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41824				
+rxn05340			-1:cpd00006:0:0:"NADP";-1:cpd11480:0:0:"D-3-Hydroxydodecanoyl-[acp]";1:cpd00005:0:0:"NADPH";1:cpd11489:0:0:"3-oxododecanoyl-acp";1:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41824				
+rxn05342			-1:cpd00006:0:0:"NADP";-1:cpd11484:0:0:"HMA";1:cpd00005:0:0:"NADPH";1:cpd11491:0:0:"3-oxotetradecanoyl-acp";1:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41824				
+rxn05344			-1:cpd00067:0:0:"H+";-1:cpd11466:0:0:"Myristoyl-ACP";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";1:cpd00011:0:0:"CO2";1:cpd11485:0:0:"3-oxohexadecanoyl-acp";1:cpd11493:0:0:"ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41900				
+rxn05345			-1:cpd00067:0:0:"H+";-1:cpd11468:0:0:"Dodecanoyl-ACP";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";1:cpd00011:0:0:"CO2";1:cpd11491:0:0:"3-oxotetradecanoyl-acp";1:cpd11493:0:0:"ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41900				
+rxn05346			-1:cpd00067:0:0:"H+";-1:cpd11464:0:0:"Butyryl-ACP";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";1:cpd00011:0:0:"CO2";1:cpd11486:0:0:"3-Oxohexanoyl-[acp]";1:cpd11493:0:0:"ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41900				
+rxn05347			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11494:0:0:"Acetyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11488:0:0:"Acetoacetyl-ACP";1:cpd11493:0:0:"ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41900				
+rxn05348			-1:cpd00067:0:0:"H+";-1:cpd11474:0:0:"Decanoyl-ACP";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";1:cpd00011:0:0:"CO2";1:cpd11489:0:0:"3-oxododecanoyl-acp";1:cpd11493:0:0:"ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41900				
+rxn05343			-1:cpd00067:0:0:"H+";-1:cpd11470:0:0:"Octanoyl-ACP";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";1:cpd00011:0:0:"CO2";1:cpd11487:0:0:"3-oxodecanoyl-acp";1:cpd11493:0:0:"ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41900				
+rxn05359			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11495:0:0:"2-methylbutyryl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11496:0:0:"4-methyl-3-oxo-hexanoyl-ACP"	[SW] Stoichiometry changed according to RHEA					
+rxn05358			-1:cpd00760:0:0:"2-Methylbutyryl-CoA";-1:cpd11493:0:0:"ACP";1:cpd00010:0:0:"CoA";1:cpd11495:0:0:"2-methylbutyryl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41788				
+rxn05383			-1:cpd01882:0:0:"Isovaleryl-CoA";-1:cpd11493:0:0:"ACP";1:cpd00010:0:0:"CoA";1:cpd11520:0:0:"isovaleryl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41788				
+rxn05408			-1:cpd00481:0:0:"Isobutyryl-CoA";-1:cpd11493:0:0:"ACP";1:cpd00010:0:0:"CoA";1:cpd11545:0:0:"isobutyryl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41788				
+rxn05458			-1:cpd00010:0:0:"CoA";-1:cpd11476:0:0:"hexadecanoyl-acp";1:cpd00134:0:0:"Palmitoyl-CoA";1:cpd11493:0:0:"ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41788				
+rxn05459			-1:cpd00010:0:0:"CoA";-1:cpd11573:0:0:"Octodecanoyl-ACP";1:cpd00327:0:0:"strcoa";1:cpd11493:0:0:"ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41788				
+rxn05451			-1:cpd00010:0:0:"CoA";-1:cpd00067:0:0:"H+";-1:cpd11515:0:0:"12-methyl-tetra-decanoyl-ACP";1:cpd11439:0:0:"fa4coa";1:cpd11493:0:0:"ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41788				
+rxn05452			-1:cpd00010:0:0:"CoA";-1:cpd00067:0:0:"H+";-1:cpd11519:0:0:"14-methyl-hexa-decanoyl-ACP";1:cpd11434:0:0:"fa12coa";1:cpd11493:0:0:"ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41788				
+rxn05453			-1:cpd00010:0:0:"CoA";-1:cpd00067:0:0:"H+";-1:cpd11540:0:0:"13-methyl-tetra-decanoyl-ACP";1:cpd11437:0:0:"fa3coa";1:cpd11493:0:0:"ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41788				
+rxn05454			-1:cpd00010:0:0:"CoA";-1:cpd00067:0:0:"H+";-1:cpd11544:0:0:"15-methyl-hexa-decanoyl-ACP";1:cpd11432:0:0:"fa11coa";1:cpd11493:0:0:"ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41788				
+rxn05455			-1:cpd00010:0:0:"CoA";-1:cpd00067:0:0:"H+";-1:cpd11565:0:0:"12-methyl-tridecanoyl-ACP";1:cpd11435:0:0:"fa1coa";1:cpd11493:0:0:"ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41788				
+rxn05456			-1:cpd00010:0:0:"CoA";-1:cpd00067:0:0:"H+";-1:cpd11569:0:0:"14-methyl-pentadecanoyl-ACP";1:cpd11441:0:0:"fa6coa";1:cpd11493:0:0:"ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=41788				
+rxn05974		TRUE		[SW] Reaction is unbalanced and cannot be found in any other database than KEGG.					
+rxn05771			-8:cpd00067:0:0:"H+";-1:cpd00007:0:0:"O2";-4:cpd11798:0:0:"Ferrocytochrome c2";2:cpd00001:0:0:"H2O";4:cpd11796:0:0:"Ferricytochrome c2";4:cpd00067:1:0:"H+"	[SW] Stoichiometry changed according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=CYTOCHROME-C-OXIDASE-RXN				
+rxn05772			-1:cpd00004:0:0:"NADH";-2:cpd11795:0:0:"Ferricytochrome b5";1:cpd00003:0:0:"NAD";2:cpd11797:0:0:"Ferrocytochrome b5";1:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=CYTOCHROME-B5-REDUCTASE-RXN				
+rxn05774			-1:cpd00005:0:0:"NADPH";-2:cpd11796:0:0:"Ferricytochrome c2";1:cpd00006:0:0:"NADP";2:cpd11798:0:0:"Ferrocytochrome c2";1:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NADPH--CYTOCHROME-C2-REDUCTASE-RXN				
+rxn06023			-1:cpd00010:0:0:"CoA";-1:cpd12370:0:0:"apo-ACP";1:cpd00045:0:0:"Adenosine 3-5-bisphosphate";1:cpd11493:0:0:"ACP";1:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=HOLO-ACP-SYNTH-RXN				
+rxn06074			-1:cpd00283:0:0:"Geranyldiphosphate";1:cpd00012:0:0:"PPi";1:cpd12822:0:0:"Pinene";1:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-5107				
+rxn06134			-1:cpd00007:0:0:"O2";-3:cpd00067:0:0:"H+";-1:cpd00327:0:0:"strcoa";-2:cpd11797:0:0:"Ferrocytochrome b5";2:cpd00001:0:0:"H2O";1:cpd00399:0:0:"Oleoyl-CoA";2:cpd11795:0:0:"Ferricytochrome b5"	[SW] Oleate is defined in the protonated (1*H+) version. Strcoa on the other hand not. Thus an additional proton needs to be added to LHS to balance reactions.					
+rxn11963			-1:cpd00001:0:0:"H2O";-1:cpd01042:0:0:"p-Cresol";-4:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00484:0:0:"p-Hydroxybenzaldehyde";4:cpd11620:0:0:"Reducedferredoxin";4:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=1.17.99.1-RXN				
+rxn06214			-1:cpd00001:0:0:"H2O";-1:cpd01042:0:0:"p-Cresol";-4:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00484:0:0:"p-Hydroxybenzaldehyde";4:cpd11620:0:0:"Reducedferredoxin";4:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=1.17.99.1-RXN				
+rxn06269		TRUE		[SW] Unspecific unbalanced and unconnected reactions.					
+rxn06270		TRUE		[SW] Unspecific unbalanced and unconnected reactions.					
+rxn06289		TRUE		[SW] Reaction and the participating metabolite “RING” cannot be found in any other database.					
+rxn06430		TRUE		[SW] Reaction and the participating metabolite “RING” cannot be found in any other database.					
+rxn06541		TRUE		[SW] Reaction and the participating metabolite “RING” cannot be found in any other database.					
+rxn06324			-1:cpd00059:0:0:"L-Ascorbate";-1:cpd11795:0:0:"Ferricytochrome b5";1:cpd00766:0:0:"Ascorbate radical";1:cpd11797:0:0:"Ferrocytochrome b5";2:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=18677				
+rxn06401			-1:cpd00042:0:0:"GSH";-1:cpd11846:0:0:"RX";1:cpd11844:0:0:"HX";1:cpd12076:0:0:"R-S-Glutathione";1:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=16440				
+rxn06428		TRUE		[SW] Unspecific unbalanced and unconnected reactions.					
+rxn06455		TRUE		[SW] Reaction not found in any database. Seems to be an reaction later removed from KEGG.					
+rxn06470		TRUE		[SW] Unspecific unbalanced and unconnected reactions.					
+rxn06516		TRUE		[SW] Unspecific unbalanced and unconnected reactions.					
+rxn06548			-1:cpd00001:0:0:"H2O";-1:cpd12681:0:0:"UDP-sugar";1:cpd00091:0:0:"UMP";1:cpd11794:0:0:"beta-L-Aldose 1-phosphate";1:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=UDPSUGARHYDRO-RXN				
+rxn06557			-1:cpd11640:0:0:"H2";-2:cpd12157:0:0:"Ferricytochrome c3";2:cpd00067:0:0:"H+";2:cpd12159:0:0:"Ferrocytochrome c3"	[SW] Stoichiometry changed according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=CYTOCHROME-C3-HYDROGENASE-RXN				
+rxn06599		TRUE		[SW] Unbalanced and unconnected Reaction					
+rxn06605		TRUE		[SW] Unbalanced and unconnected Reaction					
+rxn35393		TRUE		[SW] Unbalanced and unconnected Reaction					
+rxn06606		TRUE		[SW] Unbalanced and unconnected Reaction					
+rxn06635		TRUE		[SW] Unbalanced and unconnected Reaction					
+rxn06637		TRUE		[SW] Reaction cannot be found in any database.					
+rxn06808		TRUE		[SW] Reaction cannot be found in any database.					
+rxn06662		TRUE		[SW] Unspecific unbalanced and unconnected reactions.					
+rxn06691	>		-2:cpd00067:0:0:"H+";-1:cpd00086:0:0:"Propionyl-CoA";-1:cpd12505:0:0:"Electron-transferring flavoprotein";1:cpd00663:0:0:"Acrylyl-CoA";1:cpd12576:0:0:"Reduced electron-transferring flavoprotein"	[SW] Reaction direction and Stoichiometry adjusted according to RHEA and MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=PROPCOASYN-RXN				
+rxn06020	=		-1:cpd00067:0:0:"H+";-1:cpd00001:0:0:"H2O";-1:cpd00425:0:0:"(CH3)2NH";-1:cpd12505:0:0:"Electron-transferring flavoprotein";1:cpd00055:0:0:"Formaldehyde";1:cpd00187:0:0:"Methanamine";1:cpd12576:0:0:"Reduced electron-transferring flavoprotein"	[SW] Reaction direction and Stoichiometry adjusted according to RHEA and MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=1.5.8.1-RXN				
+rxn06177	=		-1:cpd00067:0:0:"H+";-1:cpd00001:0:0:"H2O";-1:cpd00441:0:0:"(CH3)3N";-1:cpd12505:0:0:"Electron-transferring flavoprotein";1:cpd00055:0:0:"Formaldehyde";1:cpd00425:0:0:"(CH3)2NH";1:cpd12576:0:0:"Reduced electron-transferring flavoprotein"	[SW] Reaction direction and Stoichiometry adjusted according to RHEA and MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=1.5.8.2-RXN				
+rxn06692			-1:cpd11669:0:0:"Q";-1:cpd12576:0:0:"Reduced electron-transferring flavoprotein";1:cpd11665:0:0:"QH2";1:cpd12505:0:0:"Electron-transferring flavoprotein";1:cpd00067:0:0:"H+"	[SW] Reaction direction and Stoichiometry adjusted according to RHEA and MetaCyc.	https://www.rhea-db.org/reaction?id=24052				
+rxn06705	>		-1:cpd02703:0:0:"UDP-N-acetyl-beta-D-mannosaminouronate";-1:cpd11649:0:0:"LPS";1:cpd00014:0:0:"UDP";1:cpd12618:0:0:"N-Acetyl-beta-D-mannosaminouronosyl-1,4-lipopolysaccharide"	[SW] Reaction direction and Stoichiometry adjusted according to RHEA and MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=UDPMANACATRANS-RXN				
+rxn06715	=			[SW] Reaction direction adjusted according to RHEA and MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-9721				
+rxn02123	>			[SW] Reaction direction adjusted according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=LACTOYL-COA-DEHYDRATASE-RXN				
+rxn02182	>			[SW] irrev.					
+rxn01818	>			[SW] Reaction direction adjusted according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=TRIMETHYLAMINE-OXIDE-ALDOLASE-RXN				
+rxn06723			-1:cpd00067:0:0:"H+";-1:cpd02835:0:0:"UDP-2,3-bis(3-hydroxytetradecanoyl)glucosamine";-1:cpd11493:0:0:"ACP";1:cpd03584:0:0:"UDP-3-O-(beta-hydroxymyristoyl)-D-glucosamine";1:cpd11484:0:0:"HMA"	[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://www.rhea-db.org/reaction?id=17818				
+rxn06729			-1:cpd00037:0:0:"UDP-N-acetylglucosamine";-1:cpd11484:0:0:"HMA";1:cpd02886:0:0:"UDP-3-O-(beta-hydroxymyristoyl)-N-acetylglucosamine";1:cpd11493:0:0:"ACP"	[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://www.rhea-db.org/reaction?id=13926				
+rxn06738	>			[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://www.rhea-db.org/reaction?id=13981				
+rxn06766			-1:cpd00001:0:0:"H2O";-1:cpd00204:0:0:"CO";-2:cpd12694:0:0:"Ferricytochrome b-561";1:cpd00011:0:0:"CO2";3:cpd00067:0:0:"H+";2:cpd12669:0:0:"Ferrocytochrome b-561"	[SW] Stoichiometry changed, because in seed database carbon monoxide is protonated.					
+rxn06768	>		-1:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd12672:0:0:"Dihydroflavodoxin";-1:cpd12673:0:0:"[Formate C-acetyltransferase]-glycine";1:cpd00060:0:0:"L-Methionine";1:cpd03091:0:0:"5'-Deoxyadenosine";1:cpd12674:0:0:"Flavodoxin semiquinone";1:cpd12697:0:0:"[Formate C-acetyltransferase]-glycin-2-yl radical";1:cpd00067:0:0:"H+"	[SW] Reaction direction and stoichiometry adjusted according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=TDCEACT-RXN				
+rxn06775		TRUE		[SW] Unbalanced and unconnected Reaction					
+									
+rxn05363			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11499:0:0:"4-methyl-hexanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11500:0:0:"6-methyl-3-oxo-octanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+rxn05367			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11503:0:0:"6-methyl-octanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11504:0:0:"8-methyl-3-oxo-decanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+rxn05371			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11507:0:0:"8-methyl-decanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11508:0:0:"10-methyl-3-oxo-dodecanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+rxn05379			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11515:0:0:"12-methyl-tetra-decanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11516:0:0:"14-methyl-3-oxo-hexa-decanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+rxn05384			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11520:0:0:"isovaleryl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11521:0:0:"5-methyl-3-oxo-hexanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+rxn05388			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11524:0:0:"5-methyl-hexanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11525:0:0:"7-methyl-3-oxo-octanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+rxn05392			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11528:0:0:"7-methyl-octanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11529:0:0:"9-methyl-3-oxo-decanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+rxn05396			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11532:0:0:"9-methyl-decanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11533:0:0:"11-methyl-3-oxo-dodecanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+rxn05400			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11536:0:0:"11-methyl-dodecanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11537:0:0:"13-methyl-3-oxo-tetra-decanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+rxn05404			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11540:0:0:"13-methyl-tetra-decanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11541:0:0:"15-methyl-3-oxo-hexa-decanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+rxn05409			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11545:0:0:"isobutyryl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11546:0:0:"4-methyl-3-oxo-pentanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+rxn05413			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11549:0:0:"4-methyl-pentanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11550:0:0:"6-methyl-3-oxo-heptanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+rxn05417			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11553:0:0:"6-methyl-heptanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11554:0:0:"8-methyl-3-oxo-nonanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+rxn05421			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11557:0:0:"8-methyl-nonanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11558:0:0:"10-methyl-3-oxo-undecanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+rxn05425			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11561:0:0:"10-methyl-undecanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11562:0:0:"12-methyl-3-oxo-tridecanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+rxn05429			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11565:0:0:"12-methyl-tridecanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11566:0:0:"14-methyl-3-oxo-pentadecanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+rxn05375			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11511:0:0:"10-methyl-dodecanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11512:0:0:"12-methyl-3-oxo-tetra-decanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+rxn05460			-1:cpd00067:0:0:"H+";-1:cpd11476:0:0:"hexadecanoyl-acp";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11570:0:0:"3-Oxooctodecanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
+									
 									
 rxn08783		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
 rxn08792		TRUE		[SW] Literature on existence of this reaction is inconclusive.					
@@ -793,8 +896,28 @@ rxn09160	>			[SW] Reversible according to Metacyc & BRENDA.	https://metacyc.org/
 rxn09162	>			[SW] Reversible according to Metacyc & BRENDA.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-1602 # http://www.brenda-enzymes.org/enzyme.php?ecno=3.1.1.34#NATURAL%20SUBSTRATES				
 rxn09164	>			[SW] Reversible according to Metacyc & BRENDA.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-1602 # http://www.brenda-enzymes.org/enzyme.php?ecno=3.1.1.34#NATURAL%20SUBSTRATES				
 									
+rxn05769		TRUE		[SW] generic reaction.					
+rxn05770		TRUE		[SW] generic reaction.					
+rxn05781		TRUE		[SW] generic reaction.					
+rxn05782		TRUE		[SW] generic reaction.					
+rxn05838		TRUE		[SW] generic reaction.					
+rxn05839		TRUE		[SW] generic reaction.					
+rxn05897		TRUE		[SW] generic reaction.					
+rxn05997		TRUE		[SW] generic reaction.					
+rxn06032		TRUE		[SW] generic reaction.					
+rxn06085		TRUE		[SW] generic reaction.					
+rxn06116		TRUE		[SW] generic reaction.					
+rxn06211		TRUE		[SW] generic reaction.					
+rxn06305		TRUE		[SW] generic reaction.					
 									
-									
+rxn06336		TRUE		[SW] Non-existing reaction					
+rxn05809		TRUE		[SW] Non-existing reaction					
+rxn05810		TRUE		[SW] Non-existing reaction					
+rxn05811		TRUE		[SW] Non-existing reaction					
+rxn05932		TRUE		[SW] Non-existing reaction					
+rxn05993		TRUE		[SW] Non-existing reaction					
+rxn06587		TRUE		[SW] Non-existing reaction					
+rxn06639		TRUE		[SW] Non-existing reaction					
 									
 rxn00008		TRUE		[SW] Unbalanced reaction. Not found in MetaCyc					
 rxn06418		TRUE		[SW] Highly unbalanced. Not found in other Databases. Correct version of this reaction is likely: rxn02570					
@@ -829,9 +952,10 @@ rxn06407		TRUE		[SW] generic reaction.
 rxn06408		TRUE		[SW] generic reaction.					
 rxn12496		TRUE		[SW] generic reaction.					
 rxn12214		TRUE		[SW] generic reaction.					
+rxn06650		TRUE		[SW] generic reaction.					
 									
 rxn08014	>			[SW] Fatty acid ligase. Elongation not reversible as such.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-13266				
-rxn05465	>			[SW] Fatty acid ligase. Elongation not reversible as such. (2.3.1.39)					
+rxn05465	>		-1:cpd00070:0:0:"Malonyl-CoA";-1:cpd11493:0:0:"ACP";1:cpd00010:0:0:"CoA";1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-"	[SW] Fatty acid ligase. Elongation not reversible as such. (2.3.1.39). Stoichiometry changed accordig to RHEA.	https://www.rhea-db.org/reaction?id=41792				
 rxn09436	>			[SW] Fatty acid elongation not reversible as such.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3-OXOACYL-ACP-SYNTH-RXN				
 rxn10097	>			[SW] Fatty acid elongation not reversible as such.					
 rxn09434	>			[SW] Fatty acid elongation not reversible as such.					
@@ -942,7 +1066,7 @@ rxn05760	<		-2:cpd00023:0:0:"L-Glutamate";-2:cpd11621:0:0:"Oxidizedferredoxin";1
 rxn05902	<		-3:cpd00001:0:0:"H2O";-1:cpd00239:0:0:"H2S";-6:cpd11621:0:0:"Oxidizedferredoxin";6:cpd00067:0:0:"H+";1:cpd00081:0:0:"Sulfite";6:cpd11620:0:0:"Reducedferredoxin"	[JZ][SW] reaction not proton balanced. Changing stoichiometries					
 rxn05937	=		-1:cpd00006:0:0:"NADP";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00005:0:0:"NADPH";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Reaction was incomplete. Here new balances full reaction.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17897				
 rxn06990	>		-1:cpd00003:0:0:"NAD";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00004:0:0:"NADH";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Ferredoxin Stoichiometries corrected. Reverse direction possible, but only in the presense of sodium ion potential.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=FERREDOXIN--NAD%2b-REDUCTASE-RXN # Hess, V.; Schuchmann, K.; Mueller, V.; J. Biol. Chem. 288, 31496-31502 (2013)				
-rxn07849	=		-1:cpd00001:0:0:"H2O";-1:cpd00735:0:0:"Formylmethanofuran";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00643:0:0:"Methanofuran";2:cpd11620:0:0:"Reducedferredoxin"	[JZ][SW] Reaction was incomplete. Here new balances full reaction with correct oxidized/reduced state for ferredoxin	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=FORMYLMETHANOFURAN-DEHYDROGENASE-RXN				
+rxn07849	>		-1:cpd00001:0:0:"H2O";-1:cpd00735:0:0:"Formylmethanofuran";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00643:0:0:"Methanofuran";2:cpd11620:0:0:"Reducedferredoxin";1:cpd00067:0:0:"H+"	[JZ][SW] Reaction was incomplete. Here new balances full reaction with correct oxidized/reduced state for ferredoxin	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=FORMYLMETHANOFURAN-DEHYDROGENASE-RXN				
 rxn05938	<		-1:cpd00011:0:0:"CO2";-1:cpd00022:0:0:"Acetyl-CoA";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00010:0:0:"CoA";1:cpd00020:0:0:"Pyruvate";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] never reported to be reversible.	https://www.brenda-enzymes.org/enzyme.php?ecno=3.5.4.27#NATURAL%20SUBSTRATES				
 rxn05939	=		-1:cpd00011:0:0:"CO2";-1:cpd00067:0:0:"H+";-1:cpd00078:0:0:"Succinyl-CoA";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00010:0:0:"CoA";1:cpd00024:0:0:"2-Oxoglutarate";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] reported for both directions.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.2.7.3#NATURAL%20SUBSTRATES				
 rxn05940	>		-1:cpd00010:0:0:"CoA";-1:cpd00094:0:0:"2-Oxobutyrate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00067:0:0:"H+";1:cpd00086:0:0:"Propionyl-CoA";2:cpd11620:0:0:"Reducedferredoxin"	[SW] never reported to be reversible.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.2.7.7#NATURAL%20SUBSTRATES				
@@ -1475,7 +1599,6 @@ rxn00106	>			[SW] Phosphates are usually irreversible, as they would build a hig
 rxn09016	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
 rxn15103	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
 rxn15102	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
-rxn05782	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
 rxn01352	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
 									
 rxn05245		TRUE		[SW] Valine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				

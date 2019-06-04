@@ -3,6 +3,7 @@ construct_full_model <- function(script.path) {
   require(stringr)
   require(sybil)
   source(paste0(script.dir, "/add_missing_exRxns.R"))
+  options(warn=1)
   
   mseed <- fread(paste0(script.dir, "/../dat/seed_reactions_corrected.tsv"), header=T, stringsAsFactors = F)
   mseed <- mseed[gapseq.status %in% c("approved","corrected")]
@@ -11,7 +12,7 @@ construct_full_model <- function(script.path) {
   mod <- modelorg(name = "Full Dummy model with all approved/corrected ModelSEED reactions",id = "dummy")
   mod@mod_desc <- "Full Dummy model"
   for(i in (1:nrow(mseed))) {
-    cat("\r",i,"/",nrow(mseed))
+    cat("\r",i,"/",nrow(mseed)," (",mseed[i,id],")")
     rxn.info <- str_split(unlist(str_split(string = mseed[i,stoichiometry],pattern = ";")), pattern = ":", simplify = T)
     
     met.comp  <- rxn.info[,3]
