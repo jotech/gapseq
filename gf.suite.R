@@ -89,6 +89,8 @@ source(paste0(script.dir,"/src/constrain.model.R"))
 source(paste0(script.dir,"/src/gapfill4.R"))
 source(paste0(script.dir,"/src/generate_rxn_stoich_hash.R"))
 source(paste0(script.dir,"/src/get_gene_logic_string.R"))
+source(paste0(script.dir,"/src/addMetAttr.R"))
+
 rm.na <- function(vec){
   idx <- which(is.na(vec))
   if (length(idx) > 0) 
@@ -99,6 +101,7 @@ rm.na <- function(vec){
 
 # database files
 carbon.source <- fread(paste0(script.dir, "/dat/sub2pwy.csv"))
+seed_x_mets   <- fread(paste0(script.dir,"/dat/seed_metabolites_edited.tsv"), header=T, stringsAsFactors = F, na.strings = c("null","","NA"))
 
 # read full model & target model
 cat("Loading model files", mod.file, "\n")
@@ -526,6 +529,9 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
 }
 
 mod.out <- add_missing_exchanges(mod.out)
+
+# add metabolite attributes
+mod.out <- addMetAttr(mod.out, seed_x_mets = seed_x_mets)
 
 if(!dir.exists(output.dir))
   system(paste0("mkdir ",output.dir))

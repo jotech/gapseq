@@ -65,6 +65,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   seed_x_name <- fread(paste0(script.dir,"/../dat/seed_reactions_corrected.tsv"), header=T, stringsAsFactors = F)
   seed_x_metCyc <- fread(paste0(script.dir,"/../dat/mnxref_seed-other.tsv"), header = T)
   seed_x_aliases <- fread(paste0(script.dir,"/../dat/seed_Enzyme_Name_Reactions_Aliases.tsv"), header=T)
+  seed_x_mets   <- fread(paste0(script.dir,"/../dat/seed_metabolites_edited.tsv"), header=T, stringsAsFactors = F, na.strings = c("null","","NA"))
   
   # Prepare candidate reaction tables for draft network and gapfilling
   dt.cand.tmp <- prepare_candidate_reaction_tables(blast.res, transporter.res, high.evi.rxn.BS, min.bs.for.core, curve.alpha)
@@ -207,6 +208,9 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   
   mod <- add_missing_exchanges(mod) 
   
+  # add metabolite attributes
+  mod <- addMetAttr(mod, seed_x_mets = seed_x_mets)
+  
   return(list(mod=mod, cand.rxns=dt.cand, rxn_x_genes=dt_genes))
 }
 
@@ -224,6 +228,7 @@ source(paste0(script.dir,"/add_missing_exRxns.R"))
 source(paste0(script.dir,"/generate_rxn_stoich_hash.R"))
 source(paste0(script.dir,"/prepare_candidate_reaction_tables.R"))
 source(paste0(script.dir,"/get_gene_logic_string.R"))
+source(paste0(script.dir,"/addMetAttr.R"))
 
 # get options first
 spec <- matrix(c(
