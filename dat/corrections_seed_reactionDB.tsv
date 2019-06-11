@@ -358,11 +358,10 @@ rxn12866			-1:cpd00006:0:0:"NADP";-1:cpd00517:0:0:"1-Acyl-sn-glycerol 3-phosphat
 rxn04881		TRUE		[SW] Reaction unbalanced and causes futile cycles.					
 rxn10947		TRUE		[SW] Reaction unbalanced and causes futile cycles.					
 rxn09180	>			[SW] New direction according to Metacyc (via EC)	https://metacyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-1.3.3.4				
-rxn08088	>			[SW] New direction according to Metacyc (via EC)	https://metacyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-2.3.1.51				
-rxn08549	>			[SW] New direction according to Metacyc (via EC)	https://metacyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-2.3.1.15				
+rxn08088	>		-1:cpd00067:0:0:"H+";-1:cpd15268:0:0:"Octadecanoyl-ACP";-1:cpd15329:0:0:"1-octadecanoyl-sn-glycerol 3-phosphate";1:cpd11493:0:0:"ACP";1:cpd15526:0:0:"1,2-dioctadecanoyl-sn-glycerol 3-phosphate"	[SW] New direction according to Metacyc (via EC)	https://metacyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-2.3.1.51				
 rxn00431			-1:cpd00001:0:0:"H2O";-1:cpd00187:0:0:"Methanamine";-2:cpd20919:0:0:"Amicyanin";1:cpd00013:0:0:"NH3";1:cpd00055:0:0:"Formaldehyde";2:cpd00067:0:0:"H+";2:cpd20920:0:0:"Reduced amicyanin"	[SW] Stoichiometry changed for charge balance according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-2841				
 rxn00347	>			[SW] Reaction never reported to be reversible. Irrev. According to MetaCyc	http://www.brenda-enzymes.org/enzyme.php?ecno=3.5.1.1#NATURAL%20SUBSTRATES				
-rxn08710	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5118				
+rxn08710	>		-1:cpd03587:0:0:"kdo2-lipid a";-1:cpd03831:0:0:"ADP-L-glycero-D-manno-heptose";1:cpd00008:0:0:"ADP";1:cpd15485:0:0:"heptosyl-kdo2-lipidA"	[SW] New direction according to Metacyc. Proton & charge balanced.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5118				
 rxn13150		TRUE		[SW] Reaction seems to be EC6.3.3.2. But is has wrong stoichiometry. CHECK THIS	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=5-FORMYL-THF-CYCLO-LIGASE-RXN				
 rxn00970	>		-1:cpd00001:0:0:"H2O";-1:cpd00604:0:0:"4-Coumarate";1:cpd00029:0:0:"Acetate";1:cpd00484:0:0:"p-Hydroxybenzaldehyde"	[SW] Reaction not found in any database. Replace with reaction stoichiometry according to MetaCyc,	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-8871				
 rxn08761		TRUE		[SW] Diffusion of large molecule? CHECK THIS					
@@ -390,7 +389,8 @@ rxn08086	>			[SW] Fatty acid elongation not reversible as such.	https://metacyc.
 rxn09459	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-15112				
 rxn11108	>			[SW] Protein Kinase. Should be irreversible.					
 rxn12994	>			[SW] Reversible according to Metacyc & BRENDA.	http://www.brenda-enzymes.org/enzyme.php?ecno=4.2.1.59#NATURAL%20SUBSTRATES # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=4.2.1.58-RXN				
-rxn08808	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-15035				
+rxn08808	>		-1:cpd00001:0:0:"H2O";-1:cpd15341:0:0:"2-Acyl-sn-glycero-3-phosphoethanolamine (n-C18:0)";1:cpd00908:0:0:"Glycerophosphoethanolamine";1:cpd01080:0:0:"ocdca";1:cpd00067:0:0:"H+"	[SW] Corrected with the saturated phospholipid	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-15035				
+rxn09156	>		-1:cpd00001:0:0:"H2O";-1:cpd15533:0:0:"phosphatidylethanolamine dioctadecanoyl";1:cpd00067:0:0:"H+";1:cpd01080:0:0:"ocdca";1:cpd15341:0:0:"2-Acyl-sn-glycero-3-phosphoethanolamine (n-C18:0)"	[SW] Corrected with the saturated phospholipid					
 rxn05813		TRUE		[SW] Unbalanced and generic reaction.					
 rxn06015		TRUE		[SW] Unbalanced and generic reaction.					
 rxn06016		TRUE		[SW] Unbalanced and generic reaction.					
@@ -738,6 +738,46 @@ rxn06738	>			[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	h
 rxn06766			-1:cpd00001:0:0:"H2O";-1:cpd00204:0:0:"CO";-2:cpd12694:0:0:"Ferricytochrome b-561";1:cpd00011:0:0:"CO2";3:cpd00067:0:0:"H+";2:cpd12669:0:0:"Ferrocytochrome b-561"	[SW] Stoichiometry changed, because in seed database carbon monoxide is protonated.					
 rxn06768	>		-1:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd12672:0:0:"Dihydroflavodoxin";-1:cpd12673:0:0:"[Formate C-acetyltransferase]-glycine";1:cpd00060:0:0:"L-Methionine";1:cpd03091:0:0:"5'-Deoxyadenosine";1:cpd12674:0:0:"Flavodoxin semiquinone";1:cpd12697:0:0:"[Formate C-acetyltransferase]-glycin-2-yl radical";1:cpd00067:0:0:"H+"	[SW] Reaction direction and stoichiometry adjusted according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=TDCEACT-RXN				
 rxn06775		TRUE		[SW] Unbalanced and unconnected Reaction					
+rxn06875	>		-16:cpd00002:0:0:"ATP";-16:cpd00001:0:0:"H2O";-1:cpd00528:0:0:"N2";-4:cpd12173:1:0:"Reduced flavodoxin";16:cpd00008:0:0:"ADP";16:cpd00009:1:0:"Phosphate";2:cpd00013:1:0:"NH3";4:cpd12207:0:0:"Oxidized flavodoxin";18:cpd00067:0:0:"H+";1:cpd11640:0:0:"H2"	[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://www.rhea-db.org/reaction?id=15645				
+rxn06880		TRUE		[SW] Unbalanced and unconnected Reaction					
+rxn15531		TRUE		[SW] Unbalanced and unconnected Reaction					
+rxn10098			-10:cpd00005:0:0:"NADPH";-14:cpd00067:0:0:"H+";-1:cpd11488:0:0:"Acetoacetyl-ACP";-4:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";5:cpd00001:0:0:"H2O";10:cpd00006:0:0:"NADP";4:cpd00011:0:0:"CO2";1:cpd11468:0:0:"Dodecanoyl-ACP";4:cpd11493:0:0:"ACP"	[SW] proton and charge balanced					
+rxn10095		TRUE		[SW] not found in any reaction database					
+rxn10099	>		-14:cpd00005:0:0:"NADPH";-20:cpd00067:0:0:"H+";-1:cpd11488:0:0:"Acetoacetyl-ACP";-6:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";7:cpd00001:0:0:"H2O";14:cpd00006:0:0:"NADP";6:cpd00011:0:0:"CO2";6:cpd11493:0:0:"ACP";1:cpd15277:0:0:"Palmitoyl-ACP"	[SW] proton and charge balanced					
+rxn06940	>		-1:cpd00067:0:0:"H+";-1:cpd06709:0:0:"Benzylsuccinyl-CoA";-1:cpd12505:0:0:"Electron-transferring flavoprotein";1:cpd06710:0:0:"E-Phenylitaconyl-CoA";1:cpd12576:0:0:"Reduced electron-transferring flavoprotein"	[SW] stoichiometry and direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-865				
+rxn06959		TRUE		[SW] Unbalanced and generic reaction.					
+rxn06979			-1:cpd00067:0:0:"H+";-2:cpd00001:0:0:"H2O";-2:cpd00002:0:0:"ATP";-2:cpd00053:0:0:"L-Glutamine";-1:cpd03421:0:0:"Cobyrinate";2:cpd00008:0:0:"ADP";2:cpd00009:0:0:"Phosphate";2:cpd00023:0:0:"L-Glutamate";1:cpd03914:0:0:"Cob(II)yrinate diamide"	[SW] proton and charge balanced					
+rxn07058		TRUE		[SW] Unbalanced and unconnected Reaction					
+rxn07229		TRUE		[SW] Unbalanced and unconnected Reaction					
+rxn07440		TRUE		[SW] Unbalanced and unconnected Reaction					
+rxn07586			-1:cpd00001:0:0:"H2O";-1:cpd08371:0:0:"Cobalt-precorrin 5";1:cpd00071:0:0:"Acetaldehyde";1:cpd14960:0:0:"Cobalt-precorrin 5B";1:cpd00067:0:0:"H+"	[SW] Reaction direction adjusted according to RHEA and MetaCyc.	https://www.rhea-db.org/reaction?id=26281				
+rxn07587			-1:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd14960:0:0:"Cobalt-precorrin 5B";1:cpd00019:0:0:"S-Adenosyl-homocysteine";1:cpd08372:0:0:"Cobalt-precorrin 6"	[SW] Reaction direction adjusted according to RHEA and MetaCyc.	https://www.rhea-db.org/reaction?id=26286				
+rxn07588	>		-1:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd08373:0:0:"Cobalt-precorrin 6B";1:cpd00019:0:0:"S-Adenosyl-homocysteine";1:cpd00011:0:0:"CO2";1:cpd14961:0:0:"Cobalt-precorrin 7"	[SW] Reaction direction adjusted according to RHEA and MetaCyc.	https://www.rhea-db.org/reaction?id=36068				
+rxn07589	>		-1:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd14961:0:0:"Cobalt-precorrin 7";1:cpd00067:0:0:"H+";1:cpd00019:0:0:"S-Adenosyl-homocysteine";1:cpd08375:0:0:"Cobalt-precorrin 8"	[SW] Reaction direction adjusted according to RHEA and MetaCyc.	https://www.rhea-db.org/reaction?id=34591				
+rxn07997	>		-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd15416:0:0:"cis-dec-3-enoyl-[acyl-carrier protein]";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd15373:0:0:"3-oxo-cis-dodec-5-enoyl-[acyl-carrier protein]"	[SW] Reaction direction adjusted according to RHEA and MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.3.1.41-RXN				
+rxn07998	>		-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd15415:0:0:"cis-dodec-5-enoyl-[acyl-carrier protein]";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd15374:0:0:"3-oxo-cis-myristol-7-eoyl-[acyl-carrier protein]"	[SW] Reaction direction adjusted according to RHEA and MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.3.1.41-RXN				
+rxn08000	>		-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd15294:0:0:"Tetradecenoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd15375:0:0:"3-oxo-cis-palm-9-eoyl-[acyl-carrier protein]"	[SW] Reaction direction adjusted according to RHEA and MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.3.1.41-RXN				
+rxn08001	>		-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd15277:0:0:"Palmitoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd15377:0:0:"3-Oxooctadecanoyl-[acyl-carrier protein]"	[SW] Reaction direction adjusted according to RHEA and MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.3.1.41-RXN				
+rxn08002	>		-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd15239:0:0:"Hexadecenoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd15376:0:0:"3-oxo-cis-vacc-11-enoyl-[acyl-carrier protein]"	[SW] Reaction direction adjusted according to RHEA and MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.3.1.41-RXN				
+rxn08083	>			[SW] Reaction direction adjusted according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=1-ACYLGLYCEROL-3-P-ACYLTRANSFER-RXN				
+rxn08085	>		-1:cpd15294:0:0:"Tetradecenoyl-ACP";-1:cpd15330:0:0:"1-tetradec-7-enoyl-sn-glycerol 3-phosphate";1:cpd11493:0:0:"ACP";1:cpd15523:0:0:"1,2-ditetradec-7-enoyl-sn-glycerol 3-phosphate"	[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://www.rhea-db.org/reaction?id=42297				
+rxn08086	>		-1:cpd15277:0:0:"Palmitoyl-ACP";-1:cpd15327:0:0:"1-hexadecanoyl-sn-glycerol 3-phosphate";1:cpd11493:0:0:"ACP";1:cpd15524:0:0:"1,2-dihexadecanoyl-sn-glycerol 3-phosphate"	[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://www.rhea-db.org/reaction?id=42297				
+rxn08087	>		-1:cpd15239:0:0:"Hexadecenoyl-ACP";-1:cpd15326:0:0:"1-hexadec-9-enoyl-sn-glycerol 3-phosphate";1:cpd11493:0:0:"ACP";1:cpd15525:0:0:"1,2-dihexadec-9-enoyl-sn-glycerol 3-phosphate"	[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://www.rhea-db.org/reaction?id=42297				
+rxn08089	>		-1:cpd11825:0:0:"Octadecenoyl-ACP";-1:cpd15328:0:0:"1-octadec-11-enoyl-sn-glycerol 3-phosphate";1:cpd11493:0:0:"ACP";1:cpd15527:0:0:"1,2-dioctadec-11-enoyl-sn-glycerol 3-phosphate"	[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://www.rhea-db.org/reaction?id=42297				
+rxn08548	>		-1:cpd00067:0:0:"H+";-1:cpd00080:0:0:"Glycerol-3-phosphate";-1:cpd15294:0:0:"Tetradecenoyl-ACP";1:cpd11493:0:0:"ACP";1:cpd15330:0:0:"1-tetradec-7-enoyl-sn-glycerol 3-phosphate"	[SW] proton and charge balanced	https://www.rhea-db.org/reaction?id=42297				
+rxn08549	>		-1:cpd00067:0:0:"H+";-1:cpd00080:0:0:"Glycerol-3-phosphate";-1:cpd15277:0:0:"Palmitoyl-ACP";1:cpd11493:0:0:"ACP";1:cpd15327:0:0:"1-hexadecanoyl-sn-glycerol 3-phosphate"	[SW] proton and charge balanced	https://www.rhea-db.org/reaction?id=42297				
+rxn08550	>		-1:cpd00067:0:0:"H+";-1:cpd00080:0:0:"Glycerol-3-phosphate";-1:cpd15239:0:0:"Hexadecenoyl-ACP";1:cpd11493:0:0:"ACP";1:cpd15326:0:0:"1-hexadec-9-enoyl-sn-glycerol 3-phosphate"	[SW] proton and charge balanced	https://www.rhea-db.org/reaction?id=42297				
+rxn08552	>		-1:cpd00067:0:0:"H+";-1:cpd00080:0:0:"Glycerol-3-phosphate";-1:cpd11825:0:0:"Octadecenoyl-ACP";1:cpd11493:0:0:"ACP";1:cpd15328:0:0:"1-octadec-11-enoyl-sn-glycerol 3-phosphate"	[SW] proton and charge balanced	https://www.rhea-db.org/reaction?id=42297				
+rxn08708			-1:cpd00002:0:0:"ATP";-1:cpd15484:0:0:"heptosyl-heptosyl-kdo2-lipidA";1:cpd00008:0:0:"ADP";1:cpd00067:0:0:"H+";1:cpd15549:0:0:"phospho-heptosyl-heptosyl-kdo2-lipidA"	[SW] proton and charge balanced					
+rxn08766			-1:cpd00067:0:0:"H+";-1:cpd00022:0:0:"Acetyl-CoA";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";1:cpd00010:0:0:"CoA";1:cpd00011:0:0:"CO2";1:cpd11488:0:0:"Acetoacetyl-ACP"	[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://www.rhea-db.org/reaction?id=44448				
+rxn08861			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";1:cpd00011:0:0:"CO2";1:cpd11494:0:0:"Acetyl-ACP"	[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://www.rhea-db.org/reaction?id=24460				
+rxn09442			-2:cpd00005:0:0:"NADPH";-3:cpd00067:0:0:"H+";-1:cpd11470:0:0:"Octanoyl-ACP";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";1:cpd00001:0:0:"H2O";2:cpd00006:0:0:"NADP";1:cpd00011:0:0:"CO2";1:cpd11474:0:0:"Decanoyl-ACP";1:cpd11493:0:0:"ACP"	[SW] proton and charge balanced					
+rxn10954			-16:cpd00005:0:0:"NADPH";-23:cpd00067:0:0:"H+";-1:cpd11488:0:0:"Acetoacetyl-ACP";-7:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";8:cpd00001:0:0:"H2O";16:cpd00006:0:0:"NADP";7:cpd00011:0:0:"CO2";7:cpd11493:0:0:"ACP";1:cpd15268:0:0:"Octadecanoyl-ACP"	[SW] proton and charge balanced					
+rxn08551			-1:cpd00080:0:0:"Glycerol-3-phosphate";-1:cpd15268:0:0:"Octadecanoyl-ACP";1:cpd11493:0:0:"ACP";1:cpd15329:0:0:"1-octadecanoyl-sn-glycerol 3-phosphate"	[SW] proton and charge balanced					
+rxn09456			-1:cpd00001:0:0:"H2O";-1:cpd15268:0:0:"Octadecanoyl-ACP";1:cpd01080:0:0:"ocdca";1:cpd11493:0:0:"ACP";1:cpd00067:0:0:"H+"	[SW] proton and charge balanced					
+rxn11557			-1:cpd00007:0:0:"O2";-2:cpd00067:0:0:"H+";-1:cpd00160:0:0:"Cholesterol";-2:cpd11723:0:0:"Reduced adrenodoxin";1:cpd00001:0:0:"H2O";1:cpd03274:0:0:"20alpha-Hydroxycholesterol";2:cpd11724:0:0:"Oxidized adrenodoxin"	[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-7875				
+rxn06228	>		-3:cpd00007:0:0:"O2";-1:cpd00160:0:0:"Cholesterol";-6:cpd11723:0:0:"Reduced adrenodoxin";-6:cpd00067:0:0:"H+";4:cpd00001:0:0:"H2O";1:cpd01342:0:0:"Pregnenolone";1:cpd01585:0:0:"Isohexanal";6:cpd11724:0:0:"Oxidized adrenodoxin"	[SW] Reaction direction and stoichiometry adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.14.15.6-RXN				
+rxn11562			-1:cpd00007:0:0:"O2";-2:cpd00067:0:0:"H+";-1:cpd00160:0:0:"Cholesterol";-2:cpd11723:0:0:"Reduced adrenodoxin";1:cpd00001:0:0:"H2O";1:cpd03276:0:0:"22beta-Hydroxycholesterol";2:cpd11724:0:0:"Oxidized adrenodoxin"	[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-7875				
 									
 rxn05363			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11499:0:0:"4-methyl-hexanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11500:0:0:"6-methyl-3-oxo-octanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
 rxn05367			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11503:0:0:"6-methyl-octanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11504:0:0:"8-methyl-3-oxo-decanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
@@ -909,6 +949,9 @@ rxn06085		TRUE		[SW] generic reaction.
 rxn06116		TRUE		[SW] generic reaction.					
 rxn06211		TRUE		[SW] generic reaction.					
 rxn06305		TRUE		[SW] generic reaction.					
+rxn11641		TRUE		[SW] generic reaction.					
+rxn07235		TRUE		[SW] generic reaction.					
+rxn07457		TRUE		[SW] generic reaction.					
 									
 rxn06336		TRUE		[SW] Non-existing reaction					
 rxn05809		TRUE		[SW] Non-existing reaction					
@@ -956,8 +999,8 @@ rxn06650		TRUE		[SW] generic reaction.
 									
 rxn08014	>			[SW] Fatty acid ligase. Elongation not reversible as such.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-13266				
 rxn05465	>		-1:cpd00070:0:0:"Malonyl-CoA";-1:cpd11493:0:0:"ACP";1:cpd00010:0:0:"CoA";1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-"	[SW] Fatty acid ligase. Elongation not reversible as such. (2.3.1.39). Stoichiometry changed accordig to RHEA.	https://www.rhea-db.org/reaction?id=41792				
-rxn09436	>			[SW] Fatty acid elongation not reversible as such.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3-OXOACYL-ACP-SYNTH-RXN				
-rxn10097	>			[SW] Fatty acid elongation not reversible as such.					
+rxn09436	>		-2:cpd00005:0:0:"NADPH";-3:cpd00067:0:0:"H+";-1:cpd11468:0:0:"Dodecanoyl-ACP";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";1:cpd00001:0:0:"H2O";2:cpd00006:0:0:"NADP";1:cpd00011:0:0:"CO2";1:cpd11466:0:0:"Myristoyl-ACP";1:cpd11493:0:0:"ACP"	[SW] Fatty acid elongation not reversible as such. Proton and charge balanced.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3-OXOACYL-ACP-SYNTH-RXN				
+rxn10097	>		-12:cpd00005:0:0:"NADPH";-17:cpd00067:0:0:"H+";-1:cpd11488:0:0:"Acetoacetyl-ACP";-5:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";6:cpd00001:0:0:"H2O";12:cpd00006:0:0:"NADP";5:cpd00011:0:0:"CO2";1:cpd11466:0:0:"Myristoyl-ACP";5:cpd11493:0:0:"ACP"	[SW] Fatty acid elongation not reversible as such.					
 rxn09434	>			[SW] Fatty acid elongation not reversible as such.					
 rxn10954	>			[SW] Fatty acid elongation not reversible as such.					
 rxn08392	>			[SW] Fatty acid elongation not reversible as such.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9663				
@@ -1077,7 +1120,7 @@ rxn06329	>		-2:cpd00067:0:0:"H+";-1:cpd00752:0:0:"6-Hydroxynicotinate";-2:cpd116
 rxn06424	<		-1:cpd00001:0:0:"H2O";-1:cpd01099:0:0:"Calcidiol";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00007:0:0:"O2";2:cpd00067:0:0:"H+";1:cpd03226:0:0:"Vitamin D3";2:cpd11620:0:0:"Reducedferredoxin"						
 rxn06451	<		-1:cpd03509:0:0:"(3Z)-Phytochromobilin";-2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd00067:0:0:"H+";1:cpd00389:0:0:"Biliverdin";2:cpd11620:0:0:"Reducedferredoxin"						
 rxn06507	>		-1:cpd00007:0:0:"O2";-2:cpd00067:0:0:"H+";-1:cpd02047:0:0:"DOC";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00001:0:0:"H2O";1:cpd01450:0:0:"Corticosterone";2:cpd11621:0:0:"Oxidizedferredoxin"						
-rxn06926	>		-2:cpd00001:0:0:"H2O";-2:cpd00002:0:0:"ATP";-2:cpd00067:0:0:"H+";-1:cpd01090:0:0:"Ethyne";-2:cpd11620:0:0:"Reducedferredoxin";2:cpd00008:0:0:"ADP";2:cpd00009:0:0:"Phosphate";1:cpd03956:0:0:"Ethylene";2:cpd11621:0:0:"Oxidizedferredoxin"						
+rxn06926	>		-8:cpd00001:0:0:"H2O";-8:cpd00002:0:0:"ATP";-1:cpd01090:0:0:"Ethyne";-4:cpd11620:0:0:"Reducedferredoxin";4:cpd00067:0:0:"H+";8:cpd00008:0:0:"ADP";8:cpd00009:0:0:"Phosphate";1:cpd03956:0:0:"Ethylene";4:cpd11621:0:0:"Oxidizedferredoxin";1:cpd11640:0:0:"H2"						
 rxn07189	>		-1:cpd00001:0:0:"H2O";-1:cpd00204:0:0:"CO";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";3:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"						
 rxn07191	>		-1:cpd00001:0:0:"H2O";-1:cpd00102:0:0:"Glyceraldehyde3-phosphate";-2:cpd11621:0:0:"Oxidizedferredoxin";3:cpd00067:0:0:"H+";1:cpd00169:0:0:"3-Phosphoglycerate";2:cpd11620:0:0:"Reducedferredoxin"		https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.2.7.5-RXN				
 rxn13775	=		-2:cpd00047:0:0:"Formate";-2:cpd11621:0:0:"Oxidizedferredoxin";-1:cpd00003:0:0:"NAD";2:cpd00011:0:0:"CO2";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"		http://www.rhea-db.org/reaction?id=46952				
