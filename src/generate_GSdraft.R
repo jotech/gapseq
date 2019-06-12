@@ -211,6 +211,13 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   # add metabolite attributes
   mod <- addMetAttr(mod, seed_x_mets = seed_x_mets)
   
+  # add metabolite compartment list
+  n.comp <- max(mod@met_comp)
+  if(n.comp == 2)
+    mod@mod_compart <- c("c0","e0")
+  if(n.comp == 3)
+    mod@mod_compart <- c("c0","e0","p0")
+  
   return(list(mod=mod, cand.rxns=dt.cand, rxn_x_genes=dt_genes))
 }
 

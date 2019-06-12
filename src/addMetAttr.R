@@ -8,6 +8,10 @@ addMetAttr <- function(mod, seed_x_mets) {
   
   mettmp <- merge(mettmp, seed_x_mets, sort = F, by = "id", all.x = T)
   
+  #mettmp[, annotation := paste0("in_inchi;", inchikey)]
+  
+  colnames(mettmp)[which(colnames(mettmp)=="formula")] <- "chemicalFormula"
+  
   mod@met_attr <- as.data.frame(mettmp)
   
   return(mod)
