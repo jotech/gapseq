@@ -232,11 +232,13 @@ seqpath=$dir/dat/seq/$taxonomy/unipac$(printf %.0f $(echo "$uniprotIdentity * 10
 seqpath_user=$dir/dat/seq/$taxonomy/user
 mkdir -p $seqpath $seqpath_user
 # extract sequence files archive if necessary
-sequenceDB_status=$(md5sum $seqpath/sequences.tar.gz | awk '{print $1}')
-sequenceDB_n=$(ls $seqpath/*.fasta 2> /dev/null | wc -l)
-if [[ ! "$sequenceDB_status" == "$sequenceDB_version" ]] || [[ $sequenceDB_n -eq 0 ]] ; then
-    echo Extracting sequence files from archive
-    tar xzf $seqpath/sequences.tar.gz -C $seqpath/
+if [[ -s $seqpath/sequences.tar.gz  ]]; then
+    sequenceDB_status=$(md5sum $seqpath/sequences.tar.gz | awk '{print $1}')
+    sequenceDB_n=$(ls $seqpath/*.fasta 2> /dev/null | wc -l)
+    if [[ ! "$sequenceDB_status" == "$sequenceDB_version" ]] || [[ $sequenceDB_n -eq 0 ]] ; then
+        echo Extracting sequence files from archive
+        tar xzf $seqpath/sequences.tar.gz -C $seqpath/
+    fi
 fi
 
 
