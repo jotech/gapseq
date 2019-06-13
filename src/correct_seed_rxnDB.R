@@ -131,6 +131,7 @@ correct_seed_rxnDB <- function(script.path) {
   # Export of corrected database
   mseed <- mseed[,-"gs.hash"]
   fwrite(mseed, file=paste0(script.path,"/../dat/seed_reactions_corrected.tsv"), sep = "\t", quote = F)
+  print(table(mseed$gapseq.status))
 }
 
 getRxnEquaFromStoich <- function(stoichiometry, reversibility, str.type="definition") {
