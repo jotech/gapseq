@@ -9,6 +9,7 @@ identity=0.9 # clustered uniprot database (0.5 or 0.9)
 taxonomy=Bacteria
 overwrite=false
 get_all=false
+low_seq_number=10
 
 # default core metabolism
 pwyKey="Amino-Acid-Biosynthesis|Nucleotide-Biosynthesis|Cofactor-Biosynthesis|Carbohydrates-Degradation|CARBO-BIOSYNTHESIS|Polyamine-Biosynthesis|Fatty-acid-biosynthesis|Energy-Metabolism|Terpenoid-Biosynthesis|Chorismate-Biosynthesis"
@@ -102,12 +103,13 @@ if [ -n "$ecnumber" ]; then
             fi
             echo -en " ... Downloading $ec \t\t"
             if [ ! -f "$ec.fasta" ] && [ "$get_all" = false ]; then # fasta doesn't exist?
-                echo swissprot
+                #echo swissprot
                 url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
                 wget -q $url -O $ec.fasta
+                fasta_entries=$(grep ">" $ec.fasta | wc -l)
             fi
-            if [ ! -s "$ec.fasta" ] || [ "$get_all" = true ]; then # fasta is empty?
-                echo unreviewed
+            if [ ! -s "$ec.fasta" ] || [ "$get_all" = true ] || [ $fasta_entries -lt $low_seq_number ]; then # fasta is empty?
+                #echo reviewed and unreviewed
                 url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
                 wget -q $url -O $ec.fasta
             fi
@@ -134,8 +136,9 @@ if [ -n "$reaNames" ]; then
         if [ ! -f "$reaNameHash.fasta" ] && [ "$get_all" = false ]; then # fasta doesn't exist?
             url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
             wget  -q "$url" -O "$reaNameHash.fasta"
+            fasta_entries=$(grep ">" $reaNameHash.fasta | wc -l)
         fi
-        if [ ! -s "$reaNameHash.fasta" ] || [ "$get_all" = true ]; then # fasta is empty?
+        if [ ! -s "$reaNameHash.fasta" ] || [ "$get_all" = true ]  [ $fasta_entries -lt $low_seq_number ]; then # fasta is empty?
             url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
             wget -q "$url" -O "$reaNameHash.fasta"
         fi
