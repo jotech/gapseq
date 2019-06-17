@@ -29,7 +29,6 @@ skipBlast=false
 includeSeq=false
 use_parallel=true
 exhaustive=false
-sequenceDB_version=d1c2219a5278bfd9db721b511f89b0cb
 
 usage()
 {
@@ -235,9 +234,11 @@ mkdir -p $seqpath $seqpath_user
 if [[ -s $seqpath/sequences.tar.gz  ]]; then
     sequenceDB_status=$(md5sum $seqpath/sequences.tar.gz | awk '{print $1}')
     sequenceDB_n=$(ls $seqpath/*.fasta 2> /dev/null | wc -l)
+    [[ -s $seqpath/version ]] && sequenceDB_version=$(cat $seqpath/version)
     if [[ ! "$sequenceDB_status" == "$sequenceDB_version" ]] || [[ $sequenceDB_n -eq 0 ]] ; then
         echo Extracting sequence files from archive
         tar xzf $seqpath/sequences.tar.gz -C $seqpath/
+        echo $sequenceDB_status > $seqpath/version
     fi
 fi
 
