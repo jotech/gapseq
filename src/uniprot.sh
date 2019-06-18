@@ -138,7 +138,7 @@ if [ -n "$reaNames" ]; then
             wget  -q "$url" -O "$reaNameHash.fasta"
             fasta_entries=$(grep ">" $reaNameHash.fasta | wc -l)
         fi
-        if [ ! -s "$reaNameHash.fasta" ] || [ "$get_all" = true ]  [ $fasta_entries -lt $low_seq_number ]; then # fasta is empty?
+        if [ ! -s "$reaNameHash.fasta" ] || [ "$get_all" = true ] || [ $fasta_entries -lt $low_seq_number ]; then # fasta is empty?
             url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
             wget -q "$url" -O "$reaNameHash.fasta"
         fi
