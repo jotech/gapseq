@@ -29,6 +29,7 @@ skipBlast=false
 includeSeq=false
 use_parallel=true
 exhaustive=false
+use_unrev=false
 
 usage()
 {
@@ -54,6 +55,7 @@ usage()
     echo "  -v verbose level, 0 for nothing, 1 for pathway infos, 2 for full (default $verbose)"
     echo "  -k do not use parallel"
     echo "  -g exhaustive search, continue blast even when cutoff is reached (default $exhaustive)"
+    echo "  -z use unreviewed sequences (default $use_unrev)"
 exit 1
 }
 
@@ -82,7 +84,7 @@ altecdb=$dir/dat/altec.csv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxqkg" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxqkgz" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -144,6 +146,9 @@ while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxqkg" opt; do
         ;;
     g)
         exhaustive=true
+        ;;
+    z)
+        use_unrev=true
         ;;
     esac
 done

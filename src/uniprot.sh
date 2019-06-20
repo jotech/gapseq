@@ -8,8 +8,7 @@ metaPwy=$dir/../dat/meta_pwy.tbl
 identity=0.9 # clustered uniprot database (0.5 or 0.9)
 taxonomy=Bacteria
 overwrite=false
-get_all=false
-low_seq_number=10
+get_unrev=false
 
 # default core metabolism
 pwyKey="Amino-Acid-Biosynthesis|Nucleotide-Biosynthesis|Cofactor-Biosynthesis|Carbohydrates-Degradation|CARBO-BIOSYNTHESIS|Polyamine-Biosynthesis|Fatty-acid-biosynthesis|Energy-Metabolism|Terpenoid-Biosynthesis|Chorismate-Biosynthesis"
@@ -24,11 +23,11 @@ usage()
     echo "  -t taxonomic range (default: $taxonomy)"
     echo "  -o Should existing files be overwritten (default: $overwrite)"
     echo "  -i identity of clustered uniprot database (0.5 or 0.9; default: $identity)"
-    echo "  -a get all sequences by default (usually swissprot is taken first and only without hits also unreviewed sequences are taken)"
+    echo "  -u get unreview sequences (usually only review sequences are taken, i.e. swissprot is taken)"
 exit 1
 }
 
-while getopts "h?p:e:t:oi:r:a" opt; do
+while getopts "h?p:e:t:oi:r:u" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -52,8 +51,8 @@ while getopts "h?p:e:t:oi:r:a" opt; do
     r)
         reaNames=$OPTARG
         ;;
-    a)
-        get_all=true
+    u)
+        get_unrev=true
         ;;
     esac
 done
@@ -102,15 +101,13 @@ if [ -n "$ecnumber" ]; then
                 rm -f $ec.fasta
             fi
             echo -en " ... Downloading $ec \t\t"
-            if [ ! -f "$ec.fasta" ] && [ "$get_all" = false ]; then # fasta doesn't exist?
-                #echo swissprot
+            if [ ! -f "$ec.fasta" ] && [ "$get_unrev" = false ]; then # fasta doesn't exist?
+                #swissprot
                 url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
                 wget -q $url -O $ec.fasta
-                fasta_entries=$(grep ">" $ec.fasta | wc -l)
-            fi
-            if [ ! -s "$ec.fasta" ] || [ "$get_all" = true ] || [ $fasta_entries -lt $low_seq_number ]; then # fasta is empty?
-                #echo reviewed and unreviewed
-                url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+            else
+                # unreviewed
+                url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ano)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
                 wget -q $url -O $ec.fasta
             fi
         fi
@@ -132,14 +129,12 @@ if [ -n "$reaNames" ]; then
         else
             rm -f $reaNameHash.fasta
         fi
-        echo -en " ... Downloading $rea $reaNameHash\t\t"
-        if [ ! -f "$reaNameHash.fasta" ] && [ "$get_all" = false ]; then # fasta doesn't exist?
+        echo -en " ... Downloading $rea\t\t"
+        if [ ! -f "$reaNameHash.fasta" ] && [ "$get_unrev" = false ]; then # fasta doesn't exist?
             url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
             wget  -q "$url" -O "$reaNameHash.fasta"
-            fasta_entries=$(grep ">" $reaNameHash.fasta | wc -l)
-        fi
-        if [ ! -s "$reaNameHash.fasta" ] || [ "$get_all" = true ] || [ $fasta_entries -lt $low_seq_number ]; then # fasta is empty?
-            url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+        else 
+            url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ano)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
             wget -q "$url" -O "$reaNameHash.fasta"
         fi
     done
