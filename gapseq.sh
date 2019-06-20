@@ -305,7 +305,7 @@ getDBhit(){
     # 3) search in reaction db by alternative EC
     if [[ -n "$EC_test" ]]; then
         altec=$(grep -wF $ec $altecdb | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -v $ec)
-        [[ -z "$altec" ]] && { altec=$(grep -wF $ec $brenda | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -v $ec); }
+        [[ -z "$altec" ]] && { altec=$(grep -wF $ec $brenda | sed 's/transferred to.*//' | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -v $ec); } # exclude transferred ECs
         if [ "$database" == "vmh" ]; then
             [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo ${altec//./\\.} | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')" # take care of multiple EC numbers
         elif [ "$database" == "seed" ]; then
