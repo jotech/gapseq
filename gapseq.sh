@@ -409,7 +409,11 @@ do
             query=$seqpath_tmp/$ec.fasta
             if [ ! -f "$query" ]; then # check if sequence is not available => try to download
                 [[ verbose -ge 1 ]] && echo -e '\t'Downloading sequence for: $ec 
-                $dir/src/uniprot.sh -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                if [ "$use_unrev" = true ];then
+                    $dir/src/uniprot.sh -u -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                else
+                    $dir/src/uniprot.sh -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                fi
             fi
             # if an alternative ec numbers exists and has additional sequence data merge both files
             if [ -f "$seqpath_user/$altec.fasta" ]; then # check if user defined sequence file is present
@@ -436,7 +440,11 @@ do
             query="$seqpath_tmp/$reaNameHash.fasta"
             if [ ! -f "$query" ]; then # check if sequence is not available => try to download
                 [[ verbose -ge 1 ]] && echo -e '\t'Downloading sequence for: $reaName "\n\t\t(hash: $reaNameHash)" 
-                $dir/src/uniprot.sh -r "$reaName" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                if [ "$use_unrev" = true ];then
+                    $dir/src/uniprot.sh -u -r "$reaName" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                else
+                    $dir/src/uniprot.sh -r "$reaName" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                fi
             fi
         fi
         [[ "$skipBlast" = true ]] && { echo -e "\t"$rea $reaName $ec; continue; }
