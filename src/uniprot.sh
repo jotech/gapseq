@@ -23,7 +23,7 @@ usage()
     echo "  -t taxonomic range (default: $taxonomy)"
     echo "  -o Should existing files be overwritten (default: $overwrite)"
     echo "  -i identity of clustered uniprot database (0.5 or 0.9; default: $identity)"
-    echo "  -u get unreview sequences (usually only review sequences are taken, i.e. swissprot is taken)"
+    echo "  -u get unreviewed instead of reviewed sequences (default $get_unrev)"
 exit 1
 }
 
@@ -65,7 +65,12 @@ shift $((OPTIND-1))
 # path for saving sequences
 numeric_old=$LC_NUMERIC
 LC_NUMERIC="en_US.UTF-8" # must be set in order to get printf working with float numbers
-seqpath=$dir/../dat/seq/$taxonomy/unipac$(printf %.0f $(echo "$identity * 100" | bc -l))
+#seqpath=$dir/../dat/seq/$taxonomy/unipac$(printf %.0f $(echo "$identity * 100" | bc -l))
+if [ "$get_unrev" = false ]; then
+    seqpath=$dir/../dat/seq/$taxonomy/rev
+else
+    seqpath=$dir/../dat/seq/$taxonomy/unrev
+fi
 LC_NUMERIC=$numeric_old
 mkdir -p $seqpath
 cd $seqpath
@@ -95,21 +100,20 @@ if [ -n "$ecnumber" ]; then
         re="([0-9]+.[0-9]+.[0-9]+.[0-9]+)"
         test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
         if [ -n "$test" ]; then # check if valid ec
-            if [ -f "$ec.fasta" ] &&  [ "$overwrite" = false ]; then # do not update existing files
+            if [ -f "$ec.fasta" ] && [ "$overwrite" = false ]; then # do not update existing files
                 continue
             else
                 rm -f $ec.fasta
             fi
             echo -en " ... Downloading $ec \t\t"
-            if [ ! -f "$ec.fasta" ] && [ "$get_unrev" = false ]; then # fasta doesn't exist?
+            if [ "$get_unrev" = false ]; then
                 #swissprot
                 url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
-                wget -q $url -O $ec.fasta
             else
                 # unreviewed
                 url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ano)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
-                wget -q $url -O $ec.fasta
             fi
+            [[ ! -f $ec.fasta ]] && wget -q $url -O $ec.fasta # download only if file not exists
         fi
     done
 fi
@@ -124,18 +128,17 @@ if [ -n "$reaNames" ]; then
         i=$((i+1))
         reaNameHash=$(echo -n "$rea" | md5sum | awk '{print $1}')
         echo -en "\r$i/$reas_max"
-        if [ -f "$reaNameHash.fasta" ] &&  [ "$overwrite" = false ]; then # do not update existing files
+        if [ -f "$reaNameHash.fasta" ] && [ "$overwrite" = false ]; then # do not update existing files
             continue
         else
             rm -f $reaNameHash.fasta
         fi
         echo -en " ... Downloading $rea\t\t"
-        if [ ! -f "$reaNameHash.fasta" ] && [ "$get_unrev" = false ]; then # fasta doesn't exist?
+        if [ "$get_unrev" = false ]; then 
             url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
-            wget  -q "$url" -O "$reaNameHash.fasta"
         else 
             url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ano)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
-            wget -q "$url" -O "$reaNameHash.fasta"
         fi
+        [[ ! -f $reaNameHash.fasta ]] && wget -q "$url" -O "$reaNameHash.fasta"
     done
 fi

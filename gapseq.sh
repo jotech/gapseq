@@ -29,22 +29,22 @@ skipBlast=false
 includeSeq=false
 use_parallel=true
 exhaustive=false
-use_unrev=false
+seqSrc=2
 
 usage()
 {
     echo "Usage"
     echo "$0 -p keyword / -e ec [-d database] [-t taxonomy] file.fasta."
     echo "  -p keywords such as pathways or subsystems (for example amino,nucl,cofactor,carbo,polyamine)"
-    echo "  -e search by ec numbers (comma separated)"
-    echo "  -r search by enzyme name (colon separated)"
-    echo "  -d database: vmh or seed (default: $database)"
-    echo "  -t taxonomic range for sequences to be downloaded (default: $taxonomy)"
-    echo "  -b bit score cutoff for local alignment (default: $bitcutoff)"
-    echo "  -i identity cutoff for local alignment (default: $identcutoff)"
-    echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
-    echo "  -s strict candidate reaction handling (do _not_ use pathway completeness, key kenzymes and operon structure to infere if imcomplete pathway could be still present (default: $strictCandidates)"
-    echo "  -u suffix used for output files (default: pathway keyword)"
+    echo "  -e Search by ec numbers (comma separated)"
+    echo "  -r Search by enzyme name (colon separated)"
+    echo "  -d Database: vmh or seed (default: $database)"
+    echo "  -t Taxonomic range for sequences to be downloaded (default: $taxonomy)"
+    echo "  -b Bit score cutoff for local alignment (default: $bitcutoff)"
+    echo "  -i Identity cutoff for local alignment (default: $identcutoff)"
+    echo "  -c Coverage cutoff for local alignment (default: $covcutoff)"
+    echo "  -s Strict candidate reaction handling (do _not_ use pathway completeness, key kenzymes and operon structure to infere if imcomplete pathway could be still present (default: $strictCandidates)"
+    echo "  -u Suffix used for output files (default: pathway keyword)"
     echo "  -a blast hits back against uniprot enzyme database"
     echo "  -n Consider superpathways of metacyc database"
     echo "  -l Select the pathway database (MetaCyc, KEGG, SEED, all; default: $pwyDatabase)"
@@ -52,10 +52,10 @@ usage()
     echo "  -x Do not blast only list pathways, reactions and check for available sequences; default $skipBlast"
     echo "  -q Include sequences of hits in log files; default $includeSeq"
 
-    echo "  -v verbose level, 0 for nothing, 1 for pathway infos, 2 for full (default $verbose)"
-    echo "  -k do not use parallel"
-    echo "  -g exhaustive search, continue blast even when cutoff is reached (default $exhaustive)"
-    echo "  -z use unreviewed sequences (default $use_unrev)"
+    echo "  -v Verbose level, 0 for nothing, 1 for pathway infos, 2 for full (default $verbose)"
+    echo "  -k Do not use parallel"
+    echo "  -g Exhaustive search, continue blast even when cutoff is reached (default $exhaustive)"
+    echo "  -z Quality of sequences for homology search: 1:only reviewed (swissprot), 2:unreviewed only if reviewed not available, 3:reviewed+unreviewed, 4:only unreviewed (default $seqSrc)"
 exit 1
 }
 
@@ -75,7 +75,7 @@ reaDB2=$dir/dat/bigg_reactions.tbl
 reaDB3=$dir/dat/seed_reactions_corrected.tsv
 reaDB4=$dir/dat/mnxref_seed.tsv
 reaDB5=$dir/dat/mnxref_seed-other.tsv
-brenda=$dir/dat/brenda_ec.csv
+brenda=$dir/dat/brenda_ec_edited.csv
 seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
 seedEnzymesNames=$dir/dat/seed_Enzyme_Name_Reactions_Aliases.tsv
 altecdb=$dir/dat/altec.csv
@@ -84,7 +84,7 @@ altecdb=$dir/dat/altec.csv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxqkgz" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxqkgz:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -148,7 +148,7 @@ while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxqkgz" opt; do
         exhaustive=true
         ;;
     z)
-        use_unrev=true
+        seqSrc=$OPTARG
         ;;
     esac
 done
@@ -232,18 +232,28 @@ esac
 
 # squence directory
 export LC_NUMERIC="en_US.UTF-8"
-seqpath=$dir/dat/seq/$taxonomy/unipac$(printf %.0f $(echo "$uniprotIdentity * 100" | bc -l))
+seqpath=$dir/dat/seq/$taxonomy
 seqpath_user=$dir/dat/seq/$taxonomy/user
-mkdir -p $seqpath $seqpath_user
+mkdir -p $seqpath/rev $seqpath/unrev $seqpath_user
 # extract sequence files archive if necessary
-if [[ -s $seqpath/sequences.tar.gz  ]]; then
-    sequenceDB_status=$(md5sum $seqpath/sequences.tar.gz | awk '{print $1}')
-    sequenceDB_n=$(ls $seqpath/*.fasta 2> /dev/null | wc -l)
-    [[ -s $seqpath/version ]] && sequenceDB_version=$(cat $seqpath/version)
+if [[ -s $seqpath/rev/sequences.tar.gz  ]]; then
+    sequenceDB_status=$(md5sum $seqpath/rev/sequences.tar.gz | awk '{print $1}')
+    sequenceDB_n=$(ls $seqpath/rev/*.fasta 2> /dev/null | wc -l)
+    [[ -s $seqpath/rev/version ]] && sequenceDB_version=$(cat $seqpath/rev/version)
     if [[ ! "$sequenceDB_status" == "$sequenceDB_version" ]] || [[ $sequenceDB_n -eq 0 ]] ; then
-        echo Extracting sequence files from archive
-        tar xzf $seqpath/sequences.tar.gz -C $seqpath/
-        echo $sequenceDB_status > $seqpath/version
+        [[ verbose -ge 1 ]] && echo Extracting sequence files from archive
+        tar xzf $seqpath/rev/sequences.tar.gz -C $seqpath/rev/
+        echo $sequenceDB_status > $seqpath/rev/version
+    fi
+fi
+if [[ -s $seqpath/unrev/sequences.tar.gz  ]]; then
+    sequenceDB_status=$(md5sum $seqpath/unrev/sequences.tar.gz | awk '{print $1}')
+    sequenceDB_n=$(ls $seqpath/unrev/*.fasta 2> /dev/null | wc -l)
+    [[ -s $seqpath/unrev/version ]] && sequenceDB_version=$(cat $seqpath/unrev/version)
+    if [[ ! "$sequenceDB_status" == "$sequenceDB_version" ]] || [[ $sequenceDB_n -eq 0 ]] ; then
+        [[ verbose -ge 1 ]] && echo Extracting sequence files from archive
+        tar xzf $seqpath/unrev/sequences.tar.gz -C $seqpath/unrev/
+        echo $sequenceDB_status > $seqpath/unrev/version
     fi
 fi
 
@@ -305,7 +315,11 @@ getDBhit(){
     # 3) search in reaction db by alternative EC
     if [[ -n "$EC_test" ]]; then
         altec=$(grep -wF $ec $altecdb | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -v $ec)
-        [[ -z "$altec" ]] && { altec=$(grep -wF $ec $brenda | sed 's/transferred to.*//' | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -v $ec); } # exclude transferred ECs
+        if [ -z "$altec" ]; then  
+            brendaec=$(grep -wF $ec $brenda | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -v $ec)
+            [[ `echo "$brendaec" | wc -l` -eq 1 ]] && altec=brendaec # only take unique hits (too many multiple transferred ECs)
+        fi
+
         if [ "$database" == "vmh" ]; then
             [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo ${altec//./\\.} | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')" # take care of multiple EC numbers
         elif [ "$database" == "seed" ]; then
@@ -400,56 +414,103 @@ do
         fi
         ((count++))
         if [[ -n "$EC_test" ]]; then
-            if [ -f "$seqpath_user/$ec.fasta" ]; then # check if user defined sequence file is present
-                seqpath_tmp=$seqpath_user
-                [[ verbose -ge 1 ]] && { echo -e "\t\t--> Found user defined sequence file <--"; }
-            else
-                seqpath_tmp=$seqpath
+            # check if sequence is not available => try to download
+            if [ ! -f $seqpath/rev/$ec.fasta ]; then
+                [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $ec 
+                $dir/src/uniprot.sh -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
             fi
-            query=$seqpath_tmp/$ec.fasta
-            if [ ! -f "$query" ]; then # check if sequence is not available => try to download
-                [[ verbose -ge 1 ]] && echo -e '\t'Downloading sequence for: $ec 
-                if [ "$use_unrev" = true ];then
-                    $dir/src/uniprot.sh -u -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
-                else
-                    $dir/src/uniprot.sh -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+            if [ ! -f $seqpath/unrev/$ec.fasta ] && [ $seqSrc -gt 1 ]; then 
+                [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unreviewed sequences for: $ec 
+                 $dir/src/uniprot.sh -u -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+            fi
+            if [ -s "$seqpath_user/$ec.fasta" ]; then
+                [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
+                query=$seqpath_user/$ec.fasta
+            elif [ $seqSrc -eq 1 ]; then
+                query=$seqpath/rev/$ec.fasta
+            elif [ $seqSrc -eq 2 ]; then
+                query=$seqpath/rev/$ec.fasta
+                [[ ! -s $query ]] && query=$seqpath/unrev/$ec.fasta
+            elif [ $seqSrc -eq 3 ]; then
+                query=$(mktemp)
+                cat $seqpath/rev/$ec.fasta $seqpath/unrev/$ec.fasta > $query
+            elif [ $seqSrc -eq 4 ]; then
+                query=$seqpath/unrev/$ec.fasta
+            fi
+            
+            # if an alternative ec numbers exists and has additional sequence data merge both files
+            EC_test2=$(if [[ $altec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
+            if [[ -n "$EC_test2" ]]; then
+                [[ verbose -ge 1 ]] && echo -e "\t\t--> Found alternative EC number:" $altec "<--"
+                # check if sequence is not available => try to download
+                #[[ `echo "$altec" | wc -l` -gt 1 ]] && exit 1 # multiple alternative EC
+                query_alt_all=$(mktemp)
+                for aec in $altec; do
+                    if [ ! -f $seqpath/rev/$aec.fasta ]; then
+                        [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $aec 
+                        $dir/src/uniprot.sh -e "$aec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                    fi
+                    if [ ! -f $seqpath/unrev/$aec.fasta ] && [ $seqSrc -gt 1 ]; then 
+                        [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unreviewed sequences for: $aec 
+                        $dir/src/uniprot.sh -u -e "$aec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                    fi
+                    if [ -s "$seqpath_user/$aec.fasta" ]; then
+                        [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
+                        query_alt=$seqpath_user/$aec.fasta
+                    elif [ $seqSrc -eq 1 ]; then
+                        query_alt=$seqpath/rev/$aec.fasta
+                    elif [ $seqSrc -eq 2 ]; then
+                        query_alt=$seqpath/rev/$aec.fasta
+                        [[ ! -s $query_alt ]] && query_alt=$seqpath/unrev/$aec.fasta
+                    elif [ $seqSrc -eq 3 ]; then
+                        query_alt=$(mktemp)
+                        cat $seqpath/rev/$aec.fasta $seqpath/unrev/$aec.fasta > $query_alt
+                    elif [ $seqSrc -eq 4 ]; then
+                        query_alt=$seqpath/unrev/$aec.fasta
+                    fi
+                    cat $query_alt >> $query_alt_all
+                done
+                #merge sequence data
+                if [[ -s $query_alt_all ]]; then
+                    [[ verbose -ge 1 ]] && { echo -e "\t\tMerge sequence data from `basename $query` and" $altec;  }
+                    query_merge=$(mktemp)
+                    cat $query $query_alt_all | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query_merge # no duplicates
+                    query=$query_merge
                 fi
             fi
-            # if an alternative ec numbers exists and has additional sequence data merge both files
-            if [ -f "$seqpath_user/$altec.fasta" ]; then # check if user defined sequence file is present
-                seqpath_tmp2=$seqpath_user
-                [[ verbose -ge 1 ]] && { echo -e "\t\t--> Found user defined sequence file <--"; }
-            else
-                seqpath_tmp2=$seqpath
-            fi
-            if [[ -s $seqpath_tmp2/$altec.fasta ]]; then
-                [[ verbose -ge 1 ]] && { echo -e "\t\tMerge sequence data from `basename $query` and $altec.fasta (alternative ec numbers)";  }
-                cat $seqpath_tmp/$ec.fasta $seqpath_tmp2/$altec.fasta | awk '/^>/{f=!d[$1];d[$1]=1}f' > ${rea}_merged.fasta
-                query=$(echo `pwd`/${rea}_merged.fasta)
-            fi
         fi
+        
         # if no EC number is available or no sequence was found for EC number then use reaction name instead for sequence search
         if [[ -n "$reaName" ]] && ( [[ -z "$EC_test" ]] || [[ ! -s "$query" ]] );then
             reaNameHash=$(echo -n "$reaName" | md5sum | awk '{print $1}')
-            if [ -f "$seqpath_user/$reaNameHash.fasta" ]; then # check if user defined sequence file is present
-                seqpath_tmp=$seqpath_user
-                [[ verbose -ge 1 ]] && { echo -e "\t\t--> Found user defined sequence file <--"; }
-            else
-                seqpath_tmp=$seqpath
+            # check if sequence is not available => try to download
+            if [ ! -f $seqpath/rev/$reaNameHash.fasta ]; then
+                [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $reaName "\n\t\t(hash: $reaNameHash)" 
+                $dir/src/uniprot.sh -r "$reaName" -t "$taxonomy" -i $uniprotIdentity >/dev/null
             fi
-            query="$seqpath_tmp/$reaNameHash.fasta"
-            if [ ! -f "$query" ]; then # check if sequence is not available => try to download
-                [[ verbose -ge 1 ]] && echo -e '\t'Downloading sequence for: $reaName "\n\t\t(hash: $reaNameHash)" 
-                if [ "$use_unrev" = true ];then
-                    $dir/src/uniprot.sh -u -r "$reaName" -t "$taxonomy" -i $uniprotIdentity >/dev/null
-                else
-                    $dir/src/uniprot.sh -r "$reaName" -t "$taxonomy" -i $uniprotIdentity >/dev/null
-                fi
+            if [ ! -f $seqpath/unrev/$reaNameHash.fasta ] && [ $seqSrc -gt 1 ]; then 
+                [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unriewed sequences for: $reaName "\n\t\t(hash: $reaNameHash)" 
+                $dir/src/uniprot.sh -u -r "$reaName" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+            fi
+            if [ -s "$seqpath_user/$reaNameHash.fasta" ]; then
+                [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
+                query=$seqpath_user/$reaNameHash.fasta
+            elif [ $seqSrc -eq 1 ]; then
+                query=$seqpath/rev/$reaNameHash.fasta
+            elif [ $seqSrc -eq 2 ]; then
+                query=$seqpath/rev/$reaNameHash.fasta
+                [[ ! -s $query ]] && query=$seqpath/unrev/$reaNameHash.fasta
+            elif [ $seqSrc -eq 3 ]; then
+                query=$(mktemp)
+                cat $seqpath/rev/$reaNameHash.fasta $seqpath/unrev/$reaNameHash.fasta > $query
+            elif [ $seqSrc -eq 4 ]; then
+                query=$seqpath/unrev/$reaNameHash.fasta
             fi
         fi
+        
         [[ "$skipBlast" = true ]] && { echo -e "\t"$rea $reaName $ec; continue; }
 
-        if [ -s "$query" ]; then
+        if [ -s $query ]; then
             [[ verbose -ge 1 ]] && echo -e "\t\t$query" 
             #out=$rea.blast #$ec.blast
             query_id=$(basename $query)
