@@ -1844,3 +1844,7 @@ rxn39175				[SW] Diffusion of butanol					TRUE
 rxn36810				[SW] EC 1.6.5.3					TRUE
 rxn26477									TRUE
 rxn26102									TRUE
+									
+rxn47796	>		-3:cpd00007:0:0:O2;-1:cpd02083:0:0:CoproporphyrinogenIII;3:cpd00025:0:0:H2O2;1:cpd03418:0:0:Coproporphyrin III	[SW] Added from newer Version from ModelSEED Database (24.6.2019). Direction according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7766		RXN-17517	coproporphyrinogen III oxidase (coproporphyrin-forming) 	
+rxn46036	>		-1:cpd03418:0:0:Coproporphyrin III;-1:cpd10515:0:0:Fe2+;2:cpd00067:0:0:H+;1:cpd32319:0:0:Fe-coproporphyrin III	[SW] Added from newer Version from ModelSEED Database (24.6.2019). Direction according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7766		coproporphyrin ferrochelatase	coproporphyrin ferrochelatase	
+rxn41718	>		-2:cpd00025:0:0:H2O2;-2:cpd00067:0:0:H+;-1:cpd32319:0:0:Fe-coproporphyrin III;4:cpd00001:0:0:H2O;2:cpd00011:0:0:CO2;1:cpd00028:0:0:Heme	[SW] Added from newer Version from ModelSEED Database (24.6.2019). Direction according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7766		RXN-17519	hydrogen peroxide-dependent heme synthase 	
