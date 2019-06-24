@@ -6,6 +6,8 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   
   dt <- dt[pathway != "|PWY-6168|"] # pathway exists only in fungi
   dt <- dt[pathway != "|PWY-1042|"] # pathway exists only in plants
+  dt <- dt[pathway != "|PWY-4983|"] # pathway exists only in mammals
+  dt <- dt[pathway != "|PWY-6845|"] # pathway exists only in mammals
   
   dt <- dt[,.(rxn, name, ec, tc = NA_character_, qseqid, pident, evalue, bitscore, qcovs, stitle, sstart, send, pathway, status, 
               pathway.status, seed = dbhit, complex, exception, complex.status)]
