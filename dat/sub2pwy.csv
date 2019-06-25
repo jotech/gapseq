@@ -63,6 +63,12 @@ C4-dicarboxylate	fumarate	EX_fum(e)	fum[e]	Carboxylic acids		EX_cpd00106_e0	cpd0
 C4-dicarboxylate	succinate	EX_succ(e)	succ[e]	Carboxylic acids		EX_cpd00036_e0	cpd00036[e0]
 C4-dicarboxylate	aspartate	EX_asp_L(e)	asp_L[e]	Amino acids		EX_cpd00041_e0	cpd00041[e0]
 C4-dicarboxylate	malate	EX_mal_L(e)	mal_L[e]	Amino acids		EX_cpd00130_e0	cpd00130[e0]
+PYRIMIDINE NUCLEOSIDE	cmp	EX_cmp(e)	cmp[e]	nucleoside		EX_cpd00046_e0	cpd00046[e0]
+PYRIMIDINE NUCLEOSIDE	ump	EX_ump(e)	ump[e]	nucleoside		EX_cpd00091_e0	cpd00091[e0]
+purine nucleoside	amp	EX_amp(e)	amp[e]	nucleoside		EX_cpd00018_e0	cpd00018[e0]
+purine nucleoside	gmp	EX_gmp(e)	gmp[e]	nucleoside		EX_cpd00126_e0	cpd00126[e0]
+purine nucleoside	imp	EX_imp(e)	imp[e]	nucleoside		EX_cpd00114_e0	cpd00114[e0]
+purine nucleoside	xmp	EX_xmp(e)	xmp[e]	nucleoside		EX_cpd00497_e0	cpd00497[e0]
 Bromo Succinic Acid				Miscellaneous			
 Succinamic Acid				Amines/amides			
 Glucuronamide				Amines/amides			
@@ -161,7 +167,7 @@ Pyridoxal phosphate		EX_pydx5p(e)	pydx5p[e]			EX_cpd00016_e0	cpd00016
 S-Adenosyl-L-methionine		EX_amet(e)	amet[e]			EX_cpd00017_e0	cpd00017
 2-Oxoglutarate	α-ketoglutaric acid	EX_akg(e)	akg[e]			EX_cpd00024_e0	cpd00024
 Hydrogen peroxide		EX_h2o2(e)	h2o2[e]			EX_cpd00025_e0	cpd00025
-Heme		EX_pheme(e)	pheme[e]			EX_cpd00028_e0	cpd00028
+Heme		EX_pheme(e)	pheme[e]			EX_cpd00028_e0	cpd00028[e0]
 GTP		EX_gtp(e)	gtp[e]			EX_cpd00038_e0	cpd00038
 GSH		EX_gthrd(e)	gthrd[e]			EX_cpd00042_e0	cpd00042
 CTP		EX_ctp(e)	ctp[e]			EX_cpd00052_e0	cpd00052
