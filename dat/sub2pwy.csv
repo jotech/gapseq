@@ -360,3 +360,4 @@ Adrenic acid		EX_adrn(e)	adrn[e]			EX_cpd16342_e0	cpd16342
 methymenaquinol 7		EX_mmql7(e)	mmql7[e]			EX_cpd17026_e0	cpd17026
 methylmenaquinone 7		EX_mmqn7(e)	mmqn7[e]			EX_cpd17027_e0	cpd17027
 2-fucosyllactose		EX_2fl(e)	2fl[e]			EX_cpd90001_e0	cpd90001
+Inulin		EX_inulin(e)	inuline[e]			EX_cpd27312_e0	cpd27312
