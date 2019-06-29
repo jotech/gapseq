@@ -125,6 +125,7 @@ while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxqkgz:" opt; do
         ;;
     a)
         blast_back=true
+        includeSeq=true
         ;;
     n)
         noSuperpathways=false
@@ -508,7 +509,7 @@ do
             fi
         fi
         
-        [[ "$skipBlast" = true ]] && { echo -e "\t"$rea $reaName $ec; continue; }
+        [[ "$skipBlast" = true ]] && { continue; }
 
         if [ -s $query ]; then
             [[ verbose -ge 1 ]] && echo -e "\t\t$query" 
@@ -571,8 +572,7 @@ do
                             [[ verbose -ge 1 ]] && [[ $iterations -gt 1 ]] && cat $q | head -1 | sed "s/^/\t\t\t$subunit_id hit: /" 
                             ((subunits_found++))
                             [[ "$subunit_id" == "Subunit undefined" ]] && ((subunits_undefined_found++))
-                            is_bidihit=NA # TODO: bidirectional blast not implemented for subunits!!
-                            [[ $iterations -gt 1 ]] && echo "$bestsubunithit" | awk -v exception="$is_exception" -v subunit="$subunit_id" -v rea="$rea" -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t"subunit"\t"exception"\t""NA"}' >> reactions.tbl
+                            [[ $iterations -gt 1 ]] && echo "$bestsubunithit" | awk -v exception="$is_exception" -v subunit="$subunit_id" -v rea="$rea" -v reaName="$reaName" -v ec=$ec -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"NA"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t"subunit"\t"exception"\t""NA"}' >> reactions.tbl
                             [[ "$exhaustive" = false ]] && break 
                         fi
                         rm query.blast
@@ -605,31 +605,52 @@ do
                     [[ verbose -ge 1 ]] && echo -e '\t\t'Blast hit \(${bhit_count}x\)
                     [[ verbose -ge 1 ]] && [[ $iterations -le 1 ]] && echo "$besthit_all" | awk '{print "\t\t\tbit="$4 " id="$2 " cov="$5 " hit="$1}' # only for non-subunit hits
                     # check if key reactions of pathway
-                    is_bidihit=NA
                     if [[ $keyRea = *"$rea"* ]]; then
                         [[ verbose -ge 1 ]] && echo -e '\t\t--> KEY reaction found <--'
                         keyReaFound="$keyReaFound $rea"
                     fi
-                    #blast hit back to uniprot enzyme database
+                    [[ $iterations -le 1 ]] && echo "$besthit_all" | awk -v exception="$is_exception" -v rea="$rea" -v reaName="$reaName" -v ec=$ec -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"NA"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t""NA""\t"exception"\t""NA"}' >> reactions.tbl # only for non-subunit hits
+                    awk -v rea="$rea" -v status="1" 'BEGIN {OFS=FS="\t"} $1==rea {$19=status} 1' reactions.tbl > reactions.tmp.tbl && mv reactions.tmp.tbl reactions.tbl # change protein complex status for all subunits found
+                    
+#blast hit back to uniprot enzyme database
                     if [ "$blast_back" = true ]; then
-                        echo "$bhit" | sort -rgk 4,4 | head -3 | cut -f9 | sed 's/-/*/g' > "$rea.hit.fasta"
-                        [[ verbose -ge 1 ]] && echo -e "\t\tBlast best hit against uniprot db:"
-                        blastp -db $dir/dat/seq/uniprot_sprot -query "$rea.hit.fasta" -outfmt '6 pident bitscore qcovs sseqid qseqid' > $rea.hit.blast 
+                        [[ verbose -ge 1 ]] && echo -e "\t\tBlast best hits against uniprot db:"
+                        for iter in `seq $iterations`
+                        do
+                            subiter_tmp=$(echo Subunit $iter)
+                            #echo $iterations $rea $subiter_tmp
+                            if [ $iterations -le 1 ]; then
+                                subiter_log=$(cat reactions.tbl | awk -F "\t" -v rea="$rea" '$1==rea { print $0 }')
+                            else
+                                subiter_log=$(cat reactions.tbl | awk -F "\t" -v rea="$rea" -v subiter_tmp="$subiter_tmp" '$1==rea && $18==subiter_tmp { print $0 }')
+                            fi
+                            echo "$subiter_log" | awk -F "\t" '{print ">"$5"\n"$13}' > $rea.hit.$iter.fasta
+                            blastp -db $dir/dat/seq/uniprot_sprot -query "$rea.hit.$iter.fasta" -outfmt '6 pident bitscore qcovs sseqid qseqid' > $rea.hit.blast 2>/dev/null
 
-                        forward_hit=$(echo "$bhit" | sort -rgk 4,4 | cut -f1 | sed 's/UniRef90_//g' | sort | uniq | tr '\n' '|' | sed 's/|$//g')
-
-                        back_hit=$(cat "$rea.hit.blast" | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}' | sort -rgk 2,2 | cut -f4)
-                        
-                        bidihit=$(echo "$back_hit" | grep -Eo "$forward_hit" | sort | uniq | tr '\n' '|' | sed 's/|$//g')
-                        #echo forward: $forward_hit
-                        #echo bidihit: $bidihit
-                        if [ -n "$bidihit" ]; then
-                            [[ verbose -ge 1 ]] && echo -e "\t\t\t--> BIDIRECTIONAL hit found <--"
-                            grep -E $bidihit $dir/dat/seq/uniprot_sprot.fasta | head -3 | sed -e 's/^/\t\t\t/'
-                            is_bidihit=true
-                        else
-                            is_bidihit=false
-                        fi
+                            #forward_hit=$(echo "$bhit" | sort -rgk 4,4 | cut -f1 | sed 's/UniRef90_//g' | sort | uniq | tr '\n' '|' | sed 's/|$//g')
+                            forward_hit=$(echo "$subiter_log" | awk -F "\t" '{print $5}' | sort -rgk 4,4 | cut -f1 | sed 's/UniRef90_//g' | sort | uniq | tr '\n' '|' | sed 's/|$//g')
+                            back_hit=$(cat "$rea.hit.blast" | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}' | sort -rgk 2,2 | cut -f4)
+                            
+                            bidihit=$(echo "$back_hit" | grep -Eo "$forward_hit" | sort | uniq | tr '\n' '|' | sed 's/|$//g')
+                            #echo forward: $forward_hit
+                            #echo bidihit: $bidihit
+                            if [ -n "$bidihit" ]; then
+                                if [ $iterations -le 1 ]; then
+                                    [[ verbose -ge 1 ]] && echo -e "\t\t\t--> BIDIRECTIONAL hit found <--"
+                                else
+                                    [[ verbose -ge 1 ]] && echo -e "\t\t\t--> BIDIRECTIONAL hit found for $subiter_tmp <--"
+                                fi
+                                grep -E $bidihit $dir/dat/seq/uniprot_sprot.fasta | head -3 | sed -e 's/^/\t\t\t    /'
+                                is_bidihit=true
+                            else
+                                is_bidihit=false
+                            fi
+                            if [ $iterations -le 1 ]; then
+                                awk -v rea="$rea" -v is_bidihit="$is_bidihit" 'BEGIN {OFS=FS="\t"} $1==rea {$4=is_bidihit} 1' reactions.tbl > reactions.tmp.tbl && mv reactions.tmp.tbl reactions.tbl # change bidirectional status
+                            else
+                                awk -v rea="$rea" -v is_bidihit="$is_bidihit" -v subiter_tmp="$subiter_tmp" 'BEGIN {OFS=FS="\t"} $1==rea && $18==subiter_tmp {$4=is_bidihit} 1' reactions.tbl > reactions.tmp.tbl && mv reactions.tmp.tbl reactions.tbl # change bidirectional status
+                            fi
+                        done
                     fi
                     
                     if [ -n "$dbhit" ]; then
@@ -639,9 +660,6 @@ do
                     else
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO candidate reaction found for import
                     fi
-                    [[ $iterations -le 1 ]] && echo "$besthit_all" | awk -v exception="$is_exception" -v rea="$rea" -v reaName="$reaName" -v ec=$ec -v is_bidihit=$is_bidihit -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"is_bidihit"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t""NA""\t"exception"\t""NA"}' >> reactions.tbl # only for non-subunit hits
-                    
-                    awk -v rea="$rea" -v status="1" 'BEGIN {OFS=FS="\t"} $1==rea {$19=status} 1' reactions.tbl > reactions.tmp.tbl && mv reactions.tmp.tbl reactions.tbl # change protein complex status for all subunits found
 
                     ((countex++))
                     countexList="$countexList$rea "
