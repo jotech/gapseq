@@ -227,7 +227,7 @@ TTP		EX_dttp(e)	dttp[e]			EX_cpd00357_e0	cpd00357
 Retinol		EX_retinol(e)	retinol[e]			EX_cpd00365_e0	cpd00365
 Cytidine		EX_cytd(e)	cytd[e]			EX_cpd00367_e0	cpd00367
 Propanal		EX_ppal(e)	ppal[e]			EX_cpd00371_e0	cpd00371
-Folate		EX_fol(e)	fol[e]			EX_cpd00393_e0	cpd00393
+Folate	Folate	EX_fol(e)	fol[e]	Miscellaneous		EX_cpd00393_e0	cpd00393
 L-Cysteate		EX_Lcyst(e)	Lcyst[e]			EX_cpd00395_e0	cpd00395
 Deoxyuridine		EX_duri(e)	duri[e]			EX_cpd00412_e0	cpd00412
 Nitric oxide		EX_no(e)	no[e]			EX_cpd00418_e0	cpd00418
