@@ -13,6 +13,7 @@ database="seed"
 pwyDatabase="metacyc,custom"
 verbose=1
 taxonomy="Bacteria"
+taxRange="" # taxonomic range for pawthways
 bitcutoff=50 # cutoff blast: min bit score
 identcutoff=0   # cutoff blast: min identity
 identcutoff_exception=70  # min identity for enzymes marked as false friends (hight seq similarity but different function)
@@ -56,6 +57,7 @@ usage()
     echo "  -k Do not use parallel"
     echo "  -g Exhaustive search, continue blast even when cutoff is reached (default $exhaustive)"
     echo "  -z Quality of sequences for homology search: 1:only reviewed (swissprot), 2:unreviewed only if reviewed not available, 3:reviewed+unreviewed, 4:only unreviewed (default $seqSrc)"
+    echo "  -m Limit pathways to taxonomic range (default $taxRange)"
 exit 1
 }
 
@@ -84,7 +86,7 @@ altecdb=$dir/dat/altec.csv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxqkgz:" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxqkgz:m:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -150,6 +152,9 @@ while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxqkgz:" opt; do
         ;;
     z)
         seqSrc=$OPTARG
+        ;;
+    m)
+        taxRange=$OPTARG
         ;;
     esac
 done
@@ -358,6 +363,15 @@ makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
 cand=""     #list of candidate reactions to be added
 bestPwy=""  # list of found pathways
 echo -e "ID\tName\tPrediction\tCompleteness\tVagueReactions\tKeyReactions\tKeyReactionsFound\tReactionsFound" > output.tbl # pahtway statistics file
+
+#taxRange=Proteobacteria
+if [ -n "$taxRange" ]; then
+    validTax=$(grep -i $taxRange $dir/dat/taxonomy.tbl | cut -f1 | tr '\n' '|' | sed 's/.$//')
+    pwyDB_new=$(echo "$pwyDB" | grep -wE `echo TAX-$validTax`)
+    pwyDB_old=$(echo "$pwyDB" | awk -F '\t' 'BEGIN {OFS=FS="\t"} $5=="" {print $0}')
+    pwyDB=$(echo "$pwyDB_new""$pwyDB_old")
+    [[ -z "$pwyDB" ]] && { echo "No pathways found"; exit 0; }
+fi
 
 pwyNr=$(echo "$pwyDB" | wc -l)
 [[ verbose -ge 1 ]] && echo Checking for pathways and reactions in: $1 $pwyKey
