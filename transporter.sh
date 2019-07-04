@@ -10,6 +10,7 @@ covcutoff=75 # cutoff blast: min coverage
 use_alternatives=true
 includeSeq=false
 use_parallel=true
+only_met=""
 
 usage()
 {
@@ -20,11 +21,12 @@ usage()
     echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
     echo "  -q Include sequences of hits in log files; default $includeSeq"
     echo "  -k do not use parallel"
+    echo "  -m only check for this keyword/metabolite (default $only_met)"
 exit 1
 }
 
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
-while getopts "h?i:b:c:q" opt; do
+while getopts "h?i:b:c:qkm:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -44,6 +46,9 @@ while getopts "h?i:b:c:q" opt; do
         ;;
     k)
         use_parallel=false
+        ;;
+    m)
+        only_met=$OPTARG
         ;;
     esac
 done
@@ -86,11 +91,16 @@ cat $tcdb $otherDB > all.fasta # join transporter databases
 sed -i "s/\(>.*\)/\L\1/" all.fasta # header to lower case
 grep -e ">" all.fasta > tcdb_header
 sed '1d' $subDB | awk -F '\t' '{if ($8 != "NA") print $0}' > redSubDB
-key=$(cat redSubDB | awk -F '\t' '{if ($2 != "") print $1"|"$2; else print $1}' | paste -s -d '|') # ignore substances without linked exchange reaction
+[[ -n "$only_met" ]] && { cat redSubDB | grep -i $only_met > redSubDB.tmp; mv redSubDB.tmp redSubDB; }
+key=$(cat redSubDB | awk -F '\t' '{if ($2 != "") print $1"\n"$2; else print $1}' | sort | uniq | paste -s -d '|') # ignore substances without linked exchange reaction
+[[ -n "$only_met" ]] && { echo Search keys: "$key"; } 
 grep -wEi "$key" tcdb_header | awk '{print substr($1,2)}' > hits
 #grep -wEio "$key" tcdb_header | sort | uniq -c # status print
+[[ -n "$only_met" ]] && { echo -e "\n"Found transporter sequences:; cat hits; } 
 subhits=$(grep -wEio "$key" tcdb_header | sort | uniq | paste -s -d '|')
-allDBsubs=$(cat redSubDB | grep -wEi "$subhits" | awk -F '\t' '{if ($2 != "") print $2; else print $1}' | sort | paste -s -d ';') # list of substances that are covered by DB
+allDBsubs=$(cat redSubDB | grep -wEi "$subhits" | awk -F '\t' '{if ($2 != "") print $2; else print $1}' | sort | uniq | paste -s -d ';') # list of substances that are covered by DB
+[[ -n "$only_met" ]] && { echo -e "\n"Covered metabolites: $allDBsubs; } 
+touch transporter.tbl
 #apt install exonerate
 fastaindex all.fasta tcdb.idx 
 fastafetch -f all.fasta -i tcdb.idx -Fq <(sort -u hits ) > tcdbsmall.fasta
@@ -112,14 +122,17 @@ TC[2]="2.Electrochemical potential-driven transporters"
 TC[3]="3.Primary active transporters"
 TC[4]="4.Group translocators"
 
+[[ -n "$only_met" ]] && { echo -e "\n"Blast hits:; } 
 for id in $IDtcdb
 do
     descr=$(grep $id tcdb_header | grep -P "(?<= ).*" -o) # extract description
+    [[ -n "$only_met" ]] && { echo -e "\t\n"$descr; } 
     tc=$(grep $id tcdb_header | grep -Pw "([1-4]\\.[A-z]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | uniq | tr '\n' ',' | sed 's/,$//g') # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
     i=$(echo $tc | head -c1) # get first character of TC number => transporter type
     type=${TC[$i]}
     [ -z "$tc" ] && continue
-    subl=$(echo "$descr" | grep -wEio "$key" | grep -if - redSubDB | awk -F '\t' '{ if ($2 != "") print $2; else print $1}' | tr ' ' '_') # could be more then one hit (e.g. transporter with two substances)
+    subl=$(echo "$descr" | grep -wEio "$key" | grep -iwf - redSubDB | awk -F '\t' '{ if ($2 != "") print $2; else print $1}' | tr ' ' '_' | sort | uniq) # could be more then one hit (e.g. transporter with two substances)
+    [[ -n "$only_met" ]] && { echo -e "\t"$id $tc $subl; } 
     #echo $id $descr $tc $i $type $subl
     for subst in $subl
     do
@@ -134,6 +147,7 @@ do
             cat $seedDB | awk -F '\t' -v type="$type" -v exmet="$exmet" '{if($3==type && $4==exmet) print $0}' > tr_cand
             if [ -s tr_cand ]; then
                 rea=$(cat tr_cand | awk -F '\t' '{print $1}')
+                [[ -n "$only_met" ]] && { echo -e "\t"Found reaction: $rea; } 
                 #echo -e "\t"Found: $rea
                 cand="$cand $rea $exid"
                 sublist2="$sublist2;$subst"
@@ -172,7 +186,7 @@ done
 
 echo -e "\nNo transporter found for compounds (existing transporter/exchanges should be removed?):"
 echo $allDBsubs | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort > hit3
-cat hit1 | tr '\n' '|' | rev | cut -c 2- | rev | grep -f - -iE $subDB | cut -d '	' -f1,2 | tr '[:upper:]' '[:lower:]' | tr ',' '\n' | sort > hit4 # expand hits with substance alternative names to avoid false positive reporting
+cat hit1 | tr '\n' '|' | rev | cut -c 2- | rev | grep -f - -iE $subDB | cut -d '	' -f1,2 | tr '[:upper:]' '[:lower:]' | tr '\t' '\n' | tr ',' '\n' | sort | uniq > hit4 # expand hits with substance alternative names to avoid false positive reporting
 comm -13 hit4 hit3
 
 cand="$(echo $cand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')"
