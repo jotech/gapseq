@@ -626,8 +626,10 @@ rxn20818	>			[SW] Reaction might be important for quinate metabolism.	https://me
 rxn20643	>			[SW] Important reaction for de novo thiamine biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=PYRIMSYN1-RXN				
 rxn27289	>			[SW] Reaction important for Thiamin biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=THIAZOLSYN2-RXN&detail-level=3				
 rxn25839	>			[SW] Reaction important for Thiamin biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6892&detail-level=3				
-rxn25838	>			[SW] Reaction important for Thiamin biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6892&detail-level=3				
+rxn25838	>		-1:cpd22312:0:0:"Adenylated-ThiS-Proteins";-1:cpd28256:0:0:"ThiI-S-sulfanylcysteine";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00018:0:0:"AMP";1:cpd28255:0:0:"ThiI-L-cysteine";1:cpd28259:0:0:"Thiocarboxyadenylated-ThiS-Proteins";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Reaction important for Thiamin biosynthesis. Plus sorrected accoding to metacyc and charge balanced.	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6892&detail-level=3				
+rxn25837	>			[SW] Reaction important for Thiamin biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6892&detail-level=3				
 rxn05927	>		-2:cpd11620:0:0:"Reducedferredoxin";-2:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd00074:0:0:"S";-1:cpd01311:0:0:"Dethiobiotin";2:cpd00060:0:0:"L-Methionine";1:cpd00104:0:0:"BIOT";2:cpd03091:0:0:"5'-Deoxyadenosine";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://www.rhea-db.org/reaction?id=22060 # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.8.1.6-RXN				
+rxn09310		TRUE		[SW] Incorrectly summarized reaction according to metacyc.	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6891				
 rxn00796		TRUE		[SW] Stoichiometry incorrect. Correct corresponding reaction: rxn05927	https://www.rhea-db.org/reaction?id=22060 # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.8.1.6-RXN				
 rxn08180		TRUE		[SW] Stoichiometry incorrect. Correct corresponding reaction: rxn05927	https://www.rhea-db.org/reaction?id=22060 # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.8.1.6-RXN				
 rxn02931	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=24-DIAMINOPENTANOATE-DEHYDROGENASE-RXN				
@@ -1846,6 +1848,8 @@ rxn39175				[SW] Diffusion of butanol					TRUE
 rxn36810				[SW] EC 1.6.5.3					TRUE
 rxn26477									TRUE
 rxn26102									TRUE
+rxn16823									TRUE
+rxn23042									TRUE
 									
 rxn47796	>		-3:cpd00007:0:0:O2;-1:cpd02083:0:0:CoproporphyrinogenIII;3:cpd00025:0:0:H2O2;1:cpd03418:0:0:Coproporphyrin III	[SW] Added from newer Version from ModelSEED Database (24.6.2019). Direction according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7766		RXN-17517	coproporphyrinogen III oxidase (coproporphyrin-forming) 	
 rxn46036	>		-1:cpd03418:0:0:Coproporphyrin III;-1:cpd10515:0:0:Fe2+;2:cpd00067:0:0:H+;1:cpd32319:0:0:Fe-coproporphyrin III	[SW] Added from newer Version from ModelSEED Database (24.6.2019). Direction according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7766		coproporphyrin ferrochelatase	coproporphyrin ferrochelatase	
