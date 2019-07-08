@@ -202,6 +202,17 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   if(gram == "pos")
     dt.bm <- fread(paste0(script.dir, "/../dat/seed_biomass.DT_gramPos.tsv"))
   
+  # remove ubiquinione from Biomass if ne novo biosynthesis pathway is absent
+  if(is.na(dt[grepl("PWY-6708",pathway),pathway.status][1])) {
+    # no ubi-8
+    ubi.stoich <- dt.bm[id == "cpd15560[c0]", stoich]
+      
+    dt.bm <- dt.bm[id != "cpd15560[c0]"]
+    
+    # add former ubi stoichiometry (ammount) to menaquninone stoich.
+    dt.bm[id == "cpd15500[c0]", stoich := stoich + ubi.stoich]
+  }
+
   mod <- sybil::addReact(mod,id = "bio1", met = dt.bm$id, Scoef = dt.bm$stoich, reversible = F, lb = 0, ub = 1000, obj = 1, 
                   reactName = paste0("Biomass reaction ",ifelse(gram=="neg","(gram -)","(gram +)")), metName = dt.bm$name, metComp = dt.bm$comp)
   mod@react_attr[which(mod@react_id == "bio1"),c("gs.origin","seed")] <- data.frame(gs.origin = 6, seed = "bio1", stringsAsFactors = F)
