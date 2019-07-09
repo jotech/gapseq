@@ -23,7 +23,7 @@ Maltose	maltose	EX_malt(e)	malt[e]	Carbohydrates	MALTOSECAT-PWY	EX_cpd00179_e0	c
 D-Mannitol	mannitol	EX_mnl(e)	mnl[e]	Carbohydrates	PWY-3861;MANNIDEG-PWY	EX_cpd00314_e0	cpd00314[e0]
 D-Mannose	mannose	EX_man(e)	man[e]	Carbohydrates	MANNCAT-PWY	EX_cpd00138_e0	cpd00138[e0]
 D-Melibiose	melibiose	EX_melib(e)	melib[e]	Carbohydrates	PWY0-1301	EX_cpd03198_e0	cpd03198[e0]
-D-Melibiose				Carbohydrates			
+beta-Methyl-D-Glucoside				Carbohydrates			
 D-Psicose				Carbohydrates			
 D-Raffinose	raffinose	EX_raffin(e)	raffin[e]	Carbohydrates		EX_cpd00382_e0	cpd00382[e0]
 L-Rhamnose	rhamnose	EX_rmn(e)	rmn[e]	Carbohydrates	PWY-6714;RHAMCAT-PWY;PWY-6713	EX_cpd00396_e0	cpd00396[e0]
