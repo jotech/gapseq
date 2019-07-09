@@ -84,6 +84,43 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, gra
   dt_seed_single_and_there <- dt_seed_single_and_there[order(seed,-bitscore)]
   dt_seed_single_and_there <- dt_seed_single_and_there[!duplicated(seed)]
   
+  # check if contig names match conventions and are unique. if not, assign new ones.
+  #dt <- fread("Clostridium_difficile_NAP07-all-Reactions.tbl", fill = T)
+  contig.names.full  <- unique(dt$stitle)
+  contig.names.full  <- contig.names.full[contig.names.full != ""]
+  n.contigs          <- length(contig.names.full)
+  contig.names.short <- gsub(" .*$","", contig.names.full)
+  if(length(unique(contig.names.short)) != n.contigs) {
+    warning("Sequence identifiers do not match NCBI standard. Trying to find unique parts in sequence id strings...")
+    # try to find a unique parts in contig identifiers
+    contig.names.full.tmp <- gsub(":","",contig.names.full, fixed = T)
+    id.splits <- str_split(contig.names.full.tmp, pattern = " ")
+    nr.splits <- min(unlist(lapply(id.splits, length))) # how many times can we split the identifier string at space (minimum)
+    new.id <- c()
+    if(nr.splits > 1) {
+      for(i in 2:nr.splits) {
+        tmp.id <- unlist(lapply(id.splits, function(x) x[i]))
+        if(length(unique(tmp.id)) == n.contigs){
+          new.id <- tmp.id
+          break;
+        }
+      }
+    }
+    if(length(new.id) == 0 ) {
+      warning("No unique parts in sequence id strings found. Assiging new contig names: \"contig_[i]\"")
+      new.id <- paste0("contig_",1:n.contigs)
+    }
+    dt.new.ids <- data.table(old.contig = contig.names.full, new.contig = new.id)
+    for(i in 1:nrow(dt)) {
+      cur.stitles <- dt[i,stitle]
+      if(cur.stitles != "" & !is.na(cur.stitles)) {
+        new.stitle <- dt.new.ids[old.contig == cur.stitles, new.contig]
+        dt[i, stitle := new.stitle]
+      }
+    }
+  }
+  
+  
   # create gene list and attribute table
   cat("Creating Gene-Reaction list... ")
   dt_genes <- copy(dt[!is.na(bitscore)])
