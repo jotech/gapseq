@@ -1840,6 +1840,7 @@ rxn90017	>		-1:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd00069:0:0:"L-Tyrosin
 rxn90018	=		-2:cpd11620:0:0:"Reducedferredoxin";-2:cpd00006:0:0:"NADP";-1:cpd00004:0:0:"NADH";-1:cpd00067:0:0:"H+";2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd00005:0:0:"NADPH";1:cpd00003:0:0:"NAD"	[SW] New Reaction. Electron-Bifurcating Enzyme Complex (see reference)	Shuning Wang, Haiyan Huang, Johanna Moll, Rudolf K. Thauer (2010) Journal of Bacteriology		NfnAB	Coupled NADP reduction via ferredoxin and NADH	
 									
 rxn90019	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd00393:1:0:"Folate";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd00067:0:0:"H+";1:cpd00393:0:0:"Folate"	[SW] New reaction for ABC-Transporter for folate (3.a.1.28.2)			Fol-ABC-tr	folate ABC transporter	
+rxn90020	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd00557:1:0:"Siroheme";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd00557:0:0:"Siroheme";1:cpd00067:0:0:"H+"	[SW] New reaction for ABC-Transporter for siroheme			Siroheme-ABC-tr	Siroheme transport via ABC system	
 									
 rxn35560				[SW] Important for Lacto-N-tetraose degradatiion					TRUE
 rxn22385				[SW] Important for Rhmanose degradatiion without phosphorylated intermediates.					TRUE

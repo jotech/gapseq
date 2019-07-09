@@ -4835,3 +4835,4 @@ rxn38762	TRANS-RXNBWI-115630.ce.maizeexp.ADENOSINE_DIPHOSPHATE_RIBOSE_ADENOSINE_
 rxn38766	TRANS-RXNBWI-115630.ce.maizeexp.CMP-KDO_CMP-KDO	Diffusion	cpd02546[e0]	CMP-KDO
 rxn38789	KAPA transport (Peroxisomal membrane)	Diffusion	cpd00800[e0]	8-Amino-7-oxononanoate
 rxn90019	folate ABC transporter	3.Primary active transporters	cpd00393[e0]	Folate
+rxn90020	Siroheme-transporting ATPase	3.Primary active transporters	cpd00557[e0]	Siroheme
