@@ -89,6 +89,9 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   #     dt <- dt[-rm.ids]
   # }
   # 
+  
+  # This function checks if an gene was assigned to two different ec numbers, which however catalyse different reactions that are
+  # usually catalysed by individual enzymes. Thus, the EC asigment with the lower bitscore is dismissed.
   resolve_common_EC_conflicts <- function(ec1, ec2, dt) {
     if(ec1 %in% dt$ec & ec2 %in% dt$ec) {
       rm.ids <- c()
@@ -121,6 +124,8 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt <- resolve_common_EC_conflicts("2.3.1.29","2.3.1.37", dt)
   dt <- resolve_common_EC_conflicts("2.3.1.29","2.3.1.50", dt)
   dt <- resolve_common_EC_conflicts("2.3.1.37","2.3.1.50", dt)
+  dt <- resolve_common_EC_conflicts("1.17.3.2","1.17.1.4", dt) # xanthine oxidase vs xanthine dehydrogenase
+  dt <- resolve_common_EC_conflicts("1.3.3.6","1.3.1.8", dt) # acyl-CoA oxidase vs acyl-CoA dehydrogenase
   
   # Due to BRENDA's alternative ECs theres a mismatch of metacyc reactions to seed reaction for EC 2.6.1.36 and EC 2.6.1.13 ... remove the mismatches.
   dt <- dt[!(rxn == "L-LYSINE-AMINOTRANSFERASE-RXN" & grepl("rxn00467|rxn20496|rxn33315", seed))]

@@ -782,6 +782,11 @@ rxn06228	>		-3:cpd00007:0:0:"O2";-1:cpd00160:0:0:"Cholesterol";-6:cpd11723:0:0:"
 rxn11562			-1:cpd00007:0:0:"O2";-2:cpd00067:0:0:"H+";-1:cpd00160:0:0:"Cholesterol";-2:cpd11723:0:0:"Reduced adrenodoxin";1:cpd00001:0:0:"H2O";1:cpd03276:0:0:"22beta-Hydroxycholesterol";2:cpd11724:0:0:"Oxidized adrenodoxin"	[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-7875				
 rxn00019	>			[SW] Reaction direction adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2-NITROPROPANE-DIOXYGENASE-RXN				
 rxn00306	>			[SW] Reaction direction adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-8988				
+rxn02056	<			[SW] Reaction direction adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=SIROHEME-FERROCHELAT-RXN				
+rxn02774	>			[SW] Reaction direction adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=DIMETHUROPORDEHYDROG-RXN				
+rxn01636	>			[SW] Reaction direction adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUTAMATE-N-ACETYLTRANSFERASE-RXN				
+rxn00278	>			[SW] Reaction direction adjusted according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9771				
+rxn00512	>			[SW] Reaction direction adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLYCOLATEDEHYDRO-RXN				
 									
 rxn05363			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11499:0:0:"4-methyl-hexanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11500:0:0:"6-methyl-3-oxo-octanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
 rxn05367			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11503:0:0:"6-methyl-octanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11504:0:0:"8-methyl-3-oxo-decanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
@@ -956,6 +961,9 @@ rxn06305		TRUE		[SW] generic reaction.
 rxn11641		TRUE		[SW] generic reaction.					
 rxn07235		TRUE		[SW] generic reaction.					
 rxn07457		TRUE		[SW] generic reaction.					
+rxn07056		TRUE		[SW] generic reaction.					
+rxn05778		TRUE		[SW] generic reaction.					
+rxn05779		TRUE		[SW] generic reaction.					
 									
 rxn06336		TRUE		[SW] Non-existing reaction					
 rxn05809		TRUE		[SW] Non-existing reaction					
@@ -1221,7 +1229,8 @@ rxn12450		TRUE		Transport reactions with Protons in periplasmic space are curren
 rxn12455		TRUE		Transport reactions with Protons in periplasmic space are currently omitted.					
 rxn12458		TRUE		Transport reactions with Protons in periplasmic space are currently omitted.					
 									
-rxn05667		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion			
+rxn09653	>			[SW] Only for uptake of urea into root cells at low urea concentrations.	PMID: 12615950				
+									
 rxn07924		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion			
 rxn07925		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion			
 rxn07926		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion			
@@ -1841,6 +1850,8 @@ rxn90018	=		-2:cpd11620:0:0:"Reducedferredoxin";-2:cpd00006:0:0:"NADP";-1:cpd000
 									
 rxn90019	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd00393:1:0:"Folate";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd00067:0:0:"H+";1:cpd00393:0:0:"Folate"	[SW] New reaction for ABC-Transporter for folate (3.a.1.28.2)			Fol-ABC-tr	folate ABC transporter	
 rxn90020	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd00557:1:0:"Siroheme";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd00557:0:0:"Siroheme";1:cpd00067:0:0:"H+"	[SW] New reaction for ABC-Transporter for siroheme			Siroheme-ABC-tr	Siroheme transport via ABC system	
+									
+rxn90021	>		-0.5:cpd00007:0:0:"O2";-2:cpd00067:0:0:"H+";-1:cpd15353:0:0:"2-Demethylmenaquinol 8";1:cpd00001:0:0:"H2O";2:cpd00067:1:0:"H+";1:cpd15352:0:0:"2-Demethylmenaquinone 8"	[SW] New reaction for 7.1.1.5 with 2-Demethylmenaquinone 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-12164		CYTBD2pp-demetylmena	cytochrome oxidase bd (2-Demethylmenaquinol-8: 2 protons) (periplasm)	
 									
 rxn35560				[SW] Important for Lacto-N-tetraose degradatiion					TRUE
 rxn22385				[SW] Important for Rhmanose degradatiion without phosphorylated intermediates.					TRUE
