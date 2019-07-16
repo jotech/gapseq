@@ -5021,7 +5021,9 @@ rxn06634|rxn20789	rxn06634	6.5.1.4	Enzyme Class
 rxn02733|rxn34013	rxn02733	6.6.1.1	Enzyme Class
 rxn03542	rxn03542	6.6.1.2	Enzyme Class
 rxn09295|rxn10125|rxn27378		7.1.1.1	Enzyme Class
+rxn13726		7.1.1.2	Enzyme Class
 rxn08287|rxn90021		7.1.1.5	Enzyme Class
+rxn13689		7.1.1.8	Enzyme Class
 rxn90019	rxn90019	7.1.1.rnf	Enzyme Class
 rxn11358	rxn11358	Ppm1	Enzyme Class
 rxn05616		TC-1.A.35	Enzyme Class
