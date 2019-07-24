@@ -72,7 +72,7 @@ add_met_sink <- function(mod, cpd, obj = 0) {
 }
 
 add_missing_diffusion <- function(mod, ub = 1000){
-  if( grepl("/src$", script.dir) ) {
+  if( grepl("/src$|^src$", script.dir) ) {
     rxndb.path <- paste0(script.dir, "/../dat/diffusion_mets.tsv")
   }else{
     rxndb.path <- paste0(script.dir, "/dat/diffusion_mets.tsv")
@@ -86,7 +86,7 @@ add_missing_diffusion <- function(mod, ub = 1000){
 }
 
 add_reaction_from_db <- function(mod, react, gs.origin = NA) {
-  if( grepl("/src$", script.dir) ) {
+  if( grepl("/src$|^src$", script.dir) ) {
     rxndb.path <- paste0(script.dir, "/../dat/seed_reactions_corrected.tsv")
   }else{
     rxndb.path <- paste0(script.dir, "/dat/seed_reactions_corrected.tsv")

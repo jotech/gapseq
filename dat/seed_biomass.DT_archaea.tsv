@@ -1,0 +1,48 @@
+id	name	stoich	comp
+cpd00022[c0]	Acetyl-CoA	-5e-05	1
+cpd00008[c0]	ADP	29.998	1
+cpd00035[c0]	L-Alanine	-0.5621	1
+cpd00018[c0]	AMP	-0.001	1
+cpd00051[c0]	L-Arginine	-0.3237	1
+cpd00132[c0]	L-Asparagine	-0.2638	1
+cpd00041[c0]	L-Aspartate	-0.2638	1
+cpd00002[c0]	ATP	-30.1846	1
+cpd00010[c0]	Coenzyme A	-6e-06	1
+cpd02246[c0]	coenzyme m	-0.02056	1
+cpd00052[c0]	CTP	-0.1379	1
+cpd00084[c0]	L-Cysteine	-0.1002	1
+cpd00115[c0]	dATP	-0.03312	1
+cpd00356[c0]	dCTP	-0.02153	1
+cpd00241[c0]	dGTP	-0.02153	1
+cpd00357[c0]	dTTP	-0.03312	1
+cpd00053[c0]	L-Glutamine	-0.288	1
+cpd00023[c0]	L-Glutamate	-0.288	1
+cpd00033[c0]	Glycine	-0.6704	1
+cpd00155[c0]	glycogen	-0.01543	1
+cpd00038[c0]	GTP	-0.2222	1
+cpd00001[c0]	H2O	-30	1
+cpd00067[c0]	H+	29.99755	1
+cpd00119[c0]	L-Histidine	-0.1037	1
+cpd03802[c0]	sym-Homospermidine	-0.0047	1
+cpd00322[c0]	L-Isoleucine	-0.3179	1
+cpd00107[c0]	L-Leucine	-0.493	1
+cpd00039[c0]	L-Lysine	-0.3755	1
+cpd00060[c0]	L-Methionine	-0.1682	1
+cpd00003[c0]	Nicotinamide adenine dinucleotide	-0.00215	1
+cpd00004[c0]	Nicotinamide adenine dinucleotide - reduced	-5e-05	1
+cpd00006[c0]	Nicotinamide adenine dinucleotide phosphate	-0.00013	1
+cpd00005[c0]	Nicotinamide adenine dinucleotide phosphate - reduced	-4e-04	1
+cpd00066[c0]	L-Phenylalanine	-0.2027	1
+cpd00009[c0]	Phosphate	30	1
+cpd00012[c0]	Diphosphate	0.799	1
+cpd00129[c0]	L-Proline	-0.2419	1
+cpd00118[c0]	Putrescine	-0.0262	1
+cpd00054[c0]	L-Serine	-0.2361	1
+cpd00078[c0]	Succinyl-CoA	-3e-06	1
+cpd00087[c0]	5,6,7,8-Tetrahydrofolate	-6.1e-05	1
+cpd00161[c0]	L-Threonine	-0.2776	1
+cpd00065[c0]	L-Tryptophan	-0.0622	1
+cpd00069[c0]	L-Tyrosine	-0.1509	1
+cpd00062[c0]	UTP	-0.1489	1
+cpd00156[c0]	L-Valine	-0.4631	1
+cpd11416[c0]	Biomass-c0	1	1
