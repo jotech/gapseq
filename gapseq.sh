@@ -289,6 +289,15 @@ else
     [[ "$pwyDatabase" =~ "kegg" ]]    && cat $keggPwy >> allPwy
     [[ "$pwyDatabase" =~ "seed" ]]    && cat $seedPwy >> allPwy
     [[ "$pwyDatabase" =~ "custom" ]]  && cat $customPwy >> allPwy
+    dupli=$(cat allPwy | cut -f1 | sort | uniq -d | tr -d 'id' | tr -d '|' | sed '/^$/d')
+    if [ -n "$dupli" ]; then
+        echo Duplicated pathway IDs found: $dupli will only use $customPwy
+        dupli_search=$(echo "$dupli" | tr '\n' '|' | rev | cut -c2- | rev)
+        cat allPwy | grep -wEv "$dupli_search" > allPwy.tmp
+        cat $customPwy | grep -wE "$dupli_search" >> allPwy.tmp
+        mv allPwy.tmp allPwy
+        #cat allPwy | grep -wE "$dupli_search"
+    fi
     pwyDB=$(cat allPwy | grep -wEi $pwyKey)
     [[ "$noSuperpathways" = true ]] && pwyDB=$(echo "$pwyDB" | grep -v 'Super-Pathways')
     [ -z "$ecnumber" ] && [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
@@ -397,10 +406,11 @@ do
     keyRea=$(echo "$line" | awk -F "\t" '{print $8}' | tr ',' ' ')
     spontRea=$(echo "$line" | awk -F "\t" '{print $14}' | tr ',' ' ')
     pwyHierarchy=$(echo "$line" | awk -F "\t" '{print $4}' | sed 's/|\|THINGS\|Generalized-Reactions\|Pathways\|FRAMES//g' | sed 's/,,//g')
-    [[ verbose -ge 1 ]] && echo -e '\n'$i/$pwyNr: Checking for pathway $pwy $name
+    reaNr=$(echo $ecs | tr "," "\n" | wc -l)
+    [[ verbose -ge 1 ]] && echo -e '\n'$i/$pwyNr: Checking for pathway $pwy $name with $reaNr reactions
     [[ verbose -ge 1 ]] && echo "($pwyHierarchy)"
     [[ "$onlyList" = true ]] && { continue; }
-    for j in `seq 1 $(echo $ecs | tr "," "\n" | wc -l)`
+    for j in `seq 1 $reaNr`
     #for ec in $(echo $ecs | tr "," "\n")
     do 
         dbhit=""
