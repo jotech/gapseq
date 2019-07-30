@@ -289,10 +289,11 @@ else
     [[ "$pwyDatabase" =~ "kegg" ]]    && cat $keggPwy >> allPwy
     [[ "$pwyDatabase" =~ "seed" ]]    && cat $seedPwy >> allPwy
     [[ "$pwyDatabase" =~ "custom" ]]  && cat $customPwy >> allPwy
-    dupli=$(cat allPwy | cut -f1 | sort | uniq -d | tr -d 'id' | tr -d '|' | sed '/^$/d')
+    dupli=$(cat allPwy | cut -f1 | sort | uniq -d | tr -d 'id' | sed '/^$/d')
     if [ -n "$dupli" ]; then
         echo Duplicated pathway IDs found: $dupli will only use $customPwy
-        dupli_search=$(echo "$dupli" | tr '\n' '|' | rev | cut -c2- | rev)
+        dupli_search=$(echo "$dupli" | sed 's/|/\\|/g' |tr '\n' '|' | rev | cut -c2- | rev)
+        echo "$dupli_search"
         cat allPwy | grep -wEv "$dupli_search" > allPwy.tmp
         cat $customPwy | grep -wE "$dupli_search" >> allPwy.tmp
         mv allPwy.tmp allPwy
