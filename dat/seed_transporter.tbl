@@ -584,6 +584,7 @@ rxn08600	GDP transport via diffusion (extracellular to periplasm)	Diffusion	cpd0
 rxn08610	D-gluconate transport via diffusion (extracellular to periplasm)	Diffusion	cpd00222[e0]	GLCN
 rxn08614	D-glucarate transport via diffusion (extracellular to periplasm)	Diffusion	cpd00609[e0]	D-Glucarate
 rxn08617	glucose transport via diffusion (extracellular to periplasm)	Diffusion	cpd00027[e0]	D-Glucose
+rxn08617	glucose transport via diffusion (extracellular to periplasm)	2.Electrochemical potential-driven transporters	cpd00027[e0]	D-Glucose
 rxn08621	D-glucuronate 1-phosphate transport via diffusion (extracellular to periplasm)	Diffusion	cpd03191[e0]	D-Glucuronate 1-phosphate
 rxn08623	D-glucuronat transport via diffusion (extracellular to periplasm)	Diffusion	cpd00164[e0]	Glucuronate
 rxn08625	L-glutamine transport via diffusion (extracellular to periplasm)	Diffusion	cpd00053[e0]	L-Glutamine

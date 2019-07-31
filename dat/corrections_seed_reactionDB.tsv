@@ -787,6 +787,11 @@ rxn02774	>			[SW] Reaction direction adjusted according to MetaCyc.	https://meta
 rxn01636	>			[SW] Reaction direction adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUTAMATE-N-ACETYLTRANSFERASE-RXN				
 rxn00278	>			[SW] Reaction direction adjusted according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9771				
 rxn00512	>			[SW] Reaction direction adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLYCOLATEDEHYDRO-RXN				
+rxn00633	>			[SW] Reaction direction adjusted according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=1.1.99.28-RXN				
+rxn15082	>			[SW] Reaction direction adjusted according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=1.1.99.28-RXN				
+rxn15083	>			[SW] Reaction direction adjusted according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=1.1.99.28-RXN				
+rxn08616	>			[SW] Glucose:H+ symport mainly for glucose uptake					
+rxn05573	>			[SW] Glucose:H+ symport mainly for glucose uptake					
 									
 rxn05363			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11499:0:0:"4-methyl-hexanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11500:0:0:"6-methyl-3-oxo-octanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
 rxn05367			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11503:0:0:"6-methyl-octanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11504:0:0:"8-methyl-3-oxo-decanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
@@ -1334,7 +1339,7 @@ rxn08595		TRUE		large polar molecules or small charged molecules cannot cross th
 rxn08600		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion			
 rxn08610		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion			
 rxn08614		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion			
-rxn08617		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion			
+									
 rxn08621		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion			
 rxn08623		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion			
 rxn08625		TRUE		large polar molecules or small charged molecules cannot cross the membrane at significant rates.	https://www.ncbi.nlm.nih.gov/books/NBK9847/	diffusion			
