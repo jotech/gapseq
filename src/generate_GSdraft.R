@@ -333,6 +333,10 @@ min.bs.for.core   <- opt$min.bs.for.core
 pathway.pred      <- opt$pathway.pred
 curve.alpha       <- opt$curve.alpha
 
+if(is.na(model.name)){
+  model.name <- gsub("-all-Reactions.tbl","",basename(blast.res), fixed = T)
+}
+
 # construct draft model
 mod <- build_draft_model_from_blast_results(blast.res = blast.res, 
                                             transporter.res = transporter.res,

@@ -289,6 +289,16 @@ else
     [[ "$pwyDatabase" =~ "kegg" ]]    && cat $keggPwy >> allPwy
     [[ "$pwyDatabase" =~ "seed" ]]    && cat $seedPwy >> allPwy
     [[ "$pwyDatabase" =~ "custom" ]]  && cat $customPwy >> allPwy
+    dupli=$(cat allPwy | cut -f1 | sort | uniq -d | tr -d 'id' | sed '/^$/d')
+    if [ -n "$dupli" ]; then
+        echo Duplicated pathway IDs found: $dupli will only use $customPwy
+        dupli_search=$(echo "$dupli" | sed 's/|/\\|/g' |tr '\n' '|' | rev | cut -c2- | rev)
+        echo "$dupli_search"
+        cat allPwy | grep -wEv "$dupli_search" > allPwy.tmp
+        cat $customPwy | grep -wE "$dupli_search" >> allPwy.tmp
+        mv allPwy.tmp allPwy
+        #cat allPwy | grep -wE "$dupli_search"
+    fi
     pwyDB=$(cat allPwy | grep -wEi $pwyKey)
     [[ "$noSuperpathways" = true ]] && pwyDB=$(echo "$pwyDB" | grep -v 'Super-Pathways')
     [ -z "$ecnumber" ] && [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
@@ -397,10 +407,11 @@ do
     keyRea=$(echo "$line" | awk -F "\t" '{print $8}' | tr ',' ' ')
     spontRea=$(echo "$line" | awk -F "\t" '{print $14}' | tr ',' ' ')
     pwyHierarchy=$(echo "$line" | awk -F "\t" '{print $4}' | sed 's/|\|THINGS\|Generalized-Reactions\|Pathways\|FRAMES//g' | sed 's/,,//g')
-    [[ verbose -ge 1 ]] && echo -e '\n'$i/$pwyNr: Checking for pathway $pwy $name
+    reaNr=$(echo $ecs | tr "," "\n" | wc -l)
+    [[ verbose -ge 1 ]] && echo -e '\n'$i/$pwyNr: Checking for pathway $pwy $name with $reaNr reactions
     [[ verbose -ge 1 ]] && echo "($pwyHierarchy)"
     [[ "$onlyList" = true ]] && { continue; }
-    for j in `seq 1 $(echo $ecs | tr "," "\n" | wc -l)`
+    for j in `seq 1 $reaNr`
     #for ec in $(echo $ecs | tr "," "\n")
     do 
         dbhit=""
@@ -583,7 +594,7 @@ do
                         bhit=$(cat query.blast | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
                         if [ -n "$bhit" ]; then
                             bestsubunithit=$(echo "$bhit" | sort -rgk 4,4 | head -3)
-                            [[ verbose -ge 1 ]] && [[ $iterations -gt 1 ]] && cat $q | head -1 | sed "s/^/\t\t\t$subunit_id hit: /" 
+                            [[ verbose -ge 1 ]] && [[ $iterations -gt 1 ]] && echo "$bestsubunithit" | head -1 | cut -f1 | grep -f - $query | sed "s/^/\t\t\t$subunit_id hit: /" 
                             ((subunits_found++))
                             [[ "$subunit_id" == "Subunit undefined" ]] && ((subunits_undefined_found++))
                             [[ $iterations -gt 1 ]] && echo "$bestsubunithit" | awk -v exception="$is_exception" -v subunit="$subunit_id" -v rea="$rea" -v reaName="$reaName" -v ec=$ec -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"NA"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t"subunit"\t"exception"\t""NA"}' >> reactions.tbl
