@@ -1,0 +1,4 @@
+id	name	type	exmet	exmetnames
+rxn08617	glucose transport via diffusion (extracellular to periplasm)	2.Electrochemical potential-driven transporters	cpd00027[e0]	D-Glucose
+rxn90019	folate ABC transporter	3.Primary active transporters	cpd00393[e0]	Folate
+rxn90020	Siroheme-transporting ATPase	3.Primary active transporters	cpd00557[e0]	Siroheme
