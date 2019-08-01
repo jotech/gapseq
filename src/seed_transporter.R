@@ -8,11 +8,12 @@ library(stringr)
 
 setwd("~/uni/gapseq/")
 reaDB <- fread("dat/seed_reactions_corrected.tsv")
+reaDB.new <- fread("dat/seed_reactions_new.tsv")
 reaEC <- fread("dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv", sep="\t")
 metDB <- fread("dat/seed_metabolites.tsv")
 
-test <- reaDB[is_transport==1]
-
+#test <- reaDB[is_transport==1]
+test <- merge(reaDB[is_transport==1], reaDB.new[,.(id,aliases)], by="id", all.x=T)
 
 #
 # Find type of transporter in reaction database
@@ -25,11 +26,33 @@ patterns <- list("1.Channels and pores" = c("channel", "pore"),
      "Diffusion" = c("diffusion"),
      "skip" = c("extracellular", "degradation", "reductase"))
 
-test[grep(paste(patterns[[1]], collapse = "|"), name),type:=names(patterns)[1]]
-test[grep(paste(patterns[[2]], collapse = "|"), name),type:=names(patterns)[2]]
-test[grep(paste(patterns[[3]], collapse = "|"), name),type:=names(patterns)[3]]
-test[grep(paste(patterns[[4]], collapse = "|"), name),type:=names(patterns)[4]]
-test[grep(paste(patterns[[5]], collapse = "|"), name),type:=names(patterns)[5]]
+test[grep(paste(patterns[[1]], collapse = "|"), name),type1:=names(patterns)[1]]
+test[grep(paste(patterns[[2]], collapse = "|"), name),type1:=paste0(type1,";",names(patterns)[2])]
+test[grep(paste(patterns[[3]], collapse = "|"), name),type1:=paste0(type1,";",names(patterns)[3])]
+test[grep(paste(patterns[[4]], collapse = "|"), name),type1:=paste0(type1,";",names(patterns)[4])]
+test[grep(paste(patterns[[5]], collapse = "|"), name),type1:=paste0(type1,";",names(patterns)[5])]
+
+test[grep(paste(patterns[[1]], collapse = "|"), aliases.y),type2:=names(patterns)[1]]
+test[grep(paste(patterns[[2]], collapse = "|"), aliases.y),type2:=paste0(type2,";",names(patterns)[2])]
+test[grep(paste(patterns[[3]], collapse = "|"), aliases.y),type2:=paste0(type2,";",names(patterns)[3])]
+test[grep(paste(patterns[[4]], collapse = "|"), aliases.y),type2:=paste0(type2,";",names(patterns)[4])]
+test[grep(paste(patterns[[5]], collapse = "|"), aliases.y),type2:=paste0(type2,";",names(patterns)[5])]
+
+test[,type:=ifelse(is.na(type1), type2, type1)]
+test$type <- gsub("NA;|;NA","", test$type)
+
+# duplicate rows for reactions with multiple types
+type.split <- str_split(test$type, ";")
+type.split.ln <- sapply(type.split, length)
+test.new <- data.table()
+for( i in which(type.split.ln>1) ){
+  tmp <- test[i, cbind(unlist(type.split[i]), .SD)] # duplicate rows
+  tmp[,type:=V1]
+  test.new <- rbind(test.new, tmp[,-"V1"])
+}
+test <- rbind(test[-which(type.split.ln>1),], test.new)
+test[id=="rxn05581", .(id, type)]
+
 
 # entry stoichiometry field: stoichiometry_coeff:seed_id:compartment:x:full_name
 test[stoichiometry %like% "ATP" & stoichiometry %like% "ADP" & is.na(type), type:=names(patterns)[3]] # atpases
@@ -41,10 +64,12 @@ Nmets <- str_count(test$stoichiometry, "cpd")
 test[Nmets == 2 & is.na(test$type), type:=names(patterns)[5]] # diffusion reactions
 
 # debug: 208/5062 transporter without transporter type
+# 20190801: 234/5280 transporter without type
 test[is.na(type)]
 sum(is.na(test$type))
 dim(test)
 table(test$type)
+
 
 
 
@@ -78,6 +103,7 @@ names <- sapply(test$exmet, function(m){
 test$exmetnames <- names
 
 # debug 114/5062 transporter without transported substance detected
+# 20190801: debug 264/5280
 test[exmet==""]
 nrow(test[exmet==""])
 test[exmet=="",name]
@@ -90,9 +116,10 @@ test[lex>=2]
 #
 # export
 #
-export <- test[!is.na(type) & exmet!="",.(id,name,type,exmet,exmetnames,stoichiometry,direction)]
+#export <- test[!is.na(type) & exmet!="",.(id,name,type,exmet,exmetnames,stoichiometry,direction)]
+export <- test[!is.na(type) & exmet!="",.(id,name,type,exmet,exmetnames)]
 export$exmet <- gsub("(cpd[0-9]+)","\\1\\[e0\\]",export$exmet) # add compartment tag
-fwrite(export, file="~/uni/gapseq/dat/seed_transporter.tbl", sep="\t")
+#fwrite(export, file="~/uni/gapseq/dat/seed_transporter.tbl", sep="\t", quote = F)
 
 
 

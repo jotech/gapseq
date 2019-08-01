@@ -64,10 +64,13 @@ tcdb=$dir/dat/seq/tcdb.fasta
 otherDB=$dir/dat/seq/transporter.fasta
 subDB=$dir/dat/sub2pwy.csv
 seedDB=$dir/dat/seed_transporter.tbl
+customDB=$dir/dat/seed_transporter_custom.tbl
 
 # tmp working directory
 fasta=$(readlink -f "$1") # save input file before changing to temporary directory
 cd $(mktemp -d)
+
+cat $seedDB $customDB > allDB
 
 # Get fasta file
 if [[ $fasta == *.gz ]]; then # in case fasta is in a archive
@@ -144,7 +147,7 @@ do
             exid=$(cat $subDB | grep -w "$subst" | awk -F '\t' '{if ($7 != "NA") print $7}')
             sublist="$sublist;$subst"
             echo $id,$tc,$subst,$exmet,$exid,$type,$descr >> "`echo "$subst" | tr '[:upper:]' '[:lower:]'`"
-            cat $seedDB | awk -F '\t' -v type="$type" -v exmet="$exmet" '{if($3==type && $4==exmet) print $0}' > tr_cand
+            cat allDB | awk -F '\t' -v type="$type" -v exmet="$exmet" '{if($3==type && $4==exmet) print $0}' > tr_cand
             if [ -s tr_cand ]; then
                 rea=$(cat tr_cand | awk -F '\t' '{print $1}')
                 [[ -n "$only_met" ]] && { echo -e "\t"Found reaction: $rea; } 
@@ -174,7 +177,7 @@ do
     cat "$sub" | awk -F ',' '{print $3, $6}' | sort | uniq
     for exmet in $(cat "$sub" | cut -d ',' -f 4 | sort | uniq)
     do
-        alter=$(cat "$seedDB" | awk -F '\t' -v exmet="$exmet" '{if($4==exmet) print $1}' | sort | uniq)
+        alter=$(cat allDB | awk -F '\t' -v exmet="$exmet" '{if($4==exmet) print $1}' | sort | uniq)
         if [ -n "$alter" ]; then
             echo -e "\tAlternatives:" $alter
             if [ "$use_alternatives" = true ] ; then
