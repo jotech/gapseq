@@ -6,6 +6,7 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   
   dt <- dt[pathway != "|PWY-6168|"] # pathway exists only in fungi
   dt <- dt[pathway != "|PWY-1042|"] # pathway exists only in plants
+  dt <- dt[pathway != "|PWY-6970|"] # pathway exists only in plants
   dt <- dt[pathway != "|PWY-4983|"] # pathway exists only in mammals
   dt <- dt[pathway != "|PWY-6845|"] # pathway exists only in mammals
   
@@ -117,6 +118,31 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
     return(dt)
   }
   
+  resolve_common_TC_conflicts <- function(tc1, tc2, dt) {
+    if(tc1 %in% dt$tc & tc2 %in% dt$tc) {
+      rm.ids <- c()
+      one.hits.id <- which(dt$tc == tc1 & !is.na(dt$bitscore))
+      two.hits.id <- which(dt$tc == tc2 & !is.na(dt$bitscore))
+      if(length(one.hits.id)>0 & length(two.hits.id)>0) {
+        for(i in one.hits.id) {
+          for(j in two.hits.id) {
+            ol <- calc_seq_overlap(dt[i,sstart],dt[i,send],dt[j,sstart],dt[j,send])
+            if(ol > 0.2) {
+              if(dt[i, bitscore] > max(dt[two.hits.id, bitscore]))
+                rm.ids <- c(rm.ids, j)
+              if(dt[j, bitscore] > max(dt[one.hits.id, bitscore]))
+                rm.ids <- c(rm.ids, i)
+            }
+          }
+        }
+      }
+      rm.ids <- unique(rm.ids)
+      if(length(rm.ids > 0))
+        dt <- dt[-rm.ids]
+    }
+    return(dt)
+  }
+  
   # specific reaction conflict fixes
   dt <- resolve_common_EC_conflicts("1.3.8.1","1.3.8.13", dt)
   dt <- resolve_common_EC_conflicts("4.1.2.9","4.1.2.22", dt)
@@ -126,6 +152,11 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt <- resolve_common_EC_conflicts("2.3.1.37","2.3.1.50", dt)
   dt <- resolve_common_EC_conflicts("1.17.3.2","1.17.1.4", dt) # xanthine oxidase vs xanthine dehydrogenase
   dt <- resolve_common_EC_conflicts("1.3.3.6","1.3.1.8", dt) # acyl-CoA oxidase vs acyl-CoA dehydrogenase
+  dt <- resolve_common_EC_conflicts("1.2.7.1","1.2.1.51", dt) # NADP-dependent Pyruvate dehydrogenase vs FMN-dependent PDH
+  
+  # specific transporter conflict fixes
+  dt.trans <- resolve_common_TC_conflicts("1.a.8.2.1","2.a.14.1.3", dt.trans)
+  dt.trans <- resolve_common_TC_conflicts("1.a.8.2.7","2.a.14.1.3", dt.trans)
   
   # Due to BRENDA's alternative ECs theres a mismatch of metacyc reactions to seed reaction for EC 2.6.1.36 and EC 2.6.1.13 ... remove the mismatches.
   dt <- dt[!(rxn == "L-LYSINE-AMINOTRANSFERASE-RXN" & grepl("rxn00467|rxn20496|rxn33315", seed))]
