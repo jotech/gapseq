@@ -593,7 +593,7 @@ do
                         cat query.blast >> $out
                         bhit=$(cat query.blast | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
                         if [ -n "$bhit" ]; then
-                            bestsubunithit=$(echo "$bhit" | sort -rgk 4,4 | head -3)
+                            bestsubunithit=$(echo "$bhit" | sort -rgk 4,4)
                             [[ verbose -ge 1 ]] && [[ $iterations -gt 1 ]] && echo "$bestsubunithit" | head -1 | cut -f1 | grep -f - $query | sed "s/^/\t\t\t$subunit_id hit: /" 
                             ((subunits_found++))
                             [[ "$subunit_id" == "Subunit undefined" ]] && ((subunits_undefined_found++))
@@ -625,10 +625,10 @@ do
                     bestIdentity=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f2)
                     bestBitscore=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f4)
                     bestCoverage=$(echo "$bhit" | sort -rgk 4,4 | head -1 | cut -f5)
-                    besthit_all=$(echo "$bhit" | sort -rgk 4,4 | head -3)
+                    besthit_all=$(echo "$bhit" | sort -rgk 4,4)
                     bhit_count=$(echo "$bhit" | wc -l)
                     [[ verbose -ge 1 ]] && echo -e '\t\t'Blast hit \(${bhit_count}x\)
-                    [[ verbose -ge 1 ]] && [[ $iterations -le 1 ]] && echo "$besthit_all" | awk '{print "\t\t\tbit="$4 " id="$2 " cov="$5 " hit="$1}' # only for non-subunit hits
+                    [[ verbose -ge 1 ]] && [[ $iterations -le 1 ]] && echo "$besthit_all" | head -3 | awk '{print "\t\t\tbit="$4 " id="$2 " cov="$5 " hit="$1}' # only for non-subunit hits
                     # check if key reactions of pathway
                     if [[ $keyRea = *"$rea"* ]]; then
                         [[ verbose -ge 1 ]] && echo -e '\t\t--> KEY reaction found <--'
