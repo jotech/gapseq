@@ -175,6 +175,8 @@ for sub in $(comm -23 hit1 hit2 | tr ' ' '_')
 do
     sub=$(echo "$sub" | tr '_' ' ')
     cat "$sub" | awk -F ',' '{print $3, $6}' | sort | uniq
+    id=$(cat "$sub" | awk -F ',' '{print $1}' | sort | uniq | tr '\n' '|' | rev | cut -c2- | rev)
+    tc=$(cat "$sub" | awk -F ',' '{print $6}' | sort | uniq)
     for exmet in $(cat "$sub" | cut -d ',' -f 4 | sort | uniq)
     do
         alter=$(cat allDB | awk -F '\t' -v exmet="$exmet" '{if($4==exmet) print $1}' | sort | uniq)
@@ -182,6 +184,8 @@ do
             echo -e "\tAlternatives:" $alter
             if [ "$use_alternatives" = true ] ; then
                 cand="$cand $alter $exid"
+                alter_str=$(echo "$alter" | tr '\n' ',' | rev | cut -c2- | rev) 
+                cat out | grep -wE $id | sort -rgk 4,4 | head -1 | awk -v id="$id" -v tc="$tc" -v subst="$sub" -v exid="$exmet" -v rea="$alter_str" '{print id"\t"tc"\t"subst"\t"exid"\t"rea"\t"$0"\talternative"}' >> transporter.tbl 
             fi
         fi
     done
