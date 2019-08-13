@@ -134,14 +134,16 @@ do
     i=$(echo $tc | head -c1) # get first character of TC number => transporter type
     type=${TC[$i]}
     [ -z "$tc" ] && continue
-    subl=$(echo "$descr" | grep -wEio "$key" | grep -iwf - redSubDB | awk -F '\t' '{ if ($2 != "") print $2; else print $1}' | tr ' ' '_' | sort | uniq) # could be more then one hit (e.g. transporter with two substances)
+    #subl=$(echo "$descr" | grep -wEio "$key" | grep -iwf - redSubDB | awk -F '\t' '{ if ($2 != "") print $2; else print $1}' | tr ' ' '_' | sort | uniq) # could be more then one hit (e.g. transporter with two substances)
+    subl=$(echo "$descr" | grep -wEio "$key" | tr ' ' '_' | sort | uniq)
     [[ -n "$only_met" ]] && { echo -e "\t"$id $tc $subl; } 
     #echo $id $descr $tc $i $type $subl
     for subst in $subl
     do
         subst=$(echo "$subst" | tr '_' ' ') # get space character back (was changed for look)
         #echo -e $subst"\t"$type"\t"$tc"\t"$descr >> newTransporter.tbl
-        exmetall=$(cat $subDB | grep -w "$subst" | awk -F '\t' '{if ($8 != "NA") print $8}')
+        #exmetall=$(cat $subDB | grep -wi "$subst" | awk -F '\t' '{if ($8 != "NA") print $8}')
+        exmetall=$(cat $subDB | awk -F '\t' -v subst="$subst" '{IGNORECASE = 1; if ( ($1 == subst || $2 == subst) && $8 != "NA" ) print $8}')
         for exmet in $exmetall
         do
             exid=$(cat $subDB | grep -w "$subst" | awk -F '\t' '{if ($7 != "NA") print $7}')
@@ -156,7 +158,7 @@ do
                 sublist2="$sublist2;$subst"
                 rea_export=$(echo "$rea" | tr '\n' ',' | sed 's/,$//g')
                 exid_export=$(echo "$exid" | tr '\n' ',' | sed 's/,$//g')
-                cat out | grep -w $id | sort -rgk 4,4 | head -1 | awk -v id="$id" -v tc="$tc" -v subst="$subst" -v exid="$exid_export" -v rea=$rea_export '{print id"\t"tc"\t"subst"\t"exid"\t"rea"\t"$0}' >> transporter.tbl 
+                cat out | grep -w $id | sort -rgk 4,4 | head -1 | awk -v id="$id" -v tc="$tc" -v subst="$subst" -v exid="$exid_export" -v rea=$rea_export '{print id"\t"tc"\t"subst"\t"exid"\t"rea"\t"$0"\t"}' >> transporter.tbl 
             fi
         done
     done
@@ -185,7 +187,7 @@ do
             if [ "$use_alternatives" = true ] ; then
                 cand="$cand $alter $exid"
                 alter_str=$(echo "$alter" | tr '\n' ',' | rev | cut -c2- | rev) 
-                cat out | grep -wE $id | sort -rgk 4,4 | head -1 | awk -v id="$id" -v tc="$tc" -v subst="$sub" -v exid="$exmet" -v rea="$alter_str" '{print id"\t"tc"\t"subst"\t"exid"\t"rea"\t"$0"\talternative"}' >> transporter.tbl 
+                cat out | grep -wE $id | sort -rgk 4,4 | head -1 | awk -v id="$id" -v tc="$tc" -v subst="$sub" -v exid="$exmet" -v rea="$alter_str" '{print id"\t"tc"\t"subst"\t"exid"\t"rea"\t"$0"\t"alternative}' >> transporter.tbl 
             fi
         fi
     done
@@ -203,7 +205,7 @@ echo $cand > newTransporter.lst
 cp newTransporter.lst $curdir/${fastaid}-Transporter.lst
 #cp newTransporter.tbl $curdir/${fastaid}-Transporter.tbl
 cp transporter.tbl $curdir/${fastaid}-Transporter.tbl
-[[ -s transporter.tbl ]] && echo "id tc sub exid rea $blast_format" | tr ' ' '\t' | cat - transporter.tbl | awk '!a[$0]++' > $curdir/${fastaid}-Transporter.tbl # add header and remove duplicates
+[[ -s transporter.tbl ]] && echo "id tc sub exid rea $blast_format alternative" | tr ' ' '\t' | cat - transporter.tbl | awk '!a[$0]++' > $curdir/${fastaid}-Transporter.tbl # add header and remove duplicates
 
 end_time=`date +%s`
 echo Running time: `expr $end_time - $start_time` s.
