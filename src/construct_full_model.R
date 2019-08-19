@@ -49,7 +49,7 @@ construct_full_model <- function(script.path) {
   }
   cat("\n")
   mod <- add_missing_exchanges(mod) 
-  saveRDS(mod,file = paste0(script.dir, "/../dat/full.model.RDS"))  
+  saveRDS(mod,file = paste0(script.dir, "/../dat/full.model.RDS"), version=2)  
 }
 
 # get current script path
