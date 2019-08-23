@@ -1860,6 +1860,7 @@ rxn90020	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd00557:1:0:"Sirohem
 									
 rxn90021	>		-0.5:cpd00007:0:0:"O2";-2:cpd00067:0:0:"H+";-1:cpd15353:0:0:"2-Demethylmenaquinol 8";1:cpd00001:0:0:"H2O";2:cpd00067:1:0:"H+";1:cpd15352:0:0:"2-Demethylmenaquinone 8"	[SW] New reaction for 7.1.1.5 with 2-Demethylmenaquinone 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-12164		CYTBD2pp-demetylmena	cytochrome oxidase bd (2-Demethylmenaquinol-8: 2 protons) (periplasm)	
 rxn90022	=		-1:cpd00178:0:0:"Acetone";1:cpd00178:1:0:"Acetone"	[SW] Acetone diffusion reaction	PMID: 19872448		ACETONE-diffusion	Acetone diffusion	
+rxn90023	=		-1:cpd01618:0:0:"1,3-Propanediol";1:cpd01618:1:0:"1,3-Propanediol"						
 									
 rxn35560				[SW] Important for Lacto-N-tetraose degradatiion					TRUE
 rxn22385				[SW] Important for Rhmanose degradatiion without phosphorylated intermediates.					TRUE
