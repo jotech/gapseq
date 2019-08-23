@@ -158,7 +158,7 @@ do
                 sublist2="$sublist2;$subst"
                 rea_export=$(echo "$rea" | tr '\n' ',' | sed 's/,$//g')
                 exid_export=$(echo "$exid" | tr '\n' ',' | sed 's/,$//g')
-                cat out | grep -w $id | sort -rgk 4,4 | head -1 | awk -v id="$id" -v tc="$tc" -v subst="$subst" -v exid="$exid_export" -v rea=$rea_export '{print id"\t"tc"\t"subst"\t"exid"\t"rea"\t"$0"\t"}' >> transporter.tbl 
+                cat out | grep -w $id | sort -rgk 4,4 | head -1 | awk -v id="$id" -v tc="$tc" -v subst="$subst" -v exid="$exid_export" -v rea=$rea_export '{print id"\t"tc"\t"subst"\t"exid"\t"rea"\t"$0}' >> transporter.tbl 
             fi
         done
     done
@@ -187,7 +187,7 @@ do
             if [ "$use_alternatives" = true ] ; then
                 cand="$cand $alter $exid"
                 alter_str=$(echo "$alter" | tr '\n' ',' | rev | cut -c2- | rev) 
-                cat out | grep -wE $id | sort -rgk 4,4 | head -1 | awk -v id="$id" -v tc="$tc" -v subst="$sub" -v exid="$exmet" -v rea="$alter_str" '{print id"\t"tc"\t"subst"\t"exid"\t"rea"\t"$0"\t"alternative}' >> transporter.tbl 
+                cat out | grep -wE $id | sort -rgk 4,4 | head -1 | awk -v id="$id" -v tc="alternative" -v subst="$sub" -v exid="$exmet" -v rea="$alter_str" '{print id"\t"tc"\t"subst"\t"exid"\t"rea"\t"$0}' >> transporter.tbl 
             fi
         fi
     done
