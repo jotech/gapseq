@@ -13,6 +13,7 @@ spec <- matrix(c(
   'output.dir', 'o', 2, "character", "Directory to store results. Default: \"gapfill\".",
   'sbml.output', 's', 2, "logical", "Should the gapfilled model be saved as sbml? Default: FALSE",
   'quick.gf','q', 2, "logical", "perform only step 1 and 2. Default: FALSE",
+  'limit', 'l', 2, "character", "Test metabolite to which search is limitted",
   'verbose', 'v', 2, "logical", "Verbose output and printing of debug messages. Default: FALSE"
 ), ncol = 5, byrow = T)
 
@@ -73,6 +74,7 @@ output.dir       <- opt$output.dir
 verbose          <- opt$verbose
 quick.gf         <- opt$quick.gf
 bcore            <- opt$bcore
+met.limit        <- opt$limit
 
 # Parameters:
 dummy.weight <- 100
@@ -102,6 +104,15 @@ rm.na <- function(vec){
 # database files
 carbon.source <- fread(paste0(script.dir, "/dat/sub2pwy.csv"))
 seed_x_mets   <- fread(paste0(script.dir,"/dat/seed_metabolites_edited.tsv"), header=T, stringsAsFactors = F, na.strings = c("null","","NA"))
+
+# potentially limit carbon.source
+if ( length(met.limit) > 0 ){
+  carbon.source <- carbon.source[tolower(name) %like% tolower(met.limit) | altname == "glucose"]
+  print(carbon.source)
+  if( nrow(carbon.source)==0 ){
+    stop("Limittation of carbon sources failed, nothing found!")
+  }
+}
 
 # read full model & target model
 cat("Loading model files", mod.file, "\n")
@@ -373,6 +384,13 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     ex.id       <- ex@react_id
     ex.met      <- ex@met_id
     ex.met.name <- mod.orig3@met_name[ex@met_pos]
+    if ( length(met.limit) > 0 ){ # # potentially limit carbon.source
+      ex.idx <- match(intersect(ex.id, carbon.source$exid_seed), ex.id)
+      ex.ind      <- ex.ind[ex.idx]
+      ex.id       <- ex.id[ex.idx]
+      ex.met      <- ex.met[ex.idx]
+      ex.met.name <- ex.met.name[ex.idx]
+    }
     # Exchange reactions to be ignored (metals etc.)
     ignore <- c("EX_cpd17041_e0", "EX_cpd17042_e0", "EX_cpd17043_e0", "EX_cpd11416_e0", "rxn13782_c0", "rxn13783_c0", "rxn13783_c0", "EX_cpd00001_e0","EX_cpd00007_e0", "EX_cpd00009_e0", "EX_cpd00011_e0" ,"EX_cpd00012_e0", "EX_cpd00030_e0", "EX_cpd00034_e0", "EX_cpd00058_e0", "EX_cpd00063_e0", "EX_cpd00067_e0", "EX_cpd00075_e0","EX_cpd00099_e0", "EX_cpd00149_e0", "EX_cpd00205_e0", "EX_cpd00254_e0", "EX_cpd10515_e0", "EX_cpd00971_e0", "EX_cpd01012_e0", "EX_cpd10516_e0", "EX_cpd11574_e0")
     
@@ -413,7 +431,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
       if(sol$stat == ok & sol$obj >= 1e-7){
         #mod.fill3@obj_coef <- rep(0,mod.fill3@react_num)
       }else{
-        if( verbose ) cat("\nTry to gapfill", src.met.name, ex@react_id[i], "\n")
+        if( verbose ) cat("\nTry to gapfill", src.met.name, ex.id[i], "\n")
         invisible(capture.output( mod.fill3.lst <- gapfill4(mod.orig = mod.fill3, 
                                                             mod.full = mod, 
                                                             rxn.weights = copy(rxn.weights),  
@@ -431,8 +449,8 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
           mod.fill3 <- mod.fill3.lst$model
           mod.fill3.counter <- mod.fill3.counter + 1
           mod.fill3.names <- c(mod.fill3.names, src.met.name)
-          if( ex@react_id[i] %in% exchanges.new.ids) # delete unused addionally added exchange reactions later
-            exchanges.new.used[match(ex@react_id[i], exchanges.new.ids)] <- TRUE
+          if( ex.id[i] %in% exchanges.new.ids) # delete unused addionally added exchange reactions later
+            exchanges.new.used[match(ex.id[i], exchanges.new.ids)] <- TRUE
         }
       }
     }
@@ -460,6 +478,13 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     ex.id       <- ex@react_id
     ex.met      <- ex@met_id
     ex.met.name <- mod.orig4@met_name[ex@met_pos]
+    if ( length(met.limit) > 0 ){ # # potentially limit carbon.source
+      ex.idx <- match(intersect(ex.id, carbon.source$exid_seed), ex.id)
+      ex.ind      <- ex.ind[ex.idx]
+      ex.id       <- ex.id[ex.idx]
+      ex.met      <- ex.met[ex.idx]
+      ex.met.name <- ex.met.name[ex.idx]
+    }
     # Exchange reactions to be ignored (metals etc.)
     ignore <- c("EX_cpd17041_e0", "EX_cpd17042_e0", "EX_cpd17043_e0", "EX_cpd11416_e0", "rxn13782_c0", "rxn13783_c0", "rxn13783_c0", "EX_cpd00001_e0","EX_cpd00007_e0", "EX_cpd00009_e0", "EX_cpd00011_e0" ,"EX_cpd00012_e0", "EX_cpd00030_e0", "EX_cpd00034_e0", "EX_cpd00058_e0", "EX_cpd00063_e0", "EX_cpd00067_e0", "EX_cpd00075_e0","EX_cpd00099_e0", "EX_cpd00149_e0", "EX_cpd00205_e0", "EX_cpd00254_e0", "EX_cpd10515_e0", "EX_cpd00971_e0", "EX_cpd01012_e0", "EX_cpd10516_e0", "EX_cpd11574_e0")
     
