@@ -205,7 +205,7 @@ echo $cand > newTransporter.lst
 cp newTransporter.lst $curdir/${fastaid}-Transporter.lst
 #cp newTransporter.tbl $curdir/${fastaid}-Transporter.tbl
 cp transporter.tbl $curdir/${fastaid}-Transporter.tbl
-[[ -s transporter.tbl ]] && echo "id tc sub exid rea $blast_format alternative" | tr ' ' '\t' | cat - transporter.tbl | awk '!a[$0]++' > $curdir/${fastaid}-Transporter.tbl # add header and remove duplicates
+[[ -s transporter.tbl ]] && echo "id tc sub exid rea $blast_format" | tr ' ' '\t' | cat - transporter.tbl | awk '!a[$0]++' > $curdir/${fastaid}-Transporter.tbl # add header and remove duplicates
 
 end_time=`date +%s`
 echo Running time: `expr $end_time - $start_time` s.
