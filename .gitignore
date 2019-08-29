@@ -35,6 +35,12 @@ vignettes/*.pdf
 *.fai
 *.bak
 *.log
+*.RDS
+*.swp
+*.tbl
+*.csv
+*.lst
+*.rxnlst
 src/graveyard/*
 # R-Studio project files
 .Rproj.user

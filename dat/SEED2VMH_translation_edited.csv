@@ -328,6 +328,7 @@ EX_cpd11657(e),EX_strch1(e)
 EX_cpd00558(e),EX_sprm(e)
 EX_cpd05235(e),EX_lgnc(e)
 EX_cpd05147(e),EX_i(e)
+EX_cpd19069(e),EX_pac(e)
 rxn00001,PPA
 rxn00002,ALPHNH
 rxn00006,r0010
