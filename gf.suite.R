@@ -14,6 +14,7 @@ spec <- matrix(c(
   'sbml.output', 's', 2, "logical", "Should the gapfilled model be saved as sbml? Default: FALSE",
   'quick.gf','q', 2, "logical", "perform only step 1 and 2. Default: FALSE",
   'limit', 'l', 2, "character", "Test metabolite to which search is limitted",
+  'no.core', 'x', 2, "logical", "Use always all reactions insteadof core reactions with have sequence evidence. Default: FALSE",
   'verbose', 'v', 2, "logical", "Verbose output and printing of debug messages. Default: FALSE"
 ), ncol = 5, byrow = T)
 
@@ -62,6 +63,7 @@ if ( is.null(opt$media) ) { opt$media = paste0(script.dir,"/dat/media/MM_glu.csv
 if ( is.null(opt$verbose) ) { opt$verbose = F }
 if ( is.null(opt$quick.gf) ) { opt$quick.gf = F }
 if ( is.null(opt$bcore) ) { opt$bcore = 50 }
+if ( is.null(opt$no.core) ) { opt$no.core = F }
 
 # Arguments:
 mod.file         <- opt$model
@@ -75,6 +77,7 @@ verbose          <- opt$verbose
 quick.gf         <- opt$quick.gf
 bcore            <- opt$bcore
 met.limit        <- opt$limit
+no.core          <- opt$no.core
 
 # Parameters:
 dummy.weight <- 100
@@ -100,6 +103,11 @@ rm.na <- function(vec){
   else return(vec)
 }
 
+if( no.core ){
+  use.core = FALSE
+}else{
+  use.core = TRUE
+}
 
 # database files
 carbon.source <- fread(paste0(script.dir, "/dat/sub2pwy.csv"))
@@ -107,7 +115,7 @@ seed_x_mets   <- fread(paste0(script.dir,"/dat/seed_metabolites_edited.tsv"), he
 
 # potentially limit carbon.source
 if ( length(met.limit) > 0 ){
-  carbon.source <- carbon.source[tolower(name) %like% tolower(met.limit) | altname == "glucose"]
+  carbon.source <- carbon.source[tolower(name) %like% tolower(met.limit) | altname == "glucose" | id_seed == met.limit]
   print(carbon.source)
   if( nrow(carbon.source)==0 ){
     stop("Limittation of carbon sources failed, nothing found!")
@@ -241,7 +249,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
                                     bcore = bcore,
                                     dummy.weight = dummy.weight,
                                     script.dir = script.dir,
-                                    core.only = TRUE,
+                                    core.only = use.core,
                                     verbose=verbose,
                                     gs.origin = 2,
                                     rXg.tab = rXg.tab) ))
@@ -329,7 +337,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
                                     bcore = bcore,
                                     dummy.weight = dummy.weight,
                                     script.dir = script.dir,
-                                    core.only = TRUE,
+                                    core.only = use.core,
                                     verbose=verbose,
                                     gs.origin = 2,
                                     rXg.tab = rXg.tab) ))
@@ -439,7 +447,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
                                                             bcore = bcore,
                                                             dummy.weight = dummy.weight,
                                                             script.dir = script.dir,
-                                                            core.only = TRUE,
+                                                            core.only = use.core,
                                                             verbose=verbose,
                                                             gs.origin = 3,
                                                             rXg.tab = rXg.tab) ))
@@ -520,7 +528,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
                                                             bcore = bcore,
                                                             dummy.weight = dummy.weight,
                                                             script.dir = script.dir,
-                                                            core.only = TRUE,
+                                                            core.only = use.core,
                                                             verbose=verbose,
                                                             gs.origin = 4,
                                                             rXg.tab = rXg.tab) ))
