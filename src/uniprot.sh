@@ -6,6 +6,7 @@ dir=$(dirname "$path")
 echo $dir
 metaPwy=$dir/../dat/meta_pwy.tbl
 identity=0.9 # clustered uniprot database (0.5 or 0.9)
+identity_unrev=0.5
 taxonomy=Bacteria
 overwrite=false
 get_unrev=false
@@ -111,7 +112,7 @@ if [ -n "$ecnumber" ]; then
                 url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
             else
                 # unreviewed
-                url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ano)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+                url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ano)%20identity%3A$identity_unrev&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
             fi
             [[ ! -f $ec.fasta ]] && wget -q $url -O $ec.fasta # download only if file not exists
         fi
@@ -137,7 +138,7 @@ if [ -n "$reaNames" ]; then
         if [ "$get_unrev" = false ]; then 
             url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
         else 
-            url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ano)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+            url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ano)%20identity%3A$identity_unrev&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
         fi
         [[ ! -f $reaNameHash.fasta ]] && wget -q "$url" -O "$reaNameHash.fasta"
     done
