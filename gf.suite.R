@@ -15,7 +15,8 @@ spec <- matrix(c(
   'quick.gf','q', 2, "logical", "perform only step 1 and 2. Default: FALSE",
   'limit', 'l', 2, "character", "Test metabolite to which search is limitted",
   'no.core', 'x', 2, "logical", "Use always all reactions insteadof core reactions with have sequence evidence. Default: FALSE",
-  'verbose', 'v', 2, "logical", "Verbose output and printing of debug messages. Default: FALSE"
+  'verbose', 'v', 2, "logical", "Verbose output and printing of debug messages. Default: FALSE",
+  'relaxed.constraints', 'r', 2, "logical", "Save final model as unconstraint network (i.e. all exchange reactions are open). Default: FALSE"  
 ), ncol = 5, byrow = T)
 
 opt <- getopt(spec)
@@ -64,20 +65,22 @@ if ( is.null(opt$verbose) ) { opt$verbose = F }
 if ( is.null(opt$quick.gf) ) { opt$quick.gf = F }
 if ( is.null(opt$bcore) ) { opt$bcore = 50 }
 if ( is.null(opt$no.core) ) { opt$no.core = F }
+if ( is.null(opt$relaxed.constraints) ) { opt$relaxed.constraints = F }
 
 # Arguments:
-mod.file         <- opt$model
-media.file       <- opt$media
-fullmod.file     <- opt$full.model
-target.met       <- opt$target.metabolite
-rxn.weights.file <- opt$rxn.weights.file
-rxnXgene.table   <- opt$rxnXgene.table
-output.dir       <- opt$output.dir
-verbose          <- opt$verbose
-quick.gf         <- opt$quick.gf
-bcore            <- opt$bcore
-met.limit        <- opt$limit
-no.core          <- opt$no.core
+mod.file            <- opt$model
+media.file          <- opt$media
+fullmod.file        <- opt$full.model
+target.met          <- opt$target.metabolite
+rxn.weights.file    <- opt$rxn.weights.file
+rxnXgene.table      <- opt$rxnXgene.table
+output.dir          <- opt$output.dir
+verbose             <- opt$verbose
+quick.gf            <- opt$quick.gf
+bcore               <- opt$bcore
+met.limit           <- opt$limit
+no.core             <- opt$no.core
+relaxed.constraints <- opt$relaxed.constraints
 
 # Parameters:
 dummy.weight <- 100
@@ -579,4 +582,11 @@ mod.out.rxns.added.without.seq <- setdiff(gsub("_.0","",mod.out.rxns.added), rxn
 cat(mod.out.rxns.added.without.seq, file = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled.without.seq.rxnlst"))
 
 saveRDS(mod.out, file = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled.RDS"))
+
+# Save additionally an unconstrained version of the model if desired
+if(relaxed.constraints) {
+  mod.out@lowbnd[grep("^EX_",mod.out@react_id)] <- -sybil::SYBIL_SETTINGS("MAXIMUM")
+  saveRDS(mod.out, file = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled_unconstrained.RDS"))
+}
+
 q(status=0)
