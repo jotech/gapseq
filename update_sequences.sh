@@ -24,8 +24,16 @@ dir_bacrev=$seqpath/rev
 dir_bacunrev=$seqpath/unrev
 
 # check modification time
-mod_bacrev=$(stat -c %Y $dir_bacrev/sequences.tar.gz)
-mod_bacunrev=$(stat -c %Y $dir_bacunrev/sequences.tar.gz)
+if [[ -s $dir_bacrev/sequences.tar.gz ]]; then
+    mod_bacrev=$(stat -c %Y $dir_bacrev/sequences.tar.gz)
+else
+    mod_bacrev=0
+fi
+if [[ -s $dir_bacunrev/sequences.tar.gz ]]; then
+    mod_bacunrev=$(stat -c %Y $dir_bacunrev/sequences.tar.gz)
+else
+    mod_bacunrev=0
+fi
 
 # download if newer
 cd $dir_bacrev && wget -nv -N $url_bacrev
