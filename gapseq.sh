@@ -14,7 +14,7 @@ pwyDatabase="metacyc,custom"
 verbose=1
 taxonomy="Bacteria"
 taxRange="" # taxonomic range for pawthways
-bitcutoff=50 # cutoff blast: min bit score
+bitcutoff=200 # cutoff blast: min bit score
 identcutoff=0   # cutoff blast: min identity
 identcutoff_exception=70  # min identity for enzymes marked as false friends (hight seq similarity but different function)
 covcutoff=75 # cutoff blast: min coverage
@@ -241,26 +241,10 @@ export LC_NUMERIC="en_US.UTF-8"
 seqpath=$dir/dat/seq/$taxonomy
 seqpath_user=$dir/dat/seq/$taxonomy/user
 mkdir -p $seqpath/rev $seqpath/unrev $seqpath_user
-# extract sequence files archive if necessary
-if [[ -s $seqpath/rev/sequences.tar.gz  ]]; then
-    sequenceDB_status=$(md5sum $seqpath/rev/sequences.tar.gz | awk '{print $1}')
-    sequenceDB_n=$(ls $seqpath/rev/*.fasta 2> /dev/null | wc -l)
-    [[ -s $seqpath/rev/version ]] && sequenceDB_version=$(cat $seqpath/rev/version)
-    if [[ ! "$sequenceDB_status" == "$sequenceDB_version" ]] || [[ $sequenceDB_n -eq 0 ]] ; then
-        [[ verbose -ge 1 ]] && echo Extracting sequence files from archive
-        tar xzf $seqpath/rev/sequences.tar.gz -C $seqpath/rev/
-        echo $sequenceDB_status > $seqpath/rev/version
-    fi
-fi
-if [[ -s $seqpath/unrev/sequences.tar.gz  ]]; then
-    sequenceDB_status=$(md5sum $seqpath/unrev/sequences.tar.gz | awk '{print $1}')
-    sequenceDB_n=$(ls $seqpath/unrev/*.fasta 2> /dev/null | wc -l)
-    [[ -s $seqpath/unrev/version ]] && sequenceDB_version=$(cat $seqpath/unrev/version)
-    if [[ ! "$sequenceDB_status" == "$sequenceDB_version" ]] || [[ $sequenceDB_n -eq 0 ]] ; then
-        [[ verbose -ge 1 ]] && echo Extracting sequence files from archive
-        tar xzf $seqpath/unrev/sequences.tar.gz -C $seqpath/unrev/
-        echo $sequenceDB_status > $seqpath/unrev/version
-    fi
+
+# download sequences if needed
+if [[ ! -f $seqpath/rev/sequences.tar.gz  ]] || [[ ! -f $seqpath/unrev/sequences.tar.gz ]]; then
+    $dir/update_sequences.sh $taxonomy
 fi
 
 
