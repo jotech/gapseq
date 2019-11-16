@@ -186,12 +186,24 @@ pres.rxns <- gsub("_.*","",pres.rxns)
 
 # Check if anymore core reactions could be added
 mseed.t <- fread(paste0(script.dir, "/dat/seed_reactions_corrected.tsv"), header=T, stringsAsFactors = F)
+mseed   <- copy(mseed.t)
 mseed.t <- mseed.t[gapseq.status %in% c("approved","corrected")]
 mseed.t <- mseed.t[!(id %in% pres.rxns)]
 mseed.t <- mseed.t[id %in% rxn.weights[bitscore > bcore, seed]]
 
 if(nrow(mseed.t)==0)
   cat("No more core reactions in list, that could be added to the model. Skipping gapfilling-steps 2,2b,3, and 4.\n")
+
+core.plus.present.rxns <- c(rxn.weights[bitscore > bcore, seed], pres.rxns)
+
+# A function that tests if the metabolite that is subject for gafillling steps 3 and 4 are part of 
+# any reaction in the core reaction list or reactions, that are already included in the model. If not
+# gapfilling is not possible and can be skipped.
+checkIfGapfillIsPossible <- function(met) {
+  # metabolite in [e0] compartment ?
+  do.gf <- any(mseed[id %in% core.plus.present.rxns, grepl(gsub("\\[e0","\\[1",met),equation, fixed = T)])
+  return(do.gf)
+} 
 
 if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not contain any new reactions.
   if ( !quick.gf ){
@@ -427,6 +439,8 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
       cat("\r",i,"/",length(ex.met))
       if( ex.id[i] %in% ignore ) 
         next
+      if( !checkIfGapfillIsPossible(ex.met[i]) )
+        next
       
       src.met      <- ex.met[i]
       src.met.name <- ex.met.name[i]
@@ -510,6 +524,8 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     for( i in seq_along(ex.met) ){
       cat("\r",i,"/",length(ex.met))
       if( ex.id[i] %in% ignore ) 
+        next
+      if( !checkIfGapfillIsPossible(ex.met[i]) )
         next
       
       src.met      <- ex.met[i]
