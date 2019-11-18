@@ -8,15 +8,20 @@ find_gram_by_network <- function(file, script.dir){
   ref.info <- fread(paste0(script.dir, "/../dat/", "reference_genomes_edited.tbl"))
   
   dt.new <- fread(file)
+  dt.new$Prediction <- as.numeric(as.logical(dt.new$Prediction))
   org    <- gsub("-all-Pathways.tbl","",basename(file))
   dt.new$org <- org
   
   dcast.new<- dcast.data.table(dt.new, formula=org~ID, value.var = "Prediction")
+  dcast.new<- dcast.new[1,]
   idx.new <- which(colnames(dcast.new) %in% colnames(dcast.gapseq))
   idx.old <- which(colnames(dcast.gapseq) %in% colnames(dcast.new))
   dcast.all <- rbind(dcast.gapseq[,..idx.old],dcast.new[,..idx.new])
   mat.gapseq   <- as.matrix(dcast.all[,-1])
+  
   rownames(mat.gapseq) <- dcast.all$org
+  
+  
   dist.gapseq <- dist(mat.gapseq)
   
   dist.mat <- as.matrix(dist.gapseq)
