@@ -568,12 +568,14 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     mod.fill4 <- constrain.model(mod.fill4, media.file = media.file, scaling.fac = 1)
     mod.out <- mod.fill4
     
-    mod.fill4.sol <- optimizeProb(mod.fill4, retOptSol=F)
+    mod.fill4.sol <- optimizeProb(mod.fill4, retOptSol=F, algorithm = "mtf")
     dt.sol        <- data.table(rxn = mod.fill4@react_id, 
                                 flux = mod.fill4.sol$fluxes[1:mod.fill4@react_num], 
                                 lb = mod.fill4@lowbnd,
                                 met.name = gsub("-e0 Exchange","",mod.fill4@react_name))
-    dt.sol        <- dt.sol[flux < 0 & grepl("^EX_", rxn) & flux <= lb*0.999]
+    dt.sol[, met.name := gsub(" Exchange","", met.name)]
+    dt.sol.u      <- copy(dt.sol[flux < 0 & grepl("^EX_", rxn) & flux <= lb*0.999])
+    dt.sol.p      <- copy(dt.sol[flux > 0 & grepl("^EX_", rxn)][order(-flux)][1:min(c(10,.N))])
     
     cat("\rGapfill summary:\n")
     cat("Filled components:    ",mod.fill4.counter, "(",paste(mod.fill4.names, collapse = ","),")\n")
@@ -581,7 +583,10 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     cat("Final growth rate:    ",mod.fill4.sol$fluxes[which(mod.fill4@obj_coef==1)],"\n\n")
     
     cat("Uptake at limit:\n")
-    cat(paste0(paste(dt.sol$met.name, round(-dt.sol$flux, digits = 3), sep = ":"), collapse = ","),"\n")
+    cat(paste0(paste(dt.sol.u$met.name, round(-dt.sol.u$flux, digits = 3), sep = ":"), collapse = ", "),"\n\n")
+    
+    cat("Top 10 produced metabolites:\n")
+    cat(paste0(paste(dt.sol.p$met.name, round(dt.sol.p$flux, digits = 3), sep = ":"), collapse = ", "),"\n")
   }
   
   
