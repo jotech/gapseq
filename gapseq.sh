@@ -524,7 +524,7 @@ do
             [[ verbose -ge 1 ]] && echo -e "\t\t$query" 
             #out=$rea.blast #$ec.blast
             query_id=$(basename $query)
-            out="${query_id%.*}".blast
+            out="${query_id%.fasta}".blast
             subunits_found=0
             subunits_undefined_found=0
             subunit_prescan=0
