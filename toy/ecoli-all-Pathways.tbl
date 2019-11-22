@@ -139,7 +139,7 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |M-CRESOL-DEGRADATION-PWY|	m-cresol degradation	false	20	1	0	0	
 |MENAQUINONESYN-PWY|	menaquinol-8 biosynthesis	true	100	0	0	0	ADOMET-DMK-METHYLTRANSFER-RXN 
 |METHIONINE-DEG1-PWY|	L-methionine degradation I (to L-homocysteine)	false	33	1	0	0	S-ADENMETSYN-RXN 
-|METHYLGALLATE-DEGRADATION-PWY|	methylgallate degradation	false	40	1	0	0	OXALODECARB-RXN 
+|METHYLGALLATE-DEGRADATION-PWY|	methylgallate degradation	false	20	1	0	0	
 |N2FIX-PWY|	nitrogen fixation I (ferredoxin)	false	0	0	0	0	
 |NAD-BIOSYNTHESIS-III|	NAD biosynthesis III (from nicotinamide)	false	50	0	1	0	2.7.7.1-RXN 
 |NAD-BIOSYNTHESIS-II|	NAD salvage pathway III (to nicotinamide riboside)	true	100	0	2	2	NADPYROPHOSPHAT-RXN RXN-5822 RXN-5822 RXN-5841 
@@ -164,7 +164,7 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |P164-PWY|	purine nucleobases degradation I (anaerobic)	false	47	6	0	0	GUANINE-DEAMINASE-RXN 1.2.1.2-RXN RXN0-901 ACETATEKIN-RXN ACETATEKIN-RXN RXN-7682 FORMYLTHFDEFORMYL-RXN METHENYLTHFCYCLOHYDRO-RXN 
 |P181-PWY|	nicotine degradation I (pyridine pathway)	false	35	1	0	0	NICOTINE-DEHYDROGENASE-RXN R161-RXN SUCCSEMIALDDEHYDROG-RXN GABATRANSAM-RXN 
 |P183-PWY|	catechol degradation to 2-hydroxypentadienoate I	false	0	0	0	0	
-|P184-PWY|	protocatechuate degradation I (meta-cleavage pathway)	false	16	0	1	0	OXALODECARB-RXN 
+|P184-PWY|	protocatechuate degradation I (meta-cleavage pathway)	false	0	0	1	0	
 |P185-PWY|	formaldehyde assimilation III (dihydroxyacetone cycle)	true	91	0	1	1	FORMALDEHYDE-TRANSKETOLASE-RXN F16ALDOLASE-RXN F16BDEPHOS-RXN 2TRANSKETO-RXN TRIOSEPISOMERIZATION-RXN GAPOXNPHOSPHN-RXN PHOSGLYPHOS-RXN TRANSALDOL-RXN 1TRANSKETO-RXN RIB5PISOM-RXN RIBULP3EPIM-RXN 
 |P201-PWY|	nitroglycerin degradation	false	0	5	0	0	
 |P203-PWY|	sulfur disproportionation I (anaerobic)	false	0	1	0	0	
@@ -282,8 +282,8 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY0-1578|	hydrogen to trimethylamine N-oxide electron transfer	false	50	1	0	0	RXN0-5256 
 |PWY0-1581|	nitrate reduction IX (dissimilatory)	true	100	0	0	0	RXN-15740 RXN0-3501 
 |PWY0-1582|	glycerol-3-phosphate to fumarate electron transfer	true	100	0	0	0	RXN-15740 R601-RXN 
-|PWY0-1584|	nitrate reduction X (dissimilatory, periplasmic)	true	100	0	0	0	RXN0-5260 NITRATE-REDUCTASE-CYTOCHROME-RXN RXN-18584 
-|PWY0-1585|	formate to nitrite electron transfer	true	100	0	0	0	FORMATEDEHYDROG-RXN RXN-18604 RXN-18605 
+|PWY0-1584|	nitrate reduction X (dissimilatory, periplasmic)	false	66	0	0	0	RXN0-5260 NITRATE-REDUCTASE-CYTOCHROME-RXN 
+|PWY0-1585|	formate to nitrite electron transfer	false	66	0	0	0	FORMATEDEHYDROG-RXN RXN-18605 
 |PWY0-1586|	peptidoglycan maturation (meso-diaminopimelate containing)	false	50	6	0	0	RXN-16650 RXN-16649 RXN-16660 RXN-16659 RXN-16664 RXN-16665 
 |PWY0-1587|	N6-L-threonylcarbamoyladenosine37-modified tRNA biosynthesis	true	100	0	0	0	RXN-14570 RXN-14569 
 |PWY0-1590|	NADH to hydrogen peroxide electron transfer	false	50	1	0	0	RXN-19020 
@@ -308,7 +308,7 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY0-901|	L-selenocysteine biosynthesis I (bacteria)	true	100	0	1	1	2.7.9.3-RXN 2.9.1.1-RXN RXN0-2161 
 |PWY0-981|	taurine degradation IV	true	100	0	0	0	RXN0-299 
 |PWY-1001|	cellulose biosynthesis	true	100	0	0	0	CELLULOSE-SYNTHASE-UDP-FORMING-RXN 
-|PWY-101|	photosynthesis light reactions	false	50	0	2	0	1.18.1.2-RXN PLASTOQUINOL--PLASTOCYANIN-REDUCTASE-RXN 
+|PWY-101|	photosynthesis light reactions	false	25	0	2	0	1.18.1.2-RXN 
 |PWY-102|	gibberellin inactivation I (2&beta;-hydroxylation)	false	0	10	0	0	
 |PWY-1081|	homogalacturonan degradation	false	0	1	0	0	
 |PWY-112|	lupeol biosynthesis	false	0	1	0	0	
@@ -374,7 +374,7 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-301|	cyclohexane-1-carboxylate degradation (anaerobic)	false	50	0	0	0	R281-RXN 
 |PWY-3061|	menthol biosynthesis	false	0	9	0	0	
 |PWY-3081|	L-lysine biosynthesis V	false	20	3	2	0	RXN-7970 RXN-7970 
-|PWY-3101|	flavonol biosynthesis	true	100	2	0	0	RXN-527 RXN1F-93 RXN-7782 RXN-13718 RXN-8450 
+|PWY-3101|	flavonol biosynthesis	false	28	2	0	0	
 |PWY-3161|	indole-3-acetate biosynthesis III (bacteria)	false	0	0	1	0	
 |PWY-3162|	L-tryptophan degradation V (side chain pathway)	false	15	11	0	0	RXN-5424 RXN-5581 
 |PWY-3181|	L-tryptophan degradation VI (via tryptamine)	false	33	1	0	0	RXN-1401 
@@ -387,7 +387,7 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-3661|	glycine betaine degradation I	false	60	0	1	1	2.1.1.5-RXN RXN-15125 GLYOHMETRANS-RXN 
 |PWY-3721|	choline degradation II	true	100	0	0	0	CHOLINE-OXIDASEII-RXN CHOLINE-OXIDASE-RXN 
 |PWY-3722|	glycine betaine biosynthesis II (Gram-positive bacteria)	true	100	0	0	0	RXN-6021 BADH-RXN 
-|PWY-3781|	aerobic respiration I (cytochrome c)	false	75	0	0	0	1.10.2.2-RXN NADH-DEHYDROG-A-RXN SUCCINATE-DEHYDROGENASE-UBIQUINONE-RXN 
+|PWY-3781|	aerobic respiration I (cytochrome c)	false	50	0	0	0	NADH-DEHYDROG-A-RXN SUCCINATE-DEHYDROGENASE-UBIQUINONE-RXN 
 |PWY-3801|	sucrose degradation II (sucrose synthase)	false	66	0	1	0	FRUCTOKINASE-RXN GLUC1PURIDYLTRANS-RXN PGLUCISOM-RXN PHOSPHOGLUCMUT-RXN 
 |PWY-3881|	mannitol biosynthesis	false	66	1	0	0	MANNITOL-1-PHOSPHATASE-RXN MANNPISOM-RXN 
 |PWY-3941|	&beta;-alanine biosynthesis II	false	66	1	1	0	PROPIONATE--COA-LIGASE-RXN RXN-6383 RXN-6384 
@@ -460,7 +460,7 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-5143|	long-chain fatty acid activation	true	100	0	0	0	RXN-7904 
 |PWY-5148|	acyl-CoA hydrolysis	true	100	0	0	0	THIOESTER-RXN 
 |PWY-5151|	L-tyrosine degradation II	true	100	1	0	0	TYROSINE-AMINOTRANSFERASE-RXN TYROSINE-AMINOTRANSFERASE-RXN TYROSINE-AMINOTRANSFERASE-RXN 
-|PWY-5152|	leucodelphinidin biosynthesis	false	60	1	0	0	RXN-7921 RXN-13718 
+|PWY-5152|	leucodelphinidin biosynthesis	false	20	1	0	0	
 |PWY-5154|	L-arginine biosynthesis III (via N-acetyl-L-citrulline)	false	88	0	1	0	ARGSUCCINSYN-RXN ARGSUCCINLYA-RXN CARBPSYN-RXN RXN-7933 N-ACETYLTRANSFER-RXN ACETYLGLUTKIN-RXN N-ACETYLGLUTPREDUCT-RXN ACETYLORNTRANSAM-RXN 
 |PWY-5155|	&beta;-alanine biosynthesis III	true	100	0	0	0	ASPDECARBOX-RXN 
 |PWY-5159|	trans-4-hydroxy-L-proline degradation II	false	50	1	1	0	25-DIOXOVALERATE-DEHYDROGENASE-RXN 
@@ -476,7 +476,7 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-5194|	siroheme biosynthesis	true	100	0	0	0	DIMETHUROPORDEHYDROG-RXN SIROHEME-FERROCHELAT-RXN UROPORIIIMETHYLTRANSA-RXN RXN-8675 
 |PWY-5196|	factor 430 biosynthesis	false	42	4	0	0	UROPORIIIMETHYLTRANSA-RXN RXN-8675 DIMETHUROPORDEHYDROG-RXN 
 |PWY-5197|	lactate biosynthesis (archaea)	false	50	2	0	0	FUCPALDOL-RXN LACTALDDEHYDROG-RXN 
-|PWY-5198|	factor 420 biosynthesis	false	50	1	0	0	RXN-19229 RXN-19230 
+|PWY-5198|	factor 420 biosynthesis	false	16	1	0	0	
 |PWY-5199|	factor 420 polyglutamylation	false	0	0	0	0	
 |PWY-5203|	soybean saponin I biosynthesis	false	0	8	0	0	
 |PWY-5254|	methanofuran biosynthesis	false	0	4	0	0	
@@ -515,7 +515,7 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-5384|	sucrose degradation IV (sucrose phosphorylase)	true	100	0	1	1	SUCROSE-PHOSPHORYLASE-RXN FRUCTOKINASE-RXN PGLUCISOM-RXN PHOSPHOGLUCMUT-RXN 
 |PWY-5386|	methylglyoxal degradation I	true	100	0	1	1	GLYOXI-RXN GLYOXII-RXN DLACTDEHYDROGFAD-RXN 
 |PWY-5389|	3-methylthiopropanoate biosynthesis	false	0	0	0	0	
-|PWY-5391|	syringetin biosynthesis	false	60	1	0	0	RXN-8450 RXN-13718 
+|PWY-5391|	syringetin biosynthesis	false	20	1	0	0	
 |PWY-5392|	reductive TCA cycle II	false	66	1	3	2	FUMHYDR-RXN SUCCCOASYN-RXN ACONITATEHYDR-RXN ACONITATEDEHYDR-RXN RXN-7929 MALATE-DEH-RXN R601-RXN 
 |PWY-5394|	betalamic acid biosynthesis	false	50	0	1	1	RXN-8460 
 |PWY-5418|	phenol degradation I (aerobic)	false	0	0	0	0	
@@ -543,7 +543,7 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-5493|	reductive monocarboxylic acid cycle	false	50	0	2	1	PYRUVFORMLY-RXN 
 |PWY-5494|	pyruvate fermentation to propanoate II (acrylate pathway)	false	50	0	1	0	LACCOA-RXN PROPIONATE-COA-TRANSFERASE-RXN 
 |PWY-5497|	purine nucleobases degradation II (anaerobic)	false	50	8	0	0	GUANINE-DEAMINASE-RXN 1.2.1.2-RXN RXN0-901 PHOSACETYLTRANS-RXN ACETATEKIN-RXN ACETATEKIN-RXN RXN-15125 FORMYLTHFDEFORMYL-RXN METHENYLTHFCYCLOHYDRO-RXN METHYLENETHFDEHYDROG-NADP-RXN GLYOHMETRANS-RXN 
-|PWY-5499|	vitamin B6 degradation	false	44	1	1	0	PYRIDOXINE-4-OXIDASE-RXN RXN-8757 1.14.12.4-RXN 
+|PWY-5499|	vitamin B6 degradation	false	33	1	1	0	PYRIDOXINE-4-OXIDASE-RXN RXN-8757 
 |PWY-5509|	adenosylcobalamin biosynthesis from adenosylcobinamide-GDP I	true	100	0	1	1	COBALAMIN5PSYN-RXN RXN-8770 DMBPPRIBOSYLTRANS-RXN 
 |PWY-5512|	UDP-N-acetyl-D-galactosamine biosynthesis I	false	0	0	0	0	
 |PWY-5517|	L-arabinose degradation III	false	20	0	0	0	RXN-8775 
@@ -574,7 +574,7 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-5656|	mannosylglycerate biosynthesis I	false	50	0	0	0	3.1.3.70-RXN 
 |PWY-5658|	mannosylglycerate biosynthesis II	false	0	0	0	0	
 |PWY-5659|	GDP-mannose biosynthesis	true	100	0	0	0	MANNPISOM-RXN PHOSMANMUT-RXN 2.7.7.13-RXN PGLUCISOM-RXN 
-|PWY-5660|	taxol biosynthesis	false	7	12	0	0	1.14.13.77-RXN 
+|PWY-5660|	taxol biosynthesis	false	0	12	0	0	
 |PWY-5661|	GDP-glucose biosynthesis	true	100	1	0	0	PHOSPHOGLUCMUT-RXN GLUCOKIN-RXN GLUCOKIN-RXN 
 |PWY-5662|	glucosylglycerate biosynthesis I	false	0	0	0	0	
 |PWY-5663|	erythro-tetrahydrobiopterin biosynthesis I	false	66	0	1	0	4.2.3.12-RXN GTP-CYCLOHYDRO-I-RXN 
@@ -718,10 +718,10 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-6057|	dimethyl sulfide degradation III (oxidation)	false	0	0	0	0	
 |PWY-6058|	dimethyl sulfone degradation	false	0	1	0	0	
 |PWY-6059|	dimethyl sulfide degradation II (oxidation)	false	50	1	0	0	RXN-18086 
-|PWY-6060|	malonate degradation II (biotin-dependent)	false	25	0	0	0	RXN-9777 
+|PWY-6060|	malonate degradation II (biotin-dependent)	false	0	0	0	0	
 |PWY-6061|	bile acid biosynthesis, neutral pathway	false	37	7	0	0	RXN-9796 RXN-9797 RXN-9841 RXN-9845 
 |PWY-6069|	indigo biosynthesis	false	0	1	0	0	
-|PWY-6074|	zymosterol biosynthesis	false	35	6	0	0	RXN66-313 RXN66-318 RXN66-303 RXN66-304 RXN66-305 
+|PWY-6074|	zymosterol biosynthesis	false	14	6	0	0	RXN66-313 RXN66-318 
 |PWY-6075|	ergosterol biosynthesis I	false	20	1	0	0	
 |PWY-6077|	anthranilate degradation II (aerobic)	false	0	0	0	0	
 |PWY-6079|	anthranilate degradation I (aerobic)	false	0	0	0	0	
@@ -841,7 +841,7 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-6413|	ginsenoside degradation III	false	0	1	0	0	
 |PWY-6416|	quinate degradation II	false	66	0	0	0	3-DEHYDROQUINATE-DEHYDRATASE-RXN QUINATE-5-DEHYDROGENASE-RXN 
 |PWY-6419|	shikimate degradation II	false	50	0	0	0	RXN-11174 
-|PWY-641|	proanthocyanidins biosynthesis from flavanols	false	16	4	0	0	RXN-18348 
+|PWY-641|	proanthocyanidins biosynthesis from flavanols	false	0	4	0	0	
 |PWY-6420|	pyrroloquinoline quinone biosynthesis	false	0	3	0	0	
 |PWY-6421|	arsenate detoxification III (mycothiol)	false	0	0	1	0	
 |PWY-6422|	D-arginine degradation	false	0	0	1	0	
@@ -965,7 +965,7 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-6687|	mannosylglucosylglycerate biosynthesis II	false	0	0	0	0	
 |PWY-6690|	cinnamate and 3-hydroxycinnamate degradation to 2-hydroxypentadienoate	true	100	0	0	0	RXN-12072 RXN-12073 RXN-12070 RXN-12071 RXN-10040 
 |PWY-6691|	plaunotol biosynthesis	false	0	2	0	0	
-|PWY-6692|	Fe(II) oxidation	false	33	3	0	0	NADH-DEHYDROG-A-RXN RXN-15829 
+|PWY-6692|	Fe(II) oxidation	false	16	3	0	0	NADH-DEHYDROG-A-RXN 
 |PWY-6694|	oxalate degradation I	false	0	0	0	0	
 |PWY-6695|	oxalate degradation II	true	100	0	0	0	RXN0-1382 OXALYL-COA-DECARBOXYLASE-RXN OXALATE-COA-TRANSFERASE-RXN 
 |PWY-6696|	oxalate degradation III	true	100	1	0	0	OXALATE-COA-TRANSFERASE-RXN 1.2.1.2-RXN OXALYL-COA-DECARBOXYLASE-RXN GLYOXYLATE-DEHYDROGENASE-ACYLATING-RXN 
@@ -1001,7 +1001,7 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-6780|	hydrogen production VI	false	0	0	0	0	
 |PWY-6784|	cellulose and hemicellulose degradation (cellulolosome)	false	0	1	0	0	
 |PWY-6785|	hydrogen production VIII	false	0	0	0	0	
-|PWY-6787|	flavonoid biosynthesis (in equisetum)	false	50	2	0	0	RXN1F-93 RXN-527 RXN-7921 
+|PWY-6787|	flavonoid biosynthesis (in equisetum)	false	20	2	0	0	
 |PWY-6789|	(1,3)-&beta;-D-xylan degradation	false	50	0	0	0	3.2.1.72-RXN 
 |PWY-6790|	L-arabinan degradation	false	0	2	0	0	
 |PWY-6795|	diacylglyceryl-N,N,N-trimethylhomoserine biosynthesis	false	0	1	0	0	
@@ -1025,7 +1025,7 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-6832|	2-aminoethylphosphonate degradation II	false	0	0	1	0	
 |PWY-6834|	spermidine biosynthesis III	false	50	0	1	0	ARGDECARBOX-RXN SAMDECARB-RXN 
 |PWY-6836|	santalene biosynthesis II	false	0	4	0	0	
-|PWY-6853|	ethylene biosynthesis II (microbes)	false	50	0	0	0	RXN-12536 RXN-14116 
+|PWY-6853|	ethylene biosynthesis II (microbes)	false	25	0	0	0	RXN-14116 
 |PWY-6854|	ethylene biosynthesis III (microbes)	true	66	0	1	1	R15-RXN SUPEROX-DISMUT-RXN 
 |PWY-6863|	pyruvate fermentation to hexanol (engineered)	false	58	1	0	0	ACETYL-COA-ACETYLTRANSFER-RXN ACETYL-COA-ACETYLTRANSFER-RXN RXN-11662 RXN-12565 RXN-12570 RXN-12567 
 |PWY-6871|	3-methylbutanol biosynthesis (engineered)	true	83	0	0	0	3-ISOPROPYLMALISOM-RXN 2-ISOPROPYLMALATESYN-RXN RXN-8991 3-ISOPROPYLMALDEHYDROG-RXN RXN-7693 
@@ -1044,17 +1044,17 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-6906|	chitin derivatives degradation	false	75	1	0	0	PHOSACETYLGLUCOSAMINEMUT-RXN NAG6PDEACET-RXN GLUCOSAMINE-6-P-DEAMIN-RXN N-ACETYLGLUCOSAMINE-KINASE-RXN RXN-12629 
 |PWY-6907|	thiamine diphosphate biosynthesis III (Staphylococcus)	false	66	0	0	0	RXN-12610 RXNQT-4191 
 |PWY-6910|	hydroxymethylpyrimidine salvage	true	100	0	0	0	OHMETPYRKIN-RXN PYRIMSYN3-RXN 
-|PWY-6915|	pentalenolactone biosynthesis	false	40	2	0	0	RXN-12649 RXN-12650 
-|PWY-6919|	neopentalenoketolactone and pentalenate biosynthesis	false	20	3	0	0	RXN-12649 RXN-12650 
+|PWY-6915|	pentalenolactone biosynthesis	false	20	2	0	0	
+|PWY-6919|	neopentalenoketolactone and pentalenate biosynthesis	false	0	3	0	0	
 |PWY-6923|	ricinine degradation	false	0	1	0	0	
 |PWY-6932|	selenate reduction	false	25	2	0	0	RXN-12720 
 |PWY-6938|	NADH repair	false	50	1	0	0	RXN-12752 
 |PWY-6941|	styrene degradation	false	33	0	0	0	PHENDEHYD-RXN 
 |PWY-6942|	dTDP-D-desosamine biosynthesis	false	33	0	1	0	DTDPGLUCOSEPP-RXN DTDPGLUCDEHYDRAT-RXN 
 |PWY-6943|	testosterone and androsterone degradation to androstendione	false	40	1	0	0	1.1.1.209-RXN 
-|PWY-6944|	androstenedione degradation	false	50	8	0	0	RXN-12691 RXN-12718 RXN-12735 RXN-12734 RXN-12736 RXN-12746 RXN-12750 RXN-12751 RXN-19800 RXN-19802 RXN-19803 RXN-19804 
-|PWY-6945|	cholesterol degradation to androstenedione I (cholesterol oxidase)	false	29	6	1	0	RXN-12705 RXN-12710 RXN-12848 RXN-12850 RXN-12849 
-|PWY-6946|	cholesterol degradation to androstenedione II (cholesterol dehydrogenase)	false	68	6	1	0	RXN-12705 RXN-12710 RXN-12850 RXN-12849 RXN-12848 RXN-17646 RXN-17647 RXN-17645 RXN-17648 
+|PWY-6944|	androstenedione degradation	false	45	8	0	0	RXN-12718 RXN-12735 RXN-12734 RXN-12736 RXN-12746 RXN-12750 RXN-12751 RXN-19800 RXN-19802 RXN-19803 RXN-19804 
+|PWY-6945|	cholesterol degradation to androstenedione I (cholesterol oxidase)	false	11	6	1	0	RXN-12705 RXN-12710 
+|PWY-6946|	cholesterol degradation to androstenedione II (cholesterol dehydrogenase)	false	40	6	1	0	RXN-12705 RXN-12710 RXN-17645 
 |PWY-6948|	sitosterol degradation to androstenedione	false	5	13	0	0	RXN-12710 
 |PWY-6952|	glycerophosphodiester degradation	true	100	0	0	0	GLYCPDIESTER-RXN RXN-15745 
 |PWY-6953|	dTDP-3-acetamido-&alpha;-D-fucose biosynthesis	false	40	0	1	0	DTDPGLUCOSEPP-RXN DTDPGLUCDEHYDRAT-RXN 
@@ -1132,11 +1132,11 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-7100|	spinosyn A biosynthesis	false	0	9	0	0	
 |PWY-7102|	bisabolene biosynthesis (engineered)	false	50	3	0	0	GPPSYN-RXN IPPISOM-RXN FPPSYN-RXN 
 |PWY-7104|	dTDP-L-megosamine biosynthesis	false	28	4	0	0	DTDPGLUCOSEPP-RXN DTDPGLUCDEHYDRAT-RXN 
-|PWY-7106|	erythromycin D biosynthesis	false	25	0	0	0	RXN-12918 
+|PWY-7106|	erythromycin D biosynthesis	false	0	0	0	0	
 |PWY-7108|	erythromycin A biosynthesis	false	0	0	0	0	
 |PWY-7109|	megalomicin A biosynthesis	false	0	1	0	0	
 |PWY-7111|	pyruvate fermentation to isobutanol (engineered)	true	80	0	0	0	ACETOLACTSYN-RXN ACETOLACTREDUCTOISOM-RXN DIHYDROXYISOVALDEHYDRAT-RXN RXN-7657 
-|PWY-7126|	ethylene biosynthesis IV (engineered)	false	66	0	0	0	GLUTAMATE-DEHYDROGENASE-RXN RXN-13396 
+|PWY-7126|	ethylene biosynthesis IV (engineered)	false	33	0	0	0	GLUTAMATE-DEHYDROGENASE-RXN 
 |PWY-7127|	CDP-D-mannitol biosynthesis	false	0	2	0	0	
 |PWY-7128|	nicotine degradation III (VPP pathway)	false	22	1	0	0	NICOTINE-DEHYDROGENASE-RXN 
 |PWY-7130|	L-glucose degradation	false	50	3	0	0	RXN-13775 DEHYDDEOXGALACTKIN-RXN DEHYDDEOXPHOSGALACT-ALDOL-RXN DEHYDDEOXPHOSGALACT-ALDOL-RXN 
@@ -1176,7 +1176,7 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-7226|	guanosine deoxyribonucleotides de novo biosynthesis I	true	100	0	0	0	GDPREDUCT-RXN DGDPKIN-RXN 
 |PWY-7227|	adenosine deoxyribonucleotides de novo biosynthesis	true	100	0	0	0	ADPREDUCT-RXN DADPKIN-RXN 
 |PWY-722|	nicotinate degradation I	false	0	0	0	0	
-|PWY-7236|	mycocyclosin biosynthesis	false	50	0	0	0	RXN-14313 
+|PWY-7236|	mycocyclosin biosynthesis	false	0	0	0	0	
 |PWY-7241|	myo-inositol degradation II	false	0	3	0	0	
 |PWY-7242|	D-fructuronate degradation	true	83	0	0	0	MANNONOXIDOREDUCT-RXN MANNONDEHYDRAT-RXN DEOXYGLUCONOKIN-RXN KDPGALDOL-RXN KDPGALDOL-RXN 
 |PWY-7246|	pectin degradation I	false	33	1	0	0	RXN-2102 
@@ -1244,8 +1244,8 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-7419|	FR-900098 and FR-33289 antibiotics biosynthesis	false	0	8	0	0	
 |PWY-741|	p-cymene degradation to p-cumate	false	33	1	0	0	RXN-663 
 |PWY-7420|	monoacylglycerol metabolism (yeast)	false	25	0	0	0	RXN-15091 
-|PWY-7421|	narbomycin, pikromycin and novapikromycin biosynthesis	false	66	0	0	0	RXN-15099 RXN-15107 RXN-15106 RXN-15110 
-|PWY-7422|	methymycin, neomethymycin and novamethymycin biosynthesis	false	66	0	0	0	RXN-15101 RXN-15100 RXN-15108 RXN-15109 
+|PWY-7421|	narbomycin, pikromycin and novapikromycin biosynthesis	false	0	0	0	0	
+|PWY-7422|	methymycin, neomethymycin and novamethymycin biosynthesis	false	0	0	0	0	
 |PWY-7425|	2-chloroacrylate degradation I	true	66	0	1	1	RXN-14536 DLACTDEHYDROGFAD-RXN 
 |PWY-7428|	2-chloroacrylate degradation II	false	0	1	0	0	
 |PWY-7429|	arsenite oxidation II (respiratory)	false	0	0	0	0	
@@ -1278,7 +1278,7 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-7506|	phosphatidylserine biosynthesis II	false	0	1	0	0	
 |PWY-7510|	rhizocticin A and B biosynthesis	false	0	10	0	0	
 |PWY-7512|	3,5,6-trichloro-2-pyridinol degradation	false	0	2	0	0	
-|PWY-7513|	flaviolin dimer and mompain biosynthesis	false	40	2	0	0	RXN-9932 RXN-9933 
+|PWY-7513|	flaviolin dimer and mompain biosynthesis	false	0	2	0	0	
 |PWY-7514|	L-tyrosine degradation IV (to 4-methylphenol)	true	80	1	0	0	TYROSINE-AMINOTRANSFERASE-RXN TYROSINE-AMINOTRANSFERASE-RXN TYROSINE-AMINOTRANSFERASE-RXN 
 |PWY-7515|	trans-3-hydroxy-L-proline degradation	false	0	0	2	0	
 |PWY-7516|	L-lyxonate degradation	false	0	0	0	0	
@@ -1446,8 +1446,8 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |PWY-7812|	tetracycline and oxytetracycline biosynthesis	false	0	0	0	0	
 |PWY-7813|	thiosulfate disproportionation III (quinone)	false	0	0	0	0	
 |PWY-7814|	dTDP-L-daunosamine biosynthesis	false	50	3	0	0	DTDPDEHYDRHAMEPIM-RXN DTDPGLUCOSEPP-RXN DTDPGLUCDEHYDRAT-RXN 
-|PWY-7815|	poly(ribitol phosphate) wall teichoic acid biosynthesis I (B. subtilis)	false	33	2	1	0	UDPGLCNACEPIM-RXN GLCNACPTRANS-RXN RXN-18029 
-|PWY-7816|	poly(ribitol phosphate) wall teichoic acid biosynthesis II (S. aureus)	false	29	2	2	0	UDPGLCNACEPIM-RXN GLCNACPTRANS-RXN TRANS-RXN-314 
+|PWY-7815|	poly(ribitol phosphate) wall teichoic acid biosynthesis I (B. subtilis)	false	26	2	1	0	UDPGLCNACEPIM-RXN GLCNACPTRANS-RXN 
+|PWY-7816|	poly(ribitol phosphate) wall teichoic acid biosynthesis II (S. aureus)	false	23	2	2	0	UDPGLCNACEPIM-RXN GLCNACPTRANS-RXN 
 |PWY-7817|	type I lipoteichoic acid biosynthesis (S. aureus)	false	29	8	0	0	GLUC1PURIDYLTRANS-RXN DIACYLGLYKIN-RXN CDPDIGLYSYN-RXN PHOSPHAGLYPSYN-RXN PGPPHOSPHA-RXN 
 |PWY-7818|	type IV lipoteichoic acid biosynthesis (S. pneumoniae)	false	5	11	0	0	TRANS-RXN-319 
 |PWY-7819|	poly(3-O-&beta;-D-glucopyranosyl-N-acetylgalactosamine 1-phosphate) wall teichoic acid biosynthesis	false	18	4	1	0	UDPGLCNACEPIM-RXN GLCNACPTRANS-RXN 
@@ -1627,7 +1627,7 @@ ID	Name	Prediction	Completeness	VagueReactions	KeyReactions	KeyReactionsFound	Re
 |SULFUROX-PWY|	sulfur oxidation I (aerobic)	false	0	0	0	0	
 |TAURINEDEG-PWY|	taurine degradation III	true	100	0	0	0	RXN-2301 
 |TCA|	TCA cycle I (prokaryotic)	true	100	0	3	3	FUMHYDR-RXN SUCCCOASYN-RXN 2OXOGLUTARATEDEH-RXN ACONITATEHYDR-RXN CITSYN-RXN CITSYN-RXN ACONITATEDEHYDR-RXN MALATE-DEHYDROGENASE-ACCEPTOR-RXN ISOCITDEH-RXN MALATE-DEH-RXN RXN-14971 
-|TEICHOICACID-PWY|	poly(glycerol phosphate) wall teichoic acid biosynthesis	false	50	3	1	0	UDPGLCNACEPIM-RXN GLCNACPTRANS-RXN RXN-18028 
+|TEICHOICACID-PWY|	poly(glycerol phosphate) wall teichoic acid biosynthesis	false	41	3	1	0	UDPGLCNACEPIM-RXN GLCNACPTRANS-RXN 
 |THIOREDOX-PWY|	thioredoxin pathway	false	50	1	0	0	THIOREDOXIN-REDUCT-NADPH-RXN 
 |THIOSULFOX-PWY|	thiosulfate oxidation I (to tetrathionate)	false	0	0	0	0	
 |THRDLCTCAT-PWY|	L-threonine degradation III (to methylglyoxal)	true	100	0	0	0	THREODEHYD-RXN AMACETOXID-RXN 
@@ -1669,10 +1669,10 @@ IMPSYN-HIGH-HCO3	inosine-5'-phosphate biosynthesis at high carbonate levels	fals
 PWY-6559-2	spermidine biosynthesis II (only one key enzyme)	true	75	0	1	1	ASPARTATEKIN-RXN ASPARTATE-SEMIALDEHYDE-DEHYDROGENASE-RXN RXN-11564 
 MQL-OXIDASE-PWY	menaquinol oxidase (cytochrom aa3-600)	true	100	0	1	1	RXN-12164 
 PYR-TO-BUT-NADPH	3-hydroxybutyryl-CoA dehydrogenase	true	100	0	0	0	3-HYDROXYBUTYRYL-COA-DEHYDROGENASE-RXN 
-MUC-GLYCAN_DEG	Mucus glycans degradation	false	40	1	0	0	RXN-12088 3.2.1.23-RXN 3.2.1.52-RXN 
+MUC-GLYCAN_DEG	Mucus glycans degradation	false	40	0	0	0	RXN-12088 3.2.1.23-RXN 3.2.1.52-RXN 3.2.1.24-RXN 
 |NADPHOS-DEPHOS-PWY|	NAD phosphorylation and dephosphorylation	true	100	0	2	1	NAD-KIN-RXN TRANS-RXN0-277 RXN-5822 RXN-5822 
 PWY1	Oxidase test	false	0	0	1	0	
 PWY2	Catalase test	true	100	0	1	1	rxn1 
 PWY3	leucyl aminopeptidase test	true	100	0	1	1	rxn1 
 PWY4	arginine deiminase test	false	0	0	1	0	
-MUC-GLYCAN_DEG	Mucus glycans degradation	false	40	1	0	0	RXN-12088 3.2.1.23-RXN 3.2.1.52-RXN 
+MUC-GLYCAN_DEG	Mucus glycans degradation	false	40	0	0	0	RXN-12088 3.2.1.23-RXN 3.2.1.52-RXN 3.2.1.24-RXN 
