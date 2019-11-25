@@ -234,13 +234,16 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   cat("\n")
   warnings()
   # Adding Biomass reaction
-  if(biomass == "neg")
+  if(biomass == "neg"){
     dt.bm <- fread(paste0(script.dir, "/../dat/seed_biomass.DT_gramNeg.tsv"))
-  if(biomass == "pos")
+    dt.bm2<- fread(paste0(script.dir, "/../dat/seed_biomass.DT_gramNeg_anaerobe.tsv"))
+  }
+  if(biomass == "pos"){
     dt.bm <- fread(paste0(script.dir, "/../dat/seed_biomass.DT_gramPos.tsv"))
+    dt.bm2<- fread(paste0(script.dir, "/../dat/seed_biomass.DT_gramPos_anaerobe.tsv"))
+  }
   if(biomass == "archaea")
     dt.bm <- fread(paste0(script.dir, "/../dat/seed_biomass.DT_archaea.tsv"))
-  
   
   # remove ubiquinione from Biomass if ne novo biosynthesis pathway is absent
   if(is.na(dt[grepl("PWY-6708",pathway),pathway.status][1])) {
@@ -256,6 +259,11 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   mod <- sybil::addReact(mod,id = "bio1", met = dt.bm$id, Scoef = dt.bm$stoich, reversible = F, lb = 0, ub = 1000, obj = 1, 
                   reactName = paste0("Biomass reaction ", biomass), metName = dt.bm$name, metComp = dt.bm$comp)
   mod@react_attr[which(mod@react_id == "bio1"),c("gs.origin","seed")] <- data.frame(gs.origin = 6, seed = "bio1", stringsAsFactors = F)
+  if( exists("dt.bm2") ){
+    mod <- sybil::addReact(mod,id = "bio2", met = dt.bm2$id, Scoef = dt.bm2$stoich, reversible = F, lb = 0, ub = 1000, obj = 1, 
+                           reactName = paste0("Biomass reaction anaerobic", biomass), metName = dt.bm2$name, metComp = dt.bm2$comp)
+    mod@react_attr[which(mod@react_id == "bio2"),c("gs.origin","seed")] <- data.frame(gs.origin = 6, seed = "bio2", stringsAsFactors = F)
+  }
   
   mod <- add_missing_exchanges(mod) 
   
