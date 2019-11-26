@@ -256,7 +256,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   #}
   
   # remove menaquinone8 from anaerobic Biomass if ne novo biosynthesis pathway is absent
-  if(is.na(dt[grepl("MENAQUINONESYN-PWY",pathway),pathway.status][1])) {
+  if( is.na(dt[grepl("MENAQUINONESYN-PWY",pathway),pathway.status][1]) | is.na(dt[grepl("PWY-5852",pathway),pathway.status][1]) | is.na(dt[grepl("PWY-5837",pathway),pathway.status][1]) ){
     dt.bm2 <- dt.bm2[id != "cpd15500[c0]"] # Menaquinone-8
     dt.bm2 <- dt.bm2[id != "cpd15352[c0]"] # 2-Demethylmenaquinone-8
   }
