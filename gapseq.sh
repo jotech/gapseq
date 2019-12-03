@@ -521,7 +521,7 @@ do
         [[ "$skipBlast" = true ]] && { continue; }
 
         if [ -s $query ]; then
-            [[ verbose -ge 1 ]] && echo -e "\t\t$query" 
+            [[ verbose -ge 1 ]] && echo -e "\t\t$query (`cat $query | grep ">" | wc -l` sequences)"
             #out=$rea.blast #$ec.blast
             query_id=$(basename $query)
             out="${query_id%.fasta}".blast
