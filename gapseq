@@ -8,16 +8,16 @@ usage()
 {
     echo "gapseq: prediction and analysis of bacterial metabolic pathways and genome-scale networks"
     echo -e "\nUsage:"
-    echo "  gapfill (find | transport | draft | fill | doall)"
+    echo "  gapfill (find | find-transport | draft | fill | doall)"
     echo "  gapfill doall toy/ecoli.fna.gz"
     echo -e "\nOptions:"
-    echo "  find       Pathway analysis, try to find enzymes based on homology."
-    echo "  transport  Search for transporters based on homology."
-    echo "  draft      Draft model construction based on results from find and transport."
-    echo "  fill       Gap filling of a model."
-    echo "  doall      Combine find, transport, draft and fill."
-    echo "  -v         Show version."
-    echo "  -h         Show this screen."
+    echo "  find            Pathway analysis, try to find enzymes based on homology."
+    echo "  find-transport  Search for transporters based on homology."
+    echo "  draft           Draft model construction based on results from find and find-transport."
+    echo "  fill            Gap filling of a model."
+    echo "  doall           Combine find, find-transport, draft and fill."
+    echo "  -v              Show version."
+    echo "  -h              Show this screen."
     exit 1
 }
 [ "$#" -eq 0 ] && { usage; }
@@ -25,8 +25,8 @@ usage()
 if   [ "$1" == "find" ]; then
     parm=$(echo $@ | sed 's/find//')
     $dir/src/gapseq_find.sh $parm
-elif [ "$1" == "transport" ]; then
-    parm=$(echo $@ | sed 's/transport//')
+elif [ "$1" == "find-transport" ]; then
+    parm=$(echo $@ | sed 's/find-transport//')
     $dir/src/transporter.sh $parm
     
 elif [ "$1" == "draft" ]; then
