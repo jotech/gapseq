@@ -1,0 +1,54 @@
+#!/bin/bash
+
+curdir=$(pwd)
+path=$(readlink -f "$0")
+dir=$(dirname "$path")
+
+usage()
+{
+    echo "gapseq: prediction and analysis of bacterial metabolic pathways and genome-scale networks"
+    echo -e "\nUsage:"
+    echo "  gapfill (find | transport | draft | fill | doall)"
+    echo "  gapfill doall toy/ecoli.fna.gz"
+    echo -e "\nOptions:"
+    echo "  find       Pathway analysis, try to find enzymes based on homology."
+    echo "  transport  Search for transporters based on homology."
+    echo "  draft      Draft model construction based on results from find and transport."
+    echo "  fill       Gap filling of a model."
+    echo "  doall      Combine find, transport, draft and fill."
+    echo "  -v         Show version."
+    echo "  -h         Show this screen."
+    exit 1
+}
+[ "$#" -eq 0 ] && { usage; }
+
+if   [ "$1" == "find" ]; then
+    parm=$(echo $@ | sed 's/find//')
+    $dir/src/gapseq_find.sh $parm
+elif [ "$1" == "transport" ]; then
+    parm=$(echo $@ | sed 's/transport//')
+    $dir/src/transporter.sh $parm
+    
+elif [ "$1" == "draft" ]; then
+    parm=$(echo $@ | sed 's/draft//')
+    Rscript src/generate_GSdraft.R $parm
+
+elif [ "$1" == "fill" ]; then
+    parm=$(echo $@ | sed 's/fill//')
+    Rscript $dir/src/gf.suite.R $parm
+
+elif [ "$1" == "doall" ]; then
+    parm=$(echo $@ | sed 's/doall//')
+    file=$2
+    id="${file%.*}"
+    [[ $file == *.gz ]] && { id="${id%.*}"; }
+    $dir/src/gapseq_find.sh -v 0 -b 200 -p all -m bacteria $file
+    $dir/transporter.sh -b 200 $file
+    Rscript src/generate_GSdraft.R -r $id-all-Reactions.tbl -t $id-Transporter.tbl -c $file -u 200 -l 100 -a 2 -p $id-all-Pathways.tbl
+    Rscript src/gf.suite.R -m ./${id}.RDS -n dat/media/ALLmed.csv -c ./${id}-rxnWeights.RDS -b 100 -g ./${id}-rxnXgenes.RDS
+
+else
+    usage
+fi
+
+
