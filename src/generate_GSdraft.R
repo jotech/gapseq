@@ -271,7 +271,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   }
   
   # add p-cresol sink reaction (further metabolism unclear especially relevant for anaerobic conditions)
-  mod <- sybil::addReact(mod, id="DM_cpd01042_c0", reactName="Sink needed for p-cresol", met="cpd01042[c0]", Scoef=-1, lb=0, ub=1000)
+  mod <- sybil::addReact(mod, id="DM_cpd01042_c0", reactName="Sink needed for p-cresol", met="cpd01042[c0]", Scoef=-1, lb=0, ub=1000, metComp = 1)
   
   mod <- add_missing_exchanges(mod) 
   
@@ -279,7 +279,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   mod <- addMetAttr(mod, seed_x_mets = seed_x_mets)
   
   # add metabolite compartment list
-  n.comp <- max(mod@met_comp)
+  n.comp <- max(mod@met_comp, na.rm = T)
   if(n.comp == 2)
     mod@mod_compart <- c("c0","e0")
   if(n.comp == 3)
