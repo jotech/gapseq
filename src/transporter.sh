@@ -60,11 +60,11 @@ shift $((OPTIND-1))
 curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
-tcdb=$dir/dat/seq/tcdb.fasta
-otherDB=$dir/dat/seq/transporter.fasta
-subDB=$dir/dat/sub2pwy.csv
-seedDB=$dir/dat/seed_transporter.tbl
-customDB=$dir/dat/seed_transporter_custom.tbl
+tcdb=$dir/../dat/seq/tcdb.fasta
+otherDB=$dir/../dat/seq/transporter.fasta
+subDB=$dir/../dat/sub2pwy.csv
+seedDB=$dir/../dat/seed_transporter.tbl
+customDB=$dir/../dat/seed_transporter_custom.tbl
 
 # tmp working directory
 fasta=$(readlink -f "$1") # save input file before changing to temporary directory

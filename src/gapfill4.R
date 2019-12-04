@@ -1,6 +1,6 @@
 gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
                      dummy.weight = 100, script.dir, core.only = FALSE, verbose=verbose, gs.origin = NA, rXg.tab) {
-  source(paste0(script.dir, "/src/sysBiolAlg_mtfClass2.R"))
+  source(paste0(script.dir, "/sysBiolAlg_mtfClass2.R"))
   # backup model
   mod.orig.bak <- mod.orig
   
@@ -19,7 +19,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
   pres.rxns <- gsub("_.*","",pres.rxns)
   
   # Get all reactions (non-duplicates) that are not yet part of the model
-  mseed <- fread(paste0(script.dir, "/dat/seed_reactions_corrected.tsv"), header=T, stringsAsFactors = F)
+  mseed <- fread(paste0(script.dir, "/../dat/seed_reactions_corrected.tsv"), header=T, stringsAsFactors = F)
   mseed <- mseed[gapseq.status %in% c("approved","corrected")]
   mseed <- mseed[!(id %in% pres.rxns)]
   

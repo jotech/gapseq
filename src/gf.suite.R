@@ -55,12 +55,12 @@ if( "cplexAPI" %in% rownames(installed.packages()) ){
 }
 
 # Setting defaults if required
-if ( is.null(opt$full.model ) ) { opt$full.model = paste0(script.dir,"/dat/full.model.RDS") }
+if ( is.null(opt$full.model ) ) { opt$full.model = paste0(script.dir,"/../dat/full.model.RDS") }
 if ( is.null(opt$target.metabolite) ) { opt$target.metabolite = "cpd11416" }
 if ( is.null(opt$output.dir) ) { opt$output.dir = "." }
 if ( is.null(opt$sbml.output) ) { opt$sbml.output = F }
 #if ( is.null(opt$model) ) { opt$model = "" }
-if ( is.null(opt$media) ) { opt$media = paste0(script.dir,"/dat/media/MM_glu.csv") }
+if ( is.null(opt$media) ) { opt$media = paste0(script.dir,"/../dat/media/MM_glu.csv") }
 if ( is.null(opt$verbose) ) { opt$verbose = F }
 if ( is.null(opt$quick.gf) ) { opt$quick.gf = F }
 if ( is.null(opt$bcore) ) { opt$bcore = 50 }
@@ -92,12 +92,12 @@ rxn.weights <- readRDS(rxn.weights.file)
 rXg.tab     <- readRDS(rxnXgene.table)
 
 # Little helpers
-source(paste0(script.dir,"/src/add_missing_exRxns.R"))
-source(paste0(script.dir,"/src/constrain.model.R"))
-source(paste0(script.dir,"/src/gapfill4.R"))
-source(paste0(script.dir,"/src/generate_rxn_stoich_hash.R"))
-source(paste0(script.dir,"/src/get_gene_logic_string.R"))
-source(paste0(script.dir,"/src/addMetAttr.R"))
+source(paste0(script.dir,"/add_missing_exRxns.R"))
+source(paste0(script.dir,"/constrain.model.R"))
+source(paste0(script.dir,"/gapfill4.R"))
+source(paste0(script.dir,"/generate_rxn_stoich_hash.R"))
+source(paste0(script.dir,"/get_gene_logic_string.R"))
+source(paste0(script.dir,"/addMetAttr.R"))
 
 rm.na <- function(vec){
   idx <- which(is.na(vec))
@@ -113,8 +113,8 @@ if( no.core ){
 }
 
 # database files
-carbon.source <- fread(paste0(script.dir, "/dat/sub2pwy.csv"))
-seed_x_mets   <- fread(paste0(script.dir,"/dat/seed_metabolites_edited.tsv"), header=T, stringsAsFactors = F, na.strings = c("null","","NA"))
+carbon.source <- fread(paste0(script.dir, "/../dat/sub2pwy.csv"))
+seed_x_mets   <- fread(paste0(script.dir,"/../dat/seed_metabolites_edited.tsv"), header=T, stringsAsFactors = F, na.strings = c("null","","NA"))
 
 # potentially limit carbon.source
 if ( length(met.limit) > 0 ){
@@ -153,7 +153,7 @@ if( media.file == "complete" ){
   met.id  <- gsub("\\[.0\\]","",mod.orig@met_id[met.pos])
   met.name<- mod.orig@met_name[met.pos]
   media <- data.frame(compounds=met.id, name=met.name, maxFlux=100)
-  media.file <- paste0(script.dir,"/dat/media/ALLmed.csv")
+  media.file <- paste0(script.dir,"/../dat/media/ALLmed.csv")
   write.csv(media, media.file, quote = F, row.names = F)
 }
 
@@ -186,7 +186,7 @@ pres.rxns <- mod.orig@react_id
 pres.rxns <- gsub("_.*","",pres.rxns)
 
 # Check if anymore core reactions could be added
-mseed.t <- fread(paste0(script.dir, "/dat/seed_reactions_corrected.tsv"), header=T, stringsAsFactors = F)
+mseed.t <- fread(paste0(script.dir, "/../dat/seed_reactions_corrected.tsv"), header=T, stringsAsFactors = F)
 mseed   <- copy(mseed.t)
 mseed.t <- mseed.t[gapseq.status %in% c("approved","corrected")]
 mseed.t <- mseed.t[!(id %in% pres.rxns)]
@@ -213,7 +213,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   mod.orig2 <- mod.out
   
   # load minimal medium and add available carbon sources
-  media2 <- fread(paste0(script.dir,"/dat/media/MM_glu.csv"))
+  media2 <- fread(paste0(script.dir,"/../dat/media/MM_glu.csv"))
   src.met <- carbon.source[guild %in% c("Carbohydrates", "Polymers", "Carboxylic acids", "Amino acids") & exid_seed %in% mod.orig2@react_id, .(id_seed,name,guild)]
   if( nrow(src.met) == 0)
     stop("No carbon source exchange reactions found in model")
@@ -294,7 +294,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   
   
   
-  media2 <- fread(paste0(script.dir,"/dat/media/MM_glu.csv")) # load minimal medium and add available carbon sources
+  media2 <- fread(paste0(script.dir,"/../dat/media/MM_glu.csv")) # load minimal medium and add available carbon sources
   if( length(grep("cpd00007", fread(media.file)$compounds)) > 0 ){
     cat("\n\n2b. Anaerobic biomass gapfilling using core reactions only\n")
     media2 <- media2[name!="O2"] # remove oxygen
@@ -400,8 +400,8 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     cat("\n\n3. Energy source gapfilling with core reactions only\n")
     
     mod.orig3 <- mod.out
-    media.org <- fread(paste0(script.dir,"/dat/media/MM_glu.csv")) # use minimal medium
-    #media.org <- fread(paste0(script.dir,"/dat/media/Mineral_salt.csv")) # use minimal medium
+    media.org <- fread(paste0(script.dir,"/../dat/media/MM_glu.csv")) # use minimal medium
+    #media.org <- fread(paste0(script.dir,"/../dat/media/Mineral_salt.csv")) # use minimal medium
     
     ex          <- findExchReact(mod.orig3)
     ex.ind      <- ex@react_pos
@@ -497,7 +497,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     cat("\n\n4. Checking for potential metabolic products with core reactions only\n")
     
     mod.orig4 <- mod.out
-    media.org <- fread(paste0(script.dir,"/dat/media/MM_glu.csv")) # use minimal medium
+    media.org <- fread(paste0(script.dir,"/../dat/media/MM_glu.csv")) # use minimal medium
     
     ex          <- findExchReact(mod.orig4)
     ex.ind      <- ex@react_pos

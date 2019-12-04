@@ -67,20 +67,20 @@ curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
 uniprotIdentity=0.9 # clustered uniprot database (0.5 or 0.9)
-metaPwy=$dir/dat/meta_pwy.tbl
-keggPwy=$dir/dat/kegg_pwy.tbl
-seedPwy=$dir/dat/seed_pwy.tbl
-customPwy=$dir/dat/custom_pwy.tbl
-metaRea=$dir/dat/meta_rea.tbl
-reaDB1=$dir/dat/vmh_reactions.csv
-reaDB2=$dir/dat/bigg_reactions.tbl
-reaDB3=$dir/dat/seed_reactions_corrected.tsv
-reaDB4=$dir/dat/mnxref_seed.tsv
-reaDB5=$dir/dat/mnxref_seed-other.tsv
-brenda=$dir/dat/brenda_ec_edited.csv
-seedEC=$dir/dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
-seedEnzymesNames=$dir/dat/seed_Enzyme_Name_Reactions_Aliases.tsv
-altecdb=$dir/dat/altec.csv
+metaPwy=$dir/../dat/meta_pwy.tbl
+keggPwy=$dir/../dat/kegg_pwy.tbl
+seedPwy=$dir/../dat/seed_pwy.tbl
+customPwy=$dir/../dat/custom_pwy.tbl
+metaRea=$dir/../dat/meta_rea.tbl
+reaDB1=$dir/../dat/vmh_reactions.csv
+reaDB2=$dir/../dat/bigg_reactions.tbl
+reaDB3=$dir/../dat/seed_reactions_corrected.tsv
+reaDB4=$dir/../dat/mnxref_seed.tsv
+reaDB5=$dir/../dat/mnxref_seed-other.tsv
+brenda=$dir/../dat/brenda_ec_edited.csv
+seedEC=$dir/../dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
+seedEnzymesNames=$dir/../dat/seed_Enzyme_Name_Reactions_Aliases.tsv
+altecdb=$dir/../dat/altec.csv
 
 
 # A POSIX variable
@@ -238,8 +238,8 @@ esac
 
 # squence directory
 export LC_NUMERIC="en_US.UTF-8"
-seqpath=$dir/dat/seq/$taxonomy
-seqpath_user=$dir/dat/seq/$taxonomy/user
+seqpath=$dir/../dat/seq/$taxonomy
+seqpath_user=$dir/../dat/seq/$taxonomy/user
 mkdir -p $seqpath/rev $seqpath/unrev $seqpath_user
 
 # download sequences if needed
@@ -360,7 +360,7 @@ echo -e "ID\tName\tPrediction\tCompleteness\tVagueReactions\tKeyReactions\tKeyRe
 
 #taxRange=Proteobacteria
 if [ -n "$taxRange" ]; then
-    validTax=$(grep -i $taxRange $dir/dat/taxonomy.tbl | cut -f1 | tr '\n' '|' | sed 's/.$//')
+    validTax=$(grep -i $taxRange $dir/../dat/taxonomy.tbl | cut -f1 | tr '\n' '|' | sed 's/.$//')
     pwyDB_new=$(echo "$pwyDB" | grep -wE `echo TAX-$validTax`)
     pwyDB_old=$(echo "$pwyDB" | awk -F '\t' 'BEGIN {OFS=FS="\t"} $5=="" {print $0}')
     pwyDB=$(echo "$pwyDB_new""$pwyDB_old")
@@ -406,9 +406,9 @@ do
         EC_test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
         [[ verbose -ge 1 ]] && echo -e "\t$j) $rea $reaName $ec"
         [[ -z "$rea" ]] && { continue; }
-        [[ -n "$ec" ]] && [[ -n "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw -e "$ec" -e "$reaName" $dir/dat/exception.tbl | wc -l); }
-        ( [[ -z "$ec" ]] || [[ -z "$EC_test" ]] ) && [[ -n "$reaName" ]] && { is_exception=$(grep -Fw "$reaName" $dir/dat/exception.tbl | wc -l); }
-        [[ -n "$ec" ]] && [[ -z "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw "$ec" $dir/dat/exception.tbl | wc -l); }
+        [[ -n "$ec" ]] && [[ -n "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw -e "$ec" -e "$reaName" $dir/../dat/exception.tbl | wc -l); }
+        ( [[ -z "$ec" ]] || [[ -z "$EC_test" ]] ) && [[ -n "$reaName" ]] && { is_exception=$(grep -Fw "$reaName" $dir/../dat/exception.tbl | wc -l); }
+        [[ -n "$ec" ]] && [[ -z "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw "$ec" $dir/../dat/exception.tbl | wc -l); }
         if [[ $is_exception -gt 0 ]] && [[ $identcutoff -lt $identcutoff_exception ]];then # take care of similair enzymes with different function
             identcutoff_tmp=$identcutoff_exception
             [[ verbose -ge 1 ]] && echo -e "\t\tUsing higher identity cutoff for $rea"
@@ -427,11 +427,11 @@ do
             # check if sequence is not available => try to download
             if [ ! -f $seqpath/rev/$ec.fasta ]; then
                 [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $ec 
-                $dir/src/uniprot.sh -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                $dir/uniprot.sh -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
             fi
             if [ ! -f $seqpath/unrev/$ec.fasta ] && [ $seqSrc -gt 1 ]; then 
                 [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unreviewed sequences for: $ec 
-                 $dir/src/uniprot.sh -u -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                 $dir/uniprot.sh -u -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
             fi
             if [ -s "$seqpath_user/$ec.fasta" ]; then
                 [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
@@ -458,11 +458,11 @@ do
                 for aec in $altec; do
                     if [ ! -f $seqpath/rev/$aec.fasta ]; then
                         [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $aec 
-                        $dir/src/uniprot.sh -e "$aec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                        $dir/uniprot.sh -e "$aec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
                     fi
                     if [ ! -f $seqpath/unrev/$aec.fasta ] && [ $seqSrc -gt 1 ]; then 
                         [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unreviewed sequences for: $aec 
-                        $dir/src/uniprot.sh -u -e "$aec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                        $dir/uniprot.sh -u -e "$aec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
                     fi
                     if [ -s "$seqpath_user/$aec.fasta" ]; then
                         [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
@@ -496,11 +496,11 @@ do
             # check if sequence is not available => try to download
             if [ ! -f $seqpath/rev/$reaNameHash.fasta ]; then
                 [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $reaName "\n\t\t(hash: $reaNameHash)" 
-                $dir/src/uniprot.sh -r "$reaName" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                $dir/uniprot.sh -r "$reaName" -t "$taxonomy" -i $uniprotIdentity >/dev/null
             fi
             if [ ! -f $seqpath/unrev/$reaNameHash.fasta ] && [ $seqSrc -gt 1 ]; then 
                 [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unriewed sequences for: $reaName "\n\t\t(hash: $reaNameHash)" 
-                $dir/src/uniprot.sh -u -r "$reaName" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                $dir/uniprot.sh -u -r "$reaName" -t "$taxonomy" -i $uniprotIdentity >/dev/null
             fi
             if [ -s "$seqpath_user/$reaNameHash.fasta" ]; then
                 [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
@@ -533,7 +533,7 @@ do
             if [ ! -f $out ]; then # check if there is a former hit
                 subunit_prescan=$(cat $query | sed -n 's/^>//p' | grep -E 'subunit|chain|polypeptide|component' | wc -l) # prescan if subunits can be found because detection script is time intensive
                 if [ $subunit_prescan -gt 0 ]; then
-                    Rscript $dir/src/complex_detection.R $query subunit_tmp.fasta # set new fasta header with consistent subunit classification (avoid mix of arabic,latin and greek numbers)
+                    Rscript $dir/complex_detection.R $query subunit_tmp.fasta # set new fasta header with consistent subunit classification (avoid mix of arabic,latin and greek numbers)
                     query=$(readlink -f subunit_tmp.fasta)
                 fi
 
@@ -564,7 +564,7 @@ do
                         cp $query query_subunit.fasta
                     fi
                     #csplit -s -z query_subunit.fasta '/>/' '{*}' # split multiple fasta file and skip further testing if a significant hit is found
-                    $dir/src/fasta-splitter.pl --n-parts 10 query_subunit.fasta >/dev/null
+                    $dir/fasta-splitter.pl --n-parts 10 query_subunit.fasta >/dev/null
                     #for q in `ls xx*`
                     subunits_found_old=$subunits_found
                     for q in `ls query_subunit.part-*.fasta`
@@ -634,7 +634,7 @@ do
                                 subiter_log=$(cat reactions.tbl | awk -F "\t" -v rea="$rea" -v subiter_tmp="$subiter_tmp" '$1==rea && $18==subiter_tmp { print $0 }')
                             fi
                             echo "$subiter_log" | awk -F "\t" '{print ">"$5"\n"$13}' > $rea.hit.$iter.fasta
-                            blastp -db $dir/dat/seq/uniprot_sprot -query "$rea.hit.$iter.fasta" -outfmt '6 pident bitscore qcovs sseqid qseqid' > $rea.hit.blast 2>/dev/null
+                            blastp -db $dir/../dat/seq/uniprot_sprot -query "$rea.hit.$iter.fasta" -outfmt '6 pident bitscore qcovs sseqid qseqid' > $rea.hit.blast 2>/dev/null
 
                             #forward_hit=$(echo "$bhit" | sort -rgk 4,4 | cut -f1 | sed 's/UniRef90_//g' | sort | uniq | tr '\n' '|' | sed 's/|$//g')
                             forward_hit=$(echo "$subiter_log" | awk -F "\t" '{print $5}' | sort -rgk 4,4 | cut -f1 | sed 's/UniRef90_//g' | sort | uniq | tr '\n' '|' | sed 's/|$//g')
@@ -649,7 +649,7 @@ do
                                 else
                                     [[ verbose -ge 1 ]] && echo -e "\t\t\t--> BIDIRECTIONAL hit found for $subiter_tmp <--"
                                 fi
-                                grep -E $bidihit $dir/dat/seq/uniprot_sprot.fasta | head -3 | sed -e 's/^/\t\t\t    /'
+                                grep -E $bidihit $dir/../dat/seq/uniprot_sprot.fasta | head -3 | sed -e 's/^/\t\t\t    /'
                                 is_bidihit=true
                             else
                                 is_bidihit=false
