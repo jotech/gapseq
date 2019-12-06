@@ -236,40 +236,30 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   # Adding Biomass reaction
   if(biomass == "neg"){
     dt.bm <- fread(paste0(script.dir, "/../dat/seed_biomass.DT_gramNeg.tsv"))
-    dt.bm2<- fread(paste0(script.dir, "/../dat/seed_biomass.DT_gramNeg_anaerobe.tsv"))
   }
   if(biomass == "pos"){
     dt.bm <- fread(paste0(script.dir, "/../dat/seed_biomass.DT_gramPos.tsv"))
-    dt.bm2<- fread(paste0(script.dir, "/../dat/seed_biomass.DT_gramPos_anaerobe.tsv"))
   }
   if(biomass == "archaea")
     dt.bm <- fread(paste0(script.dir, "/../dat/seed_biomass.DT_archaea.tsv"))
   
-  # still needed??
-  # remove ubiquinione from Biomass if ne novo biosynthesis pathway is absent
-  #if(is.na(dt[grepl("PWY-6708",pathway),pathway.status][1])) {
-    # no ubi-8
-  #  ubi.stoich <- dt.bm[id == "cpd15560[c0]", stoich]
-  #  dt.bm <- dt.bm[id != "cpd15560[c0]"]
-    # add former ubi stoichiometry (ammount) to menaquninone stoich.
-  #  dt.bm[id == "cpd15500[c0]", stoich := stoich + ubi.stoich]
-  #}
+  # remove ubiquinione from Biomass because it is not universal (only in aerobes + gram-) and synthesis is usually oxygen dependent
+  #dt[grepl("PWY-6708",pathway),pathway.status]
+  ubi.stoich <- dt.bm[id == "cpd15560[c0]", stoich]
+  dt.bm <- dt.bm[id != "cpd15560[c0]"]
+  # add former ubi stoichiometry (ammount) to menaquninone stoich.
+  dt.bm[id == "cpd15500[c0]", stoich := stoich + ubi.stoich]
   
   # remove menaquinone8 from anaerobic Biomass if ne novo biosynthesis pathway is absent
   if( is.na(dt[grepl("MENAQUINONESYN-PWY",pathway),pathway.status][1]) | is.na(dt[grepl("PWY-5852",pathway),pathway.status][1]) | is.na(dt[grepl("PWY-5837",pathway),pathway.status][1]) ){
-    dt.bm2 <- dt.bm2[id != "cpd15500[c0]"] # Menaquinone-8
-    dt.bm2 <- dt.bm2[id != "cpd15352[c0]"] # 2-Demethylmenaquinone-8
+    dt.bm <- dt.bm[id != "cpd15500[c0]"] # Menaquinone-8
+    dt.bm <- dt.bm[id != "cpd15352[c0]"] # 2-Demethylmenaquinone-8
   }
   
   mod <- sybil::addReact(mod,id = "bio1", met = dt.bm$id, Scoef = dt.bm$stoich, reversible = F, lb = 0, ub = 1000, obj = 1, 
                   reactName = paste0("Biomass reaction ", biomass), metName = dt.bm$name, metComp = dt.bm$comp)
   mod@react_attr[which(mod@react_id == "bio1"),c("gs.origin","seed")] <- data.frame(gs.origin = 6, seed = "bio1", stringsAsFactors = F)
-  if( exists("dt.bm2") ){
-    mod <- sybil::addReact(mod,id = "bio2", met = dt.bm2$id, Scoef = dt.bm2$stoich, reversible = F, lb = 0, ub = 1000, obj = 1, 
-                           reactName = paste0("Biomass reaction anaerobic", biomass), metName = dt.bm2$name, metComp = dt.bm2$comp)
-    mod@react_attr[which(mod@react_id == "bio2"),c("gs.origin","seed")] <- data.frame(gs.origin = 6, seed = "bio2", stringsAsFactors = F)
-  }
-  
+
   # add p-cresol sink reaction (further metabolism unclear especially relevant for anaerobic conditions)
   mod <- sybil::addReact(mod, id="DM_cpd01042_c0", reactName="Sink needed for p-cresol", met="cpd01042[c0]", Scoef=-1, lb=0, ub=1000, metComp = 1)
   

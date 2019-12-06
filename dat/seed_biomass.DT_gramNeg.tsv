@@ -31,6 +31,7 @@ cpd15540[c0]	Phosphatidylglycerol-dioctadecanoyl-c0	-0.0106480421341882	1
 cpd15793[c0]	Stearoylcardiolipin-B-subtilis-c0	-0.0106480421341882	1
 cpd00118[c0]	Putrescine-c0	-0.00309646685192537	1
 cpd00264[c0]	Spermidine-c0	-0.00309646685192537	1
+cpd15500[c0]	Menaquinone-8-c0	-0.00309646685192537	1
 cpd00345[c0]	5-Methyltetrahydrofolate-c0	-0.00309646685192537	1
 cpd00115[c0]	dATP-c0	-0.0157642107352084	1
 cpd00161[c0]	L-Threonine-c0	-0.211072732780569	1
@@ -40,7 +41,9 @@ cpd00016[c0]	Pyridoxal-phosphate-c0	-0.00309646685192537	1
 cpd00053[c0]	L-Glutamine-c0	-0.219088153012743	1
 cpd00132[c0]	L-Asparagine-c0	-0.200830806928348	1
 cpd00035[c0]	L-Alanine-c0	-0.427934380173264	1
-cpd10516[c0]	Fe3-plus-c0	-0.00309646685192537	1
+cpd10515[c0]	Fe2-plus-c0	-0.00309646685192537	1
+cpd10516[c0]	fe3-c0	-0.00309646685192537	1
+cpd15352[c0]	2-Demethylmenaquinone-8-c0	-0.00309646685192537	1
 cpd15722[c0]	Diisoheptadecanoylphosphatidylglycerol-c0	-0.0106480421341882	1
 cpd15794[c0]	Isoheptadecanoylcardiolipin-B-subtilis-c0	-0.0106480421341882	1
 cpd15723[c0]	Dianteisoheptadecanoylphosphatidylglycerol-c0	-0.0106480421341882	1
