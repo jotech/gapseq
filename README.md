@@ -1,5 +1,13 @@
 # gapseq
-Informed prediction and analysis of bacteria metabolic pathways and genome-scale networks
+_Informed prediction and analysis of bacteria metabolic pathways and genome-scale networks_
+
+_gapseq_ is designed to combine metabolic pathway analysis with metabolic network reconstruction and curation.
+Based on genomic information and databases for pathways and reactions, _gapseq_ can be used for:
+- prediction of metabolic pathways from various databases
+- transporter inference
+- metabolic model creation
+- multi-step gap filling 
+
 
 ## Installation
 ```
@@ -12,22 +20,22 @@ cd gapseq
 
 ## Quickstart (performs the prediction of network candidate reactions, draft model construction and gapfilling)
 ```
-./gapseq_quickstart.sh dat/myb71.fna dat/media/TSBmed.csv
+./gapseq doall dat/myb71.fna
 ```
 
 ## Example workflow
-1) Obtaining candidate reactions
+1) Metabolic pathway analysis
 ```
-./gapseq.sh -b 200 -p all dat/myb71.fna
-./transporter.sh -b 200 dat/myb71.fna
+./gapseq find -p all dat/myb71.fna
+./gapseq find-transport.sh dat/myb71.fna
 ```
 
 2) Create draft model
 ```
-Rscript src/generate_GSdraft.R myb71-all-Reactions.tbl -t myb71-Transporter.tbl dat/myb71.fna -u 200 -l 100 -a 2 -p myb71-Pathways.tbl
-```
+ ./gapseq draft -r toy/myb71-all-Reactions.tbl -t toy/myb71-Transporter.tbl -p toy/myb71-all-Pathways.tbl -c toy/myb71.fna.gz
+ ```
 
 3) Gapfilling
 ```
-Rscript gf.suite.R -m myb71.RDS -c myb71-rxnWeights.RDS -n dat/media/TSBmed.csv
+gapseq fill -m toy/myb71-draft.RDS -c toy/myb71-rxnWeights.RDS -n dat/media/TSBmed.csv
 ```
