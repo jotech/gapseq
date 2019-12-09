@@ -18,7 +18,8 @@ git clone https://github.com/jotech/gapseq
 cd gapseq
 ```
 
-## Quickstart (performs the prediction of network candidate reactions, draft model construction and gapfilling)
+## Quickstart
+ This performs the prediction of network candidate reactions, builds a draft model construction and performs gap filling.
 ```
 ./gapseq doall dat/myb71.fna
 ```
@@ -30,12 +31,12 @@ cd gapseq
 ./gapseq find-transport.sh dat/myb71.fna
 ```
 
-2) Create draft model
+2) Creation of draft model
 ```
  ./gapseq draft -r toy/myb71-all-Reactions.tbl -t toy/myb71-Transporter.tbl -p toy/myb71-all-Pathways.tbl -c toy/myb71.fna.gz
  ```
 
-3) Gapfilling
+3) Gap filling
 ```
 gapseq fill -m toy/myb71-draft.RDS -c toy/myb71-rxnWeights.RDS -n dat/media/TSBmed.csv
 ```
