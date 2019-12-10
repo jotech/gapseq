@@ -605,21 +605,30 @@ mod.out <- addMetAttr(mod.out, seed_x_mets = seed_x_mets)
 if(!dir.exists(output.dir))
   system(paste0("mkdir ",output.dir))
 
-if(opt$sbml.output)
-  writeSBML(mod.out, filename = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled.xml"))
+out.id <- gsub(".xml|.RDS|.rds","",gsub("-draft","",basename(mod.file)))
 
-mod.out.rxns.added <- setdiff(mod.out@react_id, mod.orig@react_id)
-cat(mod.out.rxns.added, file = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled.rxnlst"))
+if(opt$sbml.output){
+  out.sbml <- paste0(output.dir,"/",out.id,".xml")
+  if(file.exists(out.sbml)) out.sbml <- paste0(output.dir,"/",out.id,"-gapfilled.xml")
+  writeSBML(mod.out, filename = paste0(out.sbml))
+}
+  
+if( verbose ){
+  mod.out.rxns.added <- setdiff(mod.out@react_id, mod.orig@react_id)
+  cat(mod.out.rxns.added, file = paste0(output.dir,"/",out.id,"-gapfilled.rxnlst"))
+  
+  mod.out.rxns.added.without.seq <- setdiff(gsub("_.0","",mod.out.rxns.added), rxn.weights[bitscore>bcore, seed])
+  cat(mod.out.rxns.added.without.seq, file = paste0(output.dir,"/",out.id,"-gapfilled.without.seq.rxnlst"))  
+}
 
-mod.out.rxns.added.without.seq <- setdiff(gsub("_.0","",mod.out.rxns.added), rxn.weights[bitscore>bcore, seed])
-cat(mod.out.rxns.added.without.seq, file = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled.without.seq.rxnlst"))
-
-saveRDS(mod.out, file = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled.RDS"))
+out.rds <- paste0(output.dir,"/",out.id,".RDS")
+if(file.exists(out.rds)) out.rds <- paste0(output.dir,"/",out.id,"-gapfilled.RDS")
+saveRDS(mod.out, file = out.rds)
 
 # Save additionally an unconstrained version of the model if desired
 if(relaxed.constraints) {
   mod.out@lowbnd[grep("^EX_",mod.out@react_id)] <- -sybil::SYBIL_SETTINGS("MAXIMUM")
-  saveRDS(mod.out, file = paste0(output.dir,"/",gsub(".xml","",basename(mod.file)),"-gapfilled_unconstrained.RDS"))
+  saveRDS(mod.out, file = paste0(output.dir,"/",out.id,"-unconstrained.RDS"))
 }
 
 q(status=0)

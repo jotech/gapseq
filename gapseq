@@ -10,6 +10,7 @@ usage()
     echo -e "\nUsage:"
     echo "  gapfill (find | find-transport | draft | fill | doall)"
     echo "  gapfill doall toy/ecoli.fna.gz"
+    echo "  gapfill doall toy/myb71.fna.gz dat/media/TSBmed.csv"
     echo -e "\nOptions:"
     echo "  find            Pathway analysis, try to find enzymes based on homology."
     echo "  find-transport  Search for transporters based on homology."
@@ -42,13 +43,16 @@ elif [ "$1" == "doall" ]; then
     file=$2
     id="${file%.*}"
     [[ $file == *.gz ]] && { id="${id%.*}"; }
+    if [[ -s "$3" ]]; then
+        medium=$3
+    else
+        medium=dat/media/ALLmed.csv
+    fi
     $dir/src/gapseq_find.sh -v 0 -b 200 -p all -m bacteria $file
     $dir/transporter.sh -b 200 $file
-    Rscript src/generate_GSdraft.R -r $id-all-Reactions.tbl -t $id-Transporter.tbl -c $file -u 200 -l 100 -a 2 -p $id-all-Pathways.tbl
-    Rscript src/gf.suite.R -m ./${id}.RDS -n dat/media/ALLmed.csv -c ./${id}-rxnWeights.RDS -b 100 -g ./${id}-rxnXgenes.RDS
+    Rscript src/generate_GSdraft.R -r $id-all-Reactions.tbl -t $id-Transporter.tbl -c $file -u 200 -l 100 -a 1 -p $id-all-Pathways.tbl
+    Rscript src/gf.suite.R -m ./${id}.RDS -n $medium -c ./${id}-rxnWeights.RDS -b 100 -g ./${id}-rxnXgenes.RDS
 
 else
     usage
 fi
-
-

@@ -356,6 +356,6 @@ mod <- build_draft_model_from_blast_results(blast.res = blast.res,
                                             curve.alpha = curve.alpha)
 
 # save draft model and reaction weights and rxn-gene-table
-saveRDS(mod$mod,file = paste0(model.name, ".RDS"))
+saveRDS(mod$mod,file = paste0(model.name, "-draft.RDS"))
 saveRDS(mod$cand.rxns,file = paste0(model.name, "-rxnWeights.RDS"))
 saveRDS(mod$rxn_x_genes,file = paste0(model.name, "-rxnXgenes.RDS"))
