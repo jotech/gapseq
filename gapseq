@@ -4,13 +4,26 @@ curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
 
+medium=$dir/dat/media/ALLmed.csv
+
 usage()
 {
     echo "gapseq: prediction and analysis of bacterial metabolic pathways and genome-scale networks"
     echo -e "\nUsage:"
-    echo "  gapfill (find | find-transport | draft | fill | doall)"
-    echo "  gapfill doall toy/ecoli.fna.gz"
-    echo "  gapfill doall toy/myb71.fna.gz dat/media/TSBmed.csv"
+    echo "  gapseq (find | find-transport | draft | fill | doall) (...)"
+    echo "  gapseq doall (genome) [medium]"
+    echo "  gapseq find (-p pathways | -e enzymes) [-b bitscore] (genome)"
+    echo "  gapseq find-transport [-b bitscore] (genome)"
+    echo "  gapseq draft (-r reactions | -t transporter -c genome -p pathways)"
+    echo "  gapseq fill (-m draft -n medium -c rxn_weights -g rxn_genes)"
+    echo -e "\nExamples:"
+    echo "  gapseq doall toy/ecoli.fna.gz"
+    echo "  gapseq doall toy/myb71.fna.gz dat/media/TSBmed.csv"
+    echo "  gapseq find -p chitin toy/myb71.fna.gz"
+    echo "  gapseq find -p all toy/myb71.fna.gz"
+    echo "  gapseq find-transport toy/myb71.fna.gz"
+    echo "  gapseq draft -r toy/ecoli-all-Reactions.tbl -t toy/ecoli-Transporter.tbl -c toy/ecoli.fna.gz -p toy/ecoli-all-Pathways.tbl"
+    echo "  gapseq fill -m toy/ecoli-draft.RDS -n dat/media/ALLmed.csv -c toy/ecoli-rxnWeights.RDS -g toy/ecoli-rxnXgenes.RDS"
     echo -e "\nOptions:"
     echo "  find            Pathway analysis, try to find enzymes based on homology."
     echo "  find-transport  Search for transporters based on homology."
@@ -21,7 +34,23 @@ usage()
     echo "  -h              Show this screen."
     exit 1
 }
-[ "$#" -eq 0 ] && { usage; }
+
+OPTIND=1
+while getopts ":h?vm:" opt; do
+    case "$opt" in
+        h|\?)
+            usage
+            exit 0
+            ;;
+        v)
+            echo gapseq version: `git rev-parse --short HEAD`
+            exit 0
+            ;;
+        esac
+done
+shift $((OPTIND-1))
+[ "$1" = "--" ] && shift
+[ "$#" -eq 0 ]  && usage
 
 if   [ "$1" == "find" ]; then
     parm=$(echo $@ | sed 's/find//')
@@ -42,12 +71,9 @@ elif [ "$1" == "doall" ]; then
     parm=$(echo $@ | sed 's/doall//')
     file=$2
     id="${file%.*}"
-    [[ $file == *.gz ]] && { id="${id%.*}"; }
-    if [[ -s "$3" ]]; then
-        medium=$3
-    else
-        medium=dat/media/ALLmed.csv
-    fi
+    [[ ! -s "$file" ]]  && usage
+    [[ $file == *.gz ]] && id="${id%.*}" 
+    [[ -s "$3" ]]       && medium=$3
     $dir/src/gapseq_find.sh -v 0 -b 200 -p all -m bacteria $file
     $dir/transporter.sh -b 200 $file
     Rscript src/generate_GSdraft.R -r $id-all-Reactions.tbl -t $id-Transporter.tbl -c $file -u 200 -l 100 -a 1 -p $id-all-Pathways.tbl
