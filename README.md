@@ -19,9 +19,13 @@ cd gapseq
 ```
 
 ## Quickstart
- This performs the prediction of network candidate reactions, builds a draft model construction and performs gap filling.
+ This predicts network candidate reactions, builds a draft model and performs gap filling:
 ```
 ./gapseq doall dat/myb71.fna
+```
+Do the same but with a defined medium for gap filling:
+```
+./gapseq doall toy/ecoli.fna.gz dat/media/MM_glu.csv
 ```
 
 ## Example workflow
