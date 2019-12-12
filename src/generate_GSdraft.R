@@ -225,10 +225,10 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   mod <- add_reaction_from_db(mod, react = c("rxn13782","rxn13783","rxn13784"), gs.origin = 6) # Adding pseudo-reactions for Protein biosynthesis, DNA replication and RNA transcription
   mod <- add_missing_diffusion(mod)
   
-  # Add spontaneous reactions
-  # sponti_rxns <- fread(paste0(script.dir, "/../dat/seed_spontaneous_reactions.tbl"), header = F)
-  # sponti_rxns <- sponti_rxns$V1
-  # mod <- add_reaction_from_db(mod, react = sponti_rxns, gs.origin = 5)
+  # in case of butyryl CoA:acetate CoA transferase presense - add but transporter as well
+  if(any(grepl("rxn00875", mod@react_id)) & !grepl("rxn0583", mod@react_id)) {
+    mod <- add_reaction_from_db(mod, react = "rxn05683", gs.origin = 1)
+  }
   
   #mod@genes_table <- copy(dt[bitscore>0])
   cat("\n")

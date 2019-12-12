@@ -18,6 +18,7 @@ cpd00971,Na+,100
 cpd01012,Cd2+,100
 cpd01048,Arsenate,100
 cpd10515,Fe2+,100
-cpd10516,fe3,0
+cpd10516,fe3,100
 cpd11595,chromate,100
 cpd00013,NH3,100
+cpd00011,CO2,10
