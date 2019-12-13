@@ -153,6 +153,7 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt <- resolve_common_EC_conflicts("1.17.3.2","1.17.1.4", dt) # xanthine oxidase vs xanthine dehydrogenase
   dt <- resolve_common_EC_conflicts("1.3.3.6","1.3.1.8", dt) # acyl-CoA oxidase vs acyl-CoA dehydrogenase
   dt <- resolve_common_EC_conflicts("1.2.7.1","1.2.1.51", dt) # NADP-dependent Pyruvate dehydrogenase vs FMN-dependent PDH
+  dt <- resolve_common_EC_conflicts("2.6.1.11","2.6.1.19", dt) # acetylornithine transaminase VS 4-aminobutyrate—2-oxoglutarate transaminase
   
   # specific transporter conflict fixes
   dt.trans <- resolve_common_TC_conflicts("1.a.8.2.1","2.a.14.1.3", dt.trans)
