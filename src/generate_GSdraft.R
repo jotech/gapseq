@@ -226,7 +226,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   mod <- add_missing_diffusion(mod)
   
   # in case of butyryl CoA:acetate CoA transferase presense - add but transporter as well
-  if(any(grepl("rxn00875", mod@react_id)) & !grepl("rxn05683", mod@react_id)) {
+  if(any(grepl("rxn00875", mod@react_id)) & !any(grepl("rxn05683", mod@react_id))) {
     mod <- add_reaction_from_db(mod, react = "rxn05683", gs.origin = 1)
   }
   
