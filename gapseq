@@ -75,7 +75,7 @@ elif [ "$1" == "doall" ]; then
     [[ $file == *.gz ]] && id="${id%.*}" 
     [[ -s "$3" ]]       && medium=$3
     $dir/src/gapseq_find.sh -v 0 -b 200 -p all -m bacteria $file
-    $dir/transporter.sh -b 200 $file
+    $dir/src/transporter.sh -b 200 $file
     Rscript src/generate_GSdraft.R -r $id-all-Reactions.tbl -t $id-Transporter.tbl -c $file -u 200 -l 100 -a 1 -p $id-all-Pathways.tbl
     Rscript src/gf.suite.R -m ./${id}.RDS -n $medium -c ./${id}-rxnWeights.RDS -b 100 -g ./${id}-rxnXgenes.RDS
 
