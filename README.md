@@ -12,12 +12,13 @@ Based on genomic information and databases for pathways and reactions, _gapseq_ 
 ## Installation
 ```
 sudo apt install ncbi-blast+ git libglpk-dev r-base-core exonerate bedtools barrnap
+
 R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi"))'
 R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Biostrings")'
-git clone https://github.com/jotech/gapseq
-cd gapseq
+
+git clone https://github.com/jotech/gapseq && cd gapseq
 ```
-If you are installing on a fresh system and you are getting installation error ``'lib = "../R/library"' is not writable`` when installing the R packages, then try this command beforehand:
+If you are getting the installation error ``'lib = "../R/library"' is not writable`` while trying to install the R packages, then try this command beforehand:
 ```
 Rscript -e 'if( file.access(Sys.getenv("R_LIBS_USER"), mode=2) == -1 ) dir.create(path = Sys.getenv("R_LIBS_USER"), showWarnings = FALSE, recursive = TRUE)'
 ```
