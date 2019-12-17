@@ -32,11 +32,25 @@ Do the same but with a defined medium for gap filling:
 ./gapseq doall toy/ecoli.fna.gz dat/media/MM_glu.csv
 ```
 
-## Example workflow
+## Pathway analysis
+Search for chitin pathways:
+```
+./gapseq find -p chitin toy/myb71.fna.gz
+```
+Check for a certain enzyme availability, for example cytochrome c oxidases (oxidase test)
+```
+./gapseq find -e 1.9.3.1 toy/ecoli.fna.gz
+```
+Search for enzymes by name:
+```
+./gapseq find -r ligninase toy/myb71.fna.gz
+```
+
+## Creation and gap filling of metabolic models
 1) Metabolic pathway analysis
 ```
 ./gapseq find -p all dat/myb71.fna
-./gapseq find-transport.sh dat/myb71.fna
+./gapseq find-transport dat/myb71.fna
 ```
 
 2) Creation of draft model
