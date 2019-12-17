@@ -18,7 +18,7 @@ R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("Bi
 
 git clone https://github.com/jotech/gapseq && cd gapseq
 ```
-If you are getting the installation error ``'lib = "../R/library"' is not writable`` while trying to install the R packages, then try this command beforehand:
+If you are getting the installation error ``'lib = "../R/library"' is not writable`` while installing the R packages, then try this command beforehand:
 ```
 Rscript -e 'if( file.access(Sys.getenv("R_LIBS_USER"), mode=2) == -1 ) dir.create(path = Sys.getenv("R_LIBS_USER"), showWarnings = FALSE, recursive = TRUE)'
 ```
