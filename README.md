@@ -17,6 +17,10 @@ R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("Bi
 git clone https://github.com/jotech/gapseq
 cd gapseq
 ```
+If you are installing on a fresh system and you are getting installation error ``'lib = "../R/library"' is not writable`` when installing the R packages, then try this command beforehand:
+```
+Rscript -e 'if( file.access(Sys.getenv("R_LIBS_USER"), mode=2) == -1 ) dir.create(path = Sys.getenv("R_LIBS_USER"), showWarnings = FALSE, recursive = TRUE)'
+```
 
 ## Quickstart
  This predicts network candidate reactions, builds a draft model and performs gap filling:
