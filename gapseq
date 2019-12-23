@@ -77,7 +77,7 @@ elif [ "$1" == "doall" ]; then
     $dir/src/gapseq_find.sh -v 0 -b 200 -p all -m bacteria $file
     $dir/src/transporter.sh -b 200 $file
     Rscript $dir/src/generate_GSdraft.R -r $id-all-Reactions.tbl -t $id-Transporter.tbl -c $file -u 200 -l 100 -a 1 -p $id-all-Pathways.tbl
-    Rscript $dir/src/gf.suite.R -m ./${id}.RDS -n $medium -c ./${id}-rxnWeights.RDS -b 100 -g ./${id}-rxnXgenes.RDS
+    Rscript $dir/src/gf.suite.R -m ./${id}-draft.RDS -n $medium -c ./${id}-rxnWeights.RDS -b 100 -g ./${id}-rxnXgenes.RDS
 
 else
     usage
