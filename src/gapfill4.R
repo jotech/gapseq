@@ -89,7 +89,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
 
   if(gs.origin==1) {
     sol.tmp   <- 0
-    max.iter  <- 10
+    max.iter  <- 100
     n.iter    <- 1
     pFBAcoeff <- 1e-3
     while(sol.tmp <= 0 & n.iter <= max.iter) {
@@ -100,7 +100,10 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
       sol.fba <- optimizeProb(modj_warm)
 
       n.iter  <- n.iter + 1
-      sol.tmp <- sol.fba$obj
+      if(sol.fba$stat==ok)
+        sol.tmp <- sol.fba$obj
+      if(sol.fba$obj <= 0.001)
+        sol.tmp <- 0
       if(sol.tmp <= 0)
         pFBAcoeff <- pFBAcoeff / 2
     }
