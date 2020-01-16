@@ -1665,6 +1665,7 @@ rxn15103	>			[SW] Phosphates are usually irreversible, as they would build a hig
 rxn15102	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
 rxn01352	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
 									
+rxn08617		TRUE		[SW] Glucose diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
 rxn05245		TRUE		[SW] Valine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
 rxn09375		TRUE		[SW] Valine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
 rxn29139		TRUE		[SW] Valine diffusion across membrane unlikely	https://www.ncbi.nlm.nih.gov/books/NBK9847/				
