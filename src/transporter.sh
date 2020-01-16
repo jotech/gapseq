@@ -90,7 +90,8 @@ else
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send"
 fi
 
-cat $tcdb $otherDB > all.fasta # join transporter databases
+cat $tcdb $otherDB > all.fasta.tmp # join transporter databases
+perl -ne 'if (/>(.*?)\s+(.*)/){push(@{$hash{$1}},$2) ;}}{open(I, "<","all.fasta.tmp");while(<I>){if(/>(.*?)\s+/){ $t = 0; next if $h{$1}; $h{$1} = 1 if $hash{$1}; $t = 1; chomp; print $_ . " @{$hash{$1}}\n"}elsif($t==1){print $_} } close I;' all.fasta.tmp > all.fasta # remove duplicate entries by ID
 sed -i "s/\(>.*\)/\L\1/" all.fasta # header to lower case
 grep -e ">" all.fasta > tcdb_header
 sed '1d' $subDB | awk -F '\t' '{if ($8 != "NA") print $0}' > redSubDB
@@ -130,7 +131,8 @@ for id in $IDtcdb
 do
     descr=$(grep $id tcdb_header | grep -P "(?<= ).*" -o) # extract description
     [[ -n "$only_met" ]] && { echo -e "\t\n"$descr; } 
-    tc=$(grep $id tcdb_header | grep -Pw "([1-4]\\.[A-z]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | uniq | tr '\n' ',' | sed 's/,$//g') # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
+    #tc=$(grep $id tcdb_header | grep -Pw "([1-4]\\.[A-z]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | uniq | tr '\n' ',' | sed 's/,$//g') # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
+    tc=$(grep $id tcdb_header | grep -Pw "([1-4]\\.[A-z]+\\.[0-9]+)" -o | uniq | tr '\n' ',' | sed 's/,$//g') # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
     i=$(echo $tc | head -c1) # get first character of TC number => transporter type
     type=${TC[$i]}
     [ -z "$tc" ] && continue
