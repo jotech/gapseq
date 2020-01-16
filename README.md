@@ -21,6 +21,8 @@ git clone https://github.com/jotech/gapseq && cd gapseq
 ### Centos/Fedora/RHEL
 ```
 yum install ncbi-blast+ git glpk-devel BEDTools exonerate hmmer
+git clone https://github.com/tseemann/barrnap.git
+export PATH=$PATH:barrnap/bin/barrnap # needs to be permanent => .bashrc ?
 R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi"))'
 R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Biostrings")'
 git clone https://github.com/jotech/gapseq && cd gapseq
