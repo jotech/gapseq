@@ -26,7 +26,8 @@ R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("Bi
 git clone https://github.com/jotech/gapseq && cd gapseq
 ```
 
-### MacOS (homebrew)
+### MacOS
+using [homebrew](https://brew.sh)
 ```
 brew install git glpk blast bedtools r brewsci/bio/barrnap
 R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi"))'
