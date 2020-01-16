@@ -145,7 +145,7 @@ mod.orig   <- add_missing_exchanges(mod.orig)
 
 # add diffusion reactions
 mod.orig       <- add_missing_diffusion(mod.orig)
-mod.orig       <- changeBounds(mod.orig, react="EX_cpd11640_e0", lb=0, ub=1) # TODO: Limit the hydrogen evolution rate. Check if it's necessary.
+#mod.orig       <- changeBounds(mod.orig, react="EX_cpd11640_e0", lb=0, ub=1) # TODO: Limit the hydrogen evolution rate. Check if it's necessary.
 
 # create complete medium
 if( media.file == "complete" ){
