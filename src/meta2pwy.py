@@ -103,6 +103,8 @@ def getReaInfos(pwy):
                      "&phi;":"phi",
                      "&zeta;":"zeta",
                      "&omega;":"omega",
+                     "&kappa;":"kappa",
+                     "3,7,4;-methylquercetin":"3,7,4-methylquercetin", # unique problem of RXN-13838
                    }
         for sub in sub_dic:
             #reaName = reaName.replace(sub, sub_dic[sub])
