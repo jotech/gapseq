@@ -795,6 +795,10 @@ rxn05573	>			[SW] Glucose:H+ symport mainly for glucose uptake
 rxn00856	>			[SW] Reaction direction adjusted according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=NIL&object=PUTTRANSAM-RXN&redirect=T				
 rxn01233	>								
 rxn13788	>			[SW] Reaction direction adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=AMINOBUTDEHYDROG-RXN				
+rxn04794	>			[SW] Reaction direction adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=KETOBUTFORMLY-RXN				
+rxn04792	>			[SW] Reaction direction adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-2962				
+rxn04938	>			[SW] Reaction direction adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-2962				
+rxn08460	>			[SW] Reaction direction adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-2962				
 									
 rxn05363			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11499:0:0:"4-methyl-hexanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11500:0:0:"6-methyl-3-oxo-octanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
 rxn05367			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11503:0:0:"6-methyl-octanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11504:0:0:"8-methyl-3-oxo-decanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
