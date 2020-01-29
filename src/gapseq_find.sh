@@ -31,6 +31,7 @@ includeSeq=false
 use_parallel=true
 exhaustive=false
 seqSrc=2
+anno_genome_cov=false
 
 usage()
 {
@@ -58,6 +59,7 @@ usage()
     echo "  -g Exhaustive search, continue blast even when cutoff is reached (default $exhaustive)"
     echo "  -z Quality of sequences for homology search: 1:only reviewed (swissprot), 2:unreviewed only if reviewed not available, 3:reviewed+unreviewed, 4:only unreviewed (default $seqSrc)"
     echo "  -m Limit pathways to taxonomic range (default $taxRange)"
+    echo "  -y Print annotation genome coverage (default $anno_genome_cov)"
 exit 1
 }
 
@@ -86,7 +88,7 @@ altecdb=$dir/../dat/altec.csv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxqkgz:m:" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:y" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -155,6 +157,9 @@ while getopts "h?p:e:r:d:i:b:c:v:st:snou:al:oxqkgz:m:" opt; do
         ;;
     m)
         taxRange=$OPTARG
+        ;;
+    y)
+        anno_genome_cov=true
         ;;
     esac
 done
@@ -798,6 +803,8 @@ echo $cand > newReactions.lst
 cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
 [[ -s reactions.tbl ]] && echo "rxn name ec bihit $blast_format pathway status pathway.status dbhit complex exception complex.status" | tr ' ' '\t' | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-Reactions.tbl # add header and remove duplicates
 
+# print annotation genome coverage
+[[ verbose -ge 1 ]] && [[ "$anno_genome_cov" = true ]] && Rscript $dir/coverage.R $fasta $curdir/${fastaID}-$output_suffix-Reactions.tbl 
 
 # cleaning
 [[ -s $tmp_fasta ]] && rm $tmp_fasta
