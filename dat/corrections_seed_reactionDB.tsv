@@ -634,7 +634,6 @@ rxn00796		TRUE		[SW] Stoichiometry incorrect. Correct corresponding reaction: rx
 rxn08180		TRUE		[SW] Stoichiometry incorrect. Correct corresponding reaction: rxn05927	https://www.rhea-db.org/reaction?id=22060 # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.8.1.6-RXN				
 rxn02931	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=24-DIAMINOPENTANOATE-DEHYDROGENASE-RXN				
 rxn04790	>			[SW] direction changed according to Reference.	doi: 10.1099/mic.0.26795-0 				
-rxn00741		TRUE		[SW] Reaction not found in MetaCyc or RHEA. Removing reactions.					
 rxn01361	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=OROTATE-REDUCTASE-NADH-RXN				
 rxn09483			-1:cpd00015:0:0:"FAD";-1:cpd00041:0:0:"L-Aspartate";1:cpd00982:0:0:"FADH2";1:cpd03470:0:0:"Iminoaspartate"	[SW] Corrected metabolite compartments.					
 rxn00548				[SW] Previous abbreviation referred to wrong KEGG identifier and caused wrong assignment to ec-number 4.1.2.9			F6p-p-ketolase		
