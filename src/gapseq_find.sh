@@ -79,6 +79,7 @@ reaDB2=$dir/../dat/bigg_reactions.tbl
 reaDB3=$dir/../dat/seed_reactions_corrected.tsv
 reaDB4=$dir/../dat/mnxref_seed.tsv
 reaDB5=$dir/../dat/mnxref_seed-other.tsv
+reaDB6=$dir/../dat/mnxref_bigg-other.tsv
 brenda=$dir/../dat/brenda_ec_edited.csv
 seedEC=$dir/../dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
 seedEnzymesNames=$dir/../dat/seed_Enzyme_Name_Reactions_Aliases.tsv
@@ -314,7 +315,8 @@ getDBhit(){
         [ -n "$kegg" ]  && dbhit="$dbhit $(grep -wE "$(echo $kegg |tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')"
     elif [ "$database" == "seed" ]; then
         [ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB3 | awk -F '\t' '$18 == "OK" {print $1}' )" # only consider reactions which are OK
-        [ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}' | tr '\n' ' ')"
+        #[ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}' | tr '\n' ' ')"
+        [ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB5 | awk -F '\t' '{print $2}' | tr '\n' ' ')" # use single database (reaDB4,5 are similiar)
     fi
 
     # 3) search in reaction db by alternative EC
@@ -341,6 +343,8 @@ getDBhit(){
     # 5) match reaction using mnxref namespace
     if [ "$database" == "seed" ]; then
         dbhit="$dbhit $(grep -wFe "|$rea" $reaDB5 | awk '{print $2}')"
+    elif [ "$database" == "vmh" ]; then
+        dbhit="$dbhit $(grep -wFe "|$rea" $reaDB6 | awk '{print $2}')"
     fi
 
     # 6) match reaction using custom enzyme-name - seedID mapping
