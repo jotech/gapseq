@@ -253,14 +253,12 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt.cand <- dt.cand[!duplicated(seed)]
   
   # 5. transfortm best bitscores to weights
-  dummy.weight = 100
+  dummy.weight <- 100
   dt.cand[, bs.tmp := bitscore]
   dt.cand[bs.tmp > high.evi.rxn.BS, bs.tmp := high.evi.rxn.BS] # if bitscore is higher than the bitscore threshold then assign a weight, that woulb be close to 0. 
-  dt.cand[, weight := 1 - ((bs.tmp - min.bs.for.core) / (high.evi.rxn.BS - min.bs.for.core))] # assign normalised weight
-  dt.cand[weight > 1, weight := 1]
-  dt.cand[, weight := weight^curve.alpha]
-  dt.cand[, weight := weight * dummy.weight]
-  dt.cand[, weight := (weight + 0.005) / (1 + 0.005)]
+  dt.cand[, weight := (bs.tmp - high.evi.rxn.BS) * ((0.005 - dummy.weight)/(high.evi.rxn.BS - min.bs.for.core)) + 0.005]
+  dt.cand[weight < 0.005, weight := 0.005]
+  dt.cand[weight > dummy.weight, weight := 100]
   dt.cand[, bs.tmp := NULL]
 
   return(list(dt = dt, dt.cand = dt.cand))
