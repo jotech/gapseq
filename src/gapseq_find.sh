@@ -32,6 +32,7 @@ use_parallel=true
 exhaustive=false
 seqSrc=2
 anno_genome_cov=false
+use_gene_seq=false
 
 usage()
 {
@@ -59,6 +60,7 @@ usage()
     echo "  -g Exhaustive search, continue blast even when cutoff is reached (default $exhaustive)"
     echo "  -z Quality of sequences for homology search: 1:only reviewed (swissprot), 2:unreviewed only if reviewed not available, 3:reviewed+unreviewed, 4:only unreviewed (default $seqSrc)"
     echo "  -m Limit pathways to taxonomic range (default $taxRange)"
+    echo "  -w Use additional sequences derived from gene names (default $use_gene_seq)"
     echo "  -y Print annotation genome coverage (default $anno_genome_cov)"
 exit 1
 }
@@ -84,12 +86,13 @@ brenda=$dir/../dat/brenda_ec_edited.csv
 seedEC=$dir/../dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
 seedEnzymesNames=$dir/../dat/seed_Enzyme_Name_Reactions_Aliases.tsv
 altecdb=$dir/../dat/altec.csv
+metaGenes=$dir/../dat/meta_genes.csv
 
 
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:y" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:yw" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -161,6 +164,9 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:y" opt; do
         ;;
     y)
         anno_genome_cov=true
+        ;;
+    w)
+        use_gene_seq=true
         ;;
     esac
 done
@@ -413,7 +419,9 @@ do
         reaName=$(echo $reaNames | awk -v j=$j -F ';' '{print $j}' | tr -d '|')
         re="([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
         EC_test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
-        [[ verbose -ge 1 ]] && echo -e "\t$j) $rea $reaName $ec"
+        geneName=$(cat $metaGenes | awk -v rea=$rea -v pwy=$pwy -F ',' '$1~rea && $3==pwy {print $2}')
+        geneRef=$(cat $metaGenes | awk -v rea=$rea -v pwy=$pwy -F ',' '$1~rea && $3==pwy {print $4}')
+        [[ verbose -ge 1 ]] && echo -e "\t$j) $rea $reaName $ec $geneName"
         [[ -z "$rea" ]] && { continue; }
         [[ -n "$ec" ]] && [[ -n "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw -e "$ec" -e "$reaName" $dir/../dat/exception.tbl | wc -l); }
         ( [[ -z "$ec" ]] || [[ -z "$EC_test" ]] ) && [[ -n "$reaName" ]] && { is_exception=$(grep -Fw "$reaName" $dir/../dat/exception.tbl | wc -l); }
@@ -525,6 +533,29 @@ do
             elif [ $seqSrc -eq 4 ]; then
                 query=$seqpath/unrev/$reaNameHash.fasta
             fi
+        fi
+
+        # sequence by gene name
+        if [[ -n "$geneName" ]] && [[ -n "$geneRef" ]] && [[ "$use_gene_seq" = true ]]; then
+            if [ ! -f $seqpath/genes/$geneRef.fasta ]; then
+                [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading sequences for: $geneName $geneRef
+                $dir/uniprot.sh -d "$geneRef" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+            fi
+            
+            if [ -s "$seqpath_user/$geneRef.fasta" ]; then
+                [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
+                query_gene=$seqpath_user/$geneRef.fasta
+            else
+                query_gene=$seqpath/genes/$geneRef.fasta
+            fi
+            #merge sequence data
+            if [[ -s $query_gene ]]; then
+                [[ verbose -ge 1 ]] && { echo -e "\t\tMerge sequence data from `basename $query` and" `basename $query_gene`;  }
+                query_merge2=$(mktemp)
+                cat $query $query_gene | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query_merge2 # no duplicates
+                query=$query_merge2
+            fi
+        
         fi
         
         [[ "$skipBlast" = true ]] && { continue; }

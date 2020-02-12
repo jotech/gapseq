@@ -25,10 +25,12 @@ usage()
     echo "  -o Should existing files be overwritten (default: $overwrite)"
     echo "  -i identity of clustered uniprot database (0.5 or 0.9; default: $identity)"
     echo "  -u get unreviewed instead of reviewed sequences (default $get_unrev)"
+    echo "  -g search by gene name"
+    echo "  -d search by database reference (e.g. xref)"
 exit 1
 }
 
-while getopts "h?p:e:t:oi:r:u" opt; do
+while getopts "h?p:e:t:oi:r:ug:d:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -54,6 +56,12 @@ while getopts "h?p:e:t:oi:r:u" opt; do
         ;;
     u)
         get_unrev=true
+        ;;
+    g)
+        geneName=$OPTARG
+        ;;
+    d)
+        dbref=$OPTARG
         ;;
     esac
 done
@@ -142,4 +150,33 @@ if [ -n "$reaNames" ]; then
         fi
         [[ ! -f $reaNameHash.fasta ]] && wget -q "$url" -O "$reaNameHash.fasta"
     done
+fi
+
+
+if [ -n "$geneName" ]; then
+    
+    if [ ! -f "$geneName.fasta" ] || [ ! "$overwrite" = false ]; then # do not update existing files
+        rm -f $geneName.fasta
+    fi
+    echo -en " ... Downloading $geneName\t\t"
+    if [ "$get_unrev" = false ]; then 
+        url="https://www.uniprot.org/uniref/?query=uniprot%3A(gene_exact%3A\"$geneName\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+    else 
+        url="https://www.uniprot.org/uniref/?query=uniprot%3A(gene_exact%3A\"$geneName\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ano)%20identity%3A$identity_unrev&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+    fi
+    [[ ! -f $geneName.fasta ]] && wget -q "$url" -O "$geneName.fasta"
+
+fi
+
+if [ -n "$dbref" ]; then
+    mkdir -p $seqpath/../genes
+    cd $seqpath/../genes # different folder necessary bc database reference genes shouldn't be handled as rev/unrev
+    
+    if [ ! -f "$dbref.fasta" ] || [ ! "$overwrite" = false ]; then # do not update existing files
+        rm -f $dbref.fasta
+    fi
+    echo -en " ... Downloading $dbref\t\t"
+    url="https://www.uniprot.org/uniref/?query=uniprot%3A(\"$dbref\"%20taxonomy%3A$taxonomy)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+    [[ ! -f $dbref.fasta ]] && wget -q "$url" -O "$dbref.fasta"
+
 fi
