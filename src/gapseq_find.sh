@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# TODO: metacyc superpathways seems to be incomplete e.g. ASPASN-PWY
-# TODO: limit pwy search to taxonomic scope
-# TODO: save dummy seq file for ec without uniprot hit (save nonsense requests)
-# TODO: handle incomplete/unspecific ecs from metacyc (e.g. get ec from kegg, update maually or get genes from metacyc)
-# TODO: if taxonomic range is not bacteria, then sequence data must be updated!
-
 start_time=`date +%s`
 
 pathways=""
@@ -420,8 +414,8 @@ do
         re="([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
         EC_test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
         geneName=$(cat $metaGenes | awk -v rea=$rea -v pwy=$pwy -F ',' '$1~rea && $3==pwy {print $2}')
-        geneRef=$(cat $metaGenes | awk -v rea=$rea -v pwy=$pwy -F ',' '$1~rea && $3==pwy {print $4}')
-        [[ verbose -ge 1 ]] && echo -e "\t$j) $rea $reaName $ec $geneName"
+        geneRef=$(cat $metaGenes | awk -v rea=$rea -v pwy=$pwy -F ',' '$1~rea && $3==pwy {print $5}')
+        [[ verbose -ge 1 ]] && echo -e "\t$j) $rea $reaName $ec" $geneName
         [[ -z "$rea" ]] && { continue; }
         [[ -n "$ec" ]] && [[ -n "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw -e "$ec" -e "$reaName" $dir/../dat/exception.tbl | wc -l); }
         ( [[ -z "$ec" ]] || [[ -z "$EC_test" ]] ) && [[ -n "$reaName" ]] && { is_exception=$(grep -Fw "$reaName" $dir/../dat/exception.tbl | wc -l); }
@@ -537,16 +531,23 @@ do
 
         # sequence by gene name
         if [[ -n "$geneName" ]] && [[ -n "$geneRef" ]] && [[ "$use_gene_seq" = true ]]; then
-            if [ ! -f $seqpath/genes/$geneRef.fasta ]; then
-                [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading sequences for: $geneName $geneRef
-                $dir/uniprot.sh -d "$geneRef" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+            if [ ! -f $seqpath/rxn/$rea.fasta ]; then
+                [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading sequences for: $geneRef
+                reaSeqTmp=$(mktemp)
+                for gr in $geneRef
+                do
+                    $dir/uniprot.sh -d $gr -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                    cat $seqpath/rxn/$gr.fasta >> $reaSeqTmp
+                    rm $seqpath/rxn/$gr.fasta
+                done
+                mv $reaSeqTmp $seqpath/rxn/$rea.fasta
             fi
             
-            if [ -s "$seqpath_user/$geneRef.fasta" ]; then
+            if [ -s "$seqpath_user/$rea.fasta" ]; then
                 [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
-                query_gene=$seqpath_user/$geneRef.fasta
+                query_gene=$seqpath_user/$rea.fasta
             else
-                query_gene=$seqpath/genes/$geneRef.fasta
+                query_gene=$seqpath/rxn/$rea.fasta
             fi
             #merge sequence data
             if [[ -s $query_gene ]]; then

@@ -169,14 +169,14 @@ if [ -n "$geneName" ]; then
 fi
 
 if [ -n "$dbref" ]; then
-    mkdir -p $seqpath/../genes
-    cd $seqpath/../genes # different folder necessary bc database reference genes shouldn't be handled as rev/unrev
+    mkdir -p $seqpath/../rxn
+    cd $seqpath/../rxn # different folder necessary bc database reference genes shouldn't be handled as rev/unrev
     
     if [ ! -f "$dbref.fasta" ] || [ ! "$overwrite" = false ]; then # do not update existing files
         rm -f $dbref.fasta
     fi
     echo -en " ... Downloading $dbref\t\t"
-    url="https://www.uniprot.org/uniref/?query=uniprot%3A(\"$dbref\"%20taxonomy%3A$taxonomy)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+    url="https://www.uniprot.org/uniprot/?query=uniprot%3A(id%3A\"$dbref\"%20taxonomy%3A$taxonomy)&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
     [[ ! -f $dbref.fasta ]] && wget -q "$url" -O "$dbref.fasta"
 
 fi
