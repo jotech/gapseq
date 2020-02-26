@@ -39,9 +39,7 @@ Cis-Aconitic Acid				Carboxylic acids
 Citric Acid	citrate	EX_cit(e)	cit[e]	Carboxylic acids		EX_cpd00137_e0	cpd00137[e0]
 Formic Acid	formate	EX_for(e)	for[e]	Carboxylic acids		EX_cpd00047_e0	cpd00047[e0]
 D-Galactonic Acid Lactone				Carboxylic acids			
-D-Gluconic Acid				Carboxylic acids			
 D-Glucosaminic Acid	Glucosaminate			Carboxylic acids		EX_cpd02351_e0	cpd02351[e0]
-D-Glucuronic Acid				Carboxylic acids			
 Alpha-Hydroxybutyric Acid	2-Hydroxybutyrate 	EX_2hb(e)	2hb[e]	Carboxylic acids		EX_cpd03561_e0	cpd03561[e0]
 beta-Hydroxy Butyric Acid				Carboxylic acids			
 gamma-Hydroxy Butyric Acid				Carboxylic acids			
@@ -127,9 +125,9 @@ D-glucosamine	glucosamine	EX_gam(e)	gam[e]			EX_cpd00276_e0	cpd00276[e0]
 D-Lactate	D-Lactic acid	EX_lac_D(e)	lac_D[e]			EX_cpd00221_e0	cpd00221[e0]
 Ethanol		EX_etoh(e)	etoh[e]			EX_cpd00363_e0	cpd00363[e0]
 Ribitol		EX_rbt(e)	rbt[e]			EX_cpd00366_e0	cpd00366[e0]
-Galacturonate	D-Galacturonic Acid	EX_galur(e)	galur[e]			EX_cpd00280_e0	cpd00280[e0]
-Gluconate		EX_glcn(e)	glcn[e]			EX_cpd00222_e0	cpd00222[e0]
-Glucuronate		EX_glcur(e)	glcur[e]			EX_cpd00164_e0	cpd00164[e0]
+Galacturonate	D-Galacturonic Acid	EX_galur(e)	galur[e]	Carboxylic acids		EX_cpd00280_e0	cpd00280[e0]
+Gluconate	D-Gluconic Acid	EX_glcn(e)	glcn[e]	Carboxylic acids		EX_cpd00222_e0	cpd00222[e0]
+Glucuronate	D-Glucuronic Acid	EX_glcur(e)	glcur[e]	Carboxylic acids		EX_cpd00164_e0	cpd00164[e0]
 Glycerol		EX_glyc(e)	glyc[e]			EX_cpd00100_e0	cpd00100[e0]
 Hydrogen		EX_h2(e)	h2[e]			EX_cpd11640_e0	cpd11640[e0]
 Hydrogen sulfide		EX_h2s(e)	h2s[e]			EX_cpd00239_e0	cpd00239[e0]
@@ -220,7 +218,6 @@ Thiosulfate		EX_tsul(e)	tsul[e]			EX_cpd00268_e0	cpd00268[e0]
 Deoxyguanosine		EX_dgsn(e)	dgsn[e]			EX_cpd00277_e0	cpd00277[e0]
 GABA		EX_4abut(e)	4abut[e]			EX_cpd00281_e0	cpd00281[e0]
 Urate		EX_urate(e)	urate[e]			EX_cpd00300_e0	cpd00300[e0]
-Thiamin		EX_thm(e)	thm[e]			EX_cpd00305_e0	cpd00305[e0]
 Thiamine		EX_thm(e)	thm[e]			EX_cpd00305_e0	cpd00305[e0]
 Cytosine		EX_csn(e)	csn[e]			EX_cpd00307_e0	cpd00307[e0]
 Xanthine		EX_xan(e)	xan[e]			EX_cpd00309_e0	cpd00309[e0]

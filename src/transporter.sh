@@ -204,8 +204,7 @@ cand="$(echo $cand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')"
 #echo -e "\nReactions to be added:"
 #echo $cand
 echo $cand > newTransporter.lst
-cp newTransporter.lst $curdir/${fastaid}-Transporter.lst
-#cp newTransporter.tbl $curdir/${fastaid}-Transporter.tbl
+#cp newTransporter.lst $curdir/${fastaid}-Transporter.lst
 cp transporter.tbl $curdir/${fastaid}-Transporter.tbl
 [[ -s transporter.tbl ]] && echo "id tc sub exid rea $blast_format" | tr ' ' '\t' | cat - transporter.tbl | awk '!a[$0]++' > $curdir/${fastaid}-Transporter.tbl # add header and remove duplicates
 
