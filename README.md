@@ -12,7 +12,7 @@ Based on genomic information and databases for pathways and reactions, _gapseq_ 
 ## Installation
 ### Ubuntu/Debian/Mint
 ```
-apt install ncbi-blast+ git libglpk-dev r-base-core exonerate bedtools barrnap
+sudo apt install ncbi-blast+ git libglpk-dev r-base-core exonerate bedtools barrnap
 R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi"))'
 R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Biostrings")'
 git clone https://github.com/jotech/gapseq && cd gapseq
@@ -20,7 +20,7 @@ git clone https://github.com/jotech/gapseq && cd gapseq
 
 ### Centos/Fedora/RHEL
 ```
-yum install ncbi-blast+ git glpk-devel BEDTools exonerate hmmer
+sudo yum install ncbi-blast+ git glpk-devel BEDTools exonerate hmmer
 git clone https://github.com/tseemann/barrnap.git
 export PATH=$PATH:barrnap/bin/barrnap # needs to be permanent => .bashrc ?
 R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi"))'
