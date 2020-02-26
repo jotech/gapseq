@@ -27,6 +27,7 @@ exhaustive=false
 seqSrc=2
 anno_genome_cov=false
 use_gene_seq=false
+stop_on_files_exist=false
 
 usage()
 {
@@ -56,6 +57,8 @@ usage()
     echo "  -m Limit pathways to taxonomic range (default $taxRange)"
     echo "  -w Use additional sequences derived from gene names (default $use_gene_seq)"
     echo "  -y Print annotation genome coverage (default $anno_genome_cov)"
+    echo "  -j Quit if output files already exist (default $stop_on_files_exist)"
+
 exit 1
 }
 
@@ -86,7 +89,7 @@ metaGenes=$dir/../dat/meta_genes.csv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:yw" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywj" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -161,6 +164,9 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:yw" opt; do
         ;;
     w)
         use_gene_seq=true
+        ;;
+    j)
+        stop_on_files_exist=true
         ;;
     esac
 done
@@ -294,6 +300,13 @@ else
     [ -z "$ecnumber" ] && [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
 fi
 [ -z "$output_suffix" ] && output_suffix=$pathways
+
+
+# check to quit if output files already exist
+if [[ "$stop_on_files_exist" = true ]] && [[ -f $curdir/${fastaID}-$output_suffix-Pathways.tbl ]] && [[ -f $curdir/${fastaID}-$output_suffix-Reactions.tbl ]]; then
+    echo Pathway and reaction output files already exist, exiting...
+    exit 0
+fi
 
 
 # function to get database hits for ec number
