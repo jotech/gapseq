@@ -70,7 +70,8 @@ elif [ "$1" == "fill" ]; then
 elif [ "$1" == "doall" ]; then
     parm=$(echo $@ | sed 's/doall//')
     file=$2
-    id="${file%.*}"
+    base=$(basename $file)
+    id="${base%.*}"
     [[ ! -s "$file" ]]  && usage
     [[ $file == *.gz ]] && id="${id%.*}" 
     [[ -s "$3" ]]       && medium=$3
