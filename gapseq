@@ -5,6 +5,7 @@ path=$(readlink -f "$0")
 dir=$(dirname "$path")
 
 medium=$dir/dat/media/ALLmed.csv
+verbose=0
 
 usage()
 {
@@ -32,11 +33,12 @@ usage()
     echo "  doall           Combine find, find-transport, draft and fill."
     echo "  -v              Show version."
     echo "  -h              Show this screen."
+    echo "  -n              Enable noisy verbose mode."
     exit 1
 }
 
 OPTIND=1
-while getopts ":h?vm:" opt; do
+while getopts ":h?vm:n" opt; do
     case "$opt" in
         h|\?)
             usage
@@ -46,6 +48,8 @@ while getopts ":h?vm:" opt; do
             echo gapseq version: `git rev-parse --short HEAD`
             exit 0
             ;;
+        n)
+            verbose=1
         esac
 done
 shift $((OPTIND-1))
@@ -75,7 +79,7 @@ elif [ "$1" == "doall" ]; then
     [[ ! -s "$file" ]]  && usage
     [[ $file == *.gz ]] && id="${id%.*}" 
     [[ -s "$3" ]]       && medium=$3
-    $dir/src/gapseq_find.sh -v 0 -b 200 -p all -m bacteria $file
+    $dir/src/gapseq_find.sh -v $verbose -b 200 -p all -m bacteria $file
     $dir/src/transporter.sh -b 200 $file
     Rscript $dir/src/generate_GSdraft.R -r $id-all-Reactions.tbl -t $id-Transporter.tbl -c $file -u 200 -l 100 -a 1 -p $id-all-Pathways.tbl
     Rscript $dir/src/gf.suite.R -m ./${id}-draft.RDS -n $medium -c ./${id}-rxnWeights.RDS -b 100 -g ./${id}-rxnXgenes.RDS
