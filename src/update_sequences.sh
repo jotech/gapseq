@@ -13,7 +13,7 @@ dir=$(dirname "$path")
 export LC_NUMERIC="en_US.UTF-8"
 seqpath=$dir/../dat/seq/$taxonomy
 seqpath_user=$dir/../dat/seq/$taxonomy/user
-mkdir -p $seqpath/rev $seqpath/unrev $seqpath_user
+mkdir -p $seqpath/rev $seqpath/unrev $seqpath_user $seqpath/rxn
 
 echo Checking updates for $taxonomy $seqpath
 
