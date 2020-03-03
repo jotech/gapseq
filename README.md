@@ -47,7 +47,7 @@ Rscript -e 'if( file.access(Sys.getenv("R_LIBS_USER"), mode=2) == -1 ) dir.creat
 ## Quickstart
  This predicts network candidate reactions, builds a draft model and performs gap filling:
 ```
-./gapseq doall dat/myb71.fna
+./gapseq doall toy/myb71.fna
 ```
 Do the same but with a defined medium for gap filling:
 ```
@@ -71,8 +71,8 @@ Search for enzymes by name:
 ## Creation and gap filling of metabolic models
 1) Metabolic pathway analysis
 ```
-./gapseq find -p all dat/myb71.fna
-./gapseq find-transport dat/myb71.fna
+./gapseq find -p all toy/myb71.fna
+./gapseq find-transport toy/myb71.fna
 ```
 
 2) Creation of draft model
