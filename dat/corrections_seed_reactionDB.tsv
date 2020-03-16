@@ -140,7 +140,7 @@ rxn01228	>			[SW] Phosphatases usually not reversible.
 rxn00150	>			[SW] Reaction never reported to be reversible. Irrev. According to MetaCyc	https://www.brenda-enzymes.org/enzyme.php?ecno=1.2.1.49#NATURAL%20SUBSTRATES # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2-OXOALDEHYDE-DEHYDROGENASE-NADP%2b-RXN				
 rxn01273	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=LACTALDDEHYDROG-RXN				
 rxn00011	<			[SW] Reaction is irreversible but in the other direction according to BRENDA and MetaCyc	http://www.brenda-enzymes.org/enzyme.php?ecno=1.2.4.1#NATURAL%20SUBSTRATES				
-rxn05604			-1:cpd00067:1:0:"H+";-1:cpd00130:1:0:"L-Malate";-1:cpd00159:0:0:"L-Lactate";-1:cpd00971:0:0:"Na+";1:cpd00067:0:0:"H+";1:cpd00130:0:0:"L-Malate";1:cpd00159:1:0:"L-Lactate";1:cpd00971:1:0:"Na+"	[SW] Stoichiometry for H+ changed to ensure electoneutral exchange.					
+									
 rxn08291	>			[SW] Reaction mainly irreversible according to BRENDA and MetaCyc	http://www.brenda-enzymes.org/enzyme.php?ecno=1.4.99.6#NATURAL%20SUBSTRATES # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-7563				
 rxn00265	>			[SW] Reaction mainly irreversible according to BRENDA and MetaCyc	http://www.brenda-enzymes.org/enzyme.php?ecno=4.1.3.6#SUBSTRATE # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=CITLY-RXN				
 rxn00910	<			[SW] Reaction mainly irreversible according to BRENDA and MetaCyc	http://www.brenda-enzymes.org/enzyme.php?ecno=1.5.1.20#SUBSTRATE # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.5.1.20-RXN				
@@ -566,7 +566,7 @@ rxn02248	>			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn12991	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ACETYL-COA-CARBOXYLTRANSFER-RXN				
 rxn13752			-2:cpd00067:0:0:"H+";-1:cpd01414:1:0:"Tetrathionate";-1:cpd17026:1:0:"methymenaquinol 7";2:cpd00067:1:0:"H+";2:cpd00268:1:0:"H2S2O3";1:cpd11606:0:0:"Menaquinone 7"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-8358				
 rxn05595			-1:cpd00067:0:0:"H+";-1:cpd00205:1:0:"K+";1:cpd00067:1:0:"H+";1:cpd00205:0:0:"K+"	[SW] K+/H+ transport should be antagonistic. Antiport.					
-rxn11078	>			[SW] Unsure, but transport causes Mg2+/H+ futile cycle.					
+									
 rxn09722		TRUE		[SW] Mitochondrium-specific reaction					
 rxn09750		TRUE		[SW] Mitochondrium-specific reaction					
 rxn05315		TRUE		[SW] Unsure, but transport causes Zn2+/K+/H+ futile cycle. Also transport reaction not found in any other database.					
@@ -886,7 +886,7 @@ rxn12967	>			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn12968	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN66-485				
 rxn12969	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN66-485				
 rxn12970	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN66-485				
-rxn12972	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN66-485				
+									
 									
 rxn00650	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN				
 rxn12844	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN				
@@ -955,6 +955,9 @@ rxn09157	>			[SW] Reversible according to Metacyc & BRENDA.	https://metacyc.org/
 rxn09160	>			[SW] Reversible according to Metacyc & BRENDA.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-1602 # http://www.brenda-enzymes.org/enzyme.php?ecno=3.1.1.34#NATURAL%20SUBSTRATES				
 rxn09162	>			[SW] Reversible according to Metacyc & BRENDA.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-1602 # http://www.brenda-enzymes.org/enzyme.php?ecno=3.1.1.34#NATURAL%20SUBSTRATES				
 rxn09164	>			[SW] Reversible according to Metacyc & BRENDA.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-1602 # http://www.brenda-enzymes.org/enzyme.php?ecno=3.1.1.34#NATURAL%20SUBSTRATES				
+									
+rxn03117		TRUE		[SW] Non relevant for current gapseq version					
+rxn06719		TRUE		[SW] Non relevant for current gapseq version					
 									
 rxn05769		TRUE		[SW] generic reaction.					
 rxn05770		TRUE		[SW] generic reaction.					
@@ -1168,11 +1171,11 @@ rxn27372		TRUE		Proton diffusion across membrane should be omitted.
 rxn26298		TRUE		Proton diffusion across membrane should be omitted.					
 rxn05312	=		-1:cpd00009:1:0:"Phosphate";-2:cpd00067:1:0:"H+";1:cpd00009:0:0:"Phosphate";2:cpd00067:0:0:"H+"	[SW] Rule: phosphate:proton symport with ratio 2:1		transport			
 									
-rxn39020	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
-rxn08750	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
-rxn09705	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
+									
+rxn08750		TRUE		[SW] Indole can pass without proton motion		transport			
+									
 rxn09731	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
-rxn09733	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
+									
 rxn10560	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn12526	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn12527	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
@@ -1224,10 +1227,10 @@ rxn34247	<			H+-coupled transport w/o chemical transformation of transported mol
 rxn34390	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn34512	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn34534	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
-rxn05209	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
-rxn05213	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
-rxn05214	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
-rxn05589	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
+									
+									
+									
+									
 									
 rxn12379		TRUE		Transport reactions with Protons in periplasmic space are currently omitted.					
 rxn12370		TRUE		Transport reactions with Protons in periplasmic space are currently omitted.					
@@ -1776,8 +1779,8 @@ rxn12797		TRUE		[SW] Gallate diffusion across membrane unlikely	https://www.ncbi
 									
 rxn09713		TRUE		[SW] Unsure. However, only reported in few cases and only mitochondrial.	http://www.tcdb.org/search/result.php?tc=2.A.29.2.7				
 rxn05645	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.					
-rxn05618	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.					
-rxn05520	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.					
+									
+									
 rxn05225	<			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.					
 rxn05708	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.		transport			
 rxn08427	>			[SW] Proton symport uses membrane-proton potential: Force works only for import under phsysiological conditions.					
@@ -1801,8 +1804,8 @@ rxn09308	>			H+-coupled transport w/o chemical transformation of transported mol
 rxn05553	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn11158	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn13415	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.					
-rxn05521	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.					
-rxn05522	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.					
+									
+									
 rxn05523	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.					
 rxn12529	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn13339	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
@@ -1816,28 +1819,62 @@ rxn05511	>			H+-coupled transport w/o chemical transformation of transported mol
 rxn10426	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.					
 									
 									
-rxn10156			-1:cpd00067:1:0:"H+";-1:cpd00130:1:0:"L-Malate";1:cpd00067:0:0:"H+";1:cpd00130:0:0:"L-Malate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
-rxn08866			-1:cpd00067:1:0:"H+";-1:cpd00130:1:0:"L-Malate";1:cpd00067:0:0:"H+";1:cpd00130:0:0:"L-Malate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
-rxn10158			-1:cpd00067:1:0:"H+";-1:cpd00106:1:0:"Fumarate";1:cpd00067:0:0:"H+";1:cpd00106:0:0:"Fumarate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
-rxn08543			-1:cpd00067:1:0:"H+";-1:cpd00106:1:0:"Fumarate";1:cpd00067:0:0:"H+";1:cpd00106:0:0:"Fumarate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
-rxn10157			-1:cpd00036:1:0:"Succinate";-1:cpd00067:1:0:"H+";1:cpd00036:0:0:"Succinate";1:cpd00067:0:0:"H+"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
+									
+									
+									
+									
+									
 rxn10155			-1:cpd00041:1:0:"L-Aspartate";-1:cpd00067:1:0:"H+";1:cpd00041:0:0:"L-Aspartate";1:cpd00067:0:0:"H+"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
-rxn10154			-1:cpd00036:1:0:"Succinate";-1:cpd00067:1:0:"H+";1:cpd00036:0:0:"Succinate";1:cpd00067:0:0:"H+"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
-rxn09269			-1:cpd00036:1:0:"Succinate";-1:cpd00067:1:0:"H+";1:cpd00036:0:0:"Succinate";1:cpd00067:0:0:"H+"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
-rxn10153			-1:cpd00067:1:0:"H+";-1:cpd00130:1:0:"L-Malate";1:cpd00067:0:0:"H+";1:cpd00130:0:0:"L-Malate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
-rxn08865			-1:cpd00067:1:0:"H+";-1:cpd00130:1:0:"L-Malate";1:cpd00067:0:0:"H+";1:cpd00130:0:0:"L-Malate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
-rxn10152			-1:cpd00067:1:0:"H+";-1:cpd00106:1:0:"Fumarate";1:cpd00067:0:0:"H+";1:cpd00106:0:0:"Fumarate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
-rxn08542			-1:cpd00067:1:0:"H+";-1:cpd00106:1:0:"Fumarate";1:cpd00067:0:0:"H+";1:cpd00106:0:0:"Fumarate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
+									
+									
+									
+									
+									
+									
 rxn10151			-1:cpd00041:1:0:"L-Aspartate";-1:cpd00067:1:0:"H+";1:cpd00041:0:0:"L-Aspartate";1:cpd00067:0:0:"H+"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
 rxn08169			-1:cpd00041:1:0:"L-Aspartate";-1:cpd00067:1:0:"H+";1:cpd00041:0:0:"L-Aspartate";1:cpd00067:0:0:"H+"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
-rxn12569			-1:cpd00067:1:0:"H+";-1:cpd00308:1:0:"Malonate";1:cpd00067:0:0:"H+";1:cpd00308:0:0:"Malonate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
-rxn12591			-1:cpd00067:1:0:"H+";-1:cpd00666:1:0:"Tartrate";1:cpd00067:0:0:"H+";1:cpd00666:0:0:"Tartrate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
-rxn08863			-1:cpd00067:1:0:"H+";-1:cpd00386:1:0:"D-Malate";1:cpd00067:0:0:"H+";1:cpd00386:0:0:"D-Malate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
+									
+									
+									
 rxn09049			-1:cpd00067:1:0:"H+";-1:cpd00247:1:0:"Orotate";1:cpd00067:0:0:"H+";1:cpd00247:0:0:"Orotate"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
+									
+rxn05654			-1:cpd00036:1:0:"Succinate";-2:cpd00067:1:0:"H+";1:cpd00036:0:0:"Succinate";2:cpd00067:0:0:"H+"	[SW] New Succ Rule: Succ H+ symport: ratio 1:2 to prevent import-export futile cycles.	10.1128/ecosalplus.esp-0021-2015				
+rxn10157			-1:cpd00036:1:0:"Succinate";-2:cpd00067:1:0:"H+";1:cpd00036:0:0:"Succinate";2:cpd00067:0:0:"H+"	[SW] New Succ Rule: Succ H+ symport: ratio 1:2 to prevent import-export futile cycles.	10.1128/ecosalplus.esp-0021-2015				
+rxn05561			-2:cpd00067:1:0:"H+";-1:cpd00106:1:0:"Fumarate";2:cpd00067:0:0:"H+";1:cpd00106:0:0:"Fumarate"	[SW] New Succ Rule: Succ H+ symport: ratio 1:2 to prevent import-export futile cycles.	10.1128/ecosalplus.esp-0021-2015				
+rxn08543			-2:cpd00067:1:0:"H+";-1:cpd00106:1:0:"Fumarate";2:cpd00067:0:0:"H+";1:cpd00106:0:0:"Fumarate"	[SW] New Succ Rule: Succ H+ symport: ratio 1:2 to prevent import-export futile cycles.	10.1128/ecosalplus.esp-0021-2015				
+rxn05603			-2:cpd00067:1:0:"H+";-1:cpd00386:1:0:"D-Malate";2:cpd00067:0:0:"H+";1:cpd00386:0:0:"D-Malate"						
+rxn05605			-2:cpd00067:1:0:"H+";-1:cpd00130:1:0:"L-Malate";2:cpd00067:0:0:"H+";1:cpd00130:0:0:"L-Malate"						
+rxn08866			-2:cpd00067:1:0:"H+";-1:cpd00130:1:0:"L-Malate";2:cpd00067:0:0:"H+";1:cpd00130:0:0:"L-Malate"						
+rxn05211			-3:cpd00067:1:0:"H+";-1:cpd00137:1:0:"Citrate";3:cpd00067:0:0:"H+";1:cpd00137:0:0:"Citrate"						
+rxn05493			-1:cpd00024:1:0:"2-Oxoglutarate";-2:cpd00067:1:0:"H+";1:cpd00024:0:0:"2-Oxoglutarate";2:cpd00067:0:0:"H+"						
+rxn09733			-1:cpd00032:0:0:"Oxaloacetate";-2:cpd00067:0:0:"H+";1:cpd00032:1:0:"Oxaloacetate";2:cpd00067:1:0:"H+"						
+rxn05590			-3:cpd00067:1:0:"H+";-1:cpd00260:1:0:"Isocitrate";3:cpd00067:0:0:"H+";1:cpd00260:0:0:"Isocitrate"						
+rxn05630			-1:cpd00061:1:0:"Phosphoenolpyruvate";-3:cpd00067:1:0:"H+";1:cpd00061:0:0:"Phosphoenolpyruvate";3:cpd00067:0:0:"H+"						
+									
+									
+rxn05208			-2:cpd00067:1:0:"H+";-1:cpd00130:1:0:"L-Malate";-1:cpd00159:0:0:"L-Lactate";-1:cpd00971:0:0:"Na+";2:cpd00067:0:0:"H+";1:cpd00130:0:0:"L-Malate";1:cpd00159:1:0:"L-Lactate";1:cpd00971:1:0:"Na+"						
+rxn05604			-2:cpd00067:1:0:"H+";-1:cpd00130:1:0:"L-Malate";-1:cpd00159:0:0:"L-Lactate";-1:cpd00971:0:0:"Na+";2:cpd00067:0:0:"H+";1:cpd00130:0:0:"L-Malate";1:cpd00159:1:0:"L-Lactate";1:cpd00971:1:0:"Na+"						
+rxn09862			-1:cpd00130:0:0:"L-Malate";-1:cpd00137:1:0:"Citrate";-1:cpd00067:1:0:"H+";1:cpd00130:1:0:"L-Malate";1:cpd00137:0:0:"Citrate";1:cpd00067:0:0:"H+"						
+rxn09779			-1:cpd00130:1:0:"L-Malate";-1:cpd00137:0:0:"Citrate";-1:cpd00067:0:0:"H+";1:cpd00130:0:0:"L-Malate";1:cpd00137:1:0:"Citrate";1:cpd00067:1:0:"H+"						
+rxn08216			-1:cpd00036:0:0:"Succinate";-1:cpd00137:1:0:"Citrate";-1:cpd00067:1:0:"H+";1:cpd00036:1:0:"Succinate";1:cpd00137:0:0:"Citrate";1:cpd00067:0:0:"H+"						
+									
+rxn05207			-1:cpd00130:1:0:"L-Malate";-2:cpd00971:1:0:"Na+";1:cpd00130:0:0:"L-Malate";2:cpd00971:0:0:"Na+"						
+rxn11077			-1:cpd00063:1:0:"Ca2+";-1:cpd00067:1:0:"H+";-1:cpd00137:1:0:"Citrate";1:cpd00063:0:0:"Ca2+";1:cpd00067:0:0:"H+";1:cpd00137:0:0:"Citrate"						
+rxn12432			-1:cpd00308:1:0:"Malonate";-2:cpd00971:1:0:"Na+";1:cpd00308:0:0:"Malonate";2:cpd00971:0:0:"Na+"						
+rxn11078			-1:cpd00067:1:0:"H+";-1:cpd00137:1:0:"Citrate";-1:cpd00254:1:0:"Mg";1:cpd00067:0:0:"H+";1:cpd00137:0:0:"Citrate";1:cpd00254:0:0:"Mg"						
+									
+rxn05514			-1:cpd00063:0:0:"Ca2+";-2:cpd00067:1:0:"H+";1:cpd00063:1:0:"Ca2+";2:cpd00067:0:0:"H+"						
+rxn08240			-2:cpd00067:1:0:"H+";-1:cpd00149:0:0:"Co2+";2:cpd00067:0:0:"H+";1:cpd00149:1:0:"Co2+"						
+rxn08990			-2:cpd00067:1:0:"H+";-1:cpd00244:0:0:"Ni2+";2:cpd00067:0:0:"H+";1:cpd00244:1:0:"Ni2+"						
+rxn05618			-1:cpd00030:1:0:"Mn2+";-2:cpd00067:0:0:"H+";1:cpd00030:0:0:"Mn2+";2:cpd00067:1:0:"H+"					manganese transport in via proton antiport	
+rxn09389			-1:cpd00034:0:0:"Zn2+";-2:cpd00067:1:0:"H+";1:cpd00034:1:0:"Zn2+";2:cpd00067:0:0:"H+"						
+rxn08946			-1:cpd00030:0:0:"Mn2+";-2:cpd00067:1:0:"H+";1:cpd00030:1:0:"Mn2+";2:cpd00067:0:0:"H+"						
+									
 									
 rxn08982			-1:cpd00067:1:0:"H+";-1:cpd00971:0:0:"Na+";1:cpd00067:0:0:"H+";1:cpd00971:1:0:"Na+"	[SW] Rule: Na+/H+ antiport has the ratio 1:1					
 rxn08983			-1:cpd00067:1:0:"H+";-1:cpd00971:0:0:"Na+";1:cpd00067:0:0:"H+";1:cpd00971:1:0:"Na+"	[SW] Rule: Na+/H+ antiport has the ratio 1:1					
 rxn13722			-2:cpd00067:0:0:"H+";-1:cpd00254:1:0:"Mg";2:cpd00067:1:0:"H+";1:cpd00254:0:0:"Mg"	[SW] Rule: Mg2+/H+ antiport has ratio 1:2					
+rxn08689			-1:cpd00239:0:0:"H2S";-1:cpd00067:0:0:"H+";1:cpd00239:1:0:"H2S";1:cpd00067:1:0:"H+"						
 									
 rxn90001	>		-2:cpd00004:0:0:"NADH";-2:cpd11621:0:0:"Oxidizedferredoxin";-1:cpd00650:0:0:"Crotonyl-CoA";2:cpd00003:0:0:"NAD";2:cpd11620:0:0:"Reducedferredoxin";1:cpd00120:0:0:"Butyryl-CoA"	[SW] new reaction. Essential for butyrate production in Clostridia.	Li, Hinderberger, Seedorf, Zhang, Buckel, Thauer (2008) Journal of Bacteriology		But-CoA dehydrogenase ETF	Butyryl-CoA dehydrogenase (Etf complex)	
 rxn90002	>		-1:cpd90001:0:0:"2-Fucosyllactose";-1:cpd00001:0:0:"H2O";1:cpd00208:0:0:"LACT";1:cpd00751:0:0:"L-Fucose"	[SW] new reaction for the degradation of the most common human oligosaccharide 2-fucosyllactose	10.1073/pnas.0809584105		2-FL hydrolase	1,2-alpha-L-fucosidase (HMO)	
@@ -1896,3 +1933,6 @@ rxn37614									TRUE
 rxn20595									TRUE
 rxn37613									TRUE
 rxn31154									TRUE
+									
+rxn12972		TRUE							
+rxn13056		TRUE							
