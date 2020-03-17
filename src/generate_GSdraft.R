@@ -17,6 +17,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
                                                  script.dir, high.evi.rxn.BS = 200, pathway.pred = NA, min.bs.for.core = 50, 
                                                  curve.alpha = 1) {
   suppressMessages(require(data.table))
+  setDTthreads(1)
   suppressMessages(require(stringr))
   #suppressMessages(require(sybil))
 
@@ -107,7 +108,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
       }
     }
     if(length(new.id) == 0 ) {
-      warning("No unique parts in sequence id strings found. Assiging new contig names: \"contig_[i]\"")
+      warning("No unique parts in sequence id strings found. Assigning new contig names: \"contig_[i]\"")
       new.id <- paste0("contig_",1:n.contigs)
     }
     dt.new.ids <- data.table(old.contig = contig.names.full, new.contig = new.id)
@@ -123,28 +124,34 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   
   # create gene list and attribute table
   cat("Creating Gene-Reaction list... ")
+
   dt_genes <- copy(dt[!is.na(bitscore)])
   dt_genes[, gene := paste0(gsub(" .*","",stitle),"_",paste(sstart,send, sep = ":"))]
   dt_genes <- dt_genes[!duplicated(paste(stitle,seed,gene,sep = "$"))]
-  dt_genes <- dt_genes[order(stitle,seed,complex,-bitscore)] # TODO: Make sure the subunits with notation "subunit undefined" is last row per seed-reaction id "seed"
+  dt_genes[grepl("Subunit undefined", complex), complex := "XSubunit undefined"]
+  dt_genes <- dt_genes[order(stitle,seed,complex,-bitscore)]
+  dt_genes[grepl("XSubunit undefined", complex), complex := "Subunit undefined"]
   dt_genes[, rm := F]
   dt_genes$itmp <- 1:nrow(dt_genes)
-  
-  # Calculating overlaps
-  for(i in 1:nrow(dt_genes)) {
-    astart <- dt_genes[i, sstart]
-    aend <- dt_genes[i, send]
-    astitle <- dt_genes[i, stitle]
-    aseed <- dt_genes[i, seed]
-    dt_g_tmp <- dt_genes[i < itmp & rm==F & stitle == astitle & seed == aseed]
-    if(nrow(dt_g_tmp)>0) {
-      dt_g_tmp[calc_seq_overlap(astart, aend, sstart, send) > 0.5, rm := T]
-      ind.rm <- dt_g_tmp[rm==T, itmp]
-      dt_genes[itmp %in% ind.rm, rm := T]
+  setkey(dt_genes, stitle, seed)
+  all_cont <- unique(dt_genes$stitle) # Contigs
+
+  for(i_cont in all_cont) {
+    all_seed <- unique(dt_genes[.(i_cont), seed]) # Individual reactions on contig
+    all_seed <- intersect(mseed$id, all_seed)
+    for(i_seed in all_seed) {
+      dt_g_tmp <- dt_genes[.(i_cont,i_seed)]
+      if(nrow(dt_g_tmp)>1) {
+        for(i in 1:(nrow(dt_g_tmp)-1)) {
+          astart <- dt_g_tmp[i, sstart]
+          aend   <- dt_g_tmp[i, send]
+          ind.rm <- dt_g_tmp[(i+1):nrow(dt_g_tmp)][calc_seq_overlap(astart, aend, sstart, send) > 0.5, itmp]
+          dt_genes[ind.rm, rm := T]
+        }
+      }
     }
   }
-  
-  cat(length(unique(dt_genes[rm == F, paste(gene, sep="$")])),"unique genes on",length(unique(dt_genes[rm == F, stitle])),"genetic element(s)\n")
+  cat(length(unique(dt_genes[rm == F & seed %in% mseed$id, paste(gene, sep="$")])),"unique genes on",length(unique(dt_genes[rm == F, stitle])),"genetic element(s)\n")
   
   # create subsys list and attribute table
   dt_subsys <- copy(dt[!is.na(pathway)])
