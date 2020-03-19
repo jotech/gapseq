@@ -330,6 +330,16 @@ EX_cpd05235(e),EX_lgnc(e)
 EX_cpd05147(e),EX_i(e)
 EX_cpd19069(e),EX_pac(e)
 EX_cpd00508(e),EX_3mop(e)
+EX_cpd00116(e),EX_meoh(e)
+EX_cpd19047(e),EX_alac_S(e)
+EX_cpd03422(e),EX_cbi(e)
+EX_cpd00324(e),EX_ch4s(e)
+EX_cpd00425(e),EX_dma(e)
+EX_cpd00229(e),EX_gcald(e)
+EX_cpd00703(e),EX_ind3ac(e)
+EX_cpd00116(e),EX_meoh(e)
+EX_cpd00187(e),EX_mma(e)
+EX_cpd15837(e),EX_cbl1hbi(e)
 rxn00001,PPA
 rxn00002,ALPHNH
 rxn00006,r0010
