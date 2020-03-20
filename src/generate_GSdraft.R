@@ -366,3 +366,10 @@ mod <- build_draft_model_from_blast_results(blast.res = blast.res,
 saveRDS(mod$mod,file = paste0(model.name, "-draft.RDS"))
 saveRDS(mod$cand.rxns,file = paste0(model.name, "-rxnWeights.RDS"))
 saveRDS(mod$rxn_x_genes,file = paste0(model.name, "-rxnXgenes.RDS"))
+if( "sybilSBML" %in% rownames(installed.packages()) ){
+  if( any(is.na(mod$mod@met_attr$charge)) ) mod$mod@met_attr$charge[which(is.na(mod$mod@met_attr$charge))] <- ""
+  if( any(is.na(mod$mod@met_attr$chemicalFormula)) ) mod$mod@met_attr$chemicalFormula[which(is.na(mod$mod@met_attr$chemicalFormula))] <- ""
+  sybilSBML::writeSBML(mod$mod, filename = paste0(model.name, "-draft.xml"), printNotes=F, printAnnos=F)
+}else{
+  print("SBML not found, please install sybilSBML for sbml output")
+}

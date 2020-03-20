@@ -624,6 +624,13 @@ if( verbose ){
 out.rds <- paste0(output.dir,"/",out.id,".RDS")
 if(file.exists(out.rds)) out.rds <- paste0(output.dir,"/",out.id,"-gapfilled.RDS")
 saveRDS(mod.out, file = out.rds)
+if( "sybilSBML" %in% rownames(installed.packages()) ){
+  if( any(is.na(mod.out@met_attr$charge)) ) mod.out@met_attr$charge[which(is.na(mod.out@met_attr$charge))] <- ""
+  if( any(is.na(mod.out@met_attr$chemicalFormula)) ) mod.out@met_attr$chemicalFormula[which(is.na(mod.out@met_attr$chemicalFormula))] <- ""
+  sybilSBML::writeSBML(mod.out, filename = paste0(out.id, ".xml"), printNotes=F, printAnnos=F)
+}else{
+  print("SBML not found, please install sybilSBML for sbml output")
+}
 
 # Save additionally an unconstrained version of the model if desired
 if(relaxed.constraints) {
