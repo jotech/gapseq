@@ -1,3 +1,5 @@
+
+
 # gapseq
 _Informed prediction and analysis of bacteria metabolic pathways and genome-scale networks_
 
@@ -7,6 +9,11 @@ Based on genomic information and databases for pathways and reactions, _gapseq_ 
 - transporter inference
 - metabolic model creation
 - multi-step gap filling 
+
+_Cite gapseq_ (preprint):\
+gapseq: Informed prediction of bacterial metabolic pathways and reconstruction of accurate metabolic models.\
+Johannes Zimmermann, Christoph Kaleta, Silvio Waschina.\
+_bioRxiv_ 2020.03.20.000737; doi: https://doi.org/10.1101/2020.03.20.000737 
 
 
 ## Installation
