@@ -1931,11 +1931,14 @@ rxn41718	>		-2:cpd00025:0:0:H2O2;-2:cpd00067:0:0:H+;-1:cpd32319:0:0:Fe-coproporp
 									
 rxn29966				[JZ] not accessed until now, but needed for phenylethylamine degradation					TRUE
 									
-rxn20632									TRUE
+rxn20632	>			[JZ] photosystem2 wrong direction	https://biocyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-1.10.3.9				
+rxn20633		TRUE		[JZ] duplicate to rxn20632					
 rxn37614									TRUE
 rxn20595									TRUE
 rxn37613									TRUE
 rxn31154									TRUE
+rxn26754	>			[JZ] photosystem1 should be irreversible	https://biocyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-1.97.1.12				
+rxn26755		TRUE		[JZ] duplicate to rxn26754					
 									
 rxn12972		TRUE							
 rxn13056		TRUE							
