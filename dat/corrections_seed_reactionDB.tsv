@@ -1931,10 +1931,10 @@ rxn41718	>		-2:cpd00025:0:0:H2O2;-2:cpd00067:0:0:H+;-1:cpd32319:0:0:Fe-coproporp
 									
 rxn29966				[JZ] not accessed until now, but needed for phenylethylamine degradation					TRUE
 									
-rxn20632	>			[JZ] photosystem2 wrong direction	https://biocyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-1.10.3.9				
+rxn20632	>		-2:cpd00001:0:0:"H2O";-4:cpd11632:0:0:"hn";-2:cpd27797:0:0:"PLASTOQUINONE";-4:cpd00067:0:0:"H+";1:cpd00007:0:0:"O2";2:cpd27796:0:0:"PLASTOQUINOL-1";4:cpd00067:1:0:"H+"	[JZ] photosystem2 wrong direction + proton missing on both sides (was balanced but no proton pumping)	https://biocyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-1.10.3.9				
 rxn20633		TRUE		[JZ] duplicate to rxn20632					
 rxn37614									TRUE
-rxn20595									TRUE
+rxn20595	>		-2:cpd27746:0:0:"Oxidized-Plastocyanins";-1:cpd27796:0:0:"PLASTOQUINOL-1";-2:cpd00067:0:0:"H+";1:cpd27797:0:0:"PLASTOQUINONE";2:cpd27884:0:0:"Plastocyanin-Reduced";4:cpd00067:1:0:"H+"	[JZ] Should be irreversible + proton missing on both sides (was balanced but no proton pumping)	https://metacyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-7.1.1.6				
 rxn37613									TRUE
 rxn31154									TRUE
 rxn26754	>			[JZ] photosystem1 should be irreversible	https://biocyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-1.97.1.12				
