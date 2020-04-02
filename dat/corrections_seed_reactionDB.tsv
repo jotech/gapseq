@@ -1940,6 +1940,9 @@ rxn31154									TRUE
 rxn26754	>		-1:cpd11632:0:0:"hn";-1:cpd11621:0:0:"Oxidizedferredoxin";-1:cpd27884:0:0:"Plastocyanin-Reduced";1:cpd27746:0:0:"Oxidized-Plastocyanins";1:cpd11620:0:0:"Reducedferredoxin"	[JZ] photosystem1 should be irreversible + adapted to use default identifier for ferredoxin (cpd11620/cpd11621)	https://biocyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-1.97.1.12				
 rxn26755		TRUE		[JZ] duplicate to rxn26754					
 rxn17196	=			[JZ] wrong direction	https://biocyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-1.18.1.2				
+rxn11969		TRUE		[JZ] non-enzymatic animal retina reaction in wrong direction					
+rxn11981	>			[JZ] Vitamin D3 formation needs light					
+rxn11990	>			[JZ] Vitamin D2 formation needs light					
 									
 rxn12972		TRUE							
 rxn13056		TRUE							
