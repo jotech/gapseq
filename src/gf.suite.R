@@ -98,6 +98,7 @@ source(paste0(script.dir,"/gapfill4.R"))
 source(paste0(script.dir,"/generate_rxn_stoich_hash.R"))
 source(paste0(script.dir,"/get_gene_logic_string.R"))
 source(paste0(script.dir,"/addMetAttr.R"))
+source(paste0(script.dir,"/addReactAttr.R"))
 
 rm.na <- function(vec){
   idx <- which(is.na(vec))
@@ -115,6 +116,7 @@ if( no.core ){
 # database files
 carbon.source <- fread(paste0(script.dir, "/../dat/sub2pwy.csv"))
 seed_x_mets   <- fread(paste0(script.dir,"/../dat/seed_metabolites_edited.tsv"), header=T, stringsAsFactors = F, na.strings = c("null","","NA"))
+seed_x_metCyc <- fread(paste0(script.dir,"/../dat/mnxref_seed-other.tsv"), header = T)
 
 # potentially limit carbon.source
 if ( length(met.limit) > 0 ){
@@ -599,8 +601,9 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
 
 mod.out <- add_missing_exchanges(mod.out)
 
-# add metabolite attributes
+# add metabolite & reactions attributes
 mod.out <- addMetAttr(mod.out, seed_x_mets = seed_x_mets)
+mod.out <- addReactAttr(mod.out)
 
 if(!dir.exists(output.dir))
   system(paste0("mkdir ",output.dir))
@@ -627,7 +630,7 @@ saveRDS(mod.out, file = out.rds)
 if( "sybilSBML" %in% rownames(installed.packages()) ){
   if( any(is.na(mod.out@met_attr$charge)) ) mod.out@met_attr$charge[which(is.na(mod.out@met_attr$charge))] <- ""
   if( any(is.na(mod.out@met_attr$chemicalFormula)) ) mod.out@met_attr$chemicalFormula[which(is.na(mod.out@met_attr$chemicalFormula))] <- ""
-  sybilSBML::writeSBML(mod.out, filename = paste0(out.id, ".xml"), printNotes=F, printAnnos=F)
+  sybilSBML::writeSBML(mod.out, filename = paste0(out.id, ".xml"), level = 3, version = 1, fbcLevel = 2, printNotes = T, printAnnos = T)
 }else{
   print("SBML not found, please install sybilSBML for sbml output")
 }
@@ -635,7 +638,9 @@ if( "sybilSBML" %in% rownames(installed.packages()) ){
 # Save additionally an unconstrained version of the model if desired
 if(relaxed.constraints) {
   mod.out@lowbnd[grep("^EX_",mod.out@react_id)] <- -sybil::SYBIL_SETTINGS("MAXIMUM")
-  saveRDS(mod.out, file = paste0(output.dir,"/",out.id,"-unconstrained.RDS"))
+  sbml.o <- saveRDS(mod.out, file = paste0(output.dir,"/",out.id,"-unconstrained.RDS"))
+  if(sbml.o==F)
+    warning("Writing SBML-file failed.")
 }
 
 q(status=0)

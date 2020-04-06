@@ -64,7 +64,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   
   seed_x_ec <- fread(paste0(script.dir,"/../dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv"), header=T)
   seed_x_name <- fread(paste0(script.dir,"/../dat/seed_reactions_corrected.tsv"), header=T, stringsAsFactors = F)
-  seed_x_metCyc <- fread(paste0(script.dir,"/../dat/mnxref_seed-other.tsv"), header = T)
+  #seed_x_metCyc <- fread(paste0(script.dir,"/../dat/mnxref_seed-other.tsv"), header = T)
   seed_x_aliases <- fread(paste0(script.dir,"/../dat/seed_Enzyme_Name_Reactions_Aliases.tsv"), header=T)
   seed_x_mets   <- fread(paste0(script.dir,"/../dat/seed_metabolites_edited.tsv"), header=T, stringsAsFactors = F, na.strings = c("null","","NA"))
   
@@ -272,8 +272,9 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   
   mod <- add_missing_exchanges(mod) 
   
-  # add metabolite attributes
+  # add metabolite & reaction attributes
   mod <- addMetAttr(mod, seed_x_mets = seed_x_mets)
+  mod <- addReactAttr(mod)
   
   # add metabolite compartment list
   n.comp <- max(mod@met_comp, na.rm = T)
@@ -300,6 +301,7 @@ source(paste0(script.dir,"/generate_rxn_stoich_hash.R"))
 source(paste0(script.dir,"/prepare_candidate_reaction_tables.R"))
 source(paste0(script.dir,"/get_gene_logic_string.R"))
 source(paste0(script.dir,"/addMetAttr.R"))
+source(paste0(script.dir,"/addReactAttr.R"))
 
 # get options first
 spec <- matrix(c(
@@ -369,7 +371,9 @@ saveRDS(mod$rxn_x_genes,file = paste0(model.name, "-rxnXgenes.RDS"))
 if( "sybilSBML" %in% rownames(installed.packages()) ){
   if( any(is.na(mod$mod@met_attr$charge)) ) mod$mod@met_attr$charge[which(is.na(mod$mod@met_attr$charge))] <- ""
   if( any(is.na(mod$mod@met_attr$chemicalFormula)) ) mod$mod@met_attr$chemicalFormula[which(is.na(mod$mod@met_attr$chemicalFormula))] <- ""
-  sybilSBML::writeSBML(mod$mod, filename = paste0(model.name, "-draft.xml"), printNotes=F, printAnnos=F)
+  sbml.o <- sybilSBML::writeSBML(mod$mod, filename = paste0(model.name, "-draft.xml"), level = 3, version = 1, fbcLevel = 2, printNotes = T, printAnnos = T)
+  if(sbml.o==F)
+    warning("Writing SBML-file failed.")
 }else{
   print("SBML not found, please install sybilSBML for sbml output")
 }
