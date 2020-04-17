@@ -630,6 +630,7 @@ saveRDS(mod.out, file = out.rds)
 if( "sybilSBML" %in% rownames(installed.packages()) ){
   if( any(is.na(mod.out@met_attr$charge)) ) mod.out@met_attr$charge[which(is.na(mod.out@met_attr$charge))] <- ""
   if( any(is.na(mod.out@met_attr$chemicalFormula)) ) mod.out@met_attr$chemicalFormula[which(is.na(mod.out@met_attr$chemicalFormula))] <- ""
+  if( any( mod.out@met_attr$chemicalFormula=="null"))mod.out@met_attr$chemicalFormula[which(mod.out@met_attr$chemicalFormula=="null")]<- ""
   sybilSBML::writeSBML(mod.out, filename = paste0(out.id, ".xml"), level = 3, version = 1, fbcLevel = 2, printNotes = T, printAnnos = T)
 }else{
   print("SBML not found, please install sybilSBML for sbml output")

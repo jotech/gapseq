@@ -371,6 +371,7 @@ saveRDS(mod$rxn_x_genes,file = paste0(model.name, "-rxnXgenes.RDS"))
 if( "sybilSBML" %in% rownames(installed.packages()) ){
   if( any(is.na(mod$mod@met_attr$charge)) ) mod$mod@met_attr$charge[which(is.na(mod$mod@met_attr$charge))] <- ""
   if( any(is.na(mod$mod@met_attr$chemicalFormula)) ) mod$mod@met_attr$chemicalFormula[which(is.na(mod$mod@met_attr$chemicalFormula))] <- ""
+  if( any( mod$mod@met_attr$chemicalFormula=="null"))mod$mod@met_attr$chemicalFormula[which(mod$mod@met_attr$chemicalFormula=="null")]<- ""
   sbml.o <- sybilSBML::writeSBML(mod$mod, filename = paste0(model.name, "-draft.xml"), level = 3, version = 1, fbcLevel = 2, printNotes = T, printAnnos = T)
   if(sbml.o==F)
     warning("Writing SBML-file failed.")
