@@ -340,6 +340,12 @@ EX_cpd00703(e),EX_ind3ac(e)
 EX_cpd00116(e),EX_meoh(e)
 EX_cpd00187(e),EX_mma(e)
 EX_cpd15837(e),EX_cbl1hbi(e)
+EX_cpd00541(e),EX_lipoate(e)
+EX_cpd11683(e),EX_chtn(e)
+EX_cpd00046(e),EX_cmp(e)
+EX_cpd00018(e),EX_amp(e)
+EX_cpd00091(e),EX_ump(e)
+EX_cpd00126(e),EX_gmp(e)
 rxn00001,PPA
 rxn00002,ALPHNH
 rxn00006,r0010
