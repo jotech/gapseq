@@ -569,6 +569,8 @@ rxn05595			-1:cpd00067:0:0:"H+";-1:cpd00205:1:0:"K+";1:cpd00067:1:0:"H+";1:cpd00
 rxn10115	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=FORMATEDEHYDROG-RXN				
 rxn16356									TRUE
 rxn23236									TRUE
+rxn05295		TRUE		[SW] non-required mRNA synthesis reactions					
+rxn12361		TRUE		[SW] non-required mRNA synthesis reactions					
 									
 rxn09722		TRUE		[SW] Mitochondrium-specific reaction					
 rxn09750		TRUE		[SW] Mitochondrium-specific reaction					
