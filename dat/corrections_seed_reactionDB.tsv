@@ -566,6 +566,9 @@ rxn02248	>			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn12991	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ACETYL-COA-CARBOXYLTRANSFER-RXN				
 rxn13752			-2:cpd00067:0:0:"H+";-1:cpd01414:1:0:"Tetrathionate";-1:cpd17026:1:0:"methymenaquinol 7";2:cpd00067:1:0:"H+";2:cpd00268:1:0:"H2S2O3";1:cpd11606:0:0:"Menaquinone 7"	[SW] Stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-8358				
 rxn05595			-1:cpd00067:0:0:"H+";-1:cpd00205:1:0:"K+";1:cpd00067:1:0:"H+";1:cpd00205:0:0:"K+"	[SW] K+/H+ transport should be antagonistic. Antiport.					
+rxn10115	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=FORMATEDEHYDROG-RXN				
+rxn16356									TRUE
+rxn23236									TRUE
 									
 rxn09722		TRUE		[SW] Mitochondrium-specific reaction					
 rxn09750		TRUE		[SW] Mitochondrium-specific reaction					
