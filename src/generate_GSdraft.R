@@ -12,7 +12,7 @@ options(error=traceback)
 #high.evi.rxn.BS <- 200
 #transporter.res <- "../gapseq.publication/gene.essent/GCF_000005845.2_ASM584v2_genomic-Transporter.tbl"
 
-# Please note: If Game-Staining is set to "auto" it requires the external programms barrnap, usearch and bedtools
+# Please note: If Gram-Staining is set to "auto" it requires the external programms barrnap, blastn, and bedtools
 build_draft_model_from_blast_results <- function(blast.res, transporter.res, biomass = "auto", model.name = NA, genome.seq = NA, 
                                                  script.dir, high.evi.rxn.BS = 200, pathway.pred = NA, min.bs.for.core = 50, 
                                                  curve.alpha = 1) {
@@ -39,7 +39,6 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     system(paste0("barrnap --quiet ",genome.seq.base, ".tmp | grep 16S > ", genome.seq.base, ".gff"))
     system(paste0("bedtools getfasta -s -name -fi ",genome.seq.base,".tmp -bed ", genome.seq.base,".gff -fo ", genome.seq.base, ".16S.fasta"))
     #system(paste0("rnammer -S bac -m ssu -f ",genome.seq,".16S.fasta ",genome.seq))
-    #system(paste0("usearch -sinaps ",genome.seq,".16S.fasta -db " ,script.dir,"/../dat/seq/Bacteria/16S_graminfo/16S_gramposinfo.fna -attr grampos -tabbedout ",genome.seq,".graminfo.tsv -strand plus"))
     
     biomass <- system(paste0(script.dir,"/./predict_Gram_staining_from16S.sh ",genome.seq.base,".16S.fasta"), intern = T)
     
