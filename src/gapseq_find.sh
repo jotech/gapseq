@@ -26,7 +26,7 @@ use_parallel=true
 exhaustive=false
 seqSrc=2
 anno_genome_cov=false
-use_gene_seq=false
+use_gene_seq=true
 stop_on_files_exist=false
 
 usage()
