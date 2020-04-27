@@ -63,7 +63,7 @@ exit 1
 }
 
 
-# paths and variables
+# paths and eariables
 curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
@@ -441,9 +441,14 @@ do
         fi
         getDBhit # get db hits for this reactions
         dbhit="$(echo $dbhit | tr ' ' '\n' | sort | uniq | tr '\n' ' ')" # remove duplicates
+        #dbhit=$($dir/getDBhit.sh "$rea" "$reaName" "$ec" "$database" "$EC_test")
         if [[ $spontRea = *"$rea"* ]]; then # detect spontaneous reactions
             [[ verbose -ge 1 ]] && echo -e '\t\t--> Spontaneous reaction <--'
-            echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tspontaneous\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
+            if [ "$includeSeq" = true ]; then
+                echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t\t$pwy\tspontaneous\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
+            else
+                echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tspontaneous\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
+            fi
             continue
         fi
         ((count++))
@@ -640,7 +645,13 @@ do
                         fi
                         rm query.blast
                     done
-                    [[ $subunits_found -eq $subunits_found_old ]] && [[ $iterations -gt 1 ]] && echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\t$subunit_id\t$is_exception\tNA" >> reactions.tbl # subunit not found 
+                    if [[ $subunits_found -eq $subunits_found_old ]] && [[ $iterations -gt 1 ]]; then
+                        if [ "$includeSeq" = true ]; then
+                            echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\t$subunit_id\t$is_exception\tNA" >> reactions.tbl # subunit not found 
+                        else
+                            echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\t$subunit_id\t$is_exception\tNA" >> reactions.tbl # subunit not found 
+                        fi
+                    fi
                     rm query_subunit.part-*.fasta*
                 done
                 [[ $iterations -gt 1 ]] && [[ verbose -ge 1 ]] &&  echo -e '\t\t'total subunits found: `echo $subunits_found - $subunits_undefined_found | bc` / $subunits_count
@@ -749,7 +760,11 @@ do
                 [[ verbose -ge 1 ]] && { echo -e '\t\t'NO blast hit; }
                 if [[ -n "$dbhit" ]];then
                     pwyNoHitFound="$pwyNoHitFound$dbhit "
-                    echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
+                    if [ "$includeSeq" = true ]; then
+                        echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
+                    else
+                        echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
+                    fi
                 fi
             fi
         else
@@ -757,7 +772,11 @@ do
             ((vague++))
             [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
             [[ $keyRea = *"$rea"* ]] && vagueKeyReaFound="$vagueKeyReaFound $rea"
-            echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_seq_data\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
+            if [ "$includeSeq" = true ]; then
+                echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t\t$pwy\tno_seq_data\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
+            else
+                echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_seq_data\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
+            fi
         fi
         [[ verbose -ge 2 ]] && echo -e "\t\tCandidate reactions: $dbhit"
     done # pathway
