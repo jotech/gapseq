@@ -11,12 +11,13 @@ usage()
 {
     echo "gapseq: prediction and analysis of bacterial metabolic pathways and genome-scale networks"
     echo -e "\nUsage:"
-    echo "  gapseq (find | find-transport | draft | fill | doall) (...)"
+    echo "  gapseq (find | find-transport | draft | fill | doall | adapt) (...)"
     echo "  gapseq doall (genome) [medium]"
     echo "  gapseq find (-p pathways | -e enzymes) [-b bitscore] (genome)"
     echo "  gapseq find-transport [-b bitscore] (genome)"
     echo "  gapseq draft (-r reactions | -t transporter -c genome -p pathways) [-b pos|neg|archae|auto]"
     echo "  gapseq fill (-m draft -n medium -c rxn_weights -g rxn_genes)"
+    echo "  gapseq adapt (add | remove) (reactions,pathways) (model)"
     echo -e "\nExamples:"
     echo "  gapseq doall toy/ecoli.fna.gz"
     echo "  gapseq doall toy/myb71.fna.gz dat/media/TSBmed.csv"
@@ -25,12 +26,14 @@ usage()
     echo "  gapseq find-transport toy/myb71.fna.gz"
     echo "  gapseq draft -r toy/ecoli-all-Reactions.tbl -t toy/ecoli-Transporter.tbl -c toy/ecoli.fna.gz -p toy/ecoli-all-Pathways.tbl"
     echo "  gapseq fill -m toy/ecoli-draft.RDS -n dat/media/ALLmed.csv -c toy/ecoli-rxnWeights.RDS -g toy/ecoli-rxnXgenes.RDS"
+    echo "  gapseq adapt add 14DICHLORBENZDEG-PWY toy/myb71.RDS"
     echo -e "\nOptions:"
     echo "  find            Pathway analysis, try to find enzymes based on homology."
     echo "  find-transport  Search for transporters based on homology."
     echo "  draft           Draft model construction based on results from find and find-transport."
     echo "  fill            Gap filling of a model."
     echo "  doall           Combine find, find-transport, draft and fill."
+    echo "  adapt           Add or remove reactions or pathways."
     echo "  -v              Show version."
     echo "  -h              Show this screen."
     echo "  -n              Enable noisy verbose mode."
@@ -83,6 +86,15 @@ elif [ "$1" == "doall" ]; then
     $dir/src/transporter.sh -b 200 $file
     Rscript $dir/src/generate_GSdraft.R -r $id-all-Reactions.tbl -t $id-Transporter.tbl -c $file -u 200 -l 100 -a 1 -p $id-all-Pathways.tbl
     Rscript $dir/src/gf.suite.R -m ./${id}-draft.RDS -n $medium -c ./${id}-rxnWeights.RDS -b 100 -g ./${id}-rxnXgenes.RDS
+
+elif [ "$1" == "adapt" ]; then
+    if [ "$2" == "add" ]; then
+        Rscript $dir/src/adapt.R -a $3 -m $4
+    elif [ "$2" == "remove" ]; then
+        Rscript $dir/src/adapt.R -r $3 -m $4
+    else
+        usage
+    fi
 
 else
     usage
