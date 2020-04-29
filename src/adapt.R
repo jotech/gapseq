@@ -81,13 +81,14 @@ if ( toupper(file_ext(mod.file)) == "RDS" ){
 
 
 #print(ids.add)
-#ids <- c("|RIBOSYN2-PWY|", "rxn00023", "14DICHLORBENZDEG-PWY", "rxn05683", "1.1.1.2", "purine hydroxylase", "PYRUVDEH-RXN")
+#ids <- c("|RIBOSYN2-PWY|", "rxn00023", "14DICHLORBENZDEG-PWY", "rxn05683", "1.1.1.2", "purine hydroxylase", "PYRUVDEH-RXN", "Ammonia-oxidation")
 
 ids2seed <- function(ids){
   id.seed   <- str_extract(ids, "rxn[0-9]+")
   idx.pwy   <- match(gsub("\\|","",ids), gsub("\\|","",meta.pwy$id))
   idx.ec    <- str_extract(ids, "[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+")
   idx.rxn   <- match(gsub("\\|","",ids), gsub("\\|","",meta.rxn$id))
+  idx.sub   <- unname(sapply(ids, function(id){ hit <- grep(gsub("\\|","",id), meta.pwy$hierarchy, ignore.case = T); ifelse(length(hit)>0, paste0(hit, collapse = ","), NA) }))
   
   ids2seed.dt <- data.table()
   for(i in seq_along(ids)){
@@ -105,12 +106,22 @@ ids2seed <- function(ids){
     } else if ( !is.na(idx.ec[i]) ){
       rxn.str <- system(paste0(script.dir, "/getDBhit.sh ", paste("''", "''", idx.ec[i], "seed")), intern=T)
       ids2seed.dt <- rbind(ids2seed.dt, data.table(id=ids[i], id.type="EC number", db.rxn="", seed=rxn.str))
-    }else if ( ! is.na(idx.rxn[i])){
+    }else if ( !is.na(idx.rxn[i]) ){
       rxn <- gsub("\\|","",meta.rxn[idx.rxn[i], id])
       ec  <- meta.rxn[idx.rxn[i], ec]
       rxn.name <- meta.rxn[idx.rxn[i], name]
       rxn.str <- system(paste0(script.dir, "/getDBhit.sh ", paste(rxn, paste0("'",rxn.name,"'"), ec, "seed")), intern=T)
       ids2seed.dt <- rbind(ids2seed.dt, data.table(id=ids[i], id.type="metacyc rxn", db.rxn=ids[i], seed=rxn.str))
+    }else if ( !is.na(idx.sub[i]) ){
+      idx.sub.split <- as.numeric(unlist(str_split(idx.sub[i], ",")))
+      rxn <- unlist(str_split(meta.pwy[idx.sub.split, reaId], ","))
+      ec  <- unlist(str_split(meta.pwy[idx.sub.split, reaEc], ","))
+      rxn.name <- unlist(str_split(meta.pwy[idx.sub.split, reaName], ";"))
+      rxn.str <- c()
+      for(j in seq_along(rxn)){
+        rxn.str <- c(rxn.str, system(paste0(script.dir, "/getDBhit.sh ", paste(rxn[j], paste0("'",rxn.name[j],"'"), ec[j], "seed")), intern=T))
+      }
+      ids2seed.dt <- rbind(ids2seed.dt, unique(data.table(id=ids[i], id.type="metacyc sub", db.rxn=rxn, seed=rxn.str)))
     }else {
       rxn.str <- system(paste0(script.dir, "/getDBhit.sh ", paste("''", ids[i], "''", "seed")), intern=T)
       ids2seed.dt <- rbind(ids2seed.dt, data.table(id=ids[i], id.type="other", db.rxn="", seed=rxn.str))
