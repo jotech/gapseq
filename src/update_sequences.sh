@@ -17,56 +17,65 @@ mkdir -p $seqpath/rev $seqpath/unrev $seqpath_user $seqpath/rxn
 
 echo Checking updates for $taxonomy $seqpath
 
-url_bacrev=ftp://ftp.rz.uni-kiel.de/pub/medsystbio/Bacteria/rev/sequences.tar.gz
-url_bacunrev=ftp://ftp.rz.uni-kiel.de/pub/medsystbio/Bacteria/unrev/sequences.tar.gz
-url_bacrxn=ftp://ftp.rz.uni-kiel.de/pub/medsystbio/Bacteria/rxn/sequences.tar.gz
+url_rev=ftp://ftp.rz.uni-kiel.de/pub/medsystbio/$taxonomy/rev/sequences.tar.gz
+url_unrev=ftp://ftp.rz.uni-kiel.de/pub/medsystbio/$taxonomy/unrev/sequences.tar.gz
+url_rxn=ftp://ftp.rz.uni-kiel.de/pub/medsystbio/$taxonomy/rxn/sequences.tar.gz
 
-dir_bacrev=$seqpath/rev
-dir_bacunrev=$seqpath/unrev
-dir_bacrxn=$seqpath/rxn
+status_rev=$(curl -s --head -w %{http_code} $url_rev -o /dev/null)
+status_unrev=$(curl -s --head -w %{http_code} $url_unrev -o /dev/null)
+status_rxn=$(curl -s --head -w %{http_code} $url_rxn -o /dev/null)
+
+if [[ $status_rev -eq 550 ]] && [[ $status_unrev -eq 550 ]] && [[ $status_rxn -eq 550 ]]; then
+    echo "No sequence archive found, manual download needed."
+    exit 1
+fi
+
+dir_rev=$seqpath/rev
+dir_unrev=$seqpath/unrev
+dir_rxn=$seqpath/rxn
 
 # check modification time
-if [[ -s $dir_bacrev/sequences.tar.gz ]]; then
-    mod_bacrev=$(stat -c %Y $dir_bacrev/sequences.tar.gz)
+if [[ -s $dir_rev/sequences.tar.gz ]]; then
+    mod_rev=$(stat -c %Y $dir_rev/sequences.tar.gz)
 else
-    mod_bacrev=0
+    mod_rev=0
 fi
-if [[ -s $dir_bacunrev/sequences.tar.gz ]]; then
-    mod_bacunrev=$(stat -c %Y $dir_bacunrev/sequences.tar.gz)
+if [[ -s $dir_unrev/sequences.tar.gz ]]; then
+    mod_unrev=$(stat -c %Y $dir_unrev/sequences.tar.gz)
 else
-    mod_bacunrev=0
+    mod_unrev=0
 fi
-if [[ -s $dir_bacrxn/sequences.tar.gz ]]; then
-    mod_bacrxn=$(stat -c %Y $dir_bacrxn/sequences.tar.gz)
+if [[ -s $dir_rxn/sequences.tar.gz ]]; then
+    mod_rxn=$(stat -c %Y $dir_rxn/sequences.tar.gz)
 else
-    mod_bacrxn=0
+    mod_rxn=0
 fi
 
 # download if newer
-cd $dir_bacrev && wget -nv -N $url_bacrev
-cd $dir_bacunrev && wget -nv -N $url_bacunrev
-cd $dir_bacrxn && wget -nv -N $url_bacrxn
+cd $dir_rev && wget -nv -N $url_rev
+cd $dir_unrev && wget -nv -N $url_unrev
+cd $dir_rxn && wget -nv -N $url_rxn
 
 # extract if new files were downloaded
-modnew_bacrev=$(stat -c %Y $dir_bacrev/sequences.tar.gz)
-modnew_bacunrev=$(stat -c %Y $dir_bacunrev/sequences.tar.gz)
-modnew_bacrxn=$(stat -c %Y $dir_bacrxn/sequences.tar.gz)
+modnew_rev=$(stat -c %Y $dir_rev/sequences.tar.gz)
+modnew_unrev=$(stat -c %Y $dir_unrev/sequences.tar.gz)
+modnew_rxn=$(stat -c %Y $dir_rxn/sequences.tar.gz)
 
-if [[ $modnew_bacrev -gt $mod_bacrev ]]; then
+if [[ $modnew_rev -gt $mod_rev ]]; then
     tar xzf $seqpath/rev/sequences.tar.gz -C $seqpath/rev/
-    echo "Updated bacteria reviewed sequences"
+    echo "Updated $taxonomy reviewed sequences"
 else
-    echo "Bacteria reviewed sequences already up-to-date"
+    echo "$taxonomy reviewed sequences already up-to-date"
 fi
-if [[ $modnew_bacunrev -gt $mod_bacunrev ]]; then
+if [[ $modnew_unrev -gt $mod_unrev ]]; then
     tar xzf $seqpath/unrev/sequences.tar.gz -C $seqpath/unrev/
-    echo "Updated bacteria unreviewed sequences"
+    echo "Updated $taxonomy unreviewed sequences"
 else
-    echo "Bacteria unreviewed sequences already up-to-date"
+    echo "$taxonomy unreviewed sequences already up-to-date"
 fi
-if [[ $modnew_bacrxn -gt $mod_bacrxn ]]; then
+if [[ $modnew_rxn -gt $mod_rxn ]]; then
     tar xzf $seqpath/rxn/sequences.tar.gz -C $seqpath/rxn/
-    echo "Updated bacteria additional reaction sequences"
+    echo "Updated $taxonomy additional reaction sequences"
 else
-    echo "Bacteria additional reaction sequences already up-to-date"
+    echo "$taxonomy additional reaction sequences already up-to-date"
 fi
