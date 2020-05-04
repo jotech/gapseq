@@ -120,7 +120,7 @@ seed_x_metCyc <- fread(paste0(script.dir,"/../dat/mnxref_seed-other.tsv"), heade
 
 # potentially limit carbon.source
 if ( length(met.limit) > 0 ){
-  carbon.source <- carbon.source[tolower(name) %like% tolower(met.limit) | altname == "glucose" | id_seed == met.limit]
+  carbon.source <- carbon.source[id_seed == met.limit | exid_seed == met.limit | tolower(name) %like% tolower(met.limit) | altname %like% tolower(met.limit)]
   print(carbon.source)
   if( nrow(carbon.source)==0 ){
     stop("Limittation of carbon sources failed, nothing found!")
