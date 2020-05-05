@@ -160,7 +160,6 @@ EX_cpd08636(c),NA
 EX_cpd09878(e),EX_sulfac(e)
 EX_cpd10515(e),EX_fe2(e)
 EX_cpd10516(e),EX_fe3(e)
-EX_cpd11416(c),NA
 EX_cpd11575(e),EX_mops(e)
 EX_cpd11576(e),EX_metsox_R_L(e)
 EX_cpd11578(e),EX_hexs(e)
@@ -355,7 +354,6 @@ EX_cpd01618(e),EX_13ppd(e)
 EX_cpd02992(e),EX_core4(e)
 EX_cpd03226(e),EX_vitd3(e)
 EX_cpd11842(c),EX_core3(e)
-EX_cpd11416(c),EX_Biomass(e)
 rxn00001,PPA
 rxn00002,ALPHNH
 rxn00006,r0010
