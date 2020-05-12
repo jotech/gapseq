@@ -96,6 +96,7 @@ sed -i "s/\(>.*\)/\L\1/" all.fasta # header to lower case
 grep -e ">" all.fasta > tcdb_header
 sed '1d' $subDB | awk -F '\t' '{if ($8 != "NA") print $0}' > redSubDB
 [[ -n "$only_met" ]] && { cat redSubDB | grep -i $only_met > redSubDB.tmp; mv redSubDB.tmp redSubDB; }
+[[ ! -s redSubDB ]] && { echo keyword/metabolite not found; exit 1; }
 key=$(cat redSubDB | awk -F '\t' '{if ($2 != "") print $1"\n"$2; else print $1}' | sort | uniq | paste -s -d '|') # ignore substances without linked exchange reaction
 [[ -n "$only_met" ]] && { echo Search keys: "$key"; } 
 grep -wEi "$key" tcdb_header | awk '{print substr($1,2)}' > hits
