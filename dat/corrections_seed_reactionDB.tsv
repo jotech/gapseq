@@ -1953,3 +1953,5 @@ rxn12972		TRUE
 rxn13056		TRUE							
 									
 rxn05880		TRUE		[JZ] unbalanced and placeholder metabolite					
+									
+rxn12413		TRUE		[JZ] strange definition: symporter with protons from e0 compartment and cytodine from p0 (normal definition of cytidine proton symporter: rxn05198)					
