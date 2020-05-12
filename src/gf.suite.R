@@ -217,15 +217,17 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   # load minimal medium and add available carbon sources
   media2 <- fread(paste0(script.dir,"/../dat/media/MM_glu.csv"))
   src.met <- carbon.source[guild %in% c("Carbohydrates", "Polymers", "Carboxylic acids", "Amino acids") & exid_seed %in% mod.orig2@react_id, .(id_seed,name,guild)]
-  if( nrow(src.met) == 0)
-    stop("No carbon source exchange reactions found in model")
+  if( nrow(src.met) == 0){
+    warnings("No carbon source exchange reactions found in model, considering all available.")
+    src.met <- carbon.source[exid_seed %in% mod.orig2@react_id, .(id_seed,name,guild)]
+  }
   # if glucose is not usable then add other carbon source(s)
   if( !"alpha-D-Glucose" %in% src.met$name ){
     src.carbo <- src.met[guild=="Carbohydrates"]
     if( nrow(src.carbo)>0 )
       src.add <- src.carbo # if no glucose is there, then add all other available carbohydrates
     else
-      src.add <- src.met # if no carbohydrates is avaiable, then take everything else (probably amino acid biosynthesis is not papfilled because amino acids are part of the medium)
+      src.add <- src.met # if no carbohydrates is avaiable, then take everything else (probably amino acid biosynthesis is not gapfilled because amino acids are part of the medium)
     media2 <- rbind(media2, data.table(compounds=gsub("\\[.0\\]","",src.add$id_seed), name=src.add$name, maxFlux=100))  
   }
   
@@ -307,8 +309,10 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   mod.orig2 <- mod.out
   
   src.met <- carbon.source[guild %in% c("Carbohydrates", "Polymers", "Carboxylic acids", "Amino acids") & exid_seed %in% mod.orig2@react_id, .(id_seed,name,guild)]
-  if( nrow(src.met) == 0)
-    stop("No carbon source exchange reactions found in model")
+  if( nrow(src.met) == 0){
+    warnings("No carbon source exchange reactions found in model, considering all available.")
+    src.met <- carbon.source[exid_seed %in% mod.orig2@react_id, .(id_seed,name,guild)]
+  }
   # if glucose is not usable then add other carbon source(s)
   if( !"alpha-D-Glucose" %in% src.met$name ){
     src.carbo <- src.met[guild=="Carbohydrates"]
