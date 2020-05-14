@@ -22,6 +22,8 @@ ec=$3
 database=$4
 EC_test=$5
 
+[ $# -eq 0 ] && { echo "Usage: $0 id name ec database ec_test"; exit 1; }
+
 #echo rea=$1 reaName=$2 ec=$3 database=$4 ec_test=$5
 
 getDBhit(){
