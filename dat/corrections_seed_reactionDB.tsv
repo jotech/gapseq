@@ -56,7 +56,7 @@ rxn01077	>			[SW] New direction according to Metacyc. Never been reported revers
 rxn08684	>			[SW] Reaction never reported to be reversible.	https://www.brenda-enzymes.org/enzyme.php?ecno=3.2.1.31				
 rxn08111	>			[SW] Reaction never reported to be reversible, but reported irreversible in some cases.	https://www.brenda-enzymes.org/enzyme.php?ecno=1.2.1.5#SUBSTRATE				
 rxn09272	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=SUCCINATE-DEHYDROGENASE-UBIQUINONE-RXN				
-rxn00567	<			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NITRITE-REDUCTASE-CYTOCHROME-RXN				
+rxn00567	<		-1:cpd00001:1:0:"H2O";-1:cpd00109:0:0:"Cytochrome c3+";-1:cpd00418:1:0:"NO";2:cpd00067:0:0:"H+";1:cpd00075:1:0:"Nitrite";1:cpd00110:0:0:"Cytochrome c2+"	[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NITRITE-REDUCTASE-CYTOCHROME-RXN				
 rxn03585	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ARYL-ALDEHYDE-OXIDASE-RXN				
 rxn03969	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.2.1.67-RXN				
 rxn06106	>			[SW] never reported reversible according to BRENDA, and irreversible according to MetaCyc	https://www.brenda-enzymes.org/enzyme.php?ecno=1.10.2.2#NATURAL%20SUBSTRATES # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-15816				
@@ -1956,8 +1956,8 @@ rxn05880		TRUE		[JZ] unbalanced and placeholder metabolite
 									
 rxn12413		TRUE		[JZ] strange definition: symporter with protons from e0 compartment and cytodine from p0 (normal definition of cytidine proton symporter: rxn05198)					
 									
-rxn21460	>		-1:cpd00418:0:0:"NO";-1:cpd19013:0:0:"NH4+";-3:cpd00110:0:0:"Cytochrome c2+";-2:cpd00067:0:0:"H+";1:cpd00001:0:0:"H2O";1:cpd03177:0:0:"Hydrazine";3:cpd00109:0:0:"Cytochrome c3+"	[JZ] important reaction for anaerobic ammonia oxidation, was only with abstract electron acceptor + unbalanced protons	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11175		RXN-11175	Hydrazine synthase	
-rxn90031	>		-1:cpd00418:0:0:"NO";-1:cpd19013:0:0:"NH4+";-3:cpd11798:0:0:"Ferrocytochrome c2";-2:cpd00067:0:0:"H+";1:cpd00001:0:0:"H2O";1:cpd03177:0:0:"Hydrazine";3:cpd11796:0:0:"Ferricytochrome c2"	[JZ] important reaction for anaerobic ammonia oxidation, new reaction with different cytochrome c type	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11175		RXN-11175	Hydrazine synthase	
+rxn21460	>		-1:cpd00418:0:0:"NO";-1:cpd00013:0:0:"NH4+";-3:cpd00110:0:0:"Cytochrome c2+";-2:cpd00067:0:0:"H+";1:cpd00001:0:0:"H2O";1:cpd03177:0:0:"Hydrazine";3:cpd00109:0:0:"Cytochrome c3+"	[JZ] important reaction for anaerobic ammonia oxidation, was only with abstract electron acceptor + unbalanced protons	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11175		RXN-11175	Hydrazine synthase	
+rxn90031	>		-1:cpd00418:0:0:"NO";-1:cpd00013:0:0:"NH4+";-3:cpd11798:0:0:"Ferrocytochrome c2";-2:cpd00067:0:0:"H+";1:cpd00001:0:0:"H2O";1:cpd03177:0:0:"Hydrazine";3:cpd11796:0:0:"Ferricytochrome c2"	[JZ] important reaction for anaerobic ammonia oxidation, new reaction with different cytochrome c type	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11175		RXN-11175	Hydrazine synthase	
 rxn17267	>		-1:cpd03177:0:0:"Hydrazine";-4:cpd00109:0:0:"Cytochrome c3+";1:cpd00528:0:0:"N2";4:cpd00110:0:0:"Cytochrome c2+";4:cpd00067:1:0:"H+"	[JZ] important reaction for anaerobic ammonia oxidation, was only with abstract electron acceptor + unbalanced protons	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.7.99.8-RXN		1.7.99.8-RXN	Hydrazine dehydrogenase	
 rxn90032	>		-1:cpd03177:0:0:"Hydrazine";-4:cpd11796:0:0:"Ferricytochrome c2";1:cpd00528:0:0:"N2";4:cpd11798:0:0:"Ferrocytochrome c2";4:cpd00067:1:0:"H+"				1.7.99.8-RXN	Hydrazine dehydrogenase	
 									
