@@ -37,7 +37,8 @@ if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
     script.dir  <- dirname(script.name)
 }
 
-suppressMessages(library(cplexAPI))
+if( "cplexAPI" %in% installed.packages() )
+  suppressMessages(library(cplexAPI))
 if( "sybilSBML" %in% installed.packages() )
   suppressMessages(library(sybilSBML))
 suppressMessages(library(sybil))
