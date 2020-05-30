@@ -130,7 +130,7 @@ GNU General Public License version 3.0 ([GPLv3](https://www.gnu.org/licenses/gpl
 
 - **KEGG**: [Copyright](https://www.kegg.jp/kegg/legal.html) 1995-2020 [Kanehisa Laboratories](https://www.kanehisa.jp/)
 
-  For full license terms see file `dat/licenses/LICENSE.kegg` .
+  For license terms see file `dat/licenses/LICENSE.kegg` .
 
   Website: http://www.kegg.jp
 
@@ -161,3 +161,5 @@ GNU General Public License version 3.0 ([GPLv3](https://www.gnu.org/licenses/gpl
 - **BIGG**: Copyright © 2019 The Regents of the University of California 
 
   All Rights Reserved by the licenser. For license terms and conditions see file `dat/licenses/LICENSE.bigg` .
+  
+  Website: http://bigg.ucsd.edu/
