@@ -361,7 +361,7 @@ getDBhit(){
     fi
 
     # 6) match reaction using custom enzyme-name - seedID mapping
-    if [ "$database" == "seed" ]; then
+    if [ "$database" == "seed" ] & [ "$reaName" != "" ]; then
         dbhit="$dbhit $(grep -wFe "$reaName" $seedEnzymesNames | awk -F '\t' ' {print $1}')"
     fi
 
