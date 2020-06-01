@@ -126,7 +126,7 @@ GNU General Public License version 3.0 ([GPLv3](https://www.gnu.org/licenses/gpl
 
   Link to license: https://creativecommons.org/licenses/by/4.0/ 
 
-  Website: https://metacyc.org/
+  Website: https://modelseed.org/
 
 - **KEGG**: [Copyright](https://www.kegg.jp/kegg/legal.html) 1995-2020 [Kanehisa Laboratories](https://www.kanehisa.jp/)
 
