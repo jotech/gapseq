@@ -55,6 +55,7 @@ Rscript -e 'if( file.access(Sys.getenv("R_LIBS_USER"), mode=2) == -1 ) dir.creat
 wget https://cran.r-project.org/src/contrib/glpkAPI_1.3.2.tar.gz
 R CMD INSTALL --configure-args="--enable-gmp=no" glpkAPI_1.3.2.tar.gz
 ```
+- we recommend using *cplex* als LP-solver. Please see [gapseq-Wiki](https://github.com/jotech/gapseq/wiki/Installation-of-cplexAPI) for installation instructions. 
 
 ## Quickstart
  This predicts network candidate reactions, builds a draft model and performs gap filling:
