@@ -14,4 +14,5 @@ required R-packages
 - Biostrings (via Bioconductor)
 - stringr
 - R.utils
+- sybil
 
