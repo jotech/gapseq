@@ -503,7 +503,6 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     cat("\n\n4. Checking for potential metabolic products with core reactions only\n")
     
     mod.orig4 <- mod.out
-    media.org <- fread(paste0(script.dir,"/../dat/media/MM_glu.csv")) # use minimal medium
     
     ex          <- findExchReact(mod.orig4)
     ex.ind      <- ex@react_pos

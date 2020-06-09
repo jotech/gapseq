@@ -89,6 +89,7 @@ ids2seed <- function(ids){
   idx.ec    <- str_extract(ids, "[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+")
   idx.rxn   <- match(gsub("\\|","",ids), gsub("\\|","",meta.rxn$id))
   idx.sub   <- unname(sapply(ids, function(id){ hit <- grep(gsub("\\|","",id), meta.pwy$hierarchy, ignore.case = T); ifelse(length(hit)>0, paste0(hit, collapse = ","), NA) }))
+  id.kegg   <- str_extract(ids, "R[0-9]+")
   
   ids2seed.dt <- data.table()
   for(i in seq_along(ids)){
@@ -122,6 +123,9 @@ ids2seed <- function(ids){
         rxn.str <- c(rxn.str, system(paste0(script.dir, "/getDBhit.sh ", paste(rxn[j], paste0("'",rxn.name[j],"'"), ec[j], "seed")), intern=T))
       }
       ids2seed.dt <- rbind(ids2seed.dt, unique(data.table(id=ids[i], id.type="metacyc sub", db.rxn=rxn, seed=rxn.str)))
+    } else if ( !is.na(id.kegg[i]) ){
+      rxn.str <- system(paste0(script.dir, "/getDBhit.sh ", paste(id.kegg[i], "''", "''", "seed")), intern=T)
+      ids2seed.dt <- rbind(ids2seed.dt, data.table(id=ids[i], id.type="kegg rxn", db.rxn=ids[i], seed=rxn.str))
     }else {
       rxn.str <- system(paste0(script.dir, "/getDBhit.sh ", paste("''", ids[i], "''", "seed")), intern=T)
       ids2seed.dt <- rbind(ids2seed.dt, data.table(id=ids[i], id.type="other", db.rxn="", seed=rxn.str))
@@ -178,9 +182,10 @@ out.id <- gsub(".xml|.RDS|.rds","",gsub("-draft","",basename(mod.file)))
 out.rds <- paste0("./",out.id,"-adapt",".RDS")
 saveRDS(mod.out, file = out.rds)
 if( "sybilSBML" %in% rownames(installed.packages()) ){
-  if( any(is.na(mod.out@met_attr$charge)) ) mod.out@met_attr$charge[which(is.na(mod.out@met_attr$charge))] <- ""
+  if( any(is.na(mod.out@met_attr$charge)) ) mod.out@met_attr$charge[which(is.na(mod.out@met_attr$charge))] <- 0 # will be casted to numeric => "" will become NA => sybilsbml error
   if( any(is.na(mod.out@met_attr$chemicalFormula)) ) mod.out@met_attr$chemicalFormula[which(is.na(mod.out@met_attr$chemicalFormula))] <- ""
   if( any( mod.out@met_attr$chemicalFormula=="null"))mod.out@met_attr$chemicalFormula[which(mod.out@met_attr$chemicalFormula=="null")]<- ""
+  if( any(is.na(mod.out@react_attr$annotation)) ) mod.out@react_attr$annotation[which(is.na(mod.out@react_attr$annotation))] <- ""
   sybilSBML::writeSBML(mod.out, filename = paste0(out.id, "-adapt.xml"), level = 3, version = 1, fbcLevel = 2, printNotes = T, printAnnos = T)
 }else{
   print("SBML not found, please install sybilSBML for sbml output")
