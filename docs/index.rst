@@ -1,14 +1,43 @@
-.. gapseq documentation master file, created by
-   sphinx-quickstart on Thu Feb 13 16:37:21 2020.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Documentation for gapseq
+========================
 
-Welcome to gapseq's documentation!
-==================================
+.. meta::
+   :description lang=en: Informed prediction of bacterial metabolic pathways and reconstruction of accurate metabolic models 
+   :keywords: metabolic networks, pathway analysis, constraint-based analysis, cobra, microbiology, metabolic interactions
 
+Installation
+------------
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :hidden:
+
+   /install
+
+
+Usage
+-----
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: Usage
+
+
+Tutorials
+---------
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: Tutorials
+
+   /tutorials/crossfeeding
+
+
+FAQ
+---
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: FAQ
 
 
 
