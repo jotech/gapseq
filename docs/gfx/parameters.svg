@@ -70,7 +70,7 @@
        x2="86.720024"
        y2="84.5672"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1,0,0,3.5031295,0,-164.06659)" />
+       gradientTransform="matrix(1.0014731,0,0,3.5173697,-0.03504154,-165.26723)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -80,8 +80,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="336.86621"
-     inkscape:cy="127.47258"
+     inkscape:cx="474.77039"
+     inkscape:cy="248.29792"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -152,10 +152,10 @@
     <rect
        style="opacity:1;vector-effect:none;fill:url(#linearGradient2275);fill-opacity:1;stroke:none;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect2267"
-       width="128.28937"
-       height="65.748299"
+       width="128.47835"
+       height="66.015564"
        x="23.786987"
-       y="65.544586" />
+       y="65.277313" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.26458332, 1.05833327;stroke-dashoffset:0;stroke-opacity:1"
        d="M 23.786988,129.176 H 152.07636"
@@ -259,15 +259,15 @@
     <text
        id="text1201"
        y="16.72835"
-       x="-119.0724"
+       x="-120.6599"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000220;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        xml:space="preserve"
        transform="rotate(-90)"><tspan
          id="tspan1199"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.17499995px;font-family:FreeSans;-inkscape-font-specification:FreeSans;text-align:start;text-anchor:start;fill:#000220;fill-opacity:1;stroke-width:0.26458332"
          y="16.72835"
-         x="-119.0724"
-         sodipodi:role="line">Reaction weigh for gapfilling</tspan></text>
+         x="-120.6599"
+         sodipodi:role="line">Reaction weight for gapfilling</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 23.786988,131.29289 v 0.69688"
