@@ -29,6 +29,8 @@ Tutorials
    :hidden:
    :caption: Tutorials
 
+   /tutorials/crossfeeding
+
 
 
 FAQ
