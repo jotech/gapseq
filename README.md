@@ -58,6 +58,9 @@ R CMD INSTALL --configure-args="--enable-gmp=no" glpkAPI_1.3.2.tar.gz
 - we recommend using *cplex* als LP-solver. Please see [gapseq-Wiki](https://github.com/jotech/gapseq/wiki/Installation-of-cplexAPI) for installation instructions. 
 
 ## Quickstart
+
+For full tutorials, see [gapseq wiki](https://github.com/jotech/gapseq/wiki).
+
  This predicts network candidate reactions, builds a draft model and performs gap filling:
 ```
 ./gapseq doall toy/myb71.fna
