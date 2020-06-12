@@ -12,9 +12,9 @@
   - *Streptococcus thermophilus* ATCC 19258
     RefSeq: `GCF_010120595.1`
 - Growth media (milk) file: `milk.csv` 
-  This growth media is based on the main ingredients described for whole milk (without fatty acids), as listed here: https://frida.fooddata.dk/food/1265?lang=en
+  This growth media is based on the main ingredients described for whole milk (without fatty acids), as listed [here](https://frida.fooddata.dk/food/1265?lang=en).
 
-*NOTE: All intermediate files produced by the commands below are  stored at the github repository  (https://github.com/Waschina/gapseq.tutorial.data), which you could  download/clone if you wish to start not at the beginning but at a later  step of this tutorial.*
+*NOTE: All intermediate files produced by the commands below are stored at the github repository [gapseq.tutorial.data](https://github.com/Waschina/gapseq.tutorial.data), which you could  download/clone if you wish to start not at the beginning but at a later  step of this tutorial.*
 
 
 
@@ -31,7 +31,7 @@ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/056/065/GCF_000056065.1_ASM5
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/120/595/GCF_010120595.1_ASM1012059v1/GCF_010120595.1_ASM1012059v1_genomic.fna.gz .
 
 # Download gapfill-medium file from github
-wget https://github.com/Waschina/gapseq.tutorial.data/raw/master/yoghurt/milk.csv .
+wget https://github.com/Waschina/gapseq.tutorial.data/raw/master/yogurt/milk.csv .
 
 # Rename genomes
 mv GCF_000056065.1_ASM5606v1_genomic.fna.gz ldel.fna.gz
@@ -149,4 +149,4 @@ Output for S. thermophilus (`st`):
 10: EX_cpd03091_e0 5'-Deoxyadenosine-e0 Exchange 0.0042126479  0.004213093 0.004212667
 ```
 
-As expected, both organisms produce Lactate in the FBA+MTF solution. The FVA further predicted a lower bound for L-Lactate production of zero. This is due to the fact, that the models harbour also the capability to produce the enantiomer D-Lactate. In contrast to *S. thermophilus*, the FBA simulation predicted a release of Galactose by *L. debrueckii*. In fact, *L. debrueckii* is usually reported to be Galactose negative; i.e. does not produce acid from this hexose (https://bacdive.dsmz.de/strain/6449), while *S. thermophilus* has been reported to be Galactose positive (https://bacdive.dsmz.de/strain/14786).
+As expected, both organisms produce Lactate in the FBA+MTF solution. The FVA further predicted a lower bound for L-Lactate production of zero. This is due to the fact, that the models harbour also the capability to produce the enantiomer D-Lactate. In contrast to *S. thermophilus*, the FBA simulation predicted a release of Galactose by *L. debrueckii*. In fact, *L. debrueckii* is usually reported to be Galactose negative; i.e. does not produce acid from this hexose [https://bacdive.dsmz.de/strain/6449](https://bacdive.dsmz.de/strain/6449), while *S. thermophilus* has been reported to be Galactose positive [https://bacdive.dsmz.de/strain/14786](https://bacdive.dsmz.de/strain/14786).
