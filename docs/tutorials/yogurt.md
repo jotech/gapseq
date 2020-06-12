@@ -7,10 +7,8 @@
 ##### Input files
 
 - Genome assemblies:
-  - *Lactobacillus delbrueckii* subsp. *bulgaricus* ATCC 11842 = JCM 1002
-    RefSeq: `GCF_000056065.1`
-  - *Streptococcus thermophilus* ATCC 19258
-    RefSeq: `GCF_010120595.1`
+  - *Lactobacillus delbrueckii* subsp. *bulgaricus* ATCC 11842 = JCM 1002. RefSeq: `GCF_000056065.1`
+  - *Streptococcus thermophilus* ATCC 19258. RefSeq: `GCF_010120595.1`
 - Growth media (milk) file: `milk.csv` 
   This growth media is based on the main ingredients described for whole milk (without fatty acids), as listed [here](https://frida.fooddata.dk/food/1265?lang=en).
 
