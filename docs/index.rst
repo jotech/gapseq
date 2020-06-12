@@ -22,6 +22,7 @@ Usage
    :caption: Usage
    
    /usage/basics
+   /usage/parmeters
 
 
 Tutorials
@@ -32,6 +33,7 @@ Tutorials
    :caption: Tutorials
 
    /tutorials/crossfeeding
+   /tutorials/yogurt
 
 
 
