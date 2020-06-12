@@ -22,7 +22,7 @@ Usage
    :caption: Usage
    
    /usage/basics
-   /usage/parmeters
+   /usage/parameters
 
 
 Tutorials
