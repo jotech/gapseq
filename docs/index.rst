@@ -20,6 +20,8 @@ Usage
    :maxdepth: 2
    :hidden:
    :caption: Usage
+   
+   /usage/basics
 
 
 Tutorials
