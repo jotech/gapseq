@@ -75,7 +75,7 @@ GNU General Public License version 3.0 ([GPLv3](https://www.gnu.org/licenses/gpl
   Website: https://www.uniprot.org/
 - **TCDB**: Copyright 2005 - 2020 Saier Lab.
   The text of the TCDB website (TCDB.ORG) is available for modification and reuse under  the terms of the Creative Commons Attribution-Sharealike 3.0 Unported  License and the GNU Free Documentation License.
-  Link to license: https://creativecommons.org/licenses/by/4.0/
+  Link to license: https://creativecommons.org/licenses/by-sa/3.0/de/
   Website: http://www.tcdb.org/
 - **BIGG**: Copyright © 2019 The Regents of the University of California 
   All Rights Reserved by the licenser. For license terms and conditions see file `dat/licenses/LICENSE.bigg` .
