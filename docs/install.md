@@ -39,9 +39,7 @@ wget https://cran.r-project.org/src/contrib/glpkAPI_1.3.2.tar.gz
 R CMD INSTALL --configure-args="--enable-gmp=no" glpkAPI_1.3.2.tar.gz
 ```
 - we recommend using *cplex* als LP-solver as it is usually faster than *glpk*. The cplex solver is included in the *IBM ILOG CPLEX Optimization Studio*, which is free* for students and academics through the **IBM Academic Initiative** programm ([see here](https://developer.ibm.com/docloud/blog/2019/07/04/cplex-optimization-studio-for-students-and-academics/)). Please follow the installation instructions for *cplex* provided by IBM.
-
 The R-package for the interface between R and the cplex solver can be optained from CRAN ([cplexAPI on CRAN](https://cran.r-project.org/web/packages/cplexAPI/index.html)).
-
 Installation instructions (Linux & MacOS):
 1. Download the package source archive from [CRAN](https://cran.r-project.org/web/packages/cplexAPI/index.html).
 2. Open a terminal and **cd** to the directory of "cplexAPI_x.x.x.tar.gz"
