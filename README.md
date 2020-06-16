@@ -23,11 +23,11 @@ preprint [bioRxiv](https://doi.org/10.1101/2020.03.20.000737)
 
 ## Installation
 The latest release can be downloaded [here](https://github.com/jotech/gapseq/releases).
-Besides this, the current development version can be accesses via:
+Besides this, the current development version can be accessed via:
 ```
 git clone https://github.com/jotech/gapseq
 ```
-Detailed informations and troubleshooting are listed [here](https://github.com/jotech/gapseq/blob/master/docs/install.md).
+Detailed information and troubleshooting are listed [here](https://github.com/jotech/gapseq/blob/master/docs/install.md).
 
 
 ## Quickstart
