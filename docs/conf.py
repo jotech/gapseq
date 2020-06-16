@@ -18,8 +18,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'gapseq'
-copyright = '2020, Johannes Zimmermann and Sivio Waschina'
-author = 'Johannes Zimmermann and Sivio Waschina'
+copyright = '2020, Johannes Zimmermann and Silvio Waschina'
+author = 'Johannes Zimmermann and Silvio Waschina'
 
 
 # -- General configuration ---------------------------------------------------
