@@ -12,11 +12,13 @@ if (length(args)!=2) {
 list.of.packages <- c("stringr") # cran
 list.of.packages.ext <- c("Biostrings") # bioconductor
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages)) install.packages(new.packages)
+if(length(new.packages)) install.packages(new.packages, repos = "https://cloud.r-project.org/")
 new.packages.ext <- list.of.packages[!(list.of.packages.ext %in% installed.packages()[,"Package"])]
 if(length(new.packages.ext)){
-  source("https://bioconductor.org/biocLite.R")
-  biocLite("Biostrings")
+	if (!requireNamespace("BiocManager", quietly = TRUE))
+	    install.packages("BiocManager", repos = "https://cloud.r-project.org/")
+
+	BiocManager::install("Biostrings")
 }
 
 
