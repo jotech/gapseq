@@ -1,54 +1,44 @@
 Documentation for gapseq
 ========================
+gapseq is program for the prediction and analysis of metabolic pathways and genome-scale networks.
+The documentation covers software installation, basic use cases and sample workflows with focus on application.
+For details on the biological and technical background please check the `gapseq publication <https://doi.org/10.1101/2020.03.20.000737>`_.
+In addition, the source is available at `github <https://github.com/jotech/gapseq>`_.
 
 .. meta::
    :description lang=en: Informed prediction of bacterial metabolic pathways and reconstruction of accurate metabolic models 
    :keywords: metabolic networks, pathway analysis, constraint-based analysis, cobra, microbiology, metabolic interactions
 
+
 Installation
 ------------
 .. toctree::
    :maxdepth: 2
-   :hidden:
 
    /install
 
 
-Usage
------
+.. Usage
 .. toctree::
    :maxdepth: 2
-   :hidden:
    :caption: Usage
-   
+
    /usage/basics
    /usage/parameters
 
 
-Tutorials
----------
+.. Tutorials
 .. toctree::
    :maxdepth: 2
-   :hidden:
    :caption: Tutorials
 
    /tutorials/crossfeeding
    /tutorials/yogurt
 
 
-
-FAQ
----
+.. FAQ
 .. toctree::
    :maxdepth: 2
-   :hidden:
    :caption: FAQ
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   /faq
