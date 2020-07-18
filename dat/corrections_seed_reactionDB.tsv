@@ -751,7 +751,7 @@ rxn10095		TRUE		[SW] not found in any reaction database
 rxn10099	>		-14:cpd00005:0:0:"NADPH";-20:cpd00067:0:0:"H+";-1:cpd11488:0:0:"Acetoacetyl-ACP";-6:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";7:cpd00001:0:0:"H2O";14:cpd00006:0:0:"NADP";6:cpd00011:0:0:"CO2";6:cpd11493:0:0:"ACP";1:cpd15277:0:0:"Palmitoyl-ACP"	[SW] proton and charge balanced					
 rxn06940	>		-1:cpd00067:0:0:"H+";-1:cpd06709:0:0:"Benzylsuccinyl-CoA";-1:cpd12505:0:0:"Electron-transferring flavoprotein";1:cpd06710:0:0:"E-Phenylitaconyl-CoA";1:cpd12576:0:0:"Reduced electron-transferring flavoprotein"	[SW] stoichiometry and direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-865				
 rxn06959		TRUE		[SW] Unbalanced and generic reaction.					
-rxn06979			-1:cpd00067:0:0:"H+";-2:cpd00001:0:0:"H2O";-2:cpd00002:0:0:"ATP";-2:cpd00053:0:0:"L-Glutamine";-1:cpd03421:0:0:"Cobyrinate";2:cpd00008:0:0:"ADP";2:cpd00009:0:0:"Phosphate";2:cpd00023:0:0:"L-Glutamate";1:cpd03914:0:0:"Cob(II)yrinate diamide"	[SW] proton and charge balanced					
+rxn06979			-2:cpd00001:0:0:"H2O";-2:cpd00002:0:0:"ATP";-2:cpd00053:0:0:"L-Glutamine";-1:cpd03421:0:0:"Cobyrinate";2:cpd00008:0:0:"ADP";2:cpd00009:0:0:"Phosphate";2:cpd00023:0:0:"L-Glutamate";1:cpd03914:0:0:"Cob(II)yrinate diamide";2:cpd00067:0:0:"H+"	[SW] proton and charge balanced					
 rxn07058		TRUE		[SW] Unbalanced and unconnected Reaction					
 rxn07229		TRUE		[SW] Unbalanced and unconnected Reaction					
 rxn07440		TRUE		[SW] Unbalanced and unconnected Reaction					
@@ -1670,8 +1670,8 @@ rxn13448	>			[SW] Phosphates are usually irreversible, as they would build a hig
 rxn13447	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
 rxn01006	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
 rxn01909	<			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
-rxn00106	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
-rxn09016	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
+rxn00106	>		-1:cpd00001:0:0:"H2O";-1:cpd00421:0:0:"Triphosphate";1:cpd00009:0:0:"Phosphate";1:cpd00012:0:0:"PPi";1:cpd00067:0:0:"H+"	[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
+rxn09016	>		-1:cpd00001:0:0:"H2O";-1:cpd00038:0:0:"GTP";1:cpd00311:0:0:"Guanosine";1:cpd00421:0:0:"Triphosphate";1:cpd00067:0:0:"H+"	[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
 rxn15103	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
 rxn15102	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
 rxn01352	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
@@ -1948,6 +1948,28 @@ rxn17196	=			[JZ] wrong direction	https://biocyc.org/META/NEW-IMAGE?type=EC-NUMB
 rxn11969		TRUE		[JZ] non-enzymatic animal retina reaction in wrong direction					
 rxn11981	>			[JZ] Vitamin D3 formation needs light					
 rxn11990	>			[JZ] Vitamin D2 formation needs light					
+rxn00072			-2:cpd00001:0:0:"H2O";-1:cpd00003:0:0:"NAD";-2:cpd00423:0:0:"Vitamin B12r";1:cpd00004:0:0:"NADH";2:cpd00067:0:0:"H+";2:cpd00730:0:0:"Aquacobalamin"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn00080			-1:cpd00005:0:0:"NADPH";-5:cpd00067:0:0:"H+";-2:cpd00730:0:0:"Aquacobalamin";2:cpd00001:0:0:"H2O";1:cpd00006:0:0:"NADP";2:cpd00423:0:0:"Vitamin B12r"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn02151			-1:cpd00006:0:0:"NADP";-1:cpd00150:0:0:"HCN";-1:cpd00635:0:0:"Cbl";1:cpd00005:0:0:"NADPH";1:cpd01826:0:0:"Dicopac"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn07483			-1:cpd00635:0:0:"Cbl";-1:cpd04073:0:0:"Vanillate";-1:cpd00067:0:0:"H+";1:cpd00197:0:0:"Protocatechuate";1:cpd12878:0:0:"Methylcobalamin"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn10091			-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd00635:0:0:"Cbl";1:cpd00009:0:0:"Phosphate";1:cpd00012:0:0:"PPi";1:cpd00067:0:0:"H+";1:cpd00166:0:0:"Calomide"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn10452		TRUE		[SW] incomplete reaction					
+rxn11649			-1:cpd00730:0:0:"Aquacobalamin";-1:cpd03871:0:0:"2-Hydroxypropylphosphonate";1:cpd00001:0:0:"H2O";1:cpd02024:0:0:"Phosphonoacetaldehyde";1:cpd12878:0:0:"Methylcobalamin"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn00104			-1:cpd00002:0:0:"ATP";-1:cpd00012:0:0:"PPi";1:cpd00008:0:0:"ADP";1:cpd00421:0:0:"Triphosphate"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn01352			-1:cpd00001:0:0:"H2O";-1:cpd00241:0:0:"dGTP";1:cpd00277:0:0:"Deoxyguanosine";1:cpd00421:0:0:"Triphosphate";1:cpd00067:0:0:"H+"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn01813	>		-1:cpd00001:0:0:"H2O";-1:cpd01622:0:0:"Trimetaphosphate";1:cpd00421:0:0:"Triphosphate";1:cpd00067:0:0:"H+"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn03535			-1:cpd00002:0:0:"ATP";-1:cpd03915:0:0:"Cob(I)yrinate diamide";1:cpd00421:0:0:"Triphosphate";1:cpd03916:0:0:"Adenosyl cobyrinate diamide"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn05029			-1:cpd00002:0:0:"ATP";-1:cpd03422:0:0:"Cobinamide";1:cpd00421:0:0:"Triphosphate";1:cpd03918:0:0:"Adenosyl cobinamide"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn10052			-1:cpd00067:0:0:"H+";-1:cpd00018:0:0:"AMP";-1:cpd00421:0:0:"Triphosphate";1:cpd00008:0:0:"ADP";1:cpd00012:0:0:"PPi"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn10451			-1:cpd00002:0:0:"ATP";-1:cpd15837:0:0:"Cob(I)alamin-HBI";1:cpd00421:0:0:"Triphosphate";1:cpd15834:0:0:"Adenosylcobalamin-HBI"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn13519			-1:cpd00027:0:0:"D-Glucose";-1:cpd00421:0:0:"Triphosphate";1:cpd00012:0:0:"PPi";1:cpd00067:0:0:"H+";1:cpd00079:0:0:"D-glucose-6-phosphate"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn03537			-1:cpd00038:0:0:"GTP";-1:cpd03919:0:0:"Adenosyl cobinamide phosphate";1:cpd00012:0:0:"PPi";1:cpd03920:0:0:"Adenosylcobinamide-GDP"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn10429			-1:cpd03920:0:0:"Adenosylcobinamide-GDP";-1:cpd15903:0:0:"N1-(alpha-D-ribosyl)-5-hydroxybenzimidazole";1:cpd00067:0:0:"H+";1:cpd00126:0:0:"GMP";1:cpd15834:0:0:"Adenosylcobalamin-HBI"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn00299			-1:cpd00001:0:0:"H2O";-1:cpd00038:0:0:"GTP";1:cpd00047:0:0:"Formate";2:cpd00067:0:0:"H+";1:cpd02978:0:0:"7,8-Dihydroneopterin 3'-triphosphate"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn03167			-3:cpd00001:0:0:"H2O";-1:cpd02978:0:0:"7,8-Dihydroneopterin 3'-triphosphate";3:cpd00009:0:0:"Phosphate";2:cpd00067:0:0:"H+";1:cpd02961:0:0:"Dihydroneopterin"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn03173			-1:cpd00001:0:0:"H2O";-1:cpd02978:0:0:"7,8-Dihydroneopterin 3'-triphosphate";1:cpd00012:0:0:"PPi";1:cpd00067:0:0:"H+";1:cpd03521:0:0:"Dihydroneopterin phosphate"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn03542			-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd00149:0:0:"Co2+";-1:cpd03913:0:0:"Hydrogenobyrinate diamide";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";5:cpd00067:0:0:"H+";1:cpd03914:0:0:"Cob(II)yrinate diamide"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
+rxn00302			-1:cpd00001:0:0:"H2O";-1:cpd00038:0:0:"GTP";1:cpd03518:0:0:"Formamidopyrimidine nucleoside triphosphate";1:cpd00067:0:0:"H+"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
 									
 rxn12972		TRUE							
 rxn13056		TRUE							
