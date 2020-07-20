@@ -773,7 +773,7 @@ rxn08549	>		-1:cpd00067:0:0:"H+";-1:cpd00080:0:0:"Glycerol-3-phosphate";-1:cpd15
 rxn08550	>		-1:cpd00067:0:0:"H+";-1:cpd00080:0:0:"Glycerol-3-phosphate";-1:cpd15239:0:0:"Hexadecenoyl-ACP";1:cpd11493:0:0:"ACP";1:cpd15326:0:0:"1-hexadec-9-enoyl-sn-glycerol 3-phosphate"	[SW] proton and charge balanced	https://www.rhea-db.org/reaction?id=42297				
 rxn08552	>		-1:cpd00067:0:0:"H+";-1:cpd00080:0:0:"Glycerol-3-phosphate";-1:cpd11825:0:0:"Octadecenoyl-ACP";1:cpd11493:0:0:"ACP";1:cpd15328:0:0:"1-octadec-11-enoyl-sn-glycerol 3-phosphate"	[SW] proton and charge balanced	https://www.rhea-db.org/reaction?id=42297				
 rxn08708			-1:cpd00002:0:0:"ATP";-1:cpd15484:0:0:"heptosyl-heptosyl-kdo2-lipidA";1:cpd00008:0:0:"ADP";1:cpd00067:0:0:"H+";1:cpd15549:0:0:"phospho-heptosyl-heptosyl-kdo2-lipidA"	[SW] proton and charge balanced					
-rxn08766			-1:cpd00067:0:0:"H+";-1:cpd00022:0:0:"Acetyl-CoA";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";1:cpd00010:0:0:"CoA";1:cpd00011:0:0:"CO2";1:cpd11488:0:0:"Acetoacetyl-ACP"	[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://www.rhea-db.org/reaction?id=44448				
+rxn08766			-1:cpd00067:0:0:"H+";-1:cpd00022:0:0:"Acetyl-CoA";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";1:cpd00010:0:0:"CoA";1:cpd00011:0:0:"CO2";1:cpd11488:0:0:"Acetoacetyl-ACP"	[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://www.rhea-db.org/reaction?id=44448			Beta-ketoacyl-ACP synthase	
 rxn08861			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";1:cpd00011:0:0:"CO2";1:cpd11494:0:0:"Acetyl-ACP"	[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://www.rhea-db.org/reaction?id=24460				
 rxn09442			-2:cpd00005:0:0:"NADPH";-3:cpd00067:0:0:"H+";-1:cpd11470:0:0:"Octanoyl-ACP";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";1:cpd00001:0:0:"H2O";2:cpd00006:0:0:"NADP";1:cpd00011:0:0:"CO2";1:cpd11474:0:0:"Decanoyl-ACP";1:cpd11493:0:0:"ACP"	[SW] proton and charge balanced					
 rxn10954			-16:cpd00005:0:0:"NADPH";-23:cpd00067:0:0:"H+";-1:cpd11488:0:0:"Acetoacetyl-ACP";-7:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";8:cpd00001:0:0:"H2O";16:cpd00006:0:0:"NADP";7:cpd00011:0:0:"CO2";7:cpd11493:0:0:"ACP";1:cpd15268:0:0:"Octadecanoyl-ACP"	[SW] proton and charge balanced					
@@ -2037,3 +2037,16 @@ rxn07461		TRUE		[SW] generic reaction.
 rxn07866		TRUE		[SW] generic reaction.					
 rxn07867		TRUE		[SW] generic reaction.					
 rxn29825		TRUE		[SW] generic reaction.					
+rxn16316		TRUE		[SW] generic reaction.					
+rxn12360		TRUE		[SW] model specific reactions					
+rxn11967		TRUE		[SW] Unbalanced and generic reaction.					
+rxn09589		TRUE		[SW] generic reaction.					
+rxn09590		TRUE		[SW] generic reaction.					
+rxn09591		TRUE		[SW] generic reaction.					
+rxn09592		TRUE		[SW] generic reaction.					
+rxn09593		TRUE		[SW] generic reaction.					
+									
+rxn05330			-1:cpd11479:0:0:"D-3-Hydroxyhexanoyl-[acp]";1:cpd00001:0:0:"H2O";1:cpd11473:0:0:"(2E)-Hexenoyl-[acp]"	[SW] reactions repaired					
+rxn05332			-1:cpd11481:0:0:"R-3-hydroxypalmitoyl-acyl-carrierprotein-";1:cpd00001:0:0:"H2O";1:cpd11477:0:0:"(2E)-Hexadecenoyl-[acp]"	[SW] reactions repaired					
+rxn05333			-1:cpd11482:0:0:"(R)-3-Hydroxydecanoyl-[acyl-carrier protein]";1:cpd00001:0:0:"H2O";1:cpd11475:0:0:"(2E)-Decenoyl-[acp]"	[SW] reactions repaired					
+rxn05335			-1:cpd11484:0:0:"HMA";1:cpd00001:0:0:"H2O";1:cpd11467:0:0:"(2E)-Tetradecenoyl-[acp]"	[SW] reactions repaired					
