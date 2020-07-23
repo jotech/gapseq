@@ -2054,4 +2054,6 @@ rxn05335			-1:cpd11484:0:0:"(R)-3-Hydroxytetradecanoyl-[acyl-carrier-protein]";1
 rxn06229			-2:cpd00067:0:0:"H+";-1:cpd00007:0:0:"O2";-1:cpd00237:0:0:"Androstenedione";-2:cpd11723:0:0:"Reduced adrenodoxin";1:cpd00001:0:0:"H2O";1:cpd03135:0:0:"4-Androsten-11beta-ol-3,17-dione";2:cpd11724:0:0:"Oxidized adrenodoxin"	[SW] stoichiometry and balance corrected					
 rxn06230			-2:cpd00067:0:0:"H+";-1:cpd00007:0:0:"O2";-1:cpd11661:0:0:"Steroid";-2:cpd11723:0:0:"Reduced adrenodoxin";1:cpd00001:0:0:"H2O";2:cpd11724:0:0:"Oxidized adrenodoxin";1:cpd11805:0:0:"11beta-Hydroxysteroid"	[SW] stoichiometry and balance corrected					
 									
+rxn13836	>		-1:cpd00001:0:0:"H2O";-1:cpd00170:0:0:"Gluconolactone";1:cpd00067:0:0:"H+";1:cpd00222:0:0:"GLCN"	[SW] Corrected metabolite compartments.	https://metacyc.org/META/NEW-IMAGE?object=GLUCONOLACT-RXN				
+									
 rxn90046	>		-1:cpd00061:0:0:"Phosphoenolpyruvate";-1:cpd00832:1:0:"N-Acetyl-D-chondrosamine";1:cpd03812:0:0:"N-Acetyl-D-galactosamine 6-phosphate";1:cpd00020:0:0:"Pyruvate"	[JZ] New reaction for PTS-Transporter for n-acetyl galactosamine	https://www.vmh.life/#reaction/ACGALpts		ACGALpts	N acetylgalactosamine via PTS	
