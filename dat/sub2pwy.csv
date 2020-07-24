@@ -5,7 +5,7 @@ Glycogen		EX_glycogen(e)	glycogen[e]	Polymers		EX_cpd00155_e0	cpd00155[e0]
 Tween 40				Polymers			
 Tween 80				Polymers			
 N-Acetyl-D-Galactosamine	N-acetylgalactosamine	EX_acgal(e)	acgal[e]	Carbohydrates	PWY-7077	EX_cpd00832_e0	cpd00832[e0]
-N-Acetyl-D-Glucosamine		EX_acgam(e)	acgam[e]	Carbohydrates	PWY-7586	EX_cpd00122_e0	cpd00122[e0]
+N-Acetyl-D-Glucosamine	N-acetylglucosamine	EX_acgam(e)	acgam[e]	Carbohydrates	PWY-7586	EX_cpd00122_e0	cpd00122[e0]
 Adonitol				Carbohydrates	RIBITOLUTIL-PWY		
 L-Arabinose	arabinose	EX_arab_L(e)	arab_L[e]	Carbohydrates	ARABCAT-PWY;PWY-5515;PWY-5517;PWY-7295	EX_cpd00224_e0	cpd00224[e0]
 D-Arabitol	arabitol	EX_abt_D(e)	abt_D[e]	Carbohydrates	DARABITOLUTIL-PWY	EX_cpd00417_e0	cpd00417[e0]

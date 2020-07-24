@@ -133,7 +133,7 @@ do
     descr=$(grep $id tcdb_header | grep -P "(?<= ).*" -o) # extract description
     [[ -n "$only_met" ]] && { echo -e "\t\n"$descr; } 
     #tc=$(grep $id tcdb_header | grep -Pw "([1-4]\\.[A-z]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | uniq | tr '\n' ',' | sed 's/,$//g') # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
-    tc=$(grep $id tcdb_header | grep -Pw "([1-4]\\.[A-z]+\\.[0-9]+)" -o | uniq | tr '\n' ',' | sed 's/,$//g') # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
+    tc=$(grep $id tcdb_header | grep -Pw "([1-4]\\.[A-z]\\.[0-9]+)" -o | uniq | tr '\n' ',' | sed 's/,$//g') # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
     i=$(echo $tc | head -c1) # get first character of TC number => transporter type
     type=${TC[$i]}
     [ -z "$tc" ] && continue
