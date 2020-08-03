@@ -862,7 +862,7 @@ rxn08736	>			[SW] unsure, but highly exergonic reaction	https://metacyc.org/META
 rxn10117	>			[SW] unsure, but highly exergonic reaction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5256				
 rxn10118	>			[SW] unsure, but highly exergonic reaction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5256				
 rxn10119	>			[SW] unsure, but highly exergonic reaction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5256				
-rxn10507	=		-2:cpd00067:0:0:"H+";-2:cpd15877:0:0:"ferredoxin (reduced) 2[4Fe-4S]";1:cpd11640:0:0:"H2";2:cpd15876:0:0:"ferredoxin (oxidized) 2[4Fe-4S]"	[SW] hydrogenase can perform H2 evolution and oxidation. Stoich. Adjusted according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=HYDROG-RXN				
+rxn10507	=		-2:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd11640:0:0:"H2";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] hydrogenase can perform H2 evolution and oxidation. Stoich. Adjusted according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=HYDROG-RXN				
 									
 rxn13063	>			[SW] Fatty-acyl CoA-oxidase in direction of hydrogen peroxide formation. According to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11026				
 rxn13064	>			[SW] Fatty-acyl CoA-oxidase in direction of hydrogen peroxide formation. According to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11026				
@@ -1946,6 +1946,7 @@ rxn36796				[SW] Reactions for 2-demethylmenaquinol-6					TRUE
 rxn36797				[SW] Reactions for 2-demethylmenaquinol-6					TRUE
 rxn36872				[SW] Reactions for 2-demethylmenaquinol-6					TRUE
 rxn36873				[SW] Reactions for 2-demethylmenaquinol-6					TRUE
+rxn16371				[SW] Reaction required for a coenzyme M biosynthesis pathway					TRUE
 rxn26754	>		-1:cpd11632:0:0:"hn";-1:cpd11621:0:0:"Oxidizedferredoxin";-1:cpd27884:0:0:"Plastocyanin-Reduced";1:cpd27746:0:0:"Oxidized-Plastocyanins";1:cpd11620:0:0:"Reducedferredoxin"	[JZ] photosystem1 should be irreversible + adapted to use default identifier for ferredoxin (cpd11620/cpd11621)	https://biocyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-1.97.1.12				
 rxn26755		TRUE		[JZ] duplicate to rxn26754					
 rxn17196	=			[JZ] wrong direction	https://biocyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-1.18.1.2				
@@ -2075,7 +2076,34 @@ rxn06351			-2:cpd00067:0:0:"H+";-1:cpd00007:0:0:"O2";-1:cpd01450:0:0:"Corticoste
 rxn06670			-1:cpd00003:0:0:"NAD";-1:cpd02386:0:0:"2-Dehydro-3-deoxy-D-xylonate";1:cpd00004:0:0:"NADH";1:cpd12723:0:0:"(4S)-5-Hydroxy-2,4-dioxopentanoate";1:cpd00067:0:0:"H+"	[SW] re-balanced.					
 rxn07110			-1:cpd08926:0:0:"Phytosphingosine";-1:cpd13404:0:0:"C26-CoA";1:cpd00010:0:0:"CoA";1:cpd08927:0:0:"Ceramide II";1:cpd00067:0:0:"H+"	[SW] re-balanced.					
 rxn13449			-1:cpd00906:0:0:"all-trans-Hexaprenyl diphosphate";-1:cpd02295:0:0:"1-4-Dihydroxy-2-naphthoate";1:cpd00011:0:0:"CO2";1:cpd00012:0:0:"PPi";1:cpd23248:0:0:"DMKH2-6"	[SW] main product, stoichiometry and balanced and corrected					
-rxn10845	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-5849				
+rxn10845	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-5849		2-DMKH2-6-C3trans	2-demethylmenaquinone 6 methyltransferase	
 rxn08333	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=DMK-RXN				
 									
 rxn90046	>		-1:cpd00061:0:0:"Phosphoenolpyruvate";-1:cpd00832:1:0:"N-Acetyl-D-chondrosamine";-1:cpd00067:0:0:"H+";1:cpd03812:0:0:"N-Acetyl-D-galactosamine 6-phosphate";1:cpd00020:0:0:"Pyruvate"	[JZ] New reaction for PTS-Transporter for n-acetyl galactosamine	https://www.vmh.life/#reaction/ACGALpts		ACGALpts	N acetylgalactosamine via PTS	
+rxn43778	=		-1:cpd02246:0:0:"CoM";-1:cpd02817:0:0:"HTP";-2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd11620:0:0:"Reducedferredoxin";3:cpd00067:0:0:"H+";1:cpd02935:0:0:"CoM-S-S-CoB"	[SW] new reaction that corresponds to metacyc reaction RXN-18520			hdr	ferredoxin:CoB-CoM heterodisulfide reductase	
+rxn43076	<		-1:cpd02246:0:0:"CoM";-1:cpd02817:0:0:"HTP";-2:cpd11620:0:0:"Reducedferredoxin";-1:cpd00067:0:0:"H+";-2:cpd00649:0:0:"Coenzyme F420";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd02935:0:0:"CoM-S-S-CoB";2:cpd00792:0:0:"Reduced coenzyme F420"	[SW] new reaction that corresponds to metacyc reaction RXN-18528			Hdr-fx	coenzyme F420:CoB-CoM heterodisulfide,ferredoxin reductase	
+rxn42401	<		-1:cpd02246:0:0:"CoM";-1:cpd02817:0:0:"HTP";-2:cpd11620:0:0:"Reducedferredoxin";-1:cpd00067:0:0:"H+";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd02935:0:0:"CoM-S-S-CoB";2:cpd11640:0:0:"H2"	[SW] new reaction that corresponds to metacyc reaction RXN-18521			Hdr-h2	H2:CoB-CoM heterodisulfide,ferredoxin reductase	
+rxn47799	<		-1:cpd02246:0:0:"CoM";-1:cpd02817:0:0:"HTP";-2:cpd11620:0:0:"Reducedferredoxin";-2:cpd00011:0:0:"CO2";1:cpd00067:0:0:"H+";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd02935:0:0:"CoM-S-S-CoB";2:cpd00047:0:0:"Formate"	[SW] new reaction that corresponds to metacyc reaction RXN-18529			Hdr-formate	formate:CoB-CoM heterodisulfide,ferredoxin reductase	
+									
+rxn07307	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=4.4.1.19-RXN				
+									
+rxn10521			-1:cpd00011:0:0:"CO2";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";-1:cpd15892:0:0:"methanofuran b";1:cpd00001:0:0:"H2O";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd15879:0:0:"formylmethanofuran b"	[SW] Corrected ID of ferredoxin metabolites					
+rxn10561			-1:cpd00010:0:0:"CoA";-1:cpd00278:0:0:"Indolepyruvate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd11175:0:0:"S-2-(Indol-3-yl)acetyl-CoA";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
+rxn10562			-1:cpd00010:0:0:"CoA";-1:cpd00143:0:0:"Phenylpyruvate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00067:0:0:"H+";1:cpd00452:0:0:"Phenylacetyl-CoA";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
+rxn10563			-1:cpd00010:0:0:"CoA";-1:cpd00868:0:0:"p-hydroxyphenylpyruvate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd03165:0:0:"4-Hydroxyphenylacetyl-CoA";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
+rxn10585			-1:cpd00010:0:0:"CoA";-1:cpd00024:0:0:"2-Oxoglutarate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00067:0:0:"H+";1:cpd00078:0:0:"Succinyl-CoA";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
+rxn10588			-1:cpd00010:0:0:"CoA";-1:cpd00020:0:0:"Pyruvate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00022:0:0:"Acetyl-CoA";1:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
+rxn10589			-1:cpd00010:0:0:"CoA";-1:cpd00094:0:0:"2-Oxobutyrate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00067:0:0:"H+";1:cpd00086:0:0:"Propionyl-CoA";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
+rxn10618			-1:cpd00010:0:0:"CoA";-1:cpd00123:0:0:"3-Methyl-2-oxobutanoate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00067:0:0:"H+";1:cpd00481:0:0:"Isobutyryl-CoA";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
+rxn10767			-1:cpd11640:0:0:"H2";-2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
+rxn10478			-1:cpd00001:0:0:"H2O";-1:cpd00022:0:0:"Acetyl-CoA";-2:cpd11621:0:0:"Oxidizedferredoxin";-1:cpd15884:0:0:"tetrahydrosarcinapterin";1:cpd00010:0:0:"CoA";1:cpd00011:0:0:"CO2";2:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin";1:cpd15893:0:0:"N5-methyl-tetrahydrosarcinapterin"	[SW] Corrected ID of ferredoxin metabolites					
+rxn10580			-32:cpd00001:0:0:"H2O";-32:cpd00002:0:0:"ATP";-1:cpd00528:0:0:"N2";-8:cpd11620:0:0:"Reducedferredoxin";32:cpd00008:0:0:"ADP";32:cpd00009:0:0:"Phosphate";2:cpd00013:0:0:"NH3";22:cpd00067:0:0:"H+";1:cpd11640:0:0:"H2";8:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
+rxn10477			-1:cpd00001:0:0:"H2O";-1:cpd00204:0:0:"CO";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";3:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
+									
+rxn00202	=			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=HOMOCITRATE-SYNTHASE-RXN				
+rxn10610	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=R214-RXN				
+rxn10611	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=R218-RXN				
+rxn10475	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=R227-RXN				
+rxn03126	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.8.98.1-RXN				
+rxn24614	>		-1:cpd08701:0:0:"Methanophenazine";-1:cpd00792:0:0:"Reduced coenzyme F420";1:cpd08702:0:0:"Dihydromethanophenazine";1:cpd00649:0:0:"Coenzyme F420"	[SW] direction changed according to MetaCyc and replaced F420 factors with earlier IDs	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-8106				
+rxn06299	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=COENZYME-F420-HYDROGENASE-RXN				
