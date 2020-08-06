@@ -260,7 +260,7 @@ rxn13333	>			[SW] never reported reversible according to BRENDA, and irreversibl
 rxn13246	>			[SW] never reported reversible according to BRENDA, and irreversible according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=L-LACTATE-DEHYDROGENASE-CYTOCHROME-RXN # http://www.brenda-enzymes.org/enzyme.php?ecno=1.1.2.3#SUBSTRATE				
 rxn01346	>			[SW] never reported reversible according to BRENDA, and irreversible according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=6PFRUCTPHOS-RXN # http://www.brenda-enzymes.org/enzyme.php?ecno=2.7.1.11#SUBSTRATE				
 rxn01347	>			[SW] never reported reversible according to BRENDA, and irreversible according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=6PFRUCTPHOS-RXN # http://www.brenda-enzymes.org/enzyme.php?ecno=2.7.1.11#SUBSTRATE				
-rxn15962	>			[SW] Unsure but seems unlikely to be reversible. Not found in any other database.					
+rxn15962	>			[SW] Changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=ACETYLSYNCLTH-RXN&&detail-level=2				
 rxn02476	=			[JZ][SW] Reaction direction was wrong. Should be reversible according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.5.1.19-RXN				
 rxn02937	>			[JZ][SW] Reaction direction was wrong. Should be reversed according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=AIRS-RXN				
 rxn12953	>			[JZ][SW] Reaction direction was wrong. Should be reversed according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=H2PTERIDINEPYROPHOSPHOKIN-RXN&detail-level=3				
@@ -996,6 +996,7 @@ rxn06418		TRUE		[SW] Highly unbalanced. Not found in other Databases. Correct ve
 rxn12825		TRUE		[SW] Highly unbalanced. Not found in other Databases. Correct version of this reaction is likely: rxn10048					
 rxn12950		TRUE		[SW] Incorrect reaction according to EC number.					
 rxn14429		TRUE		[SW] Unbalanced reaction. Not found in MetaCyc					
+rxn32333		TRUE		[SW] nn. Del.					
 									
 rxn10772		TRUE		[SW] Removing all reactions with ammonium hydroxide, as they are all unbalanced and not found in MetaCyc					
 rxn13808		TRUE		[SW] Removing all reactions with ammonium hydroxide, as they are all unbalanced and not found in MetaCyc					
@@ -1025,6 +1026,12 @@ rxn06408		TRUE		[SW] generic reaction.
 rxn12496		TRUE		[SW] generic reaction.					
 rxn12214		TRUE		[SW] generic reaction.					
 rxn06650		TRUE		[SW] generic reaction.					
+rxn30642		TRUE		[SW] generic reaction.					
+rxn06109		TRUE		[SW] generic reaction.					
+rxn12212		TRUE		[SW] generic reaction.					
+rxn12213		TRUE		[SW] generic reaction.					
+rxn06195		TRUE		[SW] generic reaction.					
+rxn06196		TRUE		[SW] generic reaction.					
 									
 rxn08014	>			[SW] Fatty acid ligase. Elongation not reversible as such.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-13266				
 rxn05465	>		-1:cpd00070:0:0:"Malonyl-CoA";-1:cpd11493:0:0:"ACP";1:cpd00010:0:0:"CoA";1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-"	[SW] Fatty acid ligase. Elongation not reversible as such. (2.3.1.39). Stoichiometry changed accordig to RHEA.	https://www.rhea-db.org/reaction?id=41792				
@@ -1033,6 +1040,10 @@ rxn10097	>		-12:cpd00005:0:0:"NADPH";-17:cpd00067:0:0:"H+";-1:cpd11488:0:0:"Acet
 rxn09434	>			[SW] Fatty acid elongation not reversible as such.					
 rxn10954	>			[SW] Fatty acid elongation not reversible as such.					
 rxn08392	>			[SW] Fatty acid elongation not reversible as such.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9663				
+									
+rxn12215		TRUE		[SW] Unsure. Not in MetaCyc or RHEA.					
+rxn11535		TRUE		[SW] Unsure. Caused unusal C1-cycles including SAM and methanol.					
+rxn11537		TRUE		[SW] Unsure. Caused unusal C1-cycles including SAM and methanol.					
 									
 rxn05758		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.					
 rxn05767		TRUE		[SW] Electrons should not be part of reactions as they are no metabolites and do not float around freely.					
@@ -1824,8 +1835,8 @@ rxn10426	>			H+-coupled transport w/o chemical transformation of transported mol
 									
 									
 									
-									
-									
+rxn01206	>			[SW] irrev on kegg map rn00460					
+rxn01377	>			[SW] irrev on kegg map rn00460					
 									
 rxn10155			-1:cpd00041:1:0:"L-Aspartate";-1:cpd00067:1:0:"H+";1:cpd00041:0:0:"L-Aspartate";1:cpd00067:0:0:"H+"	[SW] Rule: Organic acid H+ symport: ratio 1:1 to prevent import-export futile cycles.					
 									
@@ -2085,9 +2096,12 @@ rxn24594				[SW] required for lactate biosynthesis in archaea	https://metacyc.or
 									
 rxn90046	>		-1:cpd00061:0:0:"Phosphoenolpyruvate";-1:cpd00832:1:0:"N-Acetyl-D-chondrosamine";-1:cpd00067:0:0:"H+";1:cpd03812:0:0:"N-Acetyl-D-galactosamine 6-phosphate";1:cpd00020:0:0:"Pyruvate"	[JZ] New reaction for PTS-Transporter for n-acetyl galactosamine	https://www.vmh.life/#reaction/ACGALpts		ACGALpts	N acetylgalactosamine via PTS	
 rxn90047	>		-1:cpd00002:0:0:"ATP";-1:cpd00159:0:0:"L-Lactate";1:cpd00008:0:0:"ADP";1:cpd20414:0:0:"(2S)-2-Phospholactate";1:cpd00067:0:0:"H+"	[SW] Putative reaction. Required for F420 de novo biosynthesis in Archaea	doi: 10.1128/JB.188.8.2836-2844.2006		Lac-kin	L-lactate kinase	
+rxn90048	>		-1:cpd00001:0:0:"H2O";-1:cpd90009:0:0:"[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-(4-aminophenyl)-1-deoxy-D-ribitol 5'-phosphate";1:cpd90010:0:0:"[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-(4-aminophenyl)-1-deoxy-D-ribitol";1:cpd00009:0:0:"Phosphate"	[SW] reaction required for h4spt biosynthesis	RXN-10011		[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-(4-aminophenyl)-1-deoxy-D-ribitol 5'-phosphate phosphatase	[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-(4-aminophenyl)-1-deoxy-D-ribitol 5'-phosphate phosphatase	
+rxn90049	>		-1:cpd90010:0:0:"[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-(4-aminophenyl)-1-deoxy-D-ribitol";-1:cpd00103:0:0:"PRPP";1:cpd90011:0:0:"[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-(4-aminophenyl)-1-deoxy-5-[1-alpha-D-ribofuranosyl 5-phosphate]-D-ribitol";1:cpd00012:0:0:"PPi";1:cpd00067:0:0:"H+"	[SW] reaction required for h4spt biosynthesis	RXN-10012		[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-(4-aminophenyl)-1-deoxy-D-ribitol ribosyltransferase	[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-(4-aminophenyl)-1-deoxy-D-ribitol ribosyltransferase	
+rxn90050	>		-1:cpd00002:0:0:"ATP";-1:cpd90011:0:0:"[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-(4-aminophenyl)-1-deoxy-5-[1-alpha-D-ribofuranosyl 5-phosphate]-D-ribitol";1:cpd90012:0:0:"[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-(4-aminophenyl)-1-deoxy-5-[1-alpha-D-ribofuranosyl triphosphate]-D-ribitol";1:cpd00018:0:0:"AMP";1:cpd00067:0:0:"H+"	[SW] reaction required for h4spt biosynthesis	RXN-10013		[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-(4-aminophenyl)-1-deoxy-5-[1-alpha-D-ribofuranosyl 5-phosphate]-D-ribitol dikinase	[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-(4-aminophenyl)-1-deoxy-5-[1-alpha-D-ribofuranosyl 5-phosphate]-D-ribitol dikinase	
 									
-rxn43778	=		-1:cpd02246:0:0:"CoM";-1:cpd02817:0:0:"HTP";-2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd11620:0:0:"Reducedferredoxin";3:cpd00067:0:0:"H+";1:cpd02935:0:0:"CoM-S-S-CoB"	[SW] new reaction that corresponds to metacyc reaction RXN-18520			hdr	ferredoxin:CoB-CoM heterodisulfide reductase	
-rxn43076	<		-1:cpd02246:0:0:"CoM";-1:cpd02817:0:0:"HTP";-2:cpd11620:0:0:"Reducedferredoxin";-1:cpd00067:0:0:"H+";-2:cpd00649:0:0:"Coenzyme F420-2";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd02935:0:0:"CoM-S-S-CoB";2:cpd00792:0:0:"Reduced coenzyme F420-2"	[SW] new reaction that corresponds to metacyc reaction RXN-18528			Hdr-fx	coenzyme F420:CoB-CoM heterodisulfide,ferredoxin reductase	
+rxn43778	<		-1:cpd02246:0:0:"CoM";-1:cpd02817:0:0:"HTP";-2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd11620:0:0:"Reducedferredoxin";3:cpd00067:0:0:"H+";1:cpd02935:0:0:"CoM-S-S-CoB"	[SW] new reaction that corresponds to metacyc reaction RXN-18520			hdr	ferredoxin:CoB-CoM heterodisulfide reductase	
+rxn43076	<		-1:cpd02246:0:0:"CoM";-1:cpd02817:0:0:"HTP";-2:cpd11620:0:0:"Reducedferredoxin";-1:cpd00067:1:0:"H+";-2:cpd00649:0:0:"Coenzyme F420-2";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd02935:0:0:"CoM-S-S-CoB";2:cpd00792:0:0:"Reduced coenzyme F420-2"	[SW] new reaction that corresponds to metacyc reaction RXN-18528	10.1128/JB.00593-12		Hdr-fx	coenzyme F420:CoB-CoM heterodisulfide,ferredoxin reductase	
 rxn42401	<		-1:cpd02246:0:0:"CoM";-1:cpd02817:0:0:"HTP";-2:cpd11620:0:0:"Reducedferredoxin";-1:cpd00067:0:0:"H+";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd02935:0:0:"CoM-S-S-CoB";2:cpd11640:0:0:"H2"	[SW] new reaction that corresponds to metacyc reaction RXN-18521			Hdr-h2	H2:CoB-CoM heterodisulfide,ferredoxin reductase	
 rxn47799	<		-1:cpd02246:0:0:"CoM";-1:cpd02817:0:0:"HTP";-2:cpd11620:0:0:"Reducedferredoxin";-2:cpd00011:0:0:"CO2";1:cpd00067:0:0:"H+";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd02935:0:0:"CoM-S-S-CoB";2:cpd00047:0:0:"Formate"	[SW] new reaction that corresponds to metacyc reaction RXN-18529			Hdr-formate	formate:CoB-CoM heterodisulfide,ferredoxin reductase	
 rxn43368	>		-1:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd31434:0:0:"5-amino-5-(4-hydroxybenzyl)-6-(D-ribitylimino)-5,6-dihydrouracil";1:cpd00013:0:0:"NH3";1:cpd00060:0:0:"L-Methionine";1:cpd03091:0:0:"5'-Deoxyadenosine";1:cpd15839:0:0:"7,8-didemethyl-8-hydroxy-5-deazariboflavin"	[SW] new reaction that corresponds to metacyc reaction RXN-19230					
@@ -2097,8 +2111,30 @@ rxn44776	<		-2:cpd00067:0:0:"H+";-1:cpd24795:0:0:"pyrrocorphinate";1:cpd00244:0:
 rxn48136	>		-2:cpd00001:0:0:"H2O";-2:cpd00002:0:0:"ATP";-2:cpd00053:0:0:"L-Glutamine";-1:cpd24795:0:0:"pyrrocorphinate";2:cpd00008:0:0:"ADP";2:cpd00009:0:0:"Phosphate";2:cpd00023:0:0:"L-Glutamate";2:cpd00067:0:0:"H+";1:cpd24796:0:0:"dihydrocorphinate"	[SW] reaction required for factor F430 biosynthesis			ni-siroh-2N-syn	Ni-sirohydrochlorin a,c-diamide synthase	
 rxn46441	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd24796:0:0:"dihydrocorphinate";-3:cpd00004:0:0:"NADH";-3:cpd00067:0:0:"H+";3:cpd00003:0:0:"NAD";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd24798:0:0:"factor F430 seco-precursor"	[SW] reaction required for factor F430 biosynthesis			ni-siroh-2N-red-cyclase	Ni-sirohydrochlorin a,c-diamide reductive cyclase	
 rxn47116	>		-1:cpd00002:0:0:"ATP";-1:cpd24798:0:0:"factor F430 seco-precursor";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd03425:0:0:"Factor F430"	[SW] reaction required for factor F430 biosynthesis			F430syn	coenzyme F430 synthetase 	
+rxn44185	>		-1:cpd00067:0:0:"H+";-2:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd00954:0:0:"6-hydroxymethyl dihydropterin";-2:cpd02679:0:0:"5,10-Methylenetetrahydromethanopterin";-1:cpd00004:0:0:"NADH";-2:cpd11620:0:0:"Reducedferredoxin";2:cpd00060:0:0:"L-Methionine";2:cpd03091:0:0:"5'-Deoxyadenosine";2:cpd03523:0:0:"7,8-Dihydromethanopterin";1:cpd00003:0:0:"NAD";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd34981:0:0:"2-amino-6-[1-hydroxyethyl]-7-methyl-7,8-dihydropterin"	[SW] reaction required for h4spt biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-15732&&detail-level=2		6hm78dpt79dm-trans	6-hydroxymethyl-7,8-dihydropterin 7,9-dimethyltransferase	
+rxn45543	>		-1:cpd00002:0:0:"ATP";-1:cpd34981:0:0:"2-amino-6-[1-hydroxyethyl]-7-methyl-7,8-dihydropterin";1:cpd00018:0:0:"AMP";2:cpd00067:0:0:"H+";1:cpd32995:0:0:" [1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl diphosphate"	[SW] reaction required for h4spt biosynthesis			2N-4hydroxy-6-hm2hpt-pp	2-amino-4-hydroxy-6-hydroxymethyldihydropteridine diphosphokinase 	
+rxn46822	>		-1:cpd32995:0:0:" [1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl diphosphate";-1:cpd24823:0:0:"4-(beta-D-ribofuranosyl)aminobenzene-5'-phosphate";1:cpd00012:0:0:"PPi";1:cpd32565:0:0:"[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-4-(beta-D-ribofuranosyl)aminobenzene 5'-phosphate"	[SW] reaction required for h4spt biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-15734&&detail-level=2		RXN-1573	7,8-dihydropterin-6-yl-methyl-4-(?-D-ribofuranosyl)aminobenzene 5'-phosphate synthase	
+rxn46469	>		-1:cpd32711:0:0:"4-(beta-D-ribofuranosyl)-N-succinylaminobenzene 5'-phosphate";1:cpd00106:0:0:"Fumarate";1:cpd24823:0:0:"4-(beta-D-ribofuranosyl)aminobenzene-5'-phosphate"	[SW] reaction required for h4spt biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-15742&&detail-level=2		RXN-15742	4-(beta-D-ribofuranosyl)-N-succinylaminobenzene 5'-phosphate lyase	
+rxn44206	>		-1:cpd00002:0:0:"ATP";-1:cpd00041:0:0:"L-Aspartate";-1:cpd31424:0:0:"4-(beta-D-ribofuranosyl)hydroxybenzene 5'-phosphate";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";2:cpd00067:0:0:"H+";1:cpd32711:0:0:"4-(beta-D-ribofuranosyl)-N-succinylaminobenzene 5'-phosphate"	[SW] reaction required for h4spt biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-15741&&detail-level=2		RXN-15741	4-(beta-D-ribofuranosyl)hydroxybenzene 5'-phosphate ligase	
+rxn42137	>		-1:cpd00103:0:0:"PRPP";-1:cpd00136:0:0:"4-Hydroxybenzoate";1:cpd00011:0:0:"CO2";1:cpd00012:0:0:"PPi";1:cpd31424:0:0:"4-(beta-D-ribofuranosyl)hydroxybenzene 5'-phosphate"	[SW] reaction required for h4spt biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-8124&&detail-level=2		beta-ribofuranosylaminobenzene-5'-phosphate synthase	beta-ribofuranosylaminobenzene-5'-phosphate synthase	
+									
+rxn45700	>		-1:cpd00067:0:0:"H+";-1:cpd00004:0:0:"NADH";-1:cpd32565:0:0:"[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-4-(beta-D-ribofuranosyl)aminobenzene 5'-phosphate";1:cpd00003:0:0:"NAD";1:cpd90009:0:0:"[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-(4-aminophenyl)-1-deoxy-D-ribitol 5'-phosphate"	[SW] reaction required for h4spt biosynthesis			[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-4-(beta-D-ribofuranosyl)aminobenzene 5'-phosphate dehydrogenase	[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-4-(beta-D-ribofuranosyl)aminobenzene 5'-phosphate dehydrogenase	
+rxn42782	>		-1:cpd02041:0:0:"(S)-2-Hydroxyglutarate";-1:cpd90012:0:0:"[1-(2-amino-7-methyl-4-oxo-7,8-dihydro-3H-pteridin-6-yl)]ethyl-(4-aminophenyl)-1-deoxy-5-[1-alpha-D-ribofuranosyl triphosphate]-D-ribitol";1:cpd00012:0:0:"PPi";1:cpd03523:0:0:"7,8-Dihydromethanopterin"	[SW] reaction required for h4spt biosynthesis			RXN-10014	RXN-10014	
+									
+rxn46006	>		-1:cpd03920:0:0:"Adenosylcobinamide-GDP";-1:cpd15826:0:0:"N1-(5-Phospho-alpha-D-ribosyl)-5-hydroxybenzimidazole";1:cpd00067:0:0:"H+";1:cpd00126:0:0:"GMP";1:cpd31445:0:0:"Coalpha-[alpha-(5-hydroxybenzimidazolyl)]-Cobeta-adenosylcobamide 5'-phosphate"	[SW] reaction required for adenosyl factor III (Adenosylcobalamin-HBI)	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-19303		adenosylcobinamide-GDP ribazoletransferase	adenosylcobinamide-GDP ribazoletransferase	
+rxn48494	>		-1:cpd00001:0:0:"H2O";-1:cpd31445:0:0:"Coalpha-[alpha-(5-hydroxybenzimidazolyl)]-Cobeta-adenosylcobamide 5'-phosphate";1:cpd00009:0:0:"Phosphate";1:cpd33626:0:0:"adenosyl factor III"	[SW] reaction required for adenosyl factor III (Adenosylcobalamin-HBI)	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-19320		adenosylcobalamin/?-ribazole phosphatase	adenosylcobalamin/?-ribazole phosphatase	
+rxn41668	>		-1:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd02140:0:0:"AIR";-1:cpd00004:0:0:"NADH";1:cpd00009:0:0:"Phosphate";1:cpd00013:0:0:"NH3";1:cpd00047:0:0:"Formate";1:cpd00060:0:0:"L-Methionine";1:cpd00067:0:0:"H+";1:cpd03091:0:0:"5'-Deoxyadenosine";1:cpd00003:0:0:"NAD";1:cpd15825:0:0:"5-hydroxybenzimidazole"	[SW] reaction required for adenosyl factor III (Adenosylcobalamin-HBI)	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-17122		5-hydroxybenzimidazole synthase	5-hydroxybenzimidazole synthase	
+rxn10582	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-19299				
+rxn10450			-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd33626:1:0:"adenosyl factor III";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd00067:0:0:"H+";1:cpd33626:0:0:"adenosyl factor III"	[SW] Replaced ID of deprecated version of Ade-Cobalamin-HBI					
+									
+rxn10429		TRUE		[SW] These were model specific reactions. Replaced with compounds and reactions surrounding cpd33626.					
+rxn10451		TRUE		[SW] These were model specific reactions. Replaced with compounds and reactions surrounding cpd33626.					
+rxn10597		TRUE		[SW] These were model specific reactions. Replaced with compounds and reactions surrounding cpd33626.					
 									
 rxn07307	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=4.4.1.19-RXN				
+									
+rxn90051	>		-1:cpd00001:0:0:"H2O";-4:cpd00089:0:0:"Glucose-1-phosphate";-4:cpd00002:0:0:"ATP";4:cpd00012:0:0:"PPi";4:cpd00008:0:0:"ADP";1:cpd15302:0:0:"glycogen(n-1)"	[SW] dummy reaction for glycogen(n-1) biosynthesis from glucose-1-phoshate. Here n=5 is assumed.					
+rxn90052	>		-2:cpd00971:0:0:"Na+";-1:cpd02246:0:0:"CoM";-1:cpd02737:0:0:"5-Methyl-H4MPT";1:cpd00895:0:0:"H4MPT";1:cpd02438:0:0:"Methyl CoM";2:cpd00971:1:0:"Na+"	[SW] sodium-pumping CH3-THSPT:HS-CoM methyltransferase (MtrA-H)	DOI: 10.1128/JB.00593-12		sodium-pumping CH3-THSPT:HS-CoM methyltransferase	sodium-pumping CH3-THSPT:HS-CoM methyltransferase	
 									
 rxn10521			-1:cpd00011:0:0:"CO2";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";-1:cpd15892:0:0:"methanofuran b";1:cpd00001:0:0:"H2O";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd15879:0:0:"formylmethanofuran b"	[SW] Corrected ID of ferredoxin metabolites					
 rxn10561			-1:cpd00010:0:0:"CoA";-1:cpd00278:0:0:"Indolepyruvate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd11175:0:0:"S-2-(Indol-3-yl)acetyl-CoA";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
@@ -2149,3 +2185,16 @@ rxn10528	>		-1:cpd00023:0:0:"L-Glutamate";-1:cpd00038:0:0:"GTP";-1:cpd20411:0:0:
 rxn10529	>			[SW] direction changed according to MetaCyc					
 rxn10530	>			[SW] direction changed according to MetaCyc					
 rxn10531	>			[SW] direction changed according to MetaCyc					
+rxn06294	<		-1:cpd00001:0:0:"H2O";-1:cpd00735:0:0:"Formylmethanofuran";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00643:0:0:"Methanofuran";2:cpd11620:0:0:"Reducedferredoxin";1:cpd00067:0:0:"H+"	[SW] Direction and stoichiometry changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=FORMYLMETHANOFURAN-DEHYDROGENASE-RXN				
+rxn15964	>			[SW] Unknown directionality but causes futile cycles in reverse direction.					
+rxn15963	>			[SW] Unknown directionality but causes futile cycles in reverse direction. Delta_r G indicated irreversibility ast physiological conditions.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=MTAMBARKMULTI-RXN				
+rxn10568	>			[SW] Unknown directionality but causes futile cycles in reverse direction. Delta_r G indicated irreversibility ast physiological conditions.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=MTAMBARKMULTI-RXN				
+rxn10613	>			[SW] Unknown directionality but causes futile cycles in reverse direction.					
+rxn15988	>			[SW] Unknown directionality but causes futile cycles in reverse direction.					
+rxn10496	>			[SW] Unknown directionality but causes futile cycles in reverse direction.					
+rxn03020	>			[SW] Unknown directionality but causes futile cycles in reverse direction. Delta_r G indicated irreversibility ast physiological conditions.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=MTRMBARK-RXN				
+rxn16150	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-8957				
+rxn00972	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=CITLY-RXN				
+rxn14226	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=2-HEXADECENAL-REDUCTASE-RXN				
+rxn02229		TRUE		[SW] not found in any reaction database					
+rxn01416	>			[SW] direction changed according to MetaCyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=THIOSULFATE-SULFURTRANSFERASE-RXN				

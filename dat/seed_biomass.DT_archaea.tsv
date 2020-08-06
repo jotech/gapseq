@@ -1,5 +1,5 @@
 id	name	stoich	comp
-cpd00022[c0]	Acetyl-CoA	-5e-05	1
+cpd00022[c0]	Acetyl-CoA	-5E-05	1
 cpd00008[c0]	ADP	29.998	1
 cpd00035[c0]	L-Alanine	-0.5621	1
 cpd00018[c0]	AMP	-0.001	1
@@ -7,7 +7,7 @@ cpd00051[c0]	L-Arginine	-0.3237	1
 cpd00132[c0]	L-Asparagine	-0.2638	1
 cpd00041[c0]	L-Aspartate	-0.2638	1
 cpd00002[c0]	ATP	-30.1846	1
-cpd00010[c0]	Coenzyme A	-6e-06	1
+cpd00010[c0]	Coenzyme A	-6E-06	1
 cpd02246[c0]	coenzyme m	-0.02056	1
 cpd00052[c0]	CTP	-0.1379	1
 cpd00084[c0]	L-Cysteine	-0.1002	1
@@ -28,21 +28,33 @@ cpd00322[c0]	L-Isoleucine	-0.3179	1
 cpd00107[c0]	L-Leucine	-0.493	1
 cpd00039[c0]	L-Lysine	-0.3755	1
 cpd00060[c0]	L-Methionine	-0.1682	1
-cpd00003[c0]	Nicotinamide adenine dinucleotide	-0.00215	1
-cpd00004[c0]	Nicotinamide adenine dinucleotide - reduced	-5e-05	1
-cpd00006[c0]	Nicotinamide adenine dinucleotide phosphate	-0.00013	1
-cpd00005[c0]	Nicotinamide adenine dinucleotide phosphate - reduced	-4e-04	1
+cpd00003[c0]	NAD	-0.00215	1
+cpd00004[c0]	NADH	-5E-05	1
+cpd00006[c0]	NADP	-0.00013	1
+cpd00005[c0]	NADPH	-0.0004	1
 cpd00066[c0]	L-Phenylalanine	-0.2027	1
 cpd00009[c0]	Phosphate	30	1
-cpd00012[c0]	Diphosphate	0.799	1
+cpd00012[c0]	PPi	0.799	1
 cpd00129[c0]	L-Proline	-0.2419	1
 cpd00118[c0]	Putrescine	-0.0262	1
 cpd00054[c0]	L-Serine	-0.2361	1
-cpd00078[c0]	Succinyl-CoA	-3e-06	1
-cpd00087[c0]	5,6,7,8-Tetrahydrofolate	-6.1e-05	1
+cpd00078[c0]	Succinyl-CoA	-3E-06	1
+cpd00087[c0]	5,6,7,8-Tetrahydrofolate	-6.1E-05	1
 cpd00161[c0]	L-Threonine	-0.2776	1
 cpd00065[c0]	L-Tryptophan	-0.0622	1
 cpd00069[c0]	L-Tyrosine	-0.1509	1
 cpd00062[c0]	UTP	-0.1489	1
 cpd00156[c0]	L-Valine	-0.4631	1
+cpd15884[c0]	tetrahydrosarcinapterin	-0.02362	1
+cpd33626[c0]	adenosyl factor III	-0.00474	1
+cpd02817[c0]	HTP	-0.0005	1
+cpd15862[c0]	coenzyme F390 (adenosine)	-5.00E-06	1
+cpd15863[c0]	coenzyme F390 (guanosine)	-5.00E-06	1
+cpd03425[c0]	Factor F430	-0.002	1
+cpd00649[c0]	Coenzyme F420-2	-4.30E-05	1
+cpd20411[c0]	Coenzyme F420-3	-2.6E-05	1
+cpd15869[c0]	coenzyme ferredoxin 420-4	-0.000374	1
+cpd15870[c0]	coenzyme ferredoxin 420-5	-0.000299	1
+cpd15871[c0]	coenzyme ferredoxin 420-6	-1.1E-05	1
+cpd15872[c0]	coenzyme ferredoxin 420-7	-1E-06	1
 cpd11416[c0]	Biomass-c0	1	1
