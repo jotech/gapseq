@@ -48,13 +48,22 @@ cpd00156[c0]	L-Valine	-0.4631	1
 cpd15884[c0]	tetrahydrosarcinapterin	-0.02362	1
 cpd33626[c0]	adenosyl factor III	-0.00474	1
 cpd02817[c0]	HTP	-0.0005	1
-cpd15862[c0]	coenzyme F390 (adenosine)	-5.00E-06	1
-cpd15863[c0]	coenzyme F390 (guanosine)	-5.00E-06	1
+cpd15862[c0]	coenzyme F390 (adenosine)	-5E-06	1
+cpd15863[c0]	coenzyme F390 (guanosine)	-5E-06	1
 cpd03425[c0]	Factor F430	-0.002	1
-cpd00649[c0]	Coenzyme F420-2	-4.30E-05	1
+cpd00649[c0]	Coenzyme F420-2	-4.3E-05	1
 cpd20411[c0]	Coenzyme F420-3	-2.6E-05	1
 cpd15869[c0]	coenzyme ferredoxin 420-4	-0.000374	1
 cpd15870[c0]	coenzyme ferredoxin 420-5	-0.000299	1
 cpd15871[c0]	coenzyme ferredoxin 420-6	-1.1E-05	1
 cpd15872[c0]	coenzyme ferredoxin 420-7	-1E-06	1
+cpd15817[c0]	2-O-(3'-hydroxy)phytanyl-3-O-phytanyl-sn-glycero-l-phosphoethanolamine	-0.002698	1
+cpd15818[c0]	2-O-(3'-hydroxy)phytanyl-3-O-phytanyl-sn-glycerol-1-phospho-3'-sn-glycerol	-0.01012	1
+cpd15819[c0]	2-O-(3'-hydroxyl)phytanyl-3-O-phytanyl-sn-glycero-1-phospho-myo-inositol	-0.01349	1
+cpd15820[c0]	2-O-(3'-hydroxy)phytanyl-3-O-phytanyl-sn-glycero-l-phosphoserine	-0.01147	1
+cpd15858[c0]	2,3-O-phytanyl-sn-glycero-1-phosphoethanolamine	-0.000674	1
+cpd15859[c0]	2,3-di-O-phytanyl-sn-glycerol-1-phospho-3'-sn-glycerol	-0.000674	1
+cpd15860[c0]	2,3-O-phytanyl-sn-glycero-1-phospho-myo-inositol	-0.002698	1
+cpd15861[c0]	2,3-O-phytanyl-sn-glycero-1-phosphoserine	-0.001349	1
+cpd15880[c0]	glucosaminyl archaetidyl-myo-inositol	-0.01619	1
 cpd11416[c0]	Biomass-c0	1	1

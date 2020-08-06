@@ -2198,3 +2198,8 @@ rxn00972	>			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn14226	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=2-HEXADECENAL-REDUCTASE-RXN				
 rxn02229		TRUE		[SW] not found in any reaction database					
 rxn01416	>			[SW] direction changed according to MetaCyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=THIOSULFATE-SULFURTRANSFERASE-RXN				
+rxn10457	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=CDPDIGLYSYN-RXN				
+rxn10503	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6350&detail-level=2				
+rxn10532	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6350&detail-level=2				
+rxn10456	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6350&detail-level=2				
+rxn10430	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6350&detail-level=2				
