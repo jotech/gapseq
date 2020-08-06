@@ -1,5 +1,5 @@
 # gapseq
-_Informed prediction and analysis of bacteria metabolic pathways and genome-scale networks_  
+_Informed prediction and analysis of bacterial metabolic pathways and genome-scale networks_  
 [![Documentation Status](https://readthedocs.org/projects/gapseq/badge/?version=latest)](https://gapseq.readthedocs.io/en/latest/?badge=latest)
 [![DOI:10.1101/2020.03.20.000737](https://zenodo.org/badge/DOI/10.1101/2020.03.20.000737.svg)](https://doi.org/10.1101/2020.03.20.000737)  
 
