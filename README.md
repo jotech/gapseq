@@ -8,7 +8,7 @@ _gapseq_ is designed to combine metabolic pathway analysis with metabolic networ
 Based on genomic information and databases for pathways and reactions, _gapseq_ can be used for:
 - prediction of metabolic pathways from various databases
 - transporter inference
-- metabolic model creation
+- metabolic model construction
 - multi-step gap filling 
 
 <p align="center">
