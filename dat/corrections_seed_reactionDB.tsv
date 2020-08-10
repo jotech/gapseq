@@ -570,6 +570,9 @@ rxn16356									TRUE
 rxn23236									TRUE
 rxn05295		TRUE		[SW] non-required mRNA synthesis reactions					
 rxn12361		TRUE		[SW] non-required mRNA synthesis reactions					
+rxn00991	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=HYDROXYMETHYLGLUTARYL-COA-LYASE-RXN				
+rxn02889	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=METHYLCROTONYL-COA-CARBOXYLASE-RXN				
+rxn02866	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-2301				
 									
 rxn09722		TRUE		[SW] Mitochondrium-specific reaction					
 rxn09750		TRUE		[SW] Mitochondrium-specific reaction					
@@ -604,14 +607,13 @@ rxn02186	>			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn00249	>			[SW] never reported reversible according to BRENDA. Plus: Highly exergonic.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.1.1.299#SUBSTRATE				
 rxn01454	<			[SW] never reported reversible according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=2.3.3.10#NATURAL%20SUBSTRATES				
 rxn13429	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-12558				
-rxn05759	=			[SW] Changed according to MetaCyc & BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=1.12.7.2#NATURAL%20SUBSTRATES				
+rxn05759	>			[SW] Changed according to MetaCyc & BRENDA. [SW] update, made only forward as otherwise its causing futile cycles (experimental setting)	http://www.brenda-enzymes.org/enzyme.php?ecno=1.12.7.2#NATURAL%20SUBSTRATES				
 rxn05142	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-8014				
 rxn01867	>			[SW] Reaction highly exergonic.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=BADH-RXN				
 rxn10770	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-6021				
 rxn01459	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=AMINOBUTDEHYDROG-RXN				
 rxn01851	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=AMINOBUTDEHYDROG-RXN				
 rxn16141	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5293				
-rxn01201	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5293				
 rxn00085	<			[SW] Most commonly found irreversible	http://www.brenda-enzymes.org/enzyme.php?ecno=1.4.1.13#NATURAL%20SUBSTRATES				
 rxn03005	=		-1:cpd00201:0:0:"10-Formyltetrahydrofolate";-1:cpd02394:0:0:"GAR";1:cpd00067:0:0:"H+";1:cpd00087:0:0:"Tetrahydrofolate";1:cpd02678:0:0:"N-Formyl-GAR"	[SW] 5-10 THF is wrong reactant here. Should be 10-THF	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GART-RXN				
 rxn03004	=			[SW] Rev. according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GART-RXN				
@@ -801,6 +803,8 @@ rxn04794	>			[SW] Reaction direction adjusted according to MetaCyc.	https://meta
 rxn04792	>			[SW] Reaction direction adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-2962				
 rxn04938	>			[SW] Reaction direction adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-2962				
 rxn08460	>			[SW] Reaction direction adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-2962				
+rxn09753			-1:cpd00106:0:0:"Fumarate";-1:cpd00982:0:0:"FADH2";1:cpd00015:0:0:"FAD";1:cpd00036:0:0:"Succinate";1:cpd00067:0:0:"H+"	[SW] Corrected metabolite compartments.					
+rxn02988	<			[SW] Reaction direction adjusted according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=QUINOLINATE-SYNTHA-RXN				
 									
 rxn05363			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11499:0:0:"4-methyl-hexanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11500:0:0:"6-methyl-3-oxo-octanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
 rxn05367			-1:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11503:0:0:"6-methyl-octanoyl-ACP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd11504:0:0:"8-methyl-3-oxo-decanoyl-ACP"	[SW] Stoichiometry changed according to RHEA	https://www.rhea-db.org/reaction?id=22836				
@@ -862,7 +866,7 @@ rxn08736	>			[SW] unsure, but highly exergonic reaction	https://metacyc.org/META
 rxn10117	>			[SW] unsure, but highly exergonic reaction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5256				
 rxn10118	>			[SW] unsure, but highly exergonic reaction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5256				
 rxn10119	>			[SW] unsure, but highly exergonic reaction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5256				
-rxn10507	=		-2:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd11640:0:0:"H2";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] hydrogenase can perform H2 evolution and oxidation. Stoich. Adjusted according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=HYDROG-RXN				
+rxn10507	>		-2:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd11640:0:0:"H2";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] hydrogenase can perform H2 evolution. Stoich. Adjusted according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=HYDROG-RXN				
 									
 rxn13063	>			[SW] Fatty-acyl CoA-oxidase in direction of hydrogen peroxide formation. According to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11026				
 rxn13064	>			[SW] Fatty-acyl CoA-oxidase in direction of hydrogen peroxide formation. According to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-11026				
@@ -1147,7 +1151,7 @@ rxn06438	>			[SW] Aminocyl-tRNA ligases are irreversible, as they are highly exe
 									
 rxn05760	<		-2:cpd00023:0:0:"L-Glutamate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00024:0:0:"2-Oxoglutarate";1:cpd00053:0:0:"L-Glutamine";2:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"						
 rxn05902	<		-3:cpd00001:0:0:"H2O";-1:cpd00239:0:0:"H2S";-6:cpd11621:0:0:"Oxidizedferredoxin";6:cpd00067:0:0:"H+";1:cpd00081:0:0:"Sulfite";6:cpd11620:0:0:"Reducedferredoxin"	[JZ][SW] reaction not proton balanced. Changing stoichiometries	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=SULFITE-REDUCTASE-FERREDOXIN-RXN				
-rxn05937	=		-1:cpd00006:0:0:"NADP";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00005:0:0:"NADPH";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Reaction was incomplete. Here new balances full reaction.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17897				
+rxn05937	>		-1:cpd00006:0:0:"NADP";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00005:0:0:"NADPH";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Reaction was incomplete. Here newly balanced full reaction.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17897				
 rxn06990	>		-1:cpd00003:0:0:"NAD";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00004:0:0:"NADH";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Ferredoxin Stoichiometries corrected. Reverse direction possible, but only in the presense of sodium ion potential.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=FERREDOXIN--NAD%2b-REDUCTASE-RXN # Hess, V.; Schuchmann, K.; Mueller, V.; J. Biol. Chem. 288, 31496-31502 (2013)				
 rxn07849	>		-1:cpd00001:0:0:"H2O";-1:cpd00735:0:0:"Formylmethanofuran";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00643:0:0:"Methanofuran";2:cpd11620:0:0:"Reducedferredoxin";1:cpd00067:0:0:"H+"	[JZ][SW] Reaction was incomplete. Here new balances full reaction with correct oxidized/reduced state for ferredoxin	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=FORMYLMETHANOFURAN-DEHYDROGENASE-RXN				
 rxn05938	<		-1:cpd00011:0:0:"CO2";-1:cpd00022:0:0:"Acetyl-CoA";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00010:0:0:"CoA";1:cpd00020:0:0:"Pyruvate";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] never reported to be reversible.	https://www.brenda-enzymes.org/enzyme.php?ecno=3.5.4.27#NATURAL%20SUBSTRATES				
@@ -1909,7 +1913,7 @@ rxn90015	>		-1:cpd00047:0:0:"Formate";-1:cpd00067:0:0:"H+";-1:cpd00038:0:0:"GTP"
 rxn90016	>		-1:cpd00047:0:0:"Formate";-1:cpd00067:0:0:"H+";-1:cpd00062:0:0:"UTP";1:cpd00358:0:0:"dUTP";1:cpd00001:0:0:"H2O";1:cpd00011:0:0:"CO2"	[SW] New Reaction. anaerobic ribonucleoside-triphosphate reductase.	https://metacyc.org/META/substring-search?type=NIL&object=1.1.98.6&quickSearch=Quick+Search		UTP-rd	Anaerobic Uridine desoxribonucleotide-triphosphate reductase	
 									
 rxn90017	>		-1:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd00069:0:0:"L-Tyrosine";-1:cpd00005:0:0:"NADPH";1:cpd00060:0:0:"L-Methionine";1:cpd00067:0:0:"H+";1:cpd01042:0:0:"p-Cresol";1:cpd03091:0:0:"5'-Deoxyadenosine";1:cpd14545:0:0:"Iminoglycine";1:cpd00006:0:0:"NADP"	[SW] New Reaction. Important for Thiman biosynthesis.	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-11319&detail-level=3		2-iminoacetate synthase	2-iminoacetate synthase	
-rxn90018	=		-2:cpd11620:0:0:"Reducedferredoxin";-2:cpd00006:0:0:"NADP";-1:cpd00004:0:0:"NADH";-1:cpd00067:0:0:"H+";2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd00005:0:0:"NADPH";1:cpd00003:0:0:"NAD"	[SW] New Reaction. Electron-Bifurcating Enzyme Complex (see reference)	Shuning Wang, Haiyan Huang, Johanna Moll, Rudolf K. Thauer (2010) Journal of Bacteriology		NfnAB	Coupled NADP reduction via ferredoxin and NADH	
+rxn90018	>		-2:cpd11620:0:0:"Reducedferredoxin";-2:cpd00006:0:0:"NADP";-1:cpd00004:0:0:"NADH";-1:cpd00067:0:0:"H+";2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd00005:0:0:"NADPH";1:cpd00003:0:0:"NAD"	[SW] New Reaction. Electron-Bifurcating Enzyme Complex (see reference). Direction in physiological direction.	Shuning Wang, Haiyan Huang, Johanna Moll, Rudolf K. Thauer (2010) Journal of Bacteriology		NfnAB	Coupled NADP reduction via ferredoxin and NADH	
 									
 rxn90019	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd00393:1:0:"Folate";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd00067:0:0:"H+";1:cpd00393:0:0:"Folate"	[SW] New reaction for ABC-Transporter for folate (3.a.1.28.2)			Fol-ABC-tr	folate ABC transporter	
 rxn90020	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd00557:1:0:"Siroheme";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd00557:0:0:"Siroheme";1:cpd00067:0:0:"H+"	[SW] New reaction for ABC-Transporter for siroheme			Siroheme-ABC-tr	Siroheme transport via ABC system	
@@ -1934,7 +1938,7 @@ rxn22385				[SW] Important for Rhmanose degradatiion without phosphorylated inte
 rxn22386				[SW] Important for Rhmanose degradatiion without phosphorylated intermediates.					TRUE
 rxn39175				[SW] Diffusion of butanol					TRUE
 rxn36810				[SW] EC 1.6.5.3					TRUE
-rxn26477									TRUE
+rxn26477			-1:cpd00001:0:0:"H2O";-1:cpd08615:0:0:"1-Hydroxy-2-methyl-2-butenyl 4-diphosphate";-2:cpd11621:0:0:"Oxidizedferredoxins";2:cpd00067:0:0:"H+";1:cpd08301:0:0:"2-C-methyl-D-erythritol2-4-cyclodiphosphate";2:cpd11620:0:0:"Reducedferredoxins"						TRUE
 rxn26102									TRUE
 rxn16823									TRUE
 rxn23042									TRUE
@@ -1960,7 +1964,7 @@ rxn36873				[SW] Reactions for 2-demethylmenaquinol-6					TRUE
 rxn16371				[SW] Reaction required for a coenzyme M biosynthesis pathway					TRUE
 rxn26754	>		-1:cpd11632:0:0:"hn";-1:cpd11621:0:0:"Oxidizedferredoxin";-1:cpd27884:0:0:"Plastocyanin-Reduced";1:cpd27746:0:0:"Oxidized-Plastocyanins";1:cpd11620:0:0:"Reducedferredoxin"	[JZ] photosystem1 should be irreversible + adapted to use default identifier for ferredoxin (cpd11620/cpd11621)	https://biocyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-1.97.1.12				
 rxn26755		TRUE		[JZ] duplicate to rxn26754					
-rxn17196	=			[JZ] wrong direction	https://biocyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-1.18.1.2				
+rxn17196	>		-1:cpd00006:0:0:"NADP";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxins";1:cpd00005:0:0:"NADPH";2:cpd11621:0:0:"Oxidizedferredoxins"	[JZ] wrong direction; [SW] changed even to only forward and changed ferrdoxin identifiers	https://biocyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-1.18.1.2				
 rxn11969		TRUE		[JZ] non-enzymatic animal retina reaction in wrong direction					
 rxn11981	>			[JZ] Vitamin D3 formation needs light					
 rxn11990	>			[JZ] Vitamin D2 formation needs light					
@@ -2130,11 +2134,15 @@ rxn10450			-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd33626:1:0:"adenosyl
 rxn10429		TRUE		[SW] These were model specific reactions. Replaced with compounds and reactions surrounding cpd33626.					
 rxn10451		TRUE		[SW] These were model specific reactions. Replaced with compounds and reactions surrounding cpd33626.					
 rxn10597		TRUE		[SW] These were model specific reactions. Replaced with compounds and reactions surrounding cpd33626.					
+rxn08519		TRUE		[SW] Redundant (see rxn0537) and with wrong Ferredoxin identifiers					
 									
 rxn07307	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=4.4.1.19-RXN				
 									
 rxn90051	>		-1:cpd00001:0:0:"H2O";-4:cpd00089:0:0:"Glucose-1-phosphate";-4:cpd00002:0:0:"ATP";4:cpd00012:0:0:"PPi";4:cpd00008:0:0:"ADP";1:cpd15302:0:0:"glycogen(n-1)"	[SW] dummy reaction for glycogen(n-1) biosynthesis from glucose-1-phoshate. Here n=5 is assumed.					
 rxn90052	>		-2:cpd00971:0:0:"Na+";-1:cpd02246:0:0:"CoM";-1:cpd02737:0:0:"5-Methyl-H4MPT";1:cpd00895:0:0:"H4MPT";1:cpd02438:0:0:"Methyl CoM";2:cpd00971:1:0:"Na+"	[SW] sodium-pumping CH3-THSPT:HS-CoM methyltransferase (MtrA-H)	DOI: 10.1128/JB.00593-12		sodium-pumping CH3-THSPT:HS-CoM methyltransferase	sodium-pumping CH3-THSPT:HS-CoM methyltransferase	
+									
+rxn90053	>		-2:cpd11620:0:0:"Reducedferredoxin";-1:cpd00003:0:0:"NAD";-3:cpd00067:0:0:"H+";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00004:0:0:"NADH";2:cpd00067:1:0:"H+"	[SW] New reaction for H+ exporting Rnf electron transport complex	10.1101/2020.06.09.139246		RNFTRANSLOCATION	rnf electron transport complex	
+rxn90054	>		-2:cpd11620:0:0:"Reducedferredoxin";-2:cpd00003:0:0:"NAD";-1:cpd00159:0:0:"L-Lactate";2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd00004:0:0:"NADH";1:cpd00020:0:0:"Pyruvate"	[SW] Anaerobic oxidation of Lactate to Pyruvate needs a little help (by a coupled oxidation of reduced ferredoxin)	10:1111/1462-2920.12493		LDH-Etf	LDH-Etf complex (electron bifurcating)	
 									
 rxn10521			-1:cpd00011:0:0:"CO2";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";-1:cpd15892:0:0:"methanofuran b";1:cpd00001:0:0:"H2O";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd15879:0:0:"formylmethanofuran b"	[SW] Corrected ID of ferredoxin metabolites					
 rxn10561			-1:cpd00010:0:0:"CoA";-1:cpd00278:0:0:"Indolepyruvate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd11175:0:0:"S-2-(Indol-3-yl)acetyl-CoA";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
@@ -2144,7 +2152,7 @@ rxn10585			-1:cpd00010:0:0:"CoA";-1:cpd00024:0:0:"2-Oxoglutarate";-2:cpd11621:0:
 rxn10588			-1:cpd00010:0:0:"CoA";-1:cpd00020:0:0:"Pyruvate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00022:0:0:"Acetyl-CoA";1:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
 rxn10589			-1:cpd00010:0:0:"CoA";-1:cpd00094:0:0:"2-Oxobutyrate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00067:0:0:"H+";1:cpd00086:0:0:"Propionyl-CoA";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
 rxn10618			-1:cpd00010:0:0:"CoA";-1:cpd00123:0:0:"3-Methyl-2-oxobutanoate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00067:0:0:"H+";1:cpd00481:0:0:"Isobutyryl-CoA";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
-rxn10767			-1:cpd11640:0:0:"H2";-2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
+rxn10767	<		-1:cpd11640:0:0:"H2";-2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
 rxn10478			-1:cpd00001:0:0:"H2O";-1:cpd00022:0:0:"Acetyl-CoA";-2:cpd11621:0:0:"Oxidizedferredoxin";-1:cpd15884:0:0:"tetrahydrosarcinapterin";1:cpd00010:0:0:"CoA";1:cpd00011:0:0:"CO2";2:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin";1:cpd15893:0:0:"N5-methyl-tetrahydrosarcinapterin"	[SW] Corrected ID of ferredoxin metabolites					
 rxn10580			-32:cpd00001:0:0:"H2O";-32:cpd00002:0:0:"ATP";-1:cpd00528:0:0:"N2";-8:cpd11620:0:0:"Reducedferredoxin";32:cpd00008:0:0:"ADP";32:cpd00009:0:0:"Phosphate";2:cpd00013:0:0:"NH3";22:cpd00067:0:0:"H+";1:cpd11640:0:0:"H2";8:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
 rxn10477			-1:cpd00001:0:0:"H2O";-1:cpd00204:0:0:"CO";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";3:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
