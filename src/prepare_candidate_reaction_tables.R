@@ -193,6 +193,7 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt.cand.clpx <- dt.cand.clpx[max.bs == bitscore] # get only the best hits
   dt.cand.clpx <- dt.cand.clpx[!duplicated(paste(seed,complex, sep = "$"))]
   dt.cand.clpx[, max.bs := NULL]
+  
   # filter out "Subunit undefined" rows if they map to a range of a defined subunit of the enzyme
   dt.cand.clpx <- dt.cand.clpx[order(stitle,seed,complex,-bitscore)] # TODO: Make sure the subunits with notation "subunit undefined" is last row per seed-reaction id "seed"
   dt.cand.clpx[, rm := F]
@@ -213,17 +214,28 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt.cand.clpx <- dt.cand.clpx[rm == F]
   dt.cand.clpx[, rm := NULL]
   dt.cand.clpx[, itmp := NULL]
-  dt.cand.clpx[complex != "Subunit undefined" & is.na(complex.status), min.bs := min(bitscore, na.rm = T), by = "seed"] # to be conservative, choose the lowest bitscore for complexes which were not predicted to be present
-  dt.cand.clpx <- dt.cand.clpx[bitscore == min.bs | is.na(min.bs)]
-  dt.cand.clpx[, min.bs := NULL]
-  # for complexes whose presence was predicted choose the subunit with the hightest bitscore as reference.
-  dt.cand.clpx[complex != "Subunit undefined" & complex.status == 1, max.bs := max(bitscore, na.rm = T), by = "seed"]
-  dt.cand.clpx <- dt.cand.clpx[bitscore == max.bs | is.na(max.bs)]
-  dt.cand.clpx[, max.bs := NULL]
-  # for remaining undefined subunits choose the best hit and handle it as monomer
-  dt.cand.clpx[complex == "Subunit undefined", max.bs := max(bitscore, na.rm = T), by = "seed"]
-  dt.cand.clpx <- dt.cand.clpx[bitscore == max.bs | is.na(max.bs)]
-  dt.cand.clpx[, max.bs := NULL]
+  
+  dt.cand.clpx[is.na(complex.status), median.bs := median(bitscore, na.rm = T), by = "seed"] # to be conservative, choose the subunit with the bitscore closest to the median 
+  dt.cand.clpx[is.na(complex.status), diff.median.bs := abs(bitscore - median.bs)]
+  dt.cand.clpx[is.na(complex.status), min.diff.bs := min(diff.median.bs, na.rm = T), by = "seed"]
+  dt.cand.clpx <- dt.cand.clpx[diff.median.bs == min.diff.bs | is.na(min.diff.bs)]
+  dt.cand.clpx <- dt.cand.clpx[order(seed, bitscore)]
+  dt.cand.clpx <- dt.cand.clpx[!duplicated(paste0(seed, diff.median.bs, sep = "$"))] # This is for the case of ties (same distance of bitscore to median). Chossing the hit with the lower bitscore.
+  dt.cand.clpx[, diff.median.bs := NULL]
+  dt.cand.clpx[, min.diff.bs := NULL]
+  dt.cand.clpx[, median.bs := NULL]
+
+  # dt.cand.clpx[complex != "Subunit undefined" & is.na(complex.status), min.bs := min(bitscore, na.rm = T), by = "seed"] # to be conservative, choose the lowest bitscore for complexes which were not predicted to be present
+  # dt.cand.clpx <- dt.cand.clpx[bitscore == min.bs | is.na(min.bs)]
+  # dt.cand.clpx[, min.bs := NULL]
+  # # for complexes whose presence was predicted choose the subunit with the hightest bitscore as reference.
+  # dt.cand.clpx[complex != "Subunit undefined" & complex.status == 1, max.bs := max(bitscore, na.rm = T), by = "seed"]
+  # dt.cand.clpx <- dt.cand.clpx[bitscore == max.bs | is.na(max.bs)]
+  # dt.cand.clpx[, max.bs := NULL]
+  # # for remaining undefined subunits choose the best hit and handle it as monomer
+  # dt.cand.clpx[complex == "Subunit undefined", max.bs := max(bitscore, na.rm = T), by = "seed"]
+  # dt.cand.clpx <- dt.cand.clpx[bitscore == max.bs | is.na(max.bs)]
+  # dt.cand.clpx[, max.bs := NULL]
   
   # 2. Handling of reactions which have pathway topology evidences
   dt.cand.topo <- copy(dt.cand[status %in% c("bad_blast","no_blast") & pathway.status %in% c("full","treshold","keyenzyme")])
