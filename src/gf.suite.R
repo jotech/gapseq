@@ -616,7 +616,8 @@ out.id <- gsub(".xml|.RDS|.rds","",gsub("-draft","",basename(mod.file)))
 
 if(opt$sbml.output){
   out.sbml <- paste0(output.dir,"/",out.id,".xml")
-  if(file.exists(out.sbml)) out.sbml <- paste0(output.dir,"/",out.id,"-gapfilled.xml")
+  #if(file.exists(out.sbml)) out.sbml <- paste0(output.dir,"/",out.id,"-gapfilled.xml")
+  if(file.exists(out.sbml)) warning("Model file already exists and will be overwritten!")
   writeSBML(mod.out, filename = paste0(out.sbml))
 }
   
@@ -629,7 +630,8 @@ if( verbose ){
 }
 
 out.rds <- paste0(output.dir,"/",out.id,".RDS")
-if(file.exists(out.rds)) out.rds <- paste0(output.dir,"/",out.id,"-gapfilled.RDS")
+#if(file.exists(out.rds)) out.rds <- paste0(output.dir,"/",out.id,"-gapfilled.RDS")
+if(file.exists(out.rds)) warning("Model file already exists and will be overwritten!")
 saveRDS(mod.out, file = out.rds)
 if( "sybilSBML" %in% rownames(installed.packages()) ){
   if( any(is.na(mod.out@met_attr$charge)) ) mod.out@met_attr$charge[which(is.na(mod.out@met_attr$charge))] <- ""
