@@ -607,7 +607,7 @@ rxn02186	>			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn00249	>			[SW] never reported reversible according to BRENDA. Plus: Highly exergonic.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.1.1.299#SUBSTRATE				
 rxn01454	<			[SW] never reported reversible according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=2.3.3.10#NATURAL%20SUBSTRATES				
 rxn13429	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-12558				
-rxn05759	>			[SW] Changed according to MetaCyc & BRENDA. [SW] update, made only forward as otherwise its causing futile cycles (experimental setting)	http://www.brenda-enzymes.org/enzyme.php?ecno=1.12.7.2#NATURAL%20SUBSTRATES				
+rxn05759	>			[SW] Changed according to MetaCyc & BRENDA. [SW+JZ] update, made only forward as otherwise its causing futile cycles (backwards reaction needs chemiosmotic coupling see rxn90057)	http://www.brenda-enzymes.org/enzyme.php?ecno=1.12.7.2#NATURAL%20SUBSTRATES http://dx.doi.org/10.1038/nrmicro1931				
 rxn05142	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-8014				
 rxn01867	>			[SW] Reaction highly exergonic.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=BADH-RXN				
 rxn10770	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-6021				
@@ -2213,3 +2213,8 @@ rxn10503	>			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn10532	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6350&detail-level=2				
 rxn10456	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6350&detail-level=2				
 rxn10430	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6350&detail-level=2				
+									
+rxn90057	=		-4:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd11640:0:0:"H2";2:cpd00067:1:0:"H+"	[JZ] rxn05759 can be reversible when linked to membrane potential	http://dx.doi.org/10.1038/nrmicro1931		ECHAF	ferredoxin hydrogenase (chemiosmosis)	
+rxn90058	=		-3:cpd00067:0:0:"H+";-1:cpd02935:0:0:"CoM-S-S-CoB";-1:cpd08702:0:0:"Dihydromethanophenazine";1:cpd02246:0:0:"CoM";1:cpd02817:0:0:"HTP";1:cpd08701:0:0:"Methanophenazine";2:cpd00067:1:0:"H+"	[JZ] rxn03126 can be reversible when linked to membrane potential	http://dx.doi.org/10.1038/nrmicro1931			Coenzyme B:coenzyme M:methanophenazine oxidoreductase (chemiosmosis)	
+rxn90059	=		-2:cpd00067:0:0:"H+";-1:cpd08701:0:0:"Methanophenazine";-1:cpd11640:0:0:"H2";1:cpd08702:0:0:"Dihydromethanophenazine";2:cpd00067:1:0:"H+"	[JZ] rxn16961 can be reversible when linked to membrane potential	http://dx.doi.org/10.1038/nrmicro1931			hydrogen:2-(2,3-dihydropentaprenyloxy)phenazine oxidoreductase  (chemiosmosis)	
+rxn15961	>			[JZ] direction changed according to MetaCyc + Thauer2008	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-7733 http://dx.doi.org/10.1038/nrmicro1931				

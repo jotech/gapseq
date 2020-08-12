@@ -354,6 +354,9 @@ EX_cpd01618(e),EX_13ppd(e)
 EX_cpd02992(e),EX_core4(e)
 EX_cpd03226(e),EX_vitd3(e)
 EX_cpd11842(c),EX_core3(e)
+EX_cpd15500(e),EX_mqn8(e)
+EX_cpd16301(e),EX_clpnd(e)
+EX_cpd05196(e),EX_docosac(e)
 rxn00001,PPA
 rxn00002,ALPHNH
 rxn00006,r0010
