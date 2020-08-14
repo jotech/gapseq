@@ -2155,9 +2155,12 @@ rxn10588			-1:cpd00010:0:0:"CoA";-1:cpd00020:0:0:"Pyruvate";-2:cpd11621:0:0:"Oxi
 rxn10589			-1:cpd00010:0:0:"CoA";-1:cpd00094:0:0:"2-Oxobutyrate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00067:0:0:"H+";1:cpd00086:0:0:"Propionyl-CoA";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
 rxn10618			-1:cpd00010:0:0:"CoA";-1:cpd00123:0:0:"3-Methyl-2-oxobutanoate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00067:0:0:"H+";1:cpd00481:0:0:"Isobutyryl-CoA";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
 rxn10767	<		-1:cpd11640:0:0:"H2";-2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
-rxn10478			-1:cpd00001:0:0:"H2O";-1:cpd00022:0:0:"Acetyl-CoA";-2:cpd11621:0:0:"Oxidizedferredoxin";-1:cpd15884:0:0:"tetrahydrosarcinapterin";1:cpd00010:0:0:"CoA";1:cpd00011:0:0:"CO2";2:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin";1:cpd15893:0:0:"N5-methyl-tetrahydrosarcinapterin"	[SW] Corrected ID of ferredoxin metabolites					
+rxn10478	>		-1:cpd00001:0:0:"H2O";-1:cpd00022:0:0:"Acetyl-CoA";-2:cpd11621:0:0:"Oxidizedferredoxin";-1:cpd15884:0:0:"tetrahydrosarcinapterin";1:cpd00010:0:0:"CoA";1:cpd00011:0:0:"CO2";2:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin";1:cpd15893:0:0:"N5-methyl-tetrahydrosarcinapterin"	[SW] Corrected ID of ferredoxin metabolites					
 rxn10580			-32:cpd00001:0:0:"H2O";-32:cpd00002:0:0:"ATP";-1:cpd00528:0:0:"N2";-8:cpd11620:0:0:"Reducedferredoxin";32:cpd00008:0:0:"ADP";32:cpd00009:0:0:"Phosphate";2:cpd00013:0:0:"NH3";22:cpd00067:0:0:"H+";1:cpd11640:0:0:"H2";8:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
 rxn10477			-1:cpd00001:0:0:"H2O";-1:cpd00204:0:0:"CO";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";3:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
+rxn10572	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-5247				
+rxn10574	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-5247				
+									
 									
 rxn00202	=			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=HOMOCITRATE-SYNTHASE-RXN				
 rxn10610	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=R214-RXN				
