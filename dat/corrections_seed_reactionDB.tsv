@@ -1216,7 +1216,6 @@ rxn29263	<			H+-coupled transport w/o chemical transformation of transported mol
 rxn29492	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn29736	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn29791	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
-rxn29826	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn29827	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn29828	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn29829	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
@@ -2221,3 +2220,7 @@ rxn90057	=		-4:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";2:cpd11621:
 rxn90058	=		-3:cpd00067:0:0:"H+";-1:cpd02935:0:0:"CoM-S-S-CoB";-1:cpd08702:0:0:"Dihydromethanophenazine";1:cpd02246:0:0:"CoM";1:cpd02817:0:0:"HTP";1:cpd08701:0:0:"Methanophenazine";2:cpd00067:1:0:"H+"	[JZ] rxn03126 can be reversible when linked to membrane potential	http://dx.doi.org/10.1038/nrmicro1931			Coenzyme B:coenzyme M:methanophenazine oxidoreductase (chemiosmosis)	
 rxn90059	=		-2:cpd00067:0:0:"H+";-1:cpd08701:0:0:"Methanophenazine";-1:cpd11640:0:0:"H2";1:cpd08702:0:0:"Dihydromethanophenazine";2:cpd00067:1:0:"H+"	[JZ] rxn16961 can be reversible when linked to membrane potential	http://dx.doi.org/10.1038/nrmicro1931			hydrogen:2-(2,3-dihydropentaprenyloxy)phenazine oxidoreductase  (chemiosmosis)	
 rxn15961	>			[JZ] direction changed according to MetaCyc + Thauer2008	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-7733 http://dx.doi.org/10.1038/nrmicro1931				
+rxn90060	>		-1:cpd28763:1:0:"(2,1-beta-D-fructan)";-9:cpd00001:1:0:"H2O";9:cpd00082:1:0:"D-Fructose";1:cpd02298:1:0:"1F-beta-D-Fructosylsucrose"	[SW] New reaction for inulin/fructan degradation step 1	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.2.1.153-RXN		inulinase	fructan beta-(2,1)-fructosidase (extracellular)	
+rxn23749	>		-1:cpd00001:0:0:"H2O";-1:cpd02298:0:0:"1F-beta-D-Fructosylsucrose";1:cpd00076:0:0:"Sucrose";1:cpd00082:0:0:"D-Fructose"	[SW] Reaction needed for 1-Kestotriose degradation	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-1841				
+rxn29739				[SW] Needed for 1-Kestotriose uptake					TRUE
+rxn90061	>		-1:cpd00001:1:0:"H2O";-1:cpd12085:1:0:"1,4-beta-D-Xylan";1:cpd00154:1:0:"Xylose"	[SW] New reaction for extracellular xylan degradation			beta-xylosidase	xylan 1,4-beta-xylosidase (extracellular)	
