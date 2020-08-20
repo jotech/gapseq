@@ -19,7 +19,7 @@ media_check <- function(media.file, mod.orig, seed_x_mets){
     bm.cpd     <- mod.orig@met_id[which(mod.orig@S[,bm.idx] != 0)]
     bm.ess.met <- intersect(ess.met, str_extract(bm.cpd, "cpd[0-9]+"))
     missing    <- ess.met[which(!bm.ess.met %in% media$compounds)]
-    if( length(missing) > 0 ) warning(paste("Potentially missing copounds in medium:", paste(seed_x_mets[id %in% missing, paste(id, name)], collapse = ", ")))
+    if( length(missing) > 0 ) warning(paste("Potentially missing compounds in medium:", paste(seed_x_mets[id %in% missing, paste(id, name)], collapse = ", ")))
   }
   
   #
