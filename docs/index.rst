@@ -25,6 +25,15 @@ Installation
 
    /usage/basics
    /usage/parameters
+   /usage/medium
+
+
+.. Database
+.. toctree::
+   :maxdepth: 2
+   :caption: Database
+
+   /database/biochemistry
 
 
 .. Tutorials

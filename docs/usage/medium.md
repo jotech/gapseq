@@ -1,0 +1,3 @@
+# Growth medium definition
+
+tbd
