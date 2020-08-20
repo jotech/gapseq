@@ -100,6 +100,7 @@ source(paste0(script.dir,"/generate_rxn_stoich_hash.R"))
 source(paste0(script.dir,"/get_gene_logic_string.R"))
 source(paste0(script.dir,"/addMetAttr.R"))
 source(paste0(script.dir,"/addReactAttr.R"))
+source(paste0(script.dir,"/media_check.R"))
 
 rm.na <- function(vec){
   idx <- which(is.na(vec))
@@ -158,6 +159,9 @@ if( media.file == "complete" ){
   media <- data.frame(compounds=met.id, name=met.name, maxFlux=100)
   media.file <- paste0(script.dir,"/../dat/media/ALLmed.csv")
   write.csv(media, media.file, quote = F, row.names = F)
+}else{
+  # perform plausible check of user-defined medium file provide warning if necessary
+  media_check(media.file, mod.orig, seed_x_mets)
 }
 
 
@@ -300,7 +304,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   
   
   media2 <- fread(paste0(script.dir,"/../dat/media/MM_glu.csv")) # load minimal medium and add available carbon sources
-  if( length(grep("cpd00007", fread(media.file)$compounds)) > 0 ){
+  if( length(grep("cpd00007", fread(media.file)[[1]])) > 0 ){
     cat("\n\n2b. Anaerobic biomass gapfilling using core reactions only\n")
     media2 <- media2[name!="O2"] # remove oxygen
   }else{

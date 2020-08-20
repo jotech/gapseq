@@ -21,7 +21,7 @@ usage()
     echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
     echo "  -q Include sequences of hits in log files; default $includeSeq"
     echo "  -k do not use parallel"
-    echo "  -m only check for this keyword/metabolite (default $only_met)"
+    echo "  -m only check for this keyword/metabolite (default: all)"
 exit 1
 }
 
