@@ -146,7 +146,7 @@ do
         subst=$(echo "$subst" | tr '_' ' ') # get space character back (was changed for look)
         #echo -e $subst"\t"$type"\t"$tc"\t"$descr >> newTransporter.tbl
         #exmetall=$(cat $subDB | grep -wi "$subst" | awk -F '\t' '{if ($8 != "NA") print $8}')
-        exmetall=$(cat $subDB | awk -F '\t' -v subst="$subst" '{IGNORECASE = 1; if ( ($1 == subst || $2 == subst) && $8 != "NA" ) print $8}')
+        exmetall=$(cat $subDB | awk -F '\t' -v subst="$subst" '{if ( (tolower($1) == tolower(subst) || tolower($2) == tolower(subst)) && $8 != "NA" ) print $8}')
         for exmet in $exmetall
         do
             exid=$(cat $subDB | grep -w "$subst" | awk -F '\t' '{if ($7 != "NA") print $7}')
