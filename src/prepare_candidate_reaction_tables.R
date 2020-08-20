@@ -157,6 +157,7 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt <- resolve_common_EC_conflicts("1.1.1.100","1.1.1.36", dt) # 3-oxoacyl-ACP reductase VS acetoacetyl-CoA reductase
   dt <- resolve_common_EC_conflicts("4.1.3.36","4.2.1.150", dt) # 1,4-dihydroxy-2-naphthoyl-CoA synthase VS (S)-3-hydroxybutanoyl-CoA dehydrogenase
   dt <- resolve_common_EC_conflicts("1.2.1.76","1.2.1.10", dt) # succinate semialdehyde dehydrogenase VS acetaldehyde dehydrogenase
+  dt <- resolve_common_EC_conflicts("1.1.1.27","1.3.1.110", dt) # two hydrogenases, one with NADH one with bifurcation including NADH and Ferredoxin
   
   # specific transporter conflict fixes
   dt.trans <- resolve_common_TC_conflicts("1.a.8.2.1","2.a.14.1.3", dt.trans)
