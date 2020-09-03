@@ -131,6 +131,9 @@ correct_seed_rxnDB <- function(script.path) {
   # Export of corrected database
   mseed <- mseed[,-"gs.hash"]
   fwrite(mseed, file=paste0(script.path,"/../dat/seed_reactions_corrected.tsv"), sep = "\t", quote = F)
+  if( "DT" %in% rownames(installed.packages()) ){
+    DT::saveWidget(DT::datatable(mseed[gapseq.status %in% c("approved", "corrected"),.(id,abbreviation, name, equation, definition, reversibility)], rownames = F), "~/uni/gapseq/dat/gapseq_reactions.html")
+  }
   print(table(mseed$gapseq.status))
 }
 
