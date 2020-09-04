@@ -132,7 +132,21 @@ correct_seed_rxnDB <- function(script.path) {
   mseed <- mseed[,-"gs.hash"]
   fwrite(mseed, file=paste0(script.path,"/../dat/seed_reactions_corrected.tsv"), sep = "\t", quote = F)
   if( "DT" %in% rownames(installed.packages()) ){
-    DT::saveWidget(DT::datatable(mseed[gapseq.status %in% c("approved", "corrected"),.(id,abbreviation, name, equation, definition, reversibility)], rownames = F), "~/uni/gapseq/dat/gapseq_reactions.html")
+    
+    
+    widget <- DT::datatable(mseed[gapseq.status %in% c("approved", "corrected"),.(id, name, equation, definition, reversibility)], 
+                  options = list(autoWidth = TRUE, scrollX=TRUE,
+                                 # column width definition doesn't work well yet ?!
+                                 #columnDefs = list(list( targets = c(1), width = '25%')),
+                                 #columnDefs = list(list( targets = 1, width = '100px'),
+                                 #                 list( targets = c(2,3), width = '1000px')),
+                                 pageLength = 100), 
+                  rownames = FALSE)
+    widget$sizingPolicy$browser$fill <- TRUE 
+    
+    DT::saveWidget(widget,
+                   file="~/uni/gapseq/dat/gapseq_reactions.html",
+                   title="gapseq reactions", selfcontained=TRUE)
   }
   print(table(mseed$gapseq.status))
 }
