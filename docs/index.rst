@@ -43,6 +43,7 @@ Installation
 
    /tutorials/crossfeeding
    /tutorials/yogurt
+   /tutorials/archaea
 
 
 .. FAQ
