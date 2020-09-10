@@ -555,10 +555,16 @@ do
                 for gr in $geneRef
                 do
                     $dir/uniprot.sh -d $gr -t "$taxonomy" -i $uniprotIdentity >/dev/null
-                    cat $seqpath/rxn/$gr.fasta >> $reaSeqTmp
-                    rm $seqpath/rxn/$gr.fasta
+                    if [ -f $seqpath/rxn/$gr.fasta ]; then
+                        cat $seqpath/rxn/$gr.fasta >> $reaSeqTmp
+                        rm $seqpath/rxn/$gr.fasta
+                    fi
                 done
-                mv $reaSeqTmp $seqpath/rxn/$rea.fasta
+                if [ -s "$reaSeqTmp" ]; then
+                   mv $reaSeqTmp $seqpath/rxn/$rea.fasta
+                else
+                    touch $seqpath/rxn/$rea.fasta # create empty file if no gene seq data is found to avoid reoccuring download attempt
+                fi
             fi
             
             if [ -s "$seqpath_user/$rea.fasta" ]; then
