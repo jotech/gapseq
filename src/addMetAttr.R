@@ -20,7 +20,7 @@ addMetAttr <- function(mod, seed_x_mets) {
   
   # INCHI
   mettmp[!is.na(InChIKey), annotation := paste0(annotation,";http://identifiers.org/inchikey:",InChIKey)]
-  mettmp[!is.na(InChI), annotation := paste0(annotation,";http://identifiers.org/inchi:",InChI)]
+  #mettmp[!is.na(InChI), annotation := paste0(annotation,";http://identifiers.org/inchi:",InChI)]
   
   # ModelSEED
   mettmp[!is.na(id) & !grepl("^cpd9", id), annotation := paste0(annotation,";http://identifiers.org/seed.compound/",id)]

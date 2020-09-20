@@ -641,17 +641,23 @@ if( "sybilSBML" %in% rownames(installed.packages()) ){
   if( any(is.na(mod.out@met_attr$charge)) ) mod.out@met_attr$charge[which(is.na(mod.out@met_attr$charge))] <- ""
   if( any(is.na(mod.out@met_attr$chemicalFormula)) ) mod.out@met_attr$chemicalFormula[which(is.na(mod.out@met_attr$chemicalFormula))] <- ""
   if( any( mod.out@met_attr$chemicalFormula=="null"))mod.out@met_attr$chemicalFormula[which(mod.out@met_attr$chemicalFormula=="null")]<- ""
-  sybilSBML::writeSBML(mod.out, filename = paste0(out.id, ".xml"), level = 3, version = 1, fbcLevel = 2, printNotes = T, printAnnos = T)
+  # gapseq's subsystem definitions cause errors in cobrapy's sbml-model validation.
+  # temporary solution: rm subsystem-info in output SBML files.
+  mod.out@subSys <- Matrix::Matrix(T,ncol = 1, nrow = mod.out@react_num, sparse = T)
+  colnames(mod.out@subSys) <- ""
+  sbml.o <- sybilSBML::writeSBML(mod.out, filename = paste0(out.id, ".xml"), level = 3, version = 1, fbcLevel = 2, printNotes = T, printAnnos = T)
+  if(sbml.o==F)
+    warning("Writing SBML-file failed.")
+  # following patch adds an attribute to the sbml-file syntax, that is required by SBML-file validator (http://sbml.org/Facilities/Validator)
+  system(paste0("perl -pi -w -e 's/fbc:required=\"false\"/fbc:required=\"false\" groups:required=\"false\"/g;' ", out.id, ".xml"))
 }else{
-  print("SBML not found, please install sybilSBML for sbml output")
+  print("sybilSBML not found, please install sybilSBML for sbml output")
 }
 
 # Save additionally an unconstrained version of the model if desired
 if(relaxed.constraints) {
   mod.out@lowbnd[grep("^EX_",mod.out@react_id)] <- -sybil::SYBIL_SETTINGS("MAXIMUM")
-  sbml.o <- saveRDS(mod.out, file = paste0(output.dir,"/",out.id,"-unconstrained.RDS"))
-  if(sbml.o==F)
-    warning("Writing SBML-file failed.")
+  saveRDS(mod.out, file = paste0(output.dir,"/",out.id,"-unconstrained.RDS"))
 }
 
 q(status=0)

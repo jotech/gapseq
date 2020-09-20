@@ -212,17 +212,17 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     dts.tmp <- unique(dts.tmp)
     
     mod <- sybil::addReact(model = mod, 
-                    id = paste0(mseed[i,id],"_c0"), 
-                    met = met.ids,
-                    Scoef = met.scoef,
-                    reversible = is.rev, 
-                    metComp = as.integer(met.comp)+1,
-                    ub = ifelse(only.backwards, 0, 1000),
-                    lb = ifelse(is.rev, -1000, 0),
-                    reactName = mseed[i, name], 
-                    metName = met.name,
-                    gprAssoc = gpr.tmp,
-                    subSys = dts.tmp)
+                           id = paste0(mseed[i,id],"_c0"), 
+                           met = met.ids,
+                           Scoef = met.scoef,
+                           reversible = is.rev, 
+                           metComp = as.integer(met.comp)+1,
+                           ub = ifelse(only.backwards, 0, sybil::SYBIL_SETTINGS("MAXIMUM")),
+                           lb = ifelse(is.rev, -sybil::SYBIL_SETTINGS("MAXIMUM"), 0),
+                           reactName = mseed[i, name], 
+                           metName = met.name,
+                           gprAssoc = gpr.tmp,
+                           subSys = dts.tmp)
     if(mseed[i,id] %in% dt_seed_single_and_there[,seed])
       mod@react_attr[which(mod@react_id == paste0(mseed[i,id],"_c0")),] <- as.data.frame(dt_seed_single_and_there[seed == mseed[i,id]])
   }
@@ -251,23 +251,27 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   
   # remove ubiquinione from Biomass because it is not universal (only in aerobes + gram-) and synthesis is usually oxygen dependent
   #dt[grepl("PWY-6708",pathway),pathway.status]
-  ubi.stoich <- dt.bm[id == "cpd15560[c0]", stoich]
-  dt.bm <- dt.bm[id != "cpd15560[c0]"]
-  # add former ubi stoichiometry (ammount) to menaquninone stoich.
-  dt.bm[id == "cpd15500[c0]", stoich := stoich + ubi.stoich]
-  
-  # remove menaquinone8 from anaerobic Biomass if ne novo biosynthesis pathway is absent
-  if( is.na(dt[grepl("MENAQUINONESYN-PWY",pathway),pathway.status][1]) | is.na(dt[grepl("PWY-5852",pathway),pathway.status][1]) | is.na(dt[grepl("PWY-5837",pathway),pathway.status][1]) ){
-    dt.bm <- dt.bm[id != "cpd15500[c0]"] # Menaquinone-8
-    dt.bm <- dt.bm[id != "cpd15352[c0]"] # 2-Demethylmenaquinone-8
+  if(biomass %in% c("neg","pos")) {
+    ubi.stoich <- dt.bm[id == "cpd15560[c0]", stoich]
+    dt.bm <- dt.bm[id != "cpd15560[c0]"]
+    # add former ubi stoichiometry (ammount) to menaquninone stoich.
+    dt.bm[id == "cpd15500[c0]", stoich := stoich + ubi.stoich]
+    
+    # remove menaquinone8 from anaerobic Biomass if ne novo biosynthesis pathway is absent
+    if( is.na(dt[grepl("MENAQUINONESYN-PWY",pathway),pathway.status][1]) | is.na(dt[grepl("PWY-5852",pathway),pathway.status][1]) | is.na(dt[grepl("PWY-5837",pathway),pathway.status][1]) ){
+      dt.bm <- dt.bm[id != "cpd15500[c0]"] # Menaquinone-8
+      dt.bm <- dt.bm[id != "cpd15352[c0]"] # 2-Demethylmenaquinone-8
+    }
   }
   
-  mod <- sybil::addReact(mod,id = "bio1", met = dt.bm$id, Scoef = dt.bm$stoich, reversible = F, lb = 0, ub = 1000, obj = 1, 
+  mod <- sybil::addReact(mod,id = "bio1", met = dt.bm$id, Scoef = dt.bm$stoich, reversible = F, lb = 0, ub = sybil::SYBIL_SETTINGS("MAXIMUM"), obj = 1, 
                   reactName = paste0("Biomass reaction ", biomass), metName = dt.bm$name, metComp = dt.bm$comp)
   mod@react_attr[which(mod@react_id == "bio1"),c("gs.origin","seed")] <- data.frame(gs.origin = 6, seed = "bio1", stringsAsFactors = F)
 
   # add p-cresol sink reaction (further metabolism unclear especially relevant for anaerobic conditions)
-  mod <- sybil::addReact(mod, id="DM_cpd01042_c0", reactName="Sink needed for p-cresol", met="cpd01042[c0]", Scoef=-1, lb=0, ub=1000, metComp = 1)
+  mod <- sybil::addReact(mod, id="DM_cpd01042_c0", reactName="Sink needed for p-cresol", met="cpd01042[c0]", Scoef=-1, lb=0, ub=sybil::SYBIL_SETTINGS("MAXIMUM"), metComp = 1)
+  mod@react_attr[which(mod@react_id == "DM_cpd01042_c0"),c("gs.origin","seed")] <- data.frame(gs.origin = 7, seed = "DM_cpd01042_c0", stringsAsFactors = F)
+
   
   mod <- add_missing_exchanges(mod) 
   
@@ -371,9 +375,15 @@ if( "sybilSBML" %in% rownames(installed.packages()) ){
   if( any(is.na(mod$mod@met_attr$charge)) ) mod$mod@met_attr$charge[which(is.na(mod$mod@met_attr$charge))] <- ""
   if( any(is.na(mod$mod@met_attr$chemicalFormula)) ) mod$mod@met_attr$chemicalFormula[which(is.na(mod$mod@met_attr$chemicalFormula))] <- ""
   if( any( mod$mod@met_attr$chemicalFormula=="null"))mod$mod@met_attr$chemicalFormula[which(mod$mod@met_attr$chemicalFormula=="null")]<- ""
+  # gapseq's subsystem definitions cause errors in cobrapy's sbml-model validation.
+  # temporary solution: rm subsystem-info in output SBML files.
+  mod$mod@subSys <- Matrix::Matrix(T,ncol = 1, nrow = mod$mod@react_num, sparse = T)
+  colnames(mod$mod@subSys) <- ""
   sbml.o <- sybilSBML::writeSBML(mod$mod, filename = paste0(model.name, "-draft.xml"), level = 3, version = 1, fbcLevel = 2, printNotes = T, printAnnos = T)
   if(sbml.o==F)
     warning("Writing SBML-file failed.")
+  # following patch adds an attribute to the sbml-file syntax, that is required by SBML-file validator (http://sbml.org/Facilities/Validator)
+  system(paste0("perl -pi -w -e 's/fbc:required=\"false\"/fbc:required=\"false\" groups:required=\"false\"/g;' ", model.name, "-draft.xml"))
 }else{
-  print("SBML not found, please install sybilSBML for sbml output")
+  print("sybilSBML not found, please install sybilSBML for sbml output")
 }
