@@ -438,8 +438,8 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     uql <- "cpd15561[c0]"; uqn <- "cpd15560[c0]"
     h   <- "cpd00067[c0]"
     #nad <- "cpd00003[c0]"; nadh<- "cpd00004[c0]"
-    mod.fill3 <- addReact(mod.fill3, "ESP1", met=c(mql,h,mqn), Scoef=c(-1,2,1), lb=0, ub=1000)
-    mod.fill3 <- addReact(mod.fill3, "ESP2", met=c(uql,h,uqn), Scoef=c(-1,2,1), lb=0, ub=1000)
+    mod.fill3 <- addReact(mod.fill3, "ESP1", met=c(mql,h,mqn), Scoef=c(-1,2,1), lb=0, ub=1000, metComp = rep(1,3))
+    mod.fill3 <- addReact(mod.fill3, "ESP2", met=c(uql,h,uqn), Scoef=c(-1,2,1), lb=0, ub=1000, metComp = rep(1,3))
     mod.fill3 <- changeObjFunc(mod.fill3, react=c("ESP1", "ESP2"), obj_coef=c(1,1))
     #mod.fill3 <- addReact(mod.fill3, "ESP3", met=c(nadh,h,nad), Scoef=c(-1,1,1), lb=0, ub=1000)
     #mod.fill3 <- changeObjFunc(mod.fill3, react=c("ESP1", "ESP2", "ESP3"), obj_coef=c(1,1,1))
