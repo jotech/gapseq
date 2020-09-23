@@ -71,14 +71,22 @@ shift $((OPTIND-1))
 # after parsing arguments, only fasta file shoud be there
 [ "$#" -ne 0 ] && { usage; }
 
+# consider special case of eg. prokaryotes which are not supported by uniprot taxonomy
+if [ "$taxonomy" = "Prokaryota" ]; then
+    folder=Prokaryota
+    taxonomy="(bacteria%20OR%20archaea)"
+else
+    folder=$taxonomy
+fi
+
 # path for saving sequences
 numeric_old=$LC_NUMERIC
 LC_NUMERIC="en_US.UTF-8" # must be set in order to get printf working with float numbers
 #seqpath=$dir/../dat/seq/$taxonomy/unipac$(printf %.0f $(echo "$identity * 100" | bc -l))
 if [ "$get_unrev" = false ]; then
-    seqpath=$dir/../dat/seq/$taxonomy/rev
+    seqpath=$dir/../dat/seq/$folder/rev
 else
-    seqpath=$dir/../dat/seq/$taxonomy/unrev
+    seqpath=$dir/../dat/seq/$folder/unrev
 fi
 LC_NUMERIC=$numeric_old
 mkdir -p $seqpath
