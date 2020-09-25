@@ -7,7 +7,7 @@ cpd00018,AMP,0.1
 cpd00023,L-Glutamate,0.1
 cpd00027,D-Glucose,3
 cpd00028,Heme,0.1
-cpd00029,acetate,0.1
+cpd00029,acetate,3
 cpd00030,Mn2+,100
 cpd00033,Glycine,0.1
 cpd00034,Zn2+,100
@@ -67,7 +67,7 @@ cpd01012,Cd2+,100
 cpd01048,Arsenate,100
 cpd03424,Vitamin B12,0.1
 cpd10515,Fe2+,100
-cpd10516,fe3,100
+cpd10516,fe3,0.5
 cpd11595,chromate,100
 cpd11574,Molybdate,0.01
 cpd00557,Siroheme,0.01
