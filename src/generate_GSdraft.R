@@ -371,19 +371,6 @@ mod <- build_draft_model_from_blast_results(blast.res = blast.res,
 saveRDS(mod$mod,file = paste0(model.name, "-draft.RDS"))
 saveRDS(mod$cand.rxns,file = paste0(model.name, "-rxnWeights.RDS"))
 saveRDS(mod$rxn_x_genes,file = paste0(model.name, "-rxnXgenes.RDS"))
-if( "sybilSBML" %in% rownames(installed.packages()) ){
-  if( any(is.na(mod$mod@met_attr$charge)) ) mod$mod@met_attr$charge[which(is.na(mod$mod@met_attr$charge))] <- ""
-  if( any(is.na(mod$mod@met_attr$chemicalFormula)) ) mod$mod@met_attr$chemicalFormula[which(is.na(mod$mod@met_attr$chemicalFormula))] <- ""
-  if( any( mod$mod@met_attr$chemicalFormula=="null"))mod$mod@met_attr$chemicalFormula[which(mod$mod@met_attr$chemicalFormula=="null")]<- ""
-  # gapseq's subsystem definitions cause errors in cobrapy's sbml-model validation.
-  # temporary solution: rm subsystem-info in output SBML files.
-  mod$mod@subSys <- Matrix::Matrix(T,ncol = 1, nrow = mod$mod@react_num, sparse = T)
-  colnames(mod$mod@subSys) <- ""
-  sbml.o <- sybilSBML::writeSBML(mod$mod, filename = paste0(model.name, "-draft.xml"), level = 3, version = 1, fbcLevel = 2, printNotes = T, printAnnos = T)
-  if(sbml.o==F)
-    warning("Writing SBML-file failed.")
-  # following patch adds an attribute to the sbml-file syntax, that is required by SBML-file validator (http://sbml.org/Facilities/Validator)
-  system(paste0("perl -pi -w -e 's/fbc:required=\"false\"/fbc:required=\"false\" groups:required=\"false\"/g;' ", model.name, "-draft.xml"))
-}else{
-  print("sybilSBML not found, please install sybilSBML for sbml output")
-}
+# Write SBML
+source(paste0(script.dir,"/sbml_write.R"))
+write_gapseq_sbml(mod$mod, paste0(model.name,"-draft"))

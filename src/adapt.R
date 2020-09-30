@@ -182,13 +182,6 @@ if( !is.null(ids.remove) ){
 out.id <- gsub(".xml|.RDS|.rds","",gsub("-draft","",basename(mod.file)))
 out.rds <- paste0("./",out.id,"-adapt",".RDS")
 saveRDS(mod.out, file = out.rds)
-if( "sybilSBML" %in% rownames(installed.packages()) ){
-  if( any(is.na(mod.out@met_attr$charge)) ) mod.out@met_attr$charge[which(is.na(mod.out@met_attr$charge))] <- 0 # will be casted to numeric => "" will become NA => sybilsbml error
-  if( any(is.na(mod.out@met_attr$chemicalFormula)) ) mod.out@met_attr$chemicalFormula[which(is.na(mod.out@met_attr$chemicalFormula))] <- ""
-  if( any( mod.out@met_attr$chemicalFormula=="null"))mod.out@met_attr$chemicalFormula[which(mod.out@met_attr$chemicalFormula=="null")]<- ""
-  if( any(is.na(mod.out@react_attr$annotation)) ) mod.out@react_attr$annotation[which(is.na(mod.out@react_attr$annotation))] <- ""
-  sybilSBML::writeSBML(mod.out, filename = paste0(out.id, "-adapt.xml"), level = 3, version = 1, fbcLevel = 2, printNotes = T, printAnnos = T)
-}else{
-  print("SBML not found, please install sybilSBML for sbml output")
-}
-
+# Write SBML
+source(paste0(script.dir,"/sbml_write.R"))
+write_gapseq_sbml(mod.out, paste0(out.id, "-adapt"))

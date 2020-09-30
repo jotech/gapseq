@@ -1,84 +1,42 @@
-#!/usr/bin/Rscript
-
-# TODO: writeSBML with notes/attributes
-# TODO: handling of other compartments (not only c,e; p?)
-
-library(methods)
-library(sybil, quietly=T)
-library(data.table, quietly=T)
-library(stringr, quietly=T)
-library(sybilSBML, quietly=T)
-source("~/uni/sybil/R/addReactByString.R")
-
-args = commandArgs(trailingOnly=TRUE)
-if (length(args)!=2) {
-    stop("Needs file with new reactions to be added...")
-}
-
-mod <- readRDS("./model.RDS")
-reactions <- scan(args[1], what="character", quiet=T)
-path <- args[2]
-
-check_react <- function(react_str, compart=c("[c]","[e]")){
-  Cmet <- stringr::str_extract_all(react_str, "\\[.\\]")
-  valid <- sapply(Cmet, function(c){
-    all(c %in% compart)
-  })
-  return(valid)
-}
-
-
-addReactions <- function(model, candidates, dbtype="seed"){
-  if(!dbtype %in% c("seed","vmh")) stop("Database unknown")
+write_gapseq_sbml <- function(mod, out.id) {
   
-  modRea <- gsub("_.$","",react_id(model))
-  newRea <- setdiff(candidates, modRea)
-  
-  if(dbtype=="vmh"){
-    vmh <- read.csv(paste0(path,"/dat/vmh_reactions.csv"), sep=",", stringsAsFactors=F)
-    bigg <- data.table::fread(paste0(path,"/dat/bigg_reactions.tbl"), sep="\t", stringsAsFactors=F)
-    idx <- match(newRea, vmh$abbreviation)
-    if(!all(is.na(idx))){
-      react_ids <- vmh$abbreviation[idx]
-      react_str <- vmh$formula[idx]
-      react_names <- vmh$description[idx]
-    }else {react_ids<-c(); react_str<-c(); react_names<-c()}
-    idx2 <- match(newRea[which(is.na(idx))], bigg$bigg_id) # get reaction from other database if not found
-    if(!all(is.na(idx2))){
-      react_ids <- c(react_ids, bigg$bigg_id[idx2])
-      bigg_str <- gsub("_(.)\\b","\\[\\1\\]",bigg$reaction_string[idx2])
-      react_str <- c(react_str, bigg_str)
-      react_names <- c(react_names, bigg$name[idx2])
+  if( "sybilSBML" %in% rownames(installed.packages()) ){
+    
+    # handling of missing values/attributes
+    if( any(is.na(mod@met_attr$charge)) ) mod@met_attr$charge[which(is.na(mod@met_attr$charge))] <- ""
+    if( any(is.na(mod@met_attr$chemicalFormula)) ) mod@met_attr$chemicalFormula[which(is.na(mod@met_attr$chemicalFormula))] <- ""
+    if( any( mod@met_attr$chemicalFormula=="null"))mod@met_attr$chemicalFormula[which(mod@met_attr$chemicalFormula=="null")]<- ""
+    
+    # handling of subunit names (and remove empty subunits)
+    colnames(mod@subSys) <- gsub("^\\||\\|$","",colnames(mod@subSys))
+    mod@subSys <- mod@subSys[, apply(mod@subSys,2,any)]
+    
+    # writing sbml
+    sbml.o <- sybilSBML::writeSBML(mod, filename = paste0(out.id, ".xml"), 
+                                   level = 3, version = 1, fbcLevel = 2, 
+                                   printNotes = T, printAnnos = T)
+    if(sbml.o==F)
+      warning("Writing SBML-file failed.")
+    
+    # - - - - - - - - #
+    # Patch xml file  #
+    # - - - - - - - - #
+    
+    # following patch adds an attribute to the sbml-file syntax, that is required by SBML-file validator (http://sbml.org/Facilities/Validator)
+    system(paste0("perl -pi -w -e 's/fbc:required=\"false\"/fbc:required=\"false\" groups:required=\"false\"/g;' ", out.id, ".xml"))
+    
+    # Following patch adds the "groups:id" attribute to each subsystem
+    for(i in 1:ncol(mod@subSys)) {
+      grpID <- colnames(mod@subSys)[i]
+      grpID_deform <- paste0("subsys_",gsub("-","_", grpID, fixed = T))
+      
+      grpSearch  <- paste0("groups:name=\"",grpID,"\"")
+      grpReplace <- paste0("groups:id=\"",grpID_deform,"\" groups:name=\"",grpID,"\"")
+      
+      system(paste0("perl -pi -w -e 's/",grpSearch,"/",grpReplace,"/g;' ", out.id, ".xml"))
     }
-    ok <- check_react(react_str) # remove reactions from other compartments
-  }else if(dbtype=="seed"){
-    seed <- data.table::fread(paste0(path,"/dat/seed_reactions.tsv"), sep="\t", stringsAsFactors=F)
-    idx <- match(newRea, seed$id)
-    if(!all(is.na(idx))){
-      react_ids  <- seed$id[idx]
-      react_str  <- seed$equation[idx]
-      react_names<- seed$name[idx]
-      # seed compartments need to be adapeted
-      react_str  <- gsub("\\[0\\]","\\[c0\\]", gsub("\\[1\\]","\\[e0\\]", gsub("\\[3\\]","\\[p0\\]",react_str)))
-    }else {react_ids<-c(); react_str<-c(); react_names<-c()}
-    ok <- check_react(react_str, compart=c("[c0]","[e0]")) # remove reactions from other compartments
-  }
-  if(length(ok>0)){
-    test = addReactByString(model, ids=react_ids[ok], react_str=react_str[ok], reactName=react_names[ok])
-    cat("Reactions added: ", setdiff(test@react_id, model@react_id),"\n")
-    return(test)
-  }
-  else{
-    warning("No reaction added to model!")
-    return(model)
+    
+  }else{
+    print("sybilSBML not found, please install sybilSBML for sbml output")
   }
 }
-
-cat("Already in the model: ", intersect(mod@react_id,reactions),"\n")
-#newmod <- addReactions(mod, reactions, dbtype="vmh")
-newmod <- addReactions(mod, reactions, dbtype="seed")
-#if(ncol(react_attr(newmod))>0 && !is.factor(react_attr(newmod)[,1])){
-#    react_attr(newmod)[,1] <- factor(react_attr(newmod)[,1]) # needed to get factor in data.table otherwise export will fail
-#}
-saveRDS(newmod, "./newmod.RDS")
-cat(sybilSBML::writeSBML(newmod, filename="modelnew.xml", printNotes=F), "\n\n") # react_attr notes causing problems
