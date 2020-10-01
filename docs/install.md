@@ -40,6 +40,7 @@ R CMD INSTALL --configure-args="--enable-gmp=no" glpkAPI_1.3.2.tar.gz
 ```
 - we recommend using *cplex* als LP-solver as it is usually faster than *glpk*. The cplex solver is included in the *IBM ILOG CPLEX Optimization Studio*, which is free* for students and academics through the **IBM Academic Initiative** programm ([see here](https://developer.ibm.com/docloud/blog/2019/07/04/cplex-optimization-studio-for-students-and-academics/)). Please follow the installation instructions for *cplex* provided by IBM.
 The R-package for the interface between R and the cplex solver can be optained from CRAN ([cplexAPI on CRAN](https://cran.r-project.org/web/packages/cplexAPI/index.html)). For *cplexAPI* installation please refer to instructions [here](https://cran.r-project.org/web/packages/cplexAPI/INSTALL).
+- *SBML-Export*: In order to export valid SBML files, it is required to have the R-Package [*sybilSBML*](https://cran.r-project.org/web/packages/sybilSBML/index.html) with version 3.1.2 or higher. In addtion libSBML-core-plus-packages (>= 5.16) with *'groups'* and *'fbc'* extensions are required. Install instructions can be found on the CRAN page of [*sybilSBML*](https://cran.r-project.org/web/packages/sybilSBML/index.html).
 
 ***
 *source: [https://developer.ibm.com/docloud/blog/2019/07/04/cplex-optimization-studio-for-students-and-academics/](https://developer.ibm.com/docloud/blog/2019/07/04/cplex-optimization-studio-for-students-and-academics/)
