@@ -2253,3 +2253,14 @@ rxn90065	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd27519:1:0:"Methyle
 rxn90066	>		-1:cpd21755:0:0:"1-4-alpha-D-galacturonosyl";-1:cpd00001:0:0:"H2O";1:cpd01532:0:0:"Digalacturonate";1:cpd00280:0:0:"D-Galacturonate"	[SW] Reaction for pectin degradation	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=3.2.1.82-RXN		Exo-poly-alpha-galacturonosidase 	Exo-poly-alpha-galacturonosidase 	
 rxn21843									TRUE
 rxn90067	>		-1:cpd02387:0:0:"2-Dehydro-3-deoxy-L-fuconate";1:cpd00334:0:0:"L-Lactaldehyde";1:cpd00020:0:0:"Pyruvate"	[SW] Reaction for recently describes L-2-Keto-3-deoxyfuconate aldolase	10.1074/jbc.RA119.011854		L-KDF-aldolase	L-2-keto-3-deoxyfuconate aldolase	
+									
+rxn13667			-8:cpd00005:0:0:"NADPH";-12:cpd00067:0:0:"H+";-4:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd17015:0:0:"Iso-C6:0 ACP";4:cpd00001:0:0:"H2O";8:cpd00006:0:0:"NADP";4:cpd00011:0:0:"CO2";4:cpd11493:0:0:"ACP";1:cpd17011:0:0:"Iso-C14:0 ACP"	[SW] Mass and charge balanced					
+rxn13668			-8:cpd00005:0:0:"NADPH";-12:cpd00067:0:0:"H+";-4:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd17014:0:0:"Iso-C7:0 ACP";4:cpd00001:0:0:"H2O";8:cpd00006:0:0:"NADP";4:cpd00011:0:0:"CO2";4:cpd11493:0:0:"ACP";1:cpd17012:0:0:"iso-C15:0 ACP"	[SW] Mass and charge balanced					
+rxn13669			-10:cpd00005:0:0:"NADPH";-15:cpd00067:0:0:"H+";-5:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd17010:0:0:"Fatty Acid (n-C5:0 ACP)";5:cpd00001:0:0:"H2O";10:cpd00006:0:0:"NADP";5:cpd00011:0:0:"CO2";5:cpd11493:0:0:"ACP";1:cpd17029:0:0:"pentadecanoyl-ACP (n-C15:0ACP)"	[SW] Mass and charge balanced					
+rxn13671			-10:cpd00005:0:0:"NADPH";-15:cpd00067:0:0:"H+";-5:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd17015:0:0:"Iso-C6:0 ACP";5:cpd00001:0:0:"H2O";10:cpd00006:0:0:"NADP";5:cpd00011:0:0:"CO2";5:cpd11493:0:0:"ACP";1:cpd17013:0:0:"Iso-C16:0 ACP"	[SW] Mass and charge balanced					
+rxn13673			-12:cpd00005:0:0:"NADPH";-18:cpd00067:0:0:"H+";-6:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd17010:0:0:"Fatty Acid (n-C5:0 ACP)";6:cpd00001:0:0:"H2O";12:cpd00006:0:0:"NADP";6:cpd00011:0:0:"CO2";6:cpd11493:0:0:"ACP";1:cpd17018:0:0:"heptadecanoyl-ACP (n-C17:0ACP)"	[SW] Mass and charge balanced					
+rxn11114		TRUE		[SW] redundant to rxn06434					
+rxn11711			-1:cpd00001:0:0:"H2O";-1:cpd00399:0:0:"Oleoyl-CoA";1:cpd00010:0:0:"CoA";1:cpd00067:0:0:"H+";1:cpd00536:0:0:"Oleate"	[SW] Mass and charge balanced					
+rxn14388		TRUE		[SW] Unbalanced and generic reaction.					
+rxn14216			-1:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd13372:0:0:"tRNA containing 5-aminomethyl-2-thiouridine";1:cpd00019:0:0:"S-Adenosyl-homocysteine";1:cpd12598:0:0:"tRNA containing 5-methylaminomethyl-2-thiouridylate";1:cpd00067:0:0:"H+"	[SW] Mass and charge balanced	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5144				
+rxn15526		TRUE		[SW] wrong reaction stoichiometry. Correct version of reaction ist rxn06875 .					
