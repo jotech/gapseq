@@ -247,6 +247,19 @@ case $pathways in
         ;;
 esac
 
+# determine taxonomy
+if [ "$taxonomy" == "auto" ]; then
+    pred_biom=$($dir/predict_biomass_from16S.sh $fasta)
+    if [ "$pred_biom" == "Gram_neg" ] || [ "$pred_biom" == "Gram_pos" ]; then
+        taxonomy=Bacteria
+    elif [ "$pred_biom" == "Archaea" ]; then
+        taxonomy=Archaea
+    else
+        echo Taxonomy could be predicted automatically.
+        exit 1
+    fi
+    echo Predicted taxonomy: $taxonomy
+fi
 
 # squence directory
 export LC_NUMERIC="en_US.UTF-8"
