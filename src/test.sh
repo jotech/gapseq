@@ -48,7 +48,7 @@ echo "#####################"
 echo "#Checking R packages#"
 echo "#####################"
 Rscript -e \
-'needed.packages <- c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI")
+'needed.packages <- c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "BiocManager", "Biostrings")
 avail.packages <- installed.packages()
 i=0
 for( pkg in needed.packages ){ 
