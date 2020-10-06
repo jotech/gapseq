@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version=1.0
+version=1.1
 
 curdir=$(pwd)
 path=$(readlink -f "$0")
@@ -13,6 +13,7 @@ usage()
 {
     echo "gapseq: prediction and analysis of bacterial metabolic pathways and genome-scale networks"
     echo -e "\nUsage:"
+    echo "  gapseq test"
     echo "  gapseq (find | find-transport | draft | fill | doall | adapt) (...)"
     echo "  gapseq doall (genome) [medium]"
     echo "  gapseq find (-p pathways | -e enzymes) [-b bitscore] (genome)"
@@ -21,6 +22,7 @@ usage()
     echo "  gapseq fill (-m draft -n medium -c rxn_weights -g rxn_genes)"
     echo "  gapseq adapt (add | remove) (reactions,pathways) (model)"
     echo -e "\nExamples:"
+    echo "  gapseq test"
     echo "  gapseq doall toy/ecoli.fna.gz"
     echo "  gapseq doall toy/myb71.fna.gz dat/media/TSBmed.csv"
     echo "  gapseq find -p chitin toy/myb71.fna.gz"
@@ -30,6 +32,7 @@ usage()
     echo "  gapseq fill -m toy/ecoli-draft.RDS -n dat/media/ALLmed.csv -c toy/ecoli-rxnWeights.RDS -g toy/ecoli-rxnXgenes.RDS"
     echo "  gapseq adapt add 14DICHLORBENZDEG-PWY toy/myb71.RDS"
     echo -e "\nOptions:"
+    echo "  test            Testing dependencies and basic functionality of gapseq."
     echo "  find            Pathway analysis, try to find enzymes based on homology."
     echo "  find-transport  Search for transporters based on homology."
     echo "  draft           Draft model construction based on results from find and find-transport."
@@ -63,9 +66,13 @@ shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
 [ "$#" -eq 0 ]  && usage
 
-if   [ "$1" == "find" ]; then
+if   [ "$1" == "test" ]; then
+    $dir/src/test.sh
+
+elif   [ "$1" == "find" ]; then
     parm=$(echo $@ | sed 's/find//')
     $dir/src/gapseq_find.sh $parm
+
 elif [ "$1" == "find-transport" ]; then
     parm=$(echo $@ | sed 's/find-transport//')
     $dir/src/transporter.sh $parm
