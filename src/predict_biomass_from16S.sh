@@ -5,16 +5,19 @@ gn=$1
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
 
-
 tmpdir=$(mktemp -d)
 cp $gn $tmpdir
+gnseqbase=`basename $gn`
 cd $tmpdir
 
-
-gnseqbase=`basename $gn`
+if [[ $gnseqbase == *.gz ]]; then # in case fasta is in a archive
+    tmp_gn=$(basename "${gn}" .gz)
+    gunzip -c $gnseqbase > $tmp_gn
+    gnseqbase=$tmp_gn
+fi
 
 # remove empty lines as this caused errors in bedtools
-cat $gn | sed '/^[[:space:]]*$/d' | tr -d '\15\32' > $gnseqbase.tmp
+cat $gnseqbase | sed '/^[[:space:]]*$/d' | tr -d '\15\32' > $gnseqbase.tmp
 
 # renaming contigs to ensure compatibility with barrnap
 awk '/^>/{print ">" ++i; next}{print}' $gnseqbase.tmp > $gnseqbase.tmp2 && mv $gnseqbase.tmp2 $gnseqbase.tmp
