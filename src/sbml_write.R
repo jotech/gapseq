@@ -7,9 +7,14 @@ write_gapseq_sbml <- function(mod, out.id) {
     if( any(is.na(mod@met_attr$chemicalFormula)) ) mod@met_attr$chemicalFormula[which(is.na(mod@met_attr$chemicalFormula))] <- ""
     if( any( mod@met_attr$chemicalFormula=="null"))mod@met_attr$chemicalFormula[which(mod@met_attr$chemicalFormula=="null")]<- ""
     
+   
     # handling of subunit names (and remove empty subunits)
     colnames(mod@subSys) <- gsub("^\\||\\|$","",colnames(mod@subSys))
     mod@subSys <- mod@subSys[, apply(mod@subSys,2,any)]
+    
+    # gpr terms
+    mod@gpr <- gsub("\\&", "and", mod@gpr)
+    mod@gpr <- gsub("\\|", "or",  mod@gpr)
     
     # writing sbml
     sbml.o <- sybilSBML::writeSBML(mod, filename = paste0(out.id, ".xml"), 
