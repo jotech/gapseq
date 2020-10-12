@@ -3,6 +3,7 @@ suppressMessages(library(stringr))
 suppressMessages(library(stringi))
 suppressMessages(library(R.utils))
 library(methods)
+suppressMessages(library(IRanges))
 options(error=traceback)
 
 # test data
@@ -114,15 +115,50 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
 
   dt_genes <- copy(dt[!is.na(bitscore)])
   dt_genes[, gene := paste0(gsub(" .*","",stitle),"_",paste(sstart,send, sep = ":"))]
-  dt_genes <- dt_genes[!duplicated(paste(stitle,seed,gene,sep = "$"))]
-  dt_genes[grepl("Subunit undefined", complex), complex := "XSubunit undefined"]
+
+  all_cont <- unique(dt_genes$stitle) # Contigs
+  all_cont <- all_cont[all_cont != ""]
+
+  dt_genes[sstart > send, istart := send]
+  dt_genes[sstart > send, iend   := sstart]
+  dt_genes[sstart < send, istart := sstart]
+  dt_genes[sstart < send, iend   := send]
+  
+  #setkey(dt_genes, stitle, seed)
+  
+  for(i_cont in all_cont) {
+    setkey(dt_genes, stitle, seed)
+    dt_genes_cont <- dt_genes[.(i_cont),]
+    
+    dt_ttt <- dt_genes_cont[,.(gene, istart, iend, bitscore)]
+    dt_ttt <- dt_ttt[!duplicated(gene)]
+    dt_ttt <- dt_ttt[order(-bitscore)]
+    
+    ira <- IRanges(start = dt_ttt$istart, end = dt_ttt$iend, names = dt_ttt$gene)
+    group <- findOverlaps(ira, ira, type = "within", select = "first")
+    dt_ttt$gene2 <- dt_ttt$gene[group]
+    
+    dt_genes <- merge(dt_genes, dt_ttt[,.(gene, gene2)], by = "gene", all.x = T, 
+                      sort = F) 
+    dt_genes[!is.na(gene2) & stitle == i_cont, gene := gene2]
+    dt_genes[, gene2 := NULL]
+  }
+  
+  dt_genes[, istart := NULL]
+  dt_genes[, iend   := NULL]
+  
+  dt_genes <- dt_genes[!duplicated(paste0(stitle, gene, seed, complex, sep = "$"))]
+  
+  
+  dt_genes[grepl("Subunit undefined", complex), complex := "ZSubunit undefined"]
   dt_genes <- dt_genes[order(stitle,seed,complex,-bitscore)]
-  dt_genes[grepl("XSubunit undefined", complex), complex := "Subunit undefined"]
+  dt_genes <- dt_genes[!duplicated(paste(stitle,seed,gene,sep = "$"))]
+  dt_genes[grepl("ZSubunit undefined", complex), complex := "Subunit undefined"]
+  
   dt_genes[, rm := F]
   dt_genes$itmp <- 1:nrow(dt_genes)
   setkey(dt_genes, stitle, seed)
-  all_cont <- unique(dt_genes$stitle) # Contigs
-
+  
   for(i_cont in all_cont) {
     all_seed <- unique(dt_genes[.(i_cont), seed]) # Individual reactions on contig
     all_seed <- intersect(mseed$id, all_seed)

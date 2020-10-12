@@ -21,125 +21,88 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt.trans[bitscore >= high.evi.rxn.BS, status := "good_blast"]
   dt.trans[bitscore <  high.evi.rxn.BS, status := "bad_blast"]
   
-  # # A specific fix for the issue with reactions 1.3.8.1 and 1.3.8.13
-  # if("1.3.8.1" %in% dt$ec & "1.3.8.13" %in% dt$ec) {
-  #   rm.ids <- c()
-  #   one.hits.id <- which(dt$ec == "1.3.8.1" & !is.na(dt$bitscore))
-  #   two.hits.id <- which(dt$ec == "1.3.8.13" & !is.na(dt$bitscore))
-  #   if(length(one.hits.id)>0 & length(two.hits.id)>0) {
-  #     for(i in one.hits.id) {
-  #       for(j in two.hits.id) {
-  #         ol <- calc_seq_overlap(dt[i,sstart],dt[i,send],dt[j,sstart],dt[j,send])
-  #         if(ol > 0.2) {
-  #           if(dt[i, bitscore] > max(dt[two.hits.id, bitscore]))
-  #             rm.ids <- c(rm.ids, j)
-  #           if(dt[j, bitscore] > max(dt[one.hits.id, bitscore]))
-  #             rm.ids <- c(rm.ids, i)
-  #         }
-  #       }
-  #     }
-  #   }
-  #   rm.ids <- unique(rm.ids)
-  #   if(length(rm.ids > 0))
-  #     dt <- dt[-rm.ids]
-  # }
-  # 
-  # # A specific fix for the issue with reactions 4.1.2.9 and 4.1.2.22
-  # if("4.1.2.9" %in% dt$ec & "4.1.2.22" %in% dt$ec) {
-  #   rm.ids <- c()
-  #   one.hits.id <- which(dt$ec == "4.1.2.9" & !is.na(dt$bitscore))
-  #   two.hits.id <- which(dt$ec == "4.1.2.22" & !is.na(dt$bitscore))
-  #   if(length(one.hits.id)>0 & length(two.hits.id)>0) {
-  #     for(i in one.hits.id) {
-  #       for(j in two.hits.id) {
-  #         ol <- calc_seq_overlap(dt[i,sstart],dt[i,send],dt[j,sstart],dt[j,send])
-  #         if(ol > 0.2) {
-  #           if(dt[i, bitscore] > max(dt[two.hits.id, bitscore]))
-  #             rm.ids <- c(rm.ids, j)
-  #           if(dt[j, bitscore] > max(dt[one.hits.id, bitscore]))
-  #             rm.ids <- c(rm.ids, i)
-  #         }
-  #       }
-  #     }
-  #   }
-  #   rm.ids <- unique(rm.ids)
-  #   if(length(rm.ids > 0))
-  #     dt <- dt[-rm.ids]
-  # }
-  # 
-  # # A specific fix for the issue with reactions 2.6.1.13 and 2.6.1.11
-  # if("2.6.1.13" %in% dt$ec & "2.6.1.11" %in% dt$ec) {
-  #   rm.ids <- c()
-  #   one.hits.id <- which(dt$ec == "2.6.1.13" & !is.na(dt$bitscore))
-  #   two.hits.id <- which(dt$ec == "2.6.1.11" & !is.na(dt$bitscore))
-  #   if(length(one.hits.id)>0 & length(two.hits.id)>0) {
-  #     for(i in one.hits.id) {
-  #       for(j in two.hits.id) {
-  #         ol <- calc_seq_overlap(dt[i,sstart],dt[i,send],dt[j,sstart],dt[j,send])
-  #         if(ol > 0.2) {
-  #           if(dt[i, bitscore] > max(dt[two.hits.id, bitscore]))
-  #             rm.ids <- c(rm.ids, j)
-  #           if(dt[j, bitscore] > max(dt[one.hits.id, bitscore]))
-  #             rm.ids <- c(rm.ids, i)
-  #         }
-  #       }
-  #     }
-  #   }
-  #   rm.ids <- unique(rm.ids)
-  #   if(length(rm.ids > 0))
-  #     dt <- dt[-rm.ids]
-  # }
-  # 
   
   # This function checks if an gene was assigned to two different ec numbers, which however catalyse different reactions that are
-  # usually catalysed by individual enzymes. Thus, the EC asigment with the lower bitscore is dismissed.
+  # usually catalysed by individual enzymes. Thus, the EC assignment with the lower bitscore is dismissed.
   resolve_common_EC_conflicts <- function(ec1, ec2, dt) {
-    if(ec1 %in% dt$ec & ec2 %in% dt$ec) {
-      rm.ids <- c()
-      one.hits.id <- which(dt$ec == ec1 & !is.na(dt$bitscore))
-      two.hits.id <- which(dt$ec == ec2 & !is.na(dt$bitscore))
-      if(length(one.hits.id)>0 & length(two.hits.id)>0) {
-        for(i in one.hits.id) {
-          for(j in two.hits.id) {
-            ol <- calc_seq_overlap(dt[i,sstart],dt[i,send],dt[j,sstart],dt[j,send])
-            if(ol > 0.2) {
-              if(dt[i, bitscore] > max(dt[two.hits.id, bitscore]))
-                rm.ids <- c(rm.ids, j)
-              if(dt[j, bitscore] > max(dt[one.hits.id, bitscore]))
-                rm.ids <- c(rm.ids, i)
-            }
-          }
-        }
+    rm.ids <- c()
+    all_cont <- unique(dt$stitle)
+    all_cont <- all_cont[all_cont != ""]
+    for(i_cont in all_cont) {
+      if(ec1 %in% dt[stitle == i_cont]$ec & ec2 %in% dt[stitle == i_cont]$ec) {
+        
+        one.hits.id <- which(dt$ec == ec1 & !is.na(dt$bitscore) & dt$stitle == i_cont)
+        two.hits.id <- which(dt$ec == ec2 & !is.na(dt$bitscore) & dt$stitle == i_cont)
+        
+        oneIR <- IRanges(start = apply(dt[one.hits.id,.(sstart,send)],1,min),
+                                  end   = apply(dt[one.hits.id,.(sstart,send)],1,max))
+        twoIR <- IRanges(start = apply(dt[two.hits.id,.(sstart,send)],1,min),
+                                  end   = apply(dt[two.hits.id,.(sstart,send)],1,max))
+        
+        tmp_ol  <- findOverlaps(oneIR, twoIR)
+        tmp_olw <- pintersect(oneIR[tmp_ol@from],twoIR[tmp_ol@to])
+        
+        dt_ol <- data.table(i   = tmp_ol@from,
+                            j   = tmp_ol@to,
+                            l.i = oneIR[tmp_ol@from]@width,
+                            l.j = twoIR[tmp_ol@to]@width,
+                            b.i = dt[one.hits.id[tmp_ol@from], bitscore],
+                            b.j = dt[two.hits.id[tmp_ol@to], bitscore],
+                            ol  = tmp_olw@width)
+        dt_ol[, ols := ol / ((l.i + l.j)/2)]
+        dt_ol <- dt_ol[ols > 0.2]
+        dt_ol[order(i, -b.j)]
+        dt_ol[order(j, -b.i)]
+        
+        rm.ids <- c(rm.ids, unique(two.hits.id[dt_ol[b.i > max(dt[two.hits.id, bitscore]), j]]))
+        rm.ids <- c(rm.ids, unique(one.hits.id[dt_ol[b.j > max(dt[one.hits.id, bitscore]), i]]))
       }
-      rm.ids <- unique(rm.ids)
-      if(length(rm.ids > 0))
-        dt <- dt[-rm.ids]
     }
+    rm.ids <- unique(rm.ids)
+    if(length(rm.ids > 0))
+      dt <- dt[-rm.ids]
     return(dt)
   }
   
   resolve_common_TC_conflicts <- function(tc1, tc2, dt) {
-    if(tc1 %in% dt$tc & tc2 %in% dt$tc) {
-      rm.ids <- c()
-      one.hits.id <- which(dt$tc == tc1 & !is.na(dt$bitscore))
-      two.hits.id <- which(dt$tc == tc2 & !is.na(dt$bitscore))
-      if(length(one.hits.id)>0 & length(two.hits.id)>0) {
-        for(i in one.hits.id) {
-          for(j in two.hits.id) {
-            ol <- calc_seq_overlap(dt[i,sstart],dt[i,send],dt[j,sstart],dt[j,send])
-            if(ol > 0.2) {
-              if(dt[i, bitscore] > max(dt[two.hits.id, bitscore]))
-                rm.ids <- c(rm.ids, j)
-              if(dt[j, bitscore] > max(dt[one.hits.id, bitscore]))
-                rm.ids <- c(rm.ids, i)
-            }
-          }
-        }
+    rm.ids <- c()
+    all_cont <- unique(dt$stitle)
+    all_cont <- all_cont[all_cont != ""]
+    for(i_cont in all_cont) {
+      if(tc1 %in% dt[stitle == i_cont]$tc & tc2 %in% dt[stitle == i_cont]$tc) {
+        
+        one.hits.id <- which(dt$tc == tc1 & !is.na(dt$bitscore) & dt$stitle == i_cont)
+        two.hits.id <- which(dt$tc == tc2 & !is.na(dt$bitscore) & dt$stitle == i_cont)
+        
+        oneIR <- IRanges(start = apply(dt[one.hits.id,.(sstart,send)],1,min),
+                         end   = apply(dt[one.hits.id,.(sstart,send)],1,max))
+        twoIR <- IRanges(start = apply(dt[two.hits.id,.(sstart,send)],1,min),
+                         end   = apply(dt[two.hits.id,.(sstart,send)],1,max))
+        
+        tmp_ol  <- findOverlaps(oneIR, twoIR)
+        tmp_olw <- pintersect(oneIR[tmp_ol@from],twoIR[tmp_ol@to])
+        
+        dt_ol <- data.table(i   = tmp_ol@from,
+                            j   = tmp_ol@to,
+                            l.i = oneIR[tmp_ol@from]@width,
+                            l.j = twoIR[tmp_ol@to]@width,
+                            b.i = dt[one.hits.id[tmp_ol@from], bitscore],
+                            b.j = dt[two.hits.id[tmp_ol@to], bitscore],
+                            ol  = tmp_olw@width)
+        dt_ol[, ols := ol / ((l.i + l.j)/2)]
+        dt_ol <- dt_ol[ols > 0.2]
+        dt_ol[order(i, -b.j)]
+        dt_ol[order(j, -b.i)]
+        
+        # TODO instead of "max(dt[two.hits.id, bitscore])" also b.i should be better
+        # but better test it before
+        rm.ids <- c(rm.ids, unique(two.hits.id[dt_ol[b.i > max(dt[two.hits.id, bitscore]), j]]))
+        rm.ids <- c(rm.ids, unique(one.hits.id[dt_ol[b.j > max(dt[one.hits.id, bitscore]), i]]))
       }
-      rm.ids <- unique(rm.ids)
-      if(length(rm.ids > 0))
-        dt <- dt[-rm.ids]
     }
+    rm.ids <- unique(rm.ids)
+    if(length(rm.ids > 0))
+      dt <- dt[-rm.ids]
     return(dt)
   }
   
@@ -198,7 +161,9 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt.cand.clpx[, max.bs := NULL]
   
   # filter out "Subunit undefined" rows if they map to a range of a defined subunit of the enzyme
-  dt.cand.clpx <- dt.cand.clpx[order(stitle,seed,complex,-bitscore)] # TODO: Make sure the subunits with notation "subunit undefined" is last row per seed-reaction id "seed"
+  dt.cand.clpx[grepl("Subunit undefined", complex), complex := "ZSubunit undefined"]
+  dt.cand.clpx <- dt.cand.clpx[order(stitle,seed,complex,-bitscore)]
+  dt.cand.clpx[grepl("ZSubunit undefined", complex), complex := "Subunit undefined"]
   dt.cand.clpx[, rm := F]
   dt.cand.clpx$itmp <- 1:nrow(dt.cand.clpx)
   # Calculating overlaps
@@ -227,18 +192,6 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt.cand.clpx[, diff.median.bs := NULL]
   dt.cand.clpx[, min.diff.bs := NULL]
   dt.cand.clpx[, median.bs := NULL]
-
-  # dt.cand.clpx[complex != "Subunit undefined" & is.na(complex.status), min.bs := min(bitscore, na.rm = T), by = "seed"] # to be conservative, choose the lowest bitscore for complexes which were not predicted to be present
-  # dt.cand.clpx <- dt.cand.clpx[bitscore == min.bs | is.na(min.bs)]
-  # dt.cand.clpx[, min.bs := NULL]
-  # # for complexes whose presence was predicted choose the subunit with the hightest bitscore as reference.
-  # dt.cand.clpx[complex != "Subunit undefined" & complex.status == 1, max.bs := max(bitscore, na.rm = T), by = "seed"]
-  # dt.cand.clpx <- dt.cand.clpx[bitscore == max.bs | is.na(max.bs)]
-  # dt.cand.clpx[, max.bs := NULL]
-  # # for remaining undefined subunits choose the best hit and handle it as monomer
-  # dt.cand.clpx[complex == "Subunit undefined", max.bs := max(bitscore, na.rm = T), by = "seed"]
-  # dt.cand.clpx <- dt.cand.clpx[bitscore == max.bs | is.na(max.bs)]
-  # dt.cand.clpx[, max.bs := NULL]
   
   # 2. Handling of reactions which have pathway topology evidences
   dt.cand.topo <- copy(dt.cand[status %in% c("bad_blast","no_blast") & pathway.status %in% c("full","treshold","keyenzyme")])
