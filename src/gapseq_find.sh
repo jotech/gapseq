@@ -255,8 +255,8 @@ if [ "$taxonomy" == "auto" ]; then
     elif [ "$pred_biom" == "Archaea" ]; then
         taxonomy=Archaea
     else
-        echo Taxonomy could be predicted automatically.
-        exit 1
+        echo "Taxonomy could be predicted automatically. Assuming default case: Bacteria (Use '-t' parameter to modify it)."
+        taxonomy=Bacteria
     fi
     echo Predicted taxonomy: $taxonomy
 fi
