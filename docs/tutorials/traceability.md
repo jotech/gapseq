@@ -28,17 +28,27 @@ write.csv(mod@react_attr[,c("seed", "name", "ec", "gs.origin")],
 **Here's what the codes in the `gs.origin` column refer to:**
 
 
-0. Reaction added due to sequence homology to reference proteins
-1. Gapfilling Step 1 – Enable flux through biomass reaction / growth
-2. Gapfilling Step 2 – Biosynthesis of biomass components
-3. Gapfilling Step 3 – Alternative carbon/energy sources
-4. Gapfilling Step 4 – Potential metabolic products
-5. (*code currently not used*)
-6. Biomass reaction
-7. Exchange reactions
-8. Diffusion reactions
-9. Reaction added due to pathway completion 
-10. Reaction added after using `./gapseq adapt`
+`0`. Reaction added due to sequence homology to reference proteins
+
+`1`. Gapfilling Step 1 – Enable flux through biomass reaction / growth
+
+`2`. Gapfilling Step 2 – Biosynthesis of biomass components
+
+`3`. Gapfilling Step 3 – Alternative carbon/energy sources
+
+`4`. Gapfilling Step 4 – Potential metabolic products
+
+`5`. (*code currently not used*)
+
+`6`. Biomass reaction
+
+`7`. Exchange reactions
+
+`8`. Diffusion reactions
+
+`9`. Reaction added due to pathway completion 
+
+`10`. Reaction added after using `./gapseq adapt`
 
 
 
