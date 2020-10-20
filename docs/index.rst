@@ -44,6 +44,7 @@ Installation
    /tutorials/crossfeeding
    /tutorials/yogurt
    /tutorials/archaea
+   /tutorials/traceability
 
 
 .. FAQ
