@@ -5,7 +5,7 @@ The taxonomic rank should be compatible with [uniprot](https://www.uniprot.org/h
 However, the reconstruction and gapfilling of metabolic networks is currently limited to bacteria only.
 
 # What are the output files of gapseq?
-Predicted pathways, reactions, and transporters are stored in tabulator-seperated text files (.tbl) and the final metabolic network is saved as [systems biology markup language (SBML)](http://sbml.org) (.xml), which is an xml-based markup language for biololical model exchange.
+Predicted pathways, reactions, and transporters are stored in tabulator-seperated text files (.tbl) and the final metabolic network is saved as [systems biology markup language (SBML)](http://sbml.org) (.xml), which is an xml-based markup language for biological model exchange.
 SBML export needs the R package [sybilSBML](https://cran.r-project.org/package=sybilSBML) to be installed properly.
 In addition, final ouput and temporary files are stored in the [R Data Format (RDS)](http://www.sthda.com/english/wiki/saving-data-into-r-data-format-rds-and-rdata).
 
