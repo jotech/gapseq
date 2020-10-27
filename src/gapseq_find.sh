@@ -271,6 +271,11 @@ mkdir -p $seqpath/rev $seqpath/unrev $seqpath_user
 if [[ ! -f $seqpath/rev/sequences.tar.gz  ]] || [[ ! -f $seqpath/unrev/sequences.tar.gz ]] || [[ ! -f $seqpath/rxn/sequences.tar.gz ]]; then
     $dir/update_sequences.sh $taxonomy
 fi
+#check for updates if internet connection is available
+wget -q --spider http://google.com
+if [ $? -eq 0 ]; then
+    $dir/update_sequences.sh $taxonomy
+fi
 
 
 if [ -n "$ecnumber" ] || [ -n "$reaname" ]; then
