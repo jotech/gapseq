@@ -272,7 +272,7 @@ if [[ ! -f $seqpath/rev/sequences.tar.gz  ]] || [[ ! -f $seqpath/unrev/sequences
     $dir/update_sequences.sh $taxonomy
 fi
 #check for updates if internet connection is available
-wget -q --spider http://google.com
+wget -q --spider http://rz.uni-kiel.de
 if [ $? -eq 0 ]; then
     $dir/update_sequences.sh $taxonomy
 fi
