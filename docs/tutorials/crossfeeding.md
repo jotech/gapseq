@@ -80,9 +80,6 @@ $gapseq fill -m $modelB-draft.RDS -n gf_medium.csv -c $modelB-rxnWeights.RDS -g 
 
 The final models are stored as R-Object files: `eure.RDS` and `bilo.RDS`, which can be loaded in R using the `readRDS()` command (After the *sybil* package has bee loaded). 
 
-NOTE: If you repeat the gapfilling step, gapseq will <u>not</u> overwrite the final model files. Instead it saves them as `eure-gapfilled.RDS` and/or `bilo-gapfilled.RDS`. However, if you repeat the gapfilling step for the third time or even more, it will overwrite the `...-gapfilled.RDS` files (a behavior that we will fix).
-
-
 
 ##### Community simulation
 
@@ -92,10 +89,11 @@ Here, we will use the R-Package `BacArena` to perform an agent-based simulation 
 # Load R-packages
 library(BacArena)
 library(data.table)
+sybil::SYBIL_SETTINGS("SOLVER","cplexAPI") # (optional)
 
 # Load reconstructed models
-er <- readRDS("glycan_cf/eure.RDS") # E. rectale
-bl <- readRDS("glycan_cf/bilo.RDS") # B. longum
+er <- readRDS("eure.RDS") # E. rectale
+bl <- readRDS("bilo.RDS") # B. longum
 
 # Small fix to D/L-Lactate secretion *
 bl <- rmReact(bl, react = "EX_cpd00221_e0")
@@ -140,7 +138,7 @@ plotCurves2(CF_sim,legendpos = "topleft",
                         cpd00159_e0 = "Lactate"))
 ```
 
-![](https://github.com/Waschina/gapseq.tutorial.data/raw/master/CF_eure_bilo/CF_eure_bilo.svg)
+![](https://github.com/Waschina/gapseq.tutorial.data/raw/master/CF_eure_bilo/CF_eure_bilo.png)
 
 The simulations predicted, that acetate, butyrate, and lactate are produced during co-growth of *E. rectale* and *B. longum*.
 
@@ -176,13 +174,13 @@ dt.cf[, .(summed.Flux = sum(Flux)), by = c("species","Metabolite")]
 The output:
 
 ```
-   species Metabolite   summed.Flux
-1:    bilo    Acetate  1.621512e+03
-2:    eure    Acetate -9.676227e+02
-3:    bilo   Butyrate -8.231749e-13
-4:    eure   Butyrate  1.900784e+03
-5:    bilo    Lactate  5.858259e+02
+   species Metabolite summed.Flux
+1:    bilo    Acetate   1779.6887
+2:    eure    Acetate  -1242.7455
+3:    bilo   Butyrate      0.0000
+4:    eure   Butyrate   2122.3597
+5:    bilo    Lactate    680.6346
 ```
 
-We can see, that *B. longum* (bilo) secretes acetate as main end product.  Approximately 60 % of the acetate is consumed by *E. rectale* (eure). *B. longum* produces in addition lactate and *E. rectale* secretes butyrate. The predicted consumption of butyrate by *B. longum* with a rate of `-8.231749e-13` should be considered as zero flux, as this number might be due to numeric instabilities in R or the LP-solver (here CPLEX).
+We can see, that *B. longum* (bilo) secretes acetate and lactate as main end product. Approximately 70 % of the acetate is consumed by *E. rectale* (eure). *B. longum* produces in addition lactate and *E. rectale* secretes butyrate.
 
