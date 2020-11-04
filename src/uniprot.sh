@@ -92,6 +92,8 @@ LC_NUMERIC=$numeric_old
 mkdir -p $seqpath
 cd $seqpath
 
+[[ ! -f ../updating.log && "$overwrite" = true ]] && echo "date sequences change file" > ../updating.log
+
 if [ -n "$ecnumber" ]; then
     # create dummpy pwy template for given ec number
     pwyKey=$ecnumber
@@ -120,6 +122,8 @@ if [ -n "$ecnumber" ]; then
             if [ -f "$ec.fasta" ] && [ "$overwrite" = false ]; then # do not update existing files
                 continue
             else
+                oldmd5=$(md5sum $ec.fasta | cut -d " " -f1)
+                oldcount=$(cat $ec.fasta | grep ">" | wc -l)
                 rm -f $ec.fasta
             fi
             echo -en " ... Downloading $ec \t\t"
@@ -131,6 +135,11 @@ if [ -n "$ecnumber" ]; then
                 url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ano)%20identity%3A$identity_unrev&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
             fi
             [[ ! -f $ec.fasta ]] && wget -q $url -O $ec.fasta # download only if file not exists
+            if [ -n "$oldmd5" ]; then
+                newmd5=$(md5sum $ec.fasta | cut -d " " -f1)
+                newcount=$(cat $ec.fasta | grep ">" | wc -l)
+                [[ "$oldmd5" != "$newmd5" ]] && echo "`date +"%d/%m/%Y"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$ec.fasta" >> ../updating.log
+            fi
         fi
     done
 fi
@@ -148,6 +157,8 @@ if [ -n "$reaNames" ]; then
         if [ -f "$reaNameHash.fasta" ] && [ "$overwrite" = false ]; then # do not update existing files
             continue
         else
+            oldmd5=$(md5sum $reaNameHash.fasta | cut -d " " -f1)
+            oldcount=$(cat $reaNameHash.fasta | grep ">" | wc -l)
             rm -f $reaNameHash.fasta
         fi
         echo -en " ... Downloading $rea\t\t"
@@ -157,6 +168,11 @@ if [ -n "$reaNames" ]; then
             url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ano)%20identity%3A$identity_unrev&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
         fi
         [[ ! -f $reaNameHash.fasta ]] && wget -q "$url" -O "$reaNameHash.fasta"
+        if [ -n "$oldmd5" ]; then
+            newmd5=$(md5sum $reaNameHash.fasta | cut -d " " -f1)
+            newount=$(cat $reaNameHash.fasta | grep ">" | wc -l)
+            [[ "$oldmd5" != "$newmd5" ]] && echo "`date +"%d/%m/%Y"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$reaNameHash.fasta" >> ../updating.log
+        fi
     done
 fi
 
@@ -164,6 +180,8 @@ fi
 if [ -n "$geneName" ]; then
     
     if [ ! -f "$geneName.fasta" ] || [ ! "$overwrite" = false ]; then # do not update existing files
+        oldmd5=$(md5sum $geneName.fasta | cut -d " " -f1)
+        oldcount=$(cat $geneName.fasta | grep ">" | wc -l)
         rm -f $geneName.fasta
     fi
     echo -en " ... Downloading $geneName\t\t"
@@ -173,7 +191,11 @@ if [ -n "$geneName" ]; then
         url="https://www.uniprot.org/uniref/?query=uniprot%3A(gene_exact%3A\"$geneName\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ano)%20identity%3A$identity_unrev&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
     fi
     [[ ! -f $geneName.fasta ]] && wget -q "$url" -O "$geneName.fasta"
-
+    if [ -n "$oldmd5" ]; then
+        newmd5=$(md5sum $geneName.fasta | cut -d " " -f1)
+        newcount=$(cat $geneName.fasta | grep ">" | wc -l)
+        [[ "$oldmd5" != "$newmd5" ]] && echo "`date +"%d/%m/%Y"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$geneName.fasta" >> ../updating.log
+    fi
 fi
 
 if [ -n "$dbref" ]; then
@@ -181,10 +203,16 @@ if [ -n "$dbref" ]; then
     cd $seqpath/../rxn # different folder necessary bc database reference genes shouldn't be handled as rev/unrev
     
     if [ ! -f "$dbref.fasta" ] || [ ! "$overwrite" = false ]; then # do not update existing files
+        oldmd5=$(md5sum $dbref.fasta | cut -d " " -f1)
+        oldcount=$(cat $dbref.fasta | grep ">" | wc -l)
         rm -f $dbref.fasta
     fi
     echo -en " ... Downloading $dbref\t\t"
     url="https://www.uniprot.org/uniprot/?query=uniprot%3A(id%3A\"$dbref\"%20taxonomy%3A$taxonomy)&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
     [[ ! -f $dbref.fasta ]] && wget -q "$url" -O "$dbref.fasta"
-
+    if [ -n "$oldmd5" ]; then
+        newmd5=$(md5sum $dbref.fasta | cut -d " " -f1)
+        newcount=$(cat $dbref.fasta | grep ">" | wc -l)
+        [[ "$oldmd5" != "$newmd5" ]] && echo "`date +"%d/%m/%Y"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$dbref.fasta" >> ../updating.log
+    fi
 fi

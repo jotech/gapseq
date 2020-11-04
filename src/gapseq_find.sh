@@ -28,6 +28,7 @@ seqSrc=2
 anno_genome_cov=false
 use_gene_seq=true
 stop_on_files_exist=false
+update_manually=false
 
 usage()
 {
@@ -89,7 +90,7 @@ metaGenes=$dir/../dat/meta_genes.csv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywj" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjU" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -168,6 +169,9 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywj" opt; do
     j)
         stop_on_files_exist=true
         ;;
+    U)
+        update_manually=true
+        ;;
     esac
 done
 shift $((OPTIND-1))
@@ -175,7 +179,6 @@ shift $((OPTIND-1))
 
 # after parsing arguments, only fasta file shoud be there
 [ "$#" -ne 1 ] && { usage; }
-
 
 # blast format
 if [ "$includeSeq" = true ]; then
@@ -472,13 +475,13 @@ do
         ((count++))
         if [[ -n "$EC_test" ]]; then
             # check if sequence is not available => try to download
-            if [ ! -f $seqpath/rev/$ec.fasta ]; then
+            if [[ ! -f $seqpath/rev/$ec.fasta || "$update_manually" = true ]]; then
                 [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $ec 
-                $dir/uniprot.sh -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                $dir/uniprot.sh -e "$ec" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
             fi
-            if [ ! -f $seqpath/unrev/$ec.fasta ] && [ $seqSrc -gt 1 ]; then 
+            if [[ (! -f $seqpath/unrev/$ec.fasta && $seqSrc -gt 1) || "$update_manually" = true ]]; then 
                 [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unreviewed sequences for: $ec 
-                 $dir/uniprot.sh -u -e "$ec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                 $dir/uniprot.sh -u -e "$ec" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
             fi
             if [ -s "$seqpath_user/$ec.fasta" ]; then
                 [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
@@ -503,13 +506,13 @@ do
                 #[[ `echo "$altec" | wc -l` -gt 1 ]] && exit 1 # multiple alternative EC
                 query_alt_all=$(mktemp)
                 for aec in $altec; do
-                    if [ ! -f $seqpath/rev/$aec.fasta ]; then
+                    if [[ ! -f $seqpath/rev/$aec.fasta || "$update_manually" = true ]]; then
                         [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $aec 
-                        $dir/uniprot.sh -e "$aec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                        $dir/uniprot.sh -e "$aec" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
                     fi
-                    if [ ! -f $seqpath/unrev/$aec.fasta ] && [ $seqSrc -gt 1 ]; then 
+                    if [[ (! -f $seqpath/unrev/$aec.fasta && $seqSrc -gt 1) || "$update_manually" = true ]]; then 
                         [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unreviewed sequences for: $aec 
-                        $dir/uniprot.sh -u -e "$aec" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                        $dir/uniprot.sh -u -e "$aec" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
                     fi
                     if [ -s "$seqpath_user/$aec.fasta" ]; then
                         [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
@@ -541,13 +544,13 @@ do
         if [[ -n "$reaName" ]] && ( [[ -z "$EC_test" ]] || [[ ! -s "$query" ]] );then
             reaNameHash=$(echo -n "$reaName" | md5sum | awk '{print $1}')
             # check if sequence is not available => try to download
-            if [ ! -f $seqpath/rev/$reaNameHash.fasta ]; then
+            if [[ ! -f $seqpath/rev/$reaNameHash.fasta  || "$update_manually" = true ]]; then
                 [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $reaName "\n\t\t(hash: $reaNameHash)" 
-                $dir/uniprot.sh -r "$reaName" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                $dir/uniprot.sh -r "$reaName" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
             fi
-            if [ ! -f $seqpath/unrev/$reaNameHash.fasta ] && [ $seqSrc -gt 1 ]; then 
+            if [[ (! -f $seqpath/unrev/$reaNameHash.fasta && $seqSrc -gt 1) || "$update_manually" = true ]]; then 
                 [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unriewed sequences for: $reaName "\n\t\t(hash: $reaNameHash)" 
-                $dir/uniprot.sh -u -r "$reaName" -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                $dir/uniprot.sh -u -r "$reaName" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
             fi
             if [ -s "$seqpath_user/$reaNameHash.fasta" ]; then
                 [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
@@ -567,12 +570,12 @@ do
 
         # sequence by gene name
         if [[ -n "$geneName" ]] && [[ -n "$geneRef" ]] && [[ "$use_gene_seq" = true ]]; then
-            if [ ! -f $seqpath/rxn/$rea.fasta ]; then
+            if [[ ! -f $seqpath/rxn/$rea.fasta || "$update_manually" = true ]]; then
                 [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading sequences for: $geneRef
                 reaSeqTmp=$(mktemp)
                 for gr in $geneRef
                 do
-                    $dir/uniprot.sh -d $gr -t "$taxonomy" -i $uniprotIdentity >/dev/null
+                    $dir/uniprot.sh -d $gr -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
                     if [ -f $seqpath/rxn/$gr.fasta ]; then
                         cat $seqpath/rxn/$gr.fasta >> $reaSeqTmp
                         rm $seqpath/rxn/$gr.fasta
