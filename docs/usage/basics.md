@@ -12,14 +12,15 @@ The following figure summarizes the workflow.
 
 As a quickstart, all predictions can be done by simply using
 ```
-./gapseq doall toy/myb71.fna
+./gapseq doall toy/myb71.fna.gz
 ```
+(This could take up four hours)
 
 ## Pathway and transporter prediction
 Search for metabolic pathways and transporter:
 ```
-./gapseq find -p all toy/myb71.fna
-./gapseq find-transport toy/myb71.fna
+./gapseq find -p all toy/myb71.fna.gz
+./gapseq find-transport toy/myb71.fna.gz
 ```
 
 Search for chitin pathways:
