@@ -28,7 +28,8 @@ git clone https://github.com/jotech/gapseq && cd gapseq
 ```
 
 ## Troubleshooting
-- at least ncbi **blast** version 2.2.27 (4/2013) is needed. If your disribution only contains an older version, try to download a binary directly from [ncbi](https://shorturl.at/jkAH0)
+- NCBI **blast** version 2.2.30 (10/2014) or **newer** is needed. If your disribution only contains an older version, try to download a binary directly from [ncbi](https://shorturl.at/jkAH0)
+  * Older blast version could cause the ``Error: Unknown argument: "qcov_hsp_perc"``
 - If you are getting the installation error ``'lib = "../R/library"' is not writable`` while installing the **R packages**, then try this command beforehand:
 ```
 Rscript -e 'if( file.access(Sys.getenv("R_LIBS_USER"), mode=2) == -1 ) dir.create(path = Sys.getenv("R_LIBS_USER"), showWarnings = FALSE, recursive = TRUE)'
