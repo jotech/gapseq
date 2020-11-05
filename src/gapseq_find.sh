@@ -50,7 +50,6 @@ usage()
     echo "  -o Only list pathways found for keyword; default $onlyList)"
     echo "  -x Do not blast only list pathways, reactions and check for available sequences; default $skipBlast"
     echo "  -q Include sequences of hits in log files; default $includeSeq"
-
     echo "  -v Verbose level, 0 for nothing, 1 for pathway infos, 2 for full (default $verbose)"
     echo "  -k Do not use parallel"
     echo "  -g Exhaustive search, continue blast even when cutoff is reached (default $exhaustive)"
@@ -59,6 +58,7 @@ usage()
     echo "  -w Use additional sequences derived from gene names (default $use_gene_seq)"
     echo "  -y Print annotation genome coverage (default $anno_genome_cov)"
     echo "  -j Quit if output files already exist (default $stop_on_files_exist)"
+    echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default $update_manually)"
 
 exit 1
 }
@@ -270,15 +270,22 @@ seqpath=$dir/../dat/seq/$taxonomy
 seqpath_user=$dir/../dat/seq/$taxonomy/user
 mkdir -p $seqpath/rev $seqpath/unrev $seqpath_user
 
-# download sequences if needed
-if [[ ! -f $seqpath/rev/sequences.tar.gz  ]] || [[ ! -f $seqpath/unrev/sequences.tar.gz ]] || [[ ! -f $seqpath/rxn/sequences.tar.gz ]]; then
-    $dir/update_sequences.sh $taxonomy
-fi
 #check for updates if internet connection is available
 wget -q --spider http://rz.uni-kiel.de
 if [ $? -eq 0 ]; then
     $dir/update_sequences.sh $taxonomy
 fi
+if [[ ! -f $seqpath/rev/sequences.tar.gz  ]] || [[ ! -f $seqpath/unrev/sequences.tar.gz ]] || [[ ! -f $seqpath/rxn/sequences.tar.gz ]]; then
+    echo ATTENTION: gapseq sequence archives are missing! Sequences will be needed to be downloaded from uniprot directly which is rather slow.
+fi
+download_log=$(mktemp) # remember downloaded files
+function already_downloaded(){ 
+    if grep -q $1 $download_log; then
+        return 0
+    else
+        return 1
+    fi
+}
 
 
 if [ -n "$ecnumber" ] || [ -n "$reaname" ]; then
@@ -476,12 +483,18 @@ do
         if [[ -n "$EC_test" ]]; then
             # check if sequence is not available => try to download
             if [[ ! -f $seqpath/rev/$ec.fasta || "$update_manually" = true ]]; then
-                [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $ec 
-                $dir/uniprot.sh -e "$ec" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
+                if ! already_downloaded "$seqpath/rev/$ec.fasta"; then
+                    [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $ec 
+                    $dir/uniprot.sh -e "$ec" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
+                    echo $seqpath/rev/$ec.fasta >> $download_log
+                fi
             fi
             if [[ (! -f $seqpath/unrev/$ec.fasta && $seqSrc -gt 1) || "$update_manually" = true ]]; then 
-                [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unreviewed sequences for: $ec 
-                 $dir/uniprot.sh -u -e "$ec" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
+                if ! already_downloaded "$seqpath/unrev/$ec.fasta"; then
+                    [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unreviewed sequences for: $ec 
+                     $dir/uniprot.sh -u -e "$ec" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
+                    echo $seqpath/unrev/$ec.fasta >> $download_log
+                fi
             fi
             if [ -s "$seqpath_user/$ec.fasta" ]; then
                 [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
@@ -507,12 +520,18 @@ do
                 query_alt_all=$(mktemp)
                 for aec in $altec; do
                     if [[ ! -f $seqpath/rev/$aec.fasta || "$update_manually" = true ]]; then
-                        [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $aec 
-                        $dir/uniprot.sh -e "$aec" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
+                        if ! already_downloaded "$seqpath/rev/$aec.fasta"; then
+                            [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $aec 
+                            $dir/uniprot.sh -e "$aec" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
+                            echo $seqpath/rev/$aec.fasta >> $download_log
+                        fi
                     fi
                     if [[ (! -f $seqpath/unrev/$aec.fasta && $seqSrc -gt 1) || "$update_manually" = true ]]; then 
-                        [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unreviewed sequences for: $aec 
-                        $dir/uniprot.sh -u -e "$aec" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
+                        if ! already_downloaded "$seqpath/unrev/$aec.fasta"; then
+                            [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unreviewed sequences for: $aec 
+                            $dir/uniprot.sh -u -e "$aec" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
+                            echo $seqpath/unrev/$aec.fasta >> $download_log
+                        fi
                     fi
                     if [ -s "$seqpath_user/$aec.fasta" ]; then
                         [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
@@ -545,12 +564,18 @@ do
             reaNameHash=$(echo -n "$reaName" | md5sum | awk '{print $1}')
             # check if sequence is not available => try to download
             if [[ ! -f $seqpath/rev/$reaNameHash.fasta  || "$update_manually" = true ]]; then
-                [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $reaName "\n\t\t(hash: $reaNameHash)" 
-                $dir/uniprot.sh -r "$reaName" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
+                if ! already_downloaded "$seqpath/rev/$reaNameHash.fasta"; then
+                    [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $reaName "\n\t\t(hash: $reaNameHash)" 
+                    $dir/uniprot.sh -r "$reaName" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
+                    echo $seqpath/rev/$reaNameHash.fasta >> $download_log
+                fi
             fi
             if [[ (! -f $seqpath/unrev/$reaNameHash.fasta && $seqSrc -gt 1) || "$update_manually" = true ]]; then 
-                [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unriewed sequences for: $reaName "\n\t\t(hash: $reaNameHash)" 
-                $dir/uniprot.sh -u -r "$reaName" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
+                if ! already_downloaded "$seqpath/unrev/$reaNameHash.fasta"; then
+                    [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unreviewed sequences for: $reaName "\n\t\t(hash: $reaNameHash)" 
+                    $dir/uniprot.sh -u -r "$reaName" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
+                    echo $seqpath/unrev/$reaNameHash.fasta >> $download_log
+                fi
             fi
             if [ -s "$seqpath_user/$reaNameHash.fasta" ]; then
                 [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
@@ -571,14 +596,17 @@ do
         # sequence by gene name
         if [[ -n "$geneName" ]] && [[ -n "$geneRef" ]] && [[ "$use_gene_seq" = true ]]; then
             if [[ ! -f $seqpath/rxn/$rea.fasta || "$update_manually" = true ]]; then
-                [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading sequences for: $geneRef
                 reaSeqTmp=$(mktemp)
                 for gr in $geneRef
                 do
-                    $dir/uniprot.sh -d $gr -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
+                    if ! already_downloaded "$seqpath/rxn/$gr.fasta"; then
+                        [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading sequences for: $gr
+                        $dir/uniprot.sh -d $gr -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
+                        echo $seqpath/rxn/$gr.fasta >> $download_log
+                    fi
                     if [ -f $seqpath/rxn/$gr.fasta ]; then
                         cat $seqpath/rxn/$gr.fasta >> $reaSeqTmp
-                        rm $seqpath/rxn/$gr.fasta
+                        # rm $seqpath/rxn/$gr.fasta # shouldn't be deleted to allow monitoring of changes 
                     fi
                 done
                 if [ -s "$reaSeqTmp" ]; then
