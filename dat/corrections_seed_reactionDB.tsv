@@ -2264,3 +2264,8 @@ rxn11711			-1:cpd00001:0:0:"H2O";-1:cpd00399:0:0:"Oleoyl-CoA";1:cpd00010:0:0:"Co
 rxn14388		TRUE		[SW] Unbalanced and generic reaction.					
 rxn14216			-1:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd13372:0:0:"tRNA containing 5-aminomethyl-2-thiouridine";1:cpd00019:0:0:"S-Adenosyl-homocysteine";1:cpd12598:0:0:"tRNA containing 5-methylaminomethyl-2-thiouridylate";1:cpd00067:0:0:"H+"	[SW] Mass and charge balanced	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5144				
 rxn15526		TRUE		[SW] wrong reaction stoichiometry. Correct version of reaction ist rxn06875 .					
+									
+rxn02015	>			[JZ] wrong direction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17385				
+rxn04068	>			[JZ] only forward direction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=CHOLOYLGLYCINE-HYDROLASE-RXN				
+rxn02796	>			[JZ] only forward direction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=CHENODEOXYCHOLOYLTAURINE-HYDROLASE-RXN				
+rxn02795	>			[JZ] only forward direction	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17388				
