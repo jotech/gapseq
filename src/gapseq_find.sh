@@ -103,7 +103,7 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjU" opt; do
         ecnumber=$OPTARG
         ;;
     r)  
-        reaname=$OPTARG
+        reaname="$OPTARG"
         ;;
     d)  
         database=$OPTARG
@@ -291,18 +291,20 @@ function already_downloaded(){
 if [ -n "$ecnumber" ] || [ -n "$reaname" ]; then
     # create dummpy pwy template for given ec number
     if [[ -z "$ecnumber" ]]; then
-        rea_count=$(echo $reaname | tr ';' '\n' | wc -l)
-        ecnumber=$(echo $reaname | grep -o ";" | tr ';' ',') # get dummy empty comma seperated ec numbers
+        rea_count=$(echo "$reaname" | tr ';' '\n' | wc -l)
+        ecnumber=$(echo "$reaname" | grep -o ";" | tr ';' ',') # get dummy empty comma seperated ec numbers
+        pwyname="$reaname"
     elif [[ -z "$reaname" ]]; then
         rea_count=$(echo $ecnumber | tr ',' '\n' | wc -l)
         reaname=$(echo $ecnumber | grep -o "," | tr -d '\n' | tr ',' ';') # get dummy empty colon seperated reaction names
+        pwyname=$ecnumber
     else  
         rea_count=$(echo $ecnumber | tr ',' '\n' | wc -l)
     fi
     rea_id=$(seq 1 $rea_count | awk '{print "reaction"$1}' | tr '\n' ',' | sed 's/,$//g')
     pwyKey="custom"
     #pwyDB=$(echo -e "custom\t$ecnumber\t\t\t\t${rea_id::-1}\t$ecnumber\t\t$reaname") # slicing is incompatible?
-    pwyDB=$(echo -e "custom\t$ecnumber\t\t\t\t${rea_id}\t$ecnumber\t\t$reaname")
+    pwyDB=$(echo -e "custom\t$pwyname\t\t\t\t${rea_id}\t$ecnumber\t\t"$reaname"")
     pathways="custom"
 else
     pwyDatabase=$(echo $pwyDatabase | tr '[:upper:]' '[:lower:]')
@@ -782,7 +784,7 @@ do
                         done
                     fi
                     
-                    if [ -n "$dbhit" ]; then
+                    if [[ -n "$dbhit" && "$dbhit" != " " ]]; then
                         [[ verbose -ge 1 ]] && echo -e '\t\t'Candidate reaction for import: `echo "$dbhit" | wc -w`
                         pwyCand="$pwyCand$dbhit " # remember candidate reaction
                         ((countdb++))

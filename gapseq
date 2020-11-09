@@ -70,20 +70,20 @@ if   [ "$1" == "test" ]; then
     $dir/src/test.sh
 
 elif   [ "$1" == "find" ]; then
-    parm=$(echo $@ | sed 's/find//')
-    $dir/src/gapseq_find.sh $parm
+    shift
+    $dir/src/gapseq_find.sh "$@"
 
 elif [ "$1" == "find-transport" ]; then
-    parm=$(echo $@ | sed 's/find-transport//')
-    $dir/src/transporter.sh $parm
+    shift
+    $dir/src/transporter.sh "$@"
     
 elif [ "$1" == "draft" ]; then
-    parm=$(echo $@ | sed 's/draft//')
-    Rscript $dir/src/generate_GSdraft.R $parm
+    shift
+    Rscript $dir/src/generate_GSdraft.R "$@"
 
 elif [ "$1" == "fill" ]; then
-    parm=$(echo $@ | sed 's/fill//')
-    Rscript $dir/src/gf.suite.R $parm
+    shift
+    Rscript $dir/src/gf.suite.R "$@"
 
 elif [ "$1" == "doall" ]; then
     parm=$(echo $@ | sed 's/doall//')
