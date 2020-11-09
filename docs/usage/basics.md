@@ -32,10 +32,11 @@ Check for a certain enzyme availability, for example cytochrome c oxidases (oxid
 ```
 ./gapseq find -e 1.9.3.1 toy/ecoli.fna.gz
 ```
-Search for enzymes by name:
+Search for enzymes by name (e.g.: bacterial ligning degradation):
 ```
-./gapseq find -r ligninase toy/myb71.fna.gz
+./gapseq find -r "dye-decolorizing peroxidase" toy/ecoli.fna.gz
 ```
+(quotation marks are needed for reaction names that contain whitespaces) 
 
 
 
