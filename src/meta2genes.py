@@ -1,6 +1,9 @@
 import pythoncyc
 import pandas
 
+meta = pythoncyc.select_organism('meta')
+pythoncyc.sendQueryToPTools("(select-organism :org-id 'META)")
+
 genes   = []
 rxn     = []
 ncbi    = []
