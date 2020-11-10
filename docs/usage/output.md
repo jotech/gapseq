@@ -26,9 +26,9 @@ This tab-separated text file contains detailed information about all checked rea
 ### *-Transporter.tbl
 Data about found transporter is listed in this tab-separated text file.
 
-| id             | tc        | sub                   | exid         | rea                             | qseqid  | pident    | evalue         | bitscore      | qcovs              | stitle           | sstart | send |
-| -              | -         | -                     | -            | -                               | -       | -         | -              | -             | -                  | -                | -      | -    |
-| Transporter ID | TC number | Transported substance | Query Seq-id | Percentage of identical matches | E value | Bit score | Query Coverage | Subject Title | Start of alignment | End of alignment |        |      |
+| id             | tc        | sub                   | exid        | rea                       | qseqid       | pident                          | evalue  | bitscore  | qcovs          | stitle        | sstart             | send             | 
+| -              | -         | -                     | -           | -                         | -            | -                               | -       | -         | -              | -             | -                  | -                | 
+| Transporter ID | TC number | Transported substance | Exchange ID | Associated model reaction | Query Seq-id | Percentage of identical matches | E value | Bit score | Query Coverage | Subject Title | Start of alignment | End of alignment |
 
 ## gapseq draft
 
