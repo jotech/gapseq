@@ -194,7 +194,7 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt.cand.clpx[, median.bs := NULL]
   
   # 2. Handling of reactions which have pathway topology evidences
-  dt.cand.topo <- copy(dt.cand[status %in% c("bad_blast","no_blast") & pathway.status %in% c("full","treshold","keyenzyme")])
+  dt.cand.topo <- copy(dt.cand[status %in% c("bad_blast","no_blast") & pathway.status %in% c("full","threshold","keyenzyme")])
   dt.cand.topo[, bitscore := high.evi.rxn.BS]
   dt.cand.topo <- dt.cand.topo[!duplicated(seed)]
   

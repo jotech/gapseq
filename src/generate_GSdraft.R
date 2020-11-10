@@ -68,7 +68,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   mseed <- mseed[order(id)]
   
   # Get all reactions / transporters that have either high sequence evidence (bitscore)
-  dt_seed_single_and_there <- copy(dt[(bitscore >= high.evi.rxn.BS & status != "bad_blast") | pathway.status %in% c("full","treshold","keyenzyme")])
+  dt_seed_single_and_there <- copy(dt[(bitscore >= high.evi.rxn.BS & status != "bad_blast") | pathway.status %in% c("full","threshold","keyenzyme")])
   dt_seed_single_and_there <- dt_seed_single_and_there[complex.status != 0 | is.na(complex.status)]
   dt_seed_single_and_there <- dt_seed_single_and_there[order(seed,-bitscore)]
   dt_seed_single_and_there <- dt_seed_single_and_there[!duplicated(seed)]
