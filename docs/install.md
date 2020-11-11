@@ -27,6 +27,25 @@ R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("Bi
 git clone https://github.com/jotech/gapseq && cd gapseq
 ```
 
+## SBML
+The Systems Biology markup Language (SBML) can be used to exchange model files between gapseq and other programs.
+Occasionally, the installation can cause some issues that is why SBML is listed as optional dependency.
+There should be a ``libsbml`` package available for most linux distributions:
+```
+sudo apt install libsbml5-dev # debian/ubuntu
+sudo yum install libsbml-devel # fedora/centos
+```
+For MacOS, libsbml is not part of homebrew but a installation file can be downloaded from [here](https://sourceforge.net/projects/sbml/files/libsbml/5.18.0/stable/Mac%20OS%20X/).
+Next, the installation of the R SBML package ``sybilSBML`` should be possible:
+```R
+install.packages("sybilSBML")
+```
+A common problem ist that the library path could not be foundi during installation of ``sybilSBML``. In this case, it may be necessary to specify the ``include`` and ``lib`` folder:
+```
+R CMD INSTALL --configure-args="--with-sbml-include=/path/to/libsbml-5.18.0/include/ --with-sbml-lib=/path/to/libsbml-5.18.0/lib/" sybilSBML_3.1.2.tar.gz
+```
+The sybilSBML archive is available at [CRAN](https://cran.r-project.org/package=sybilSBML) together with more detailed [installation information](https://cran.r-project.org/web/packages/sybilSBML/INSTALL).
+
 ## Troubleshooting
 - NCBI **blast** version 2.2.30 (10/2014) or **newer** is needed. If your disribution only contains an older version, try to download a binary directly from [ncbi](https://shorturl.at/jkAH0)
   * Older blast version could cause the ``Error: Unknown argument: "qcov_hsp_perc"``
