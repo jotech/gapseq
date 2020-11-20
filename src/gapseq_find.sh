@@ -456,8 +456,8 @@ do
         reaName=$(echo $reaNames | awk -v j=$j -F ';' '{print $j}' | tr -d '|')
         re="([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
         EC_test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
-        geneName=$(cat $metaGenes | awk -v rea=$rea -v pwy=$pwy -F ',' '$1~rea && $3==pwy {print $2}')
-        geneRef=$(cat $metaGenes | awk -v rea=$rea -v pwy=$pwy -F ',' '$1~rea && $3==pwy {print $5}')
+        geneName=$(cat $metaGenes | awk -v rea=$rea -F ',' '$1~rea {print $2}')
+        geneRef=$(cat $metaGenes | awk -v rea=$rea -F ',' '$1~rea  {print $5}')
         [[ verbose -ge 1 ]] && echo -e "\t$j) $rea $reaName $ec" $geneName
         [[ -z "$rea" ]] && { continue; }
         [[ -n "$ec" ]] && [[ -n "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw -e "$ec" -e "$reaName" $dir/../dat/exception.tbl | wc -l); }
