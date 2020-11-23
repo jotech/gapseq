@@ -192,13 +192,13 @@ fasta=$(readlink -f "$1") # save input file before changing to temporary directo
 cd $(mktemp -d)
 
 # get fasta file
-if [[ $fasta == *.gz ]]; then # in case fasta is in a archive
-    tmp_fasta=$(basename "${fasta}" .gz)
-    gunzip -c $fasta > $tmp_fasta
-    fasta=$tmp_fasta
+if [[ "$fasta" == *.gz ]]; then # in case fasta is in a archive
+    tmp_fasta=$(basename "${fasta}" .gz | tr ' ' '_')
+    gunzip -c "$fasta" > "$tmp_fasta"
+    fasta="$tmp_fasta"
 fi
-[[ ! -s $fasta ]] && { echo Invalid file: $1; exit 0; }
-tmpvar=$(basename $fasta)
+[[ ! -s "$fasta" ]] && { echo Invalid file: $1; exit 0; }
+tmpvar=$(basename "$fasta")
 fastaID="${tmpvar%.*}"
 
 # pathways or ec number as well as fasta file have to be provided
@@ -252,7 +252,7 @@ esac
 
 # determine taxonomy
 if [ "$taxonomy" == "auto" ]; then
-    pred_biom=$($dir/predict_biomass_from16S.sh $fasta)
+    pred_biom=$($dir/predict_biomass_from16S.sh "$fasta")
     if [ "$pred_biom" == "Gram_neg" ] || [ "$pred_biom" == "Gram_pos" ]; then
         taxonomy=Bacteria
     elif [ "$pred_biom" == "Archaea" ]; then
@@ -403,7 +403,7 @@ getDBhit(){
 
 
 # create blast database
-makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
+makeblastdb -in "$fasta" -dbtype nucl -out orgdb >/dev/null
 
 
 cand=""     #list of candidate reactions to be added
@@ -456,8 +456,8 @@ do
         reaName=$(echo $reaNames | awk -v j=$j -F ';' '{print $j}' | tr -d '|')
         re="([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
         EC_test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
-        geneName=$(cat $metaGenes | awk -v rea=$rea -v pwy=$pwy -F ',' '$1~rea && $3==pwy {print $2}')
-        geneRef=$(cat $metaGenes | awk -v rea=$rea -v pwy=$pwy -F ',' '$1~rea && $3==pwy {print $5}')
+        geneName=$(cat $metaGenes | awk -v rea=$rea -F ',' '$1~rea {print $2}')
+        geneRef=$(cat $metaGenes | awk -v rea=$rea -F ',' '$1~rea  {print $5}')
         [[ verbose -ge 1 ]] && echo -e "\t$j) $rea $reaName $ec" $geneName
         [[ -z "$rea" ]] && { continue; }
         [[ -n "$ec" ]] && [[ -n "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw -e "$ec" -e "$reaName" $dir/../dat/exception.tbl | wc -l); }
@@ -929,10 +929,10 @@ cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
 [[ -s reactions.tbl ]] && echo "rxn name ec bihit $blast_format pathway status pathway.status dbhit complex exception complex.status" | tr ' ' '\t' | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-Reactions.tbl # add header and remove duplicates
 
 # print annotation genome coverage
-[[ verbose -ge 1 ]] && [[ "$anno_genome_cov" = true ]] && Rscript $dir/coverage.R $fasta $curdir/${fastaID}-$output_suffix-Reactions.tbl 
+[[ verbose -ge 1 ]] && [[ "$anno_genome_cov" = true ]] && Rscript $dir/coverage.R "$fasta" $curdir/${fastaID}-$output_suffix-Reactions.tbl 
 
 # cleaning
-[[ -s $tmp_fasta ]] && rm $tmp_fasta
+[[ -s "$tmp_fasta" ]] && rm "$tmp_fasta"
 
 
 ps -p $$ -o %cpu,%mem,cmd

@@ -2265,7 +2265,11 @@ rxn14388		TRUE		[SW] Unbalanced and generic reaction.
 rxn14216			-1:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd13372:0:0:"tRNA containing 5-aminomethyl-2-thiouridine";1:cpd00019:0:0:"S-Adenosyl-homocysteine";1:cpd12598:0:0:"tRNA containing 5-methylaminomethyl-2-thiouridylate";1:cpd00067:0:0:"H+"	[SW] Mass and charge balanced	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5144				
 rxn15526		TRUE		[SW] wrong reaction stoichiometry. Correct version of reaction ist rxn06875 .					
 									
-rxn02015	>			[JZ] wrong direction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17385				
-rxn04068	>			[JZ] only forward direction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=CHOLOYLGLYCINE-HYDROLASE-RXN				
-rxn02796	>			[JZ] only forward direction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=CHENODEOXYCHOLOYLTAURINE-HYDROLASE-RXN				
-rxn02795	>			[JZ] only forward direction	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17388				
+rxn02015	>		-1:cpd00001:1:0:"H2O";-1:cpd03047:1:0:"Taurocholate";1:cpd00210:1:0:"Taurine";1:cpd00526:1:0:"Cholate"	[JZ] wrong direction + extracellular	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17385				
+rxn04068	>		-1:cpd00001:1:0:"H2O";-1:cpd01318:1:0:"Glycocholate";1:cpd00033:1:0:"Glycine";1:cpd00526:1:0:"Cholate"	[JZ] only forward direction + extracellular	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=CHOLOYLGLYCINE-HYDROLASE-RXN				
+rxn02796	>		-1:cpd00001:1:0:"H2O";-1:cpd03246:1:0:"Taurochenodeoxycholate";1:cpd00210:1:0:"Taurine";1:cpd01663:1:0:"Chenodiol"	[JZ] only forward direction + extracellular	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=CHENODEOXYCHOLOYLTAURINE-HYDROLASE-RXN				
+rxn02795	>		-1:cpd00001:1:0:"H2O";-1:cpd03247:1:0:"Glycochenodeoxycholate";1:cpd00033:1:0:"Glycine";1:cpd01663:1:0:"Chenodiol"	[JZ] only forward direction + extracellular	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17388				
+rxn02012	>			[JZ] only forward direction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=7-ALPHA-HYDROXYSTEROID-DEH-RXN				
+rxn90068	>		-1:cpd00003:0:0:"NAD";-1:cpd00526:1:0:"Cholate";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd02829:1:0:"3alpha,12alpha-Dihydroxy-7-oxo-5beta-cholanate"	[JZ] identical to rxn02012 but external redox-pair	https://www.vmh.life/#reaction/7AHSDHe				
+rxn21853			-1:cpd00005:0:0:"NADPH";-1:cpd00067:0:0:"H+";-1:cpd02829:0:0:"3alpha,12alpha-Dihydroxy-7-oxo-5beta-cholanate";1:cpd00006:0:0:"NADP";1:cpd17760:0:0:"Ursocholate"	[JZ] updated stoichiometry (one proton less)	https://modelseed.org/biochem/reactions/rxn21853				
+rxn90069	=		-1:cpd00004:0:0:"NADH";-1:cpd00067:0:0:"H+";-1:cpd02829:1:0:"3alpha,12alpha-Dihydroxy-7-oxo-5beta-cholanate";1:cpd00003:0:0:"NAD";1:cpd17760:1:0:"Ursocholate"	[JZ] identical to rxn21853 but extracellular redox-pair and with NADH instead of NADPH	https://www.vmh.life/#reaction/UCA7bHSDHe				
