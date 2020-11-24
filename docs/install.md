@@ -3,7 +3,7 @@
 ## Ubuntu/Debian/Mint
 ```
 sudo apt install ncbi-blast+ git libglpk-dev r-base-core exonerate bedtools barrnap bc
-R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI"))'
+R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite"))'
 R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Biostrings")'
 git clone https://github.com/jotech/gapseq && cd gapseq
 ```
@@ -13,7 +13,7 @@ git clone https://github.com/jotech/gapseq && cd gapseq
 sudo yum install ncbi-blast+ git glpk-devel BEDTools exonerate hmmer bc
 git clone https://github.com/tseemann/barrnap.git
 export PATH=$PATH:barrnap/bin/barrnap # needs to be permanent => .bashrc ?
-R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI"))'
+R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite"))'
 R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Biostrings")'
 git clone https://github.com/jotech/gapseq && cd gapseq
 ```
@@ -22,7 +22,7 @@ git clone https://github.com/jotech/gapseq && cd gapseq
 using [homebrew](https://brew.sh)
 ```
 brew install coreutils binutils git glpk blast bedtools r brewsci/bio/barrnap grep bc
-R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI"))'
+R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite"))'
 R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Biostrings")'
 git clone https://github.com/jotech/gapseq && cd gapseq
 ```

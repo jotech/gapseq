@@ -1,0 +1,611 @@
+{ "id" : "Gram_neg",
+  "name" : "Bacterial Gram-negative biomass reaction",
+  "ref"  : "derived from ModelSEED and https://doi.org/10.1038/msb.2011.65",
+  "energy_GAM" :  40,
+  "met_groups" : [
+    {
+      "group_name" : "DNA",
+      "mass" : 0.031,
+      "unit_group" : "g",
+      "unit_components" : "MOLFRACTION",
+      "components" : [
+        
+        {
+          "id"   : "cpd00115",
+          "name" : "dATP",
+          "comp" : "c",
+          "coef" : 0.246,
+          "link" : "cpd00012:-1"
+        },
+        
+        {
+          "id"   : "cpd00357",
+          "name" : "dTTP",
+          "comp" : "c",
+          "coef" : 0.246,
+          "link" : "cpd00012:-1"
+        },
+        
+        {
+          "id"   : "cpd00241",
+          "name" : "dGTP",
+          "comp" : "c",
+          "coef" : 0.254,
+          "link" : "cpd00012:-1"
+        },
+        
+        {
+          "id"   : "cpd00356",
+          "name" : "dCTP",
+          "comp" : "c",
+          "coef" : 0.254,
+          "link" : "cpd00012:-1"
+        }
+        
+      ]
+    },
+    
+    {
+      "group_name" : "RNA",
+      "mass" : 0.205,
+      "unit_group" : "g",
+      "unit_components" : "MOLFRACTION",
+      "components" : [
+        
+        {
+          "id"   : "cpd00002",
+          "name" : "ATP",
+          "comp" : "c",
+          "coef" : 0.262,
+          "link" : "cpd00012:-1"
+        },
+        
+        {
+          "id"   : "cpd00062",
+          "name" : "UTP",
+          "comp" : "c",
+          "coef" : 0.216,
+          "link" : "cpd00012:-1"
+        },
+        
+        {
+          "id"   : "cpd00038",
+          "name" : "GTP",
+          "comp" : "c",
+          "coef" : 0.322,
+          "link" : "cpd00012:-1"
+        },
+        
+        {
+          "id"   : "cpd00052",
+          "name" : "CTP",
+          "comp" : "c",
+          "coef" : 0.200,
+          "link" : "cpd00012:-1"
+        }
+        
+      ]
+    },
+    
+    {
+      "group_name" : "Protein",
+      "mass" : 0.55,
+      "unit_group" : "g",
+      "unit_components" : "MOLFRACTION",
+      "components" : [
+        
+        {
+          "id"   : "cpd00035",
+          "name" : "L-alanine",
+          "comp" : "c",
+          "coef" : 0.0960440858098799,
+          "link" : "cpd00001:-1"
+        },
+        
+        {
+          "id"   : "cpd00051",
+          "name" : "L-arginine",
+          "comp" : "c",
+          "coef" : 0.0553040740011809,
+          "link" : "cpd00001:-1"
+        },
+        
+        {
+          "id"   : "cpd00132",
+          "name" : "L-asparagine",
+          "comp" : "c",
+          "coef" : 0.0450698681361937,
+          "link" : "cpd00001:-1"
+        },
+        
+        {
+          "id"   : "cpd00041",
+          "name" : "L-Aspartate",
+          "comp" : "c",
+          "coef" : 0.0450698681361937,
+          "link" : "cpd00001:-1"
+        },        
+        
+        {
+          "id"   : "cpd00084",
+          "name" : "L-Cysteine",
+          "comp" : "c",
+          "coef" : 0.0171226136587286,
+          "link" : "cpd00001:-1"
+        },
+        
+        {
+          "id"   : "cpd00053",
+          "name" : "L-Glutamine",
+          "comp" : "c",
+          "coef" : 0.0492029128124385,
+          "link" : "cpd00001:-1"
+        },        
+        
+        {
+          "id"   : "cpd00023",
+          "name" : "L-Glutamate",
+          "comp" : "c",
+          "coef" : 0.0492029128124385,
+          "link" : "cpd00001:-1"
+        },        
+        
+        {
+          "id"   : "cpd00033",
+          "name" : "Glycine",
+          "comp" : "c",
+          "coef" : 0.114544381027357,
+          "link" : "cpd00001:-1"
+        },        
+        
+        {
+          "id"   : "cpd00119",
+          "name" : "L-Histidine",
+          "comp" : "c",
+          "coef" : 0.0177130486124779,
+          "link" : "cpd00001:-1"
+        },
+        
+        {
+          "id"   : "cpd00322",
+          "name" : "L-Isoleucine",
+          "comp" : "c",
+          "coef" : 0.0543200157449321,
+          "link" : "cpd00001:-1"
+        },        
+        
+        {
+          "id"   : "cpd00107",
+          "name" : "L-Leucine",
+          "comp" : "c",
+          "coef" : 0.0842353867348947,
+          "link" : "cpd00001:-1"
+        },        
+        
+        {
+          "id"   : "cpd00039",
+          "name" : "L-Lysine",
+          "comp" : "c",
+          "coef" : 0.0641605983074198,
+          "link" : "cpd00001:-1"
+        },
+        
+        {
+          "id"   : "cpd00060",
+          "name" : "L-Methionine",
+          "comp" : "c",
+          "coef" : 0.0287345010824641,
+          "link" : "cpd00001:-1"
+        },        
+        
+        {
+          "id"   : "cpd00066",
+          "name" : "L-Phenylalanine",
+          "comp" : "c",
+          "coef" : 0.0346388506199567,
+          "link" : "cpd00001:-1"
+        },          
+        
+        {
+          "id"   : "cpd00129",
+          "name" : "L-Proline",
+          "comp" : "c",
+          "coef" : 0.0413304467624483,
+          "link" : "cpd00001:-1"
+        },  
+        
+        {
+          "id"   : "cpd00054",
+          "name" : "L-Serine",
+          "comp" : "c",
+          "coef" : 0.0403463885061996,
+          "link" : "cpd00001:-1"
+        },          
+        
+        {
+          "id"   : "cpd00161",
+          "name" : "L-Threonine",
+          "comp" : "c",
+          "coef" : 0.0474316079511907,
+          "link" : "cpd00001:-1"
+        },          
+        
+        {
+          "id"   : "cpd00065",
+          "name" : "L-Tryptophan",
+          "comp" : "c",
+          "coef" : 0.0106278291674867,
+          "link" : "cpd00001:-1"
+        },          
+        
+        {
+          "id"   : "cpd00069",
+          "name" : "L-Tyrosine",
+          "comp" : "c",
+          "coef" : 0.0257823263137178,
+          "link" : "cpd00001:-1"
+        },          
+        
+        {
+          "id"   : "cpd00156",
+          "name" : "L-Valine",
+          "comp" : "c",
+          "coef" : 0.0791182838024011,
+          "link" : "cpd00001:-1"
+        }    
+        
+      ]
+    },
+    
+    {
+      "group_name" : "Inorganics",
+      "mass" : 0.005,
+      "unit_group" : "g",
+      "unit_components" : "MOLSPLIT",
+      "components" : [
+        
+        {
+          "id"   : "cpd00048",
+          "name" : "Sulfate",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd10515",
+          "name" : "Fe2+",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd10516",
+          "name" : "Fe3+",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00063",
+          "name" : "Ca2+",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00058",
+          "name" : "Cu2+",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00034",
+          "name" : "Zn2+",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00254",
+          "name" : "Mg+",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00205",
+          "name" : "K+",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00099",
+          "name" : "Cl-",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00030",
+          "name" : "Mn2+",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00149",
+          "name" : "Co2+",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00009",
+          "name" : "Phosphate",
+          "comp" : "c",
+          "coef" : 1
+        }
+        
+      ]
+    },
+    
+    {
+      "group_name" : "Cofactors",
+      "mass" : 0.034,
+      "unit_group" : "g",
+      "unit_components" : "MOLSPLIT",
+      "components" : [
+        
+        {
+          "id"   : "cpd00042",
+          "name" : "GSH",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00003",
+          "name" : "NAD",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00017",
+          "name" : "Adenosyl-L-methionine",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00010",
+          "name" : "CoA",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00015",
+          "name" : "FAD",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00056",
+          "name" : "TPP",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd11493",
+          "name" : "ACP",
+          "comp" : "c",
+          "coef" : 1,
+          "link" : "cpd12370:-1"
+        },
+        
+        {
+          "id"   : "cpd00201",
+          "name" : "10-Formyltetrahydrofolate",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00006",
+          "name" : "NADP",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00118",
+          "name" : "Putrescine",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00264",
+          "name" : "Spermidine",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd15500",
+          "name" : "Menaquinone-8",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00345",
+          "name" : "5-Methyltetrahydrofolate",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00016",
+          "name" : "Pyridoxal-phosphate",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd15352",
+          "name" : "2-Demethylmenaquinone-8",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00087",
+          "name" : "Tetrahydrofolate",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00220",
+          "name" : "Riboflavin",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00028",
+          "name" : "Heme",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd00166",
+          "name" : "Calomide",
+          "comp" : "c",
+          "coef" : 1,
+          "link" : "cpd01997:-1|cpd03422:-1"
+        },
+        
+        {
+          "id"   : "cpd00557",
+          "name" : "Siroheme",
+          "comp" : "c",
+          "coef" : 1
+        }
+        
+      ]
+    },
+    
+    {
+      "group_name" : "Lipids",
+      "mass" : 0.091,
+      "unit_group" : "g",
+      "unit_components" : "MOLSPLIT",
+      "components" : [
+        
+        {
+          "id"   : "cpd15540",
+          "name" : "Phosphatidylglycerol-dioctadecanoyl",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd15793",
+          "name" : "Stearoylcardiolipin-B-subtilis",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd15722",
+          "name" : "Diisoheptadecanoylphosphatidylglycerol",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd15794",
+          "name" : "Isoheptadecanoylcardiolipin-B-subtilis",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd15723",
+          "name" : "Dianteisoheptadecanoylphosphatidylglycerol",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd15795",
+          "name" : "Anteisoheptadecanoylcardiolipin-B-subtilis",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd15533",
+          "name" : "phosphatidylethanolamine-dioctadecanoyl",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd15696",
+          "name" : "Dianteisoheptadecanoylphosphatidylethanolamine",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd15695",
+          "name" : "Diisoheptadecanoylphosphatidylethanolamine",
+          "comp" : "c",
+          "coef" : 1
+        }
+        
+      ]
+    },
+    
+    {
+      "group_name" : "Cellwall",
+      "mass" : 0.084,
+      "unit_group" : "g",
+      "unit_components" : "MOLSPLIT",
+      "components" : [
+        
+        {
+          "id"   : "cpd15432",
+          "name" : "core-oligosaccharide-lipid-A",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd02229",
+          "name" : "Bactoprenyl-diphosphate",
+          "comp" : "c",
+          "coef" : 1
+        },
+        
+        {
+          "id"   : "cpd15665",
+          "name" : "Peptidoglycan-polymer-n-subunits",
+          "comp" : "c",
+          "coef" : 1,
+          "link" : "cpd15666:-1"
+        }
+        
+      ]
+    }
+  ]
+}

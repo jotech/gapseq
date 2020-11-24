@@ -252,7 +252,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   }
   mod@react_attr$gs.origin <- 0
   mod@react_attr$gs.origin[mod@react_attr$bitscore < high.evi.rxn.BS] <- 9 # Added due to Pathway Topology criteria
-  mod <- add_reaction_from_db(mod, react = c("rxn13782","rxn13783","rxn13784"), gs.origin = 6) # Adding pseudo-reactions for Protein biosynthesis, DNA replication and RNA transcription
+  #mod <- add_reaction_from_db(mod, react = c("rxn13782","rxn13783","rxn13784"), gs.origin = 6) # Adding pseudo-reactions for Protein biosynthesis, DNA replication and RNA transcription
   mod <- add_missing_diffusion(mod)
   
   # in case of butyryl CoA:acetate CoA transferase presense - add but transporter as well
@@ -265,31 +265,49 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   warnings()
   # Adding Biomass reaction
   if(biomass == "neg" | biomass == "Gram_neg"){
-    dt.bm <- fread(paste0(script.dir, "/../dat/biomass/seed_biomass.DT_gramNeg.tsv"))
+    ls.bm <- parse_BMjson(paste0(script.dir, "/../dat/biomass/biomass_Gram_neg.json"), seed_x_mets)
+    dt.bm <- ls.bm$bmS
+    #dt.bm <- fread(paste0(script.dir, "/../dat/biomass/seed_biomass.DT_gramNeg.tsv"))
   }
   if(biomass == "pos" | biomass == "Gram_pos"){
-    dt.bm <- fread(paste0(script.dir, "/../dat/biomass/seed_biomass.DT_gramPos.tsv"))
+    ls.bm <- parse_BMjson(paste0(script.dir, "/../dat/biomass/biomass_Gram_pos.json"), seed_x_mets)
+    dt.bm <- ls.bm$bmS
+    #dt.bm <- fread(paste0(script.dir, "/../dat/biomass/seed_biomass.DT_gramPos.tsv"))
   }
-  if(biomass == "archaea" | biomass == "Archaea")
-    dt.bm <- fread(paste0(script.dir, "/../dat/biomass/seed_biomass.DT_archaea.tsv"))
+  if(biomass == "archaea" | biomass == "Archaea"){
+    ls.bm <- parse_BMjson(paste0(script.dir, "/../dat/biomass/biomass_archaea.json"), seed_x_mets)
+    dt.bm <- ls.bm$bmS
+    #dt.bm <- fread(paste0(script.dir, "/../dat/biomass/seed_biomass.DT_archaea.tsv"))
+  }
   
-  # remove ubiquinione from Biomass because it is not universal (only in aerobes + gram-) and synthesis is usually oxygen dependent
-  #dt[grepl("PWY-6708",pathway),pathway.status]
-  if(biomass %in% c("neg","pos")) {
-    ubi.stoich <- dt.bm[id == "cpd15560[c0]", stoich]
-    dt.bm <- dt.bm[id != "cpd15560[c0]"]
-    # add former ubi stoichiometry (ammount) to menaquninone stoich.
-    dt.bm[id == "cpd15500[c0]", stoich := stoich + ubi.stoich]
+  
+  if(biomass %in% c("neg","pos","Gram_neg","Gram_pos")) {
     
     # remove menaquinone8 from anaerobic Biomass if ne novo biosynthesis pathway is absent
+    
     if( is.na(dt[grepl("MENAQUINONESYN-PWY",pathway),pathway.status][1]) | is.na(dt[grepl("PWY-5852",pathway),pathway.status][1]) | is.na(dt[grepl("PWY-5837",pathway),pathway.status][1]) ){
+      cofac_mass_0 <- dt.bm[met_group == "Cofactors", sum(-Scoef * mass(formula) / 1000)]
+      
       dt.bm <- dt.bm[id != "cpd15500[c0]"] # Menaquinone-8
       dt.bm <- dt.bm[id != "cpd15352[c0]"] # 2-Demethylmenaquinone-8
+      
+      # When removing mets from the biomass reaction we need to rescale the remaining
+      # metabolite's coefficients to remain at a netto balance of 1 g/DW.
+      # This is done here:
+      cofac_mass_1 <- dt.bm[met_group == "Cofactors", sum(-Scoef * mass(formula) / 1000)]
+      dt.bm[met_group == "Cofactors", Scoef := Scoef * (cofac_mass_0 / cofac_mass_1)]
     }
   }
   
-  mod <- sybil::addReact(mod,id = "bio1", met = dt.bm$id, Scoef = dt.bm$stoich, reversible = F, lb = 0, ub = sybil::SYBIL_SETTINGS("MAXIMUM"), obj = 1, 
-                  reactName = paste0("Biomass reaction ", biomass), metName = dt.bm$name, metComp = dt.bm$comp)
+  mod <- sybil::addReact(mod,id = "bio1", 
+                         met = dt.bm$id, 
+                         Scoef = dt.bm$Scoef, 
+                         reversible = F, 
+                         lb = 0, ub = sybil::SYBIL_SETTINGS("MAXIMUM"), 
+                         obj = 1, 
+                         reactName = ls.bm$name,
+                         metName = dt.bm$name,
+                         metComp = paste0(dt.bm$comp,"0"))
   mod@react_attr[which(mod@react_id == "bio1"),c("gs.origin","seed")] <- data.frame(gs.origin = 6, seed = "bio1", stringsAsFactors = F)
 
   # add p-cresol sink reaction (further metabolism unclear especially relevant for anaerobic conditions)
@@ -329,6 +347,7 @@ source(paste0(script.dir,"/prepare_candidate_reaction_tables.R"))
 source(paste0(script.dir,"/get_gene_logic_string.R"))
 source(paste0(script.dir,"/addMetAttr.R"))
 source(paste0(script.dir,"/addReactAttr.R"))
+source(paste0(script.dir,"/parse_BMjson.R"))
 
 # get options first
 spec <- matrix(c(

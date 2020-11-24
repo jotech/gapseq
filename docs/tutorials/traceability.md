@@ -40,7 +40,7 @@ write.csv(mod@react_attr[,c("seed", "name", "ec", "gs.origin")],
 
 `5`. (*code currently not used*)
 
-`6`. Biomass reaction itself (+ helper reactions for protein, rna and dna usage)
+`6`. Biomass reaction
 
 `7`. Exchange reactions
 
