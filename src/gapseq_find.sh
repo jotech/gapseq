@@ -892,7 +892,7 @@ do
         [[ verbose -ge 1 ]] && echo "Consider pathway to be present because of completeness threshold!"
         prediction=true
         cand="$cand$pwyVage$pwyNoHitFound "
-        bestPwy="$bestPwy$name ($completeness% completeness, added because of completeness treshhold)\n"
+        bestPwy="$bestPwy$name ($completeness% completeness, added because of completeness threshhold)\n"
     # C) Consider as complete pathway because of key enzymes (lower threshold)
     elif [[ $CountKeyReaFound -ge 1 ]] && [[ $CountKeyReaFound -eq $CountTotalKeyRea ]] && [[ $completeness -ge $completenessCutoff ]] && [[ "$strictCandidates" = false ]]; then
         pwy_status="keyenzyme"

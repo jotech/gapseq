@@ -479,7 +479,7 @@ rxn07190		TRUE		[SW] generic reaction.
 rxn13025		TRUE		[SW] Reaction unbalanced in P					
 rxn11035			-1:cpd00067:0:0:"H+";-1:cpd00015:0:0:"FAD";-1:cpd00760:0:0:"2-Methylbutyryl-CoA";1:cpd00982:0:0:"FADH2";1:cpd16123:0:0:"tigyl-CoA"	[SW] Stoichiometry was adjusted according to imilar/same, but balanced reaction rxn02270					
 rxn12323	>		-1:cpd00001:0:0:"H2O";-1:cpd16629:0:0:"octadenoyl-acp";1:cpd01080:0:0:"ocdca";1:cpd11493:0:0:"ACP";1:cpd00067:0:0:"H+"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9548				
-rxn12937	>			[SW] Reversibility changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9548				
+rxn12937	>		-1:cpd00001:0:0:"H2O";-1:cpd12458:0:0:"Stearoyl-[acyl-carrier protein]";1:cpd00067:0:0:"H+";1:cpd01080:0:0:"ocdca";1:cpd11493:0:0:"ACP"	[SW] Reversibility changed according to MetaCyc. And replace cpd16828 with cpd12458	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9548				
 rxn13027			-1:cpd00044:0:0:"3-phosphoadenylylsulfate";-1:cpd16831:0:0:"thioredoxin-dithiol";1:cpd00045:0:0:"Adenosine 3-5-bisphosphate";1:cpd00081:0:0:"Sulfite";1:cpd11420:0:0:"trdox";1:cpd00067:0:0:"H+"						
 rxn14168	>		-1:cpd00001:0:0:"H2O";-1:cpd12024:0:0:"(S)-2-Haloacid";1:cpd11844:0:0:"HX";1:cpd12147:0:0:"(S)-2-Hydroxyacid";1:cpd00067:0:0:"H+"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2-HALOACID-DEHALOGENASE-RXN				
 rxn14230	>		-1:cpd00001:0:0:"H2O";-1:cpd12024:0:0:"(S)-2-Haloacid";1:cpd11844:0:0:"HX";1:cpd12118:0:0:"(R)-2-Hydroxyacid";1:cpd00067:0:0:"H+"	[SW] Reversibility & stoichiometry changed according to MetaCyc. 	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2-HALOACID-DEHALOGENASE-RXN				
@@ -632,7 +632,7 @@ rxn20818	>			[SW] Reaction might be important for quinate metabolism.	https://me
 rxn20643	>			[SW] Important reaction for de novo thiamine biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=PYRIMSYN1-RXN				
 rxn27289	>			[SW] Reaction important for Thiamin biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=THIAZOLSYN2-RXN&detail-level=3				
 rxn25839	>			[SW] Reaction important for Thiamin biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6892&detail-level=3				
-rxn25838	>		-1:cpd22312:0:0:"Adenylated-ThiS-Proteins";-1:cpd28256:0:0:"ThiI-S-sulfanylcysteine";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00018:0:0:"AMP";1:cpd28255:0:0:"ThiI-L-cysteine";1:cpd28259:0:0:"Thiocarboxyadenylated-ThiS-Proteins";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Reaction important for Thiamin biosynthesis. Plus sorrected accoding to metacyc and charge balanced.	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6892&detail-level=3				
+rxn25838	>		-1:cpd22312:0:0:"Adenylated-ThiS-Proteins";-1:cpd28256:0:0:"ThiI-S-sulfanylcysteine";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00018:0:0:"AMP";1:cpd28255:0:0:"ThiI-L-cysteine";1:cpd28259:0:0:"Thiocarboxyadenylated-ThiS-Proteins";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Reaction important for Thiamin biosynthesis. Plus corrected according to metacyc and charge balanced.	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6892&detail-level=3				
 rxn25837	>			[SW] Reaction important for Thiamin biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6892&detail-level=3				
 rxn05927	>		-2:cpd11620:0:0:"Reducedferredoxin";-2:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd00074:0:0:"S";-1:cpd01311:0:0:"Dethiobiotin";2:cpd00060:0:0:"L-Methionine";1:cpd00104:0:0:"BIOT";2:cpd03091:0:0:"5'-Deoxyadenosine";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Reaction stoichiometry changed according to MetaCyc and RHEA	https://www.rhea-db.org/reaction?id=22060 # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.8.1.6-RXN				
 rxn09310		TRUE		[SW] Incorrectly summarized reaction according to metacyc.	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6891				
@@ -705,7 +705,6 @@ rxn05772			-1:cpd00004:0:0:"NADH";-2:cpd11795:0:0:"Ferricytochrome b5";1:cpd0000
 rxn05774			-1:cpd00005:0:0:"NADPH";-2:cpd11796:0:0:"Ferricytochrome c2";1:cpd00006:0:0:"NADP";2:cpd11798:0:0:"Ferrocytochrome c2";1:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NADPH--CYTOCHROME-C2-REDUCTASE-RXN				
 rxn06023			-1:cpd00010:0:0:"CoA";-1:cpd12370:0:0:"apo-ACP";1:cpd00045:0:0:"Adenosine 3-5-bisphosphate";1:cpd11493:0:0:"ACP";1:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=HOLO-ACP-SYNTH-RXN				
 rxn06074			-1:cpd00283:0:0:"Geranyldiphosphate";1:cpd00012:0:0:"PPi";1:cpd12822:0:0:"Pinene";1:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-5107				
-rxn06134			-1:cpd00007:0:0:"O2";-3:cpd00067:0:0:"H+";-1:cpd00327:0:0:"strcoa";-2:cpd11797:0:0:"Ferrocytochrome b5";2:cpd00001:0:0:"H2O";1:cpd00399:0:0:"Oleoyl-CoA";2:cpd11795:0:0:"Ferricytochrome b5"	[SW] Oleate is defined in the protonated (1*H+) version. Strcoa on the other hand not. Thus an additional proton needs to be added to LHS to balance reactions.					
 rxn11963			-1:cpd00001:0:0:"H2O";-1:cpd01042:0:0:"p-Cresol";-4:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00484:0:0:"p-Hydroxybenzaldehyde";4:cpd11620:0:0:"Reducedferredoxin";4:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=1.17.99.1-RXN				
 rxn06214			-1:cpd00001:0:0:"H2O";-1:cpd01042:0:0:"p-Cresol";-4:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00484:0:0:"p-Hydroxybenzaldehyde";4:cpd11620:0:0:"Reducedferredoxin";4:cpd00067:0:0:"H+"	[SW] Stoichiometry changed according to MetaCyc.	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=1.17.99.1-RXN				
 rxn06269		TRUE		[SW] Unspecific unbalanced and unconnected reactions.					
@@ -2246,7 +2245,7 @@ rxn23749	>		-1:cpd00001:0:0:"H2O";-1:cpd02298:0:0:"1F-beta-D-Fructosylsucrose";1
 rxn29739				[SW] Needed for 1-Kestotriose uptake					TRUE
 rxn90061	>		-1:cpd00001:1:0:"H2O";-1:cpd12085:1:0:"1,4-beta-D-Xylan";1:cpd00154:1:0:"Xylose"	[SW] New reaction for extracellular xylan degradation			beta-xylosidase	xylan 1,4-beta-xylosidase (extracellular)	
 rxn23769	>		-3:cpd00001:0:0:"H2O";-1:cpd27519:0:0:"Methylesterified-homogalacturonan";3:cpd00116:0:0:"Methanol";1:cpd21755:0:0:"1-4-alpha-D-galacturonosyl";3:cpd00067:0:0:"H+"	[SW] Reaction for first step pectin degradation	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7248				
-rxn90062	>		-1:cpd21755:0:0:"1-4-alpha-D-galacturonosyl";-2:cpd00001:0:0:"H2O";3:cpd00280:0:0:"D-Galacturonate"	[SW] Reaction for pectin degradation	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7248		exopolygalacturonase	galacturonan 1,4-α-galacturonidase	
+rxn90062	>		-1:cpd21755:0:0:"1-4-alpha-D-galacturonosyl";-2:cpd00001:0:0:"H2O";3:cpd00280:0:0:"D-Galacturonate"	[SW] Reaction for pectin degradation	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7248		exopolygalacturonase	galacturonan 1,4-alpha-galacturonidase	
 rxn90063	=		-1:cpd00437:0:0:"D-Tagaturonate";1:cpd00672:0:0:"D-Fructuronate"	[SW] Reaction for pectin degradation	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7248		tagaturonate epimerase	tagaturonate epimerase	
 rxn90064	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd21755:1:0:"1-4-alpha-D-galacturonosyl";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd21755:0:0:"1-4-alpha-D-galacturonosyl";1:cpd00067:0:0:"H+"	[SW] Reaction for Pectin component import (ABC)			homogalacturonate ABC transporter	homogalacturonate ABC transporter	
 rxn90065	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd27519:1:0:"Methylesterified-homogalacturonan";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd27519:0:0:"Methylesterified-homogalacturonan";1:cpd00067:0:0:"H+"	[SW] Reaction for Pectin component import (ABC)			Methylestherified-homogalacturonate ABC transporter	Methylestherified-homogalacturonate ABC transporter	
@@ -2270,6 +2269,35 @@ rxn04068	>		-1:cpd00001:1:0:"H2O";-1:cpd01318:1:0:"Glycocholate";1:cpd00033:1:0:
 rxn02796	>		-1:cpd00001:1:0:"H2O";-1:cpd03246:1:0:"Taurochenodeoxycholate";1:cpd00210:1:0:"Taurine";1:cpd01663:1:0:"Chenodiol"	[JZ] only forward direction + extracellular	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=CHENODEOXYCHOLOYLTAURINE-HYDROLASE-RXN				
 rxn02795	>		-1:cpd00001:1:0:"H2O";-1:cpd03247:1:0:"Glycochenodeoxycholate";1:cpd00033:1:0:"Glycine";1:cpd01663:1:0:"Chenodiol"	[JZ] only forward direction + extracellular	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17388				
 rxn02012	>			[JZ] only forward direction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=7-ALPHA-HYDROXYSTEROID-DEH-RXN				
-rxn90068	>		-1:cpd00003:0:0:"NAD";-1:cpd00526:1:0:"Cholate";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd02829:1:0:"3alpha,12alpha-Dihydroxy-7-oxo-5beta-cholanate"	[JZ] identical to rxn02012 but external redox-pair	https://www.vmh.life/#reaction/7AHSDHe				
+rxn90068	>		-1:cpd00003:0:0:"NAD";-1:cpd00526:1:0:"Cholate";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd02829:1:0:"3alpha,12alpha-Dihydroxy-7-oxo-5beta-cholanate"	[JZ] identical to rxn02012 but external redox-pair	https://www.vmh.life/#reaction/7AHSDHe		7AHSDHe	7-alpha hydroxysteroid dehydrogenase, NAD+ dependent, cholate specific	
 rxn21853			-1:cpd00005:0:0:"NADPH";-1:cpd00067:0:0:"H+";-1:cpd02829:0:0:"3alpha,12alpha-Dihydroxy-7-oxo-5beta-cholanate";1:cpd00006:0:0:"NADP";1:cpd17760:0:0:"Ursocholate"	[JZ] updated stoichiometry (one proton less)	https://modelseed.org/biochem/reactions/rxn21853				
-rxn90069	=		-1:cpd00004:0:0:"NADH";-1:cpd00067:0:0:"H+";-1:cpd02829:1:0:"3alpha,12alpha-Dihydroxy-7-oxo-5beta-cholanate";1:cpd00003:0:0:"NAD";1:cpd17760:1:0:"Ursocholate"	[JZ] identical to rxn21853 but extracellular redox-pair and with NADH instead of NADPH	https://www.vmh.life/#reaction/UCA7bHSDHe				
+rxn90069	=		-1:cpd00004:0:0:"NADH";-1:cpd00067:0:0:"H+";-1:cpd02829:1:0:"3alpha,12alpha-Dihydroxy-7-oxo-5beta-cholanate";1:cpd00003:0:0:"NAD";1:cpd17760:1:0:"Ursocholate"	[JZ] identical to rxn21853 but extracellular redox-pair and with NADH instead of NADPH	https://www.vmh.life/#reaction/UCA7bHSDHe		UCA7bHSDHe	7-beta hydroxysteroid dehydrogenase, NAD+ dependent, ursocholate specific	
+									
+rxn06186		TRUE		[SW] incomplete reaction					
+rxn06530		TRUE		[SW] incomplete reaction					
+rxn06552		TRUE		[SW] incomplete reaction					
+rxn07276		TRUE		[SW] incomplete reaction					
+rxn10980		TRUE		[SW] model specific reaction					
+rxn11005		TRUE		[SW] model specific reaction					
+rxn10907		TRUE		[SW] model specific reaction					
+rxn10926		TRUE		[SW] model specific reaction					
+rxn10925		TRUE		[SW] model specific reaction					
+rxn11002		TRUE		[SW] model specific reaction					
+rxn10949		TRUE		[SW] model specific reaction					
+rxn10989		TRUE		[SW] model specific reaction					
+rxn11015		TRUE		[SW] model specific reaction					
+rxn06330		TRUE		[SW] generic reaction.					
+rxn11352		TRUE		[SW] model specific reaction					
+rxn11353		TRUE		[SW] model specific reaction					
+									
+rxn06071			-1:cpd00067:0:0:"H+";-1:cpd00003:0:0:"NAD";-2:cpd11651:0:0:"Reduced rubredoxin";1:cpd00004:0:0:"NADH";2:cpd11681:0:0:"Oxidized rubredoxin"	[SW] Corrected according to MetaCyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=RUBREDOXIN--NAD%2b-REDUCTASE-RXN				
+rxn06072			-1:cpd00067:0:0:"H+";-1:cpd00006:0:0:"NADP";-2:cpd11651:0:0:"Reduced rubredoxin";1:cpd00005:0:0:"NADPH";2:cpd11681:0:0:"Oxidized rubredoxin"	[SW] Corrected according to MetaCyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=RUBREDOXIN--NADP%2b-REDUCTASE-RXN				
+rxn06268			-2:cpd00067:0:0:"H+";-1:cpd00007:0:0:"O2";-1:cpd00998:0:0:"Octane";-2:cpd11651:0:0:"Reduced rubredoxin";1:cpd00001:0:0:"H2O";1:cpd00562:0:0:"1-Octanol";2:cpd11681:0:0:"Oxidized rubredoxin"	[SW] Corrected according to MetaCyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=ALKANE-1-MONOOXYGENASE-RXN				
+rxn06589			-2:cpd00067:0:0:"H+";-1:cpd00007:0:0:"O2";-1:cpd01943:0:0:"2,5-Diketocamphane";-2:cpd11651:0:0:"Reduced rubredoxin";1:cpd00001:0:0:"H2O";1:cpd01894:0:0:"5-Oxo-1,2-campholide";2:cpd11681:0:0:"Oxidized rubredoxin"	[SW] Corrected according to MetaCyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=ALKANE-1-MONOOXYGENASE-RXN				
+rxn06922			-2:cpd00067:0:0:"H+";-1:cpd00007:0:0:"O2";-1:cpd04450:0:0:"o-Xylene";-2:cpd11651:0:0:"Reduced rubredoxin";1:cpd00001:0:0:"H2O";1:cpd04451:0:0:"2-Methylbenzyl alcohol";2:cpd11681:0:0:"Oxidized rubredoxin"	[SW] Corrected according to MetaCyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=ALKANE-1-MONOOXYGENASE-RXN				
+rxn06923			-2:cpd00067:0:0:"H+";-1:cpd00007:0:0:"O2";-1:cpd04136:0:0:"p-Xylene";-2:cpd11651:0:0:"Reduced rubredoxin";1:cpd00001:0:0:"H2O";1:cpd04137:0:0:"4-Tolylcarbinol";2:cpd11681:0:0:"Oxidized rubredoxin"	[SW] Corrected according to MetaCyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=ALKANE-1-MONOOXYGENASE-RXN				
+rxn06924			-2:cpd00067:0:0:"H+";-1:cpd00007:0:0:"O2";-1:cpd04446:0:0:"m-Xylene";-2:cpd11651:0:0:"Reduced rubredoxin";1:cpd00001:0:0:"H2O";1:cpd04454:0:0:"3-methylbenzylalcohol";2:cpd11681:0:0:"Oxidized rubredoxin"	[SW] Corrected according to MetaCyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=ALKANE-1-MONOOXYGENASE-RXN				
+									
+rxn12922			-1:cpd00067:0:0:"H+";-1:cpd00005:0:0:"NADPH";-1:cpd14940:0:0:"(2E)-Octadecenoyl-[acp]";1:cpd00006:0:0:"NADP";1:cpd12458:0:0:"Stearoyl-[acyl-carrier protein]"	[SW] substitute cpd16828 with cpd12458. Plus proton balancing					
+rxn12936			-1:cpd00010:0:0:"CoA";-1:cpd12458:0:0:"Stearoyl-[acyl-carrier protein]";1:cpd11493:0:0:"ACP";1:cpd16825:0:0:"octadecanoyl-CoA"	[SW] substitute cpd16828 with cpd12458					
+rxn13158			-1:cpd12458:1:0:"Stearoyl-[acyl-carrier protein]";1:cpd12458:0:0:"Stearoyl-[acyl-carrier protein]"	[SW] substitute cpd16828 with cpd12458					
