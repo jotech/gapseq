@@ -8,7 +8,7 @@ It is a tab-separated text file with the following columns:
 
 | ID         | Name         | Prediction                   | Completeness                   | VagueReactions                                  | KeyReactions                            | KeyReactionsFound             | ReactionsFound           |
 | -          | -        | -                            | -                              | -                                               | -                                       | -                             | -                        |
-| Pathway ID | Pathway Name | Inferred presence true/false | Ratio of found/total reactions | Number of reactions without available sequences | Total number of important key reactions | Number of found key reactions | Names of found reactions |
+| Pathway ID | Pathway Name | Inferred presence true/false | Ratio of found/total reactions (%) | Number of reactions without available sequences | Total number of important key reactions | Number of found key reactions | Names of found reactions |
 
 ### *-Reactions.tbl
 This tab-separated text file contains detailed information about all checked reactions.
