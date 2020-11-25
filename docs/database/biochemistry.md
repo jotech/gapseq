@@ -5,7 +5,7 @@ At the time of the [gapseq publication](https://doi.org/10.1101/2020.03.20.00073
 The overall goal is to provide a harmonized and completely futile cycle free database that facilitates the gapfilling process.
 
 ## List of database-specific compound definitions
-- Ferredoxin transfers 1e-
+- Ferredoxin and rubredoxin transfer each 1e-
 - Hydrogen sulfite (H2S, neutral charge) cpd000239 is actually HS- (-1 charge)
 - Sulfite (SO3, -2 charge) cpd00081 is actually: HSO3 (-1 charge)
 - Ammonia: cpd00013 (labeled NH3 in seed with formula NH4...) do not use cpd19013
