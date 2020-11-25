@@ -131,13 +131,15 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   # Due to BRENDA's alternative ECs theres a mismatch of metacyc reactions to seed reaction for EC 2.6.1.36 and EC 2.6.1.13 ... remove the mismatches.
   dt <- dt[!(rxn == "L-LYSINE-AMINOTRANSFERASE-RXN" & grepl("rxn00467|rxn20496|rxn33315", seed))]
   
-  if(dt[!duplicated(rxn) & rxn == "NAD-SYNTH-GLN-RXN",status] %in% c("no_blast","bad_blast") &
-      dt[!duplicated(rxn) & rxn == "NAD-SYNTH-NH3-RXN",status] == "good_blast") {
-    dt[rxn == "NAD-SYNTH-GLN-RXN", pathway.status := NA_character_]
-  }
-  if(dt[!duplicated(rxn) & rxn == "NAD-SYNTH-NH3-RXN",status] %in% c("no_blast","bad_blast") &
-     dt[!duplicated(rxn) & rxn == "NAD-SYNTH-GLN-RXN",status] == "good_blast") {
-    dt[rxn == "NAD-SYNTH-NH3-RXN", pathway.status := NA_character_]
+  if(all(c("NAD-SYNTH-GLN-RXN","NAD-SYNTH-NH3-RXN") %in% dt$rxn)) {
+    if(dt[!duplicated(rxn) & rxn == "NAD-SYNTH-GLN-RXN",status] %in% c("no_blast","bad_blast") &
+       dt[!duplicated(rxn) & rxn == "NAD-SYNTH-NH3-RXN",status] == "good_blast") {
+      dt[rxn == "NAD-SYNTH-GLN-RXN", pathway.status := NA_character_]
+    }
+    if(dt[!duplicated(rxn) & rxn == "NAD-SYNTH-NH3-RXN",status] %in% c("no_blast","bad_blast") &
+       dt[!duplicated(rxn) & rxn == "NAD-SYNTH-GLN-RXN",status] == "good_blast") {
+      dt[rxn == "NAD-SYNTH-NH3-RXN", pathway.status := NA_character_]
+    }
   }
   
   # prepare reaction/transporter blast results table
