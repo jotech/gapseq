@@ -496,7 +496,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     }
     options(warn=0)
     
-    mod.fill3 <- rmReact(mod.fill3, react=c("ESP1","ESP2"))
+    mod.fill3 <- rmReact(mod.fill3, react=c("ESP1","ESP2", "ESP3", "ESP4", "ESP5"))
     mod.fill3 <- changeObjFunc(mod.fill3, react=paste0("EX_",target.met,"_c0"))
     mod.fill3 <- constrain.model(mod.fill3, media.file = media.file, scaling.fac = 1)
     mod.out <- mod.fill3
