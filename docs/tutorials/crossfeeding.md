@@ -34,11 +34,11 @@ Download genome assemblies and gapfill medium. Renaming files.
 #!/bin/bash
 
 # Download genome assemblies 
-wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/020/605/GCF_000020605.1_ASM2060v1/GCF_000020605.1_ASM2060v1_genomic.fna.gz .
-wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/007/525/GCF_000007525.1_ASM752v1/GCF_000007525.1_ASM752v1_genomic.fna.gz .
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/020/605/GCF_000020605.1_ASM2060v1/GCF_000020605.1_ASM2060v1_genomic.fna.gz
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/007/525/GCF_000007525.1_ASM752v1/GCF_000007525.1_ASM752v1_genomic.fna.gz
 
 # Download gapfill-medium file
-wget https://github.com/Waschina/gapseq.tutorial.data/raw/master/CF_eure_bilo/gf_medium.csv .
+wget https://github.com/Waschina/gapseq.tutorial.data/raw/master/CF_eure_bilo/gf_medium.csv
 
 # Rename genomes to "eure" (E. rectale) and "bilo" (B. longum) 
 mv GCF_000020605.1_ASM2060v1_genomic.fna.gz eure.fna.gz
@@ -62,8 +62,8 @@ modelB="bilo"
 gapseq=~/path/to/gapseq/./gapseq
 
 # Reaction & Pathway prediction
-$gapseq find -p all -b 200 $modelA.fna.gz
-$gapseq find -p all -b 200 $modelB.fna.gz
+$gapseq find -p all -b 200 -m Bacteria $modelA.fna.gz
+$gapseq find -p all -b 200 -m Bacteria $modelB.fna.gz
 
 # Transporter prediction
 $gapseq find-transport -b 200 $modelA.fna.gz 
@@ -175,12 +175,12 @@ The output:
 
 ```
    species Metabolite summed.Flux
-1:    bilo    Acetate   1779.6887
-2:    eure    Acetate  -1242.7455
+1:    bilo    Acetate    978.7569
+2:    eure    Acetate   -453.8853
 3:    bilo   Butyrate      0.0000
-4:    eure   Butyrate   2122.3597
-5:    bilo    Lactate    680.6346
+4:    eure   Butyrate    727.4100
+5:    bilo    Lactate    385.9537
 ```
 
-We can see, that *B. longum* (bilo) secretes acetate and lactate as main end product. Approximately 70 % of the acetate is consumed by *E. rectale* (eure). *B. longum* produces in addition lactate and *E. rectale* secretes butyrate.
+We can see, that *B. longum* (bilo) secretes acetate and lactate as main end product. Approximately 46 % of the acetate is consumed by *E. rectale* (eure). *B. longum* produces in addition lactate and *E. rectale* secretes butyrate.
 
