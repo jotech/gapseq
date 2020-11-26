@@ -155,45 +155,47 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   #
   # 1. Handling reactions associated with complexes (i.e. multi-mer enzymes)
   #
-  dt.cand.clpx <- copy(dt.cand[!is.na(complex)]) 
-  dt.cand.clpx[is.na(bitscore), bitscore := 0] # no blast hit -> NA -> 0 BS
-  dt.cand.clpx[, max.bs := max(bitscore, na.rm=TRUE), by = c("seed","complex")]
-  dt.cand.clpx <- dt.cand.clpx[max.bs == bitscore] # get only the best hits
-  dt.cand.clpx <- dt.cand.clpx[!duplicated(paste(seed,complex, sep = "$"))]
-  dt.cand.clpx[, max.bs := NULL]
-  
-  # filter out "Subunit undefined" rows if they map to a range of a defined subunit of the enzyme
-  dt.cand.clpx[grepl("Subunit undefined", complex), complex := "ZSubunit undefined"]
-  dt.cand.clpx <- dt.cand.clpx[order(stitle,seed,complex,-bitscore)]
-  dt.cand.clpx[grepl("ZSubunit undefined", complex), complex := "Subunit undefined"]
-  dt.cand.clpx[, rm := F]
-  dt.cand.clpx$itmp <- 1:nrow(dt.cand.clpx)
-  # Calculating overlaps
-  for(i in 1:nrow(dt.cand.clpx)) {
-    astart <- dt.cand.clpx[i, sstart]
-    aend <- dt.cand.clpx[i, send]
-    astitle <- dt.cand.clpx[i, stitle]
-    aseed <- dt.cand.clpx[i, seed]
-    dt_g_tmp <- dt.cand.clpx[i < itmp & rm==F & stitle == astitle & seed == aseed & !is.na(sstart)]
-    if(nrow(dt_g_tmp)>0) {
-      dt_g_tmp[calc_seq_overlap(astart, aend, sstart, send) > 0.5, rm := T]
-      ind.rm <- dt_g_tmp[rm==T, itmp]
-      dt.cand.clpx[itmp %in% ind.rm, rm := T]
+  dt.cand.clpx <- copy(dt.cand[!is.na(complex)])
+  if(nrow(dt.cand.clpx) > 0) {
+    dt.cand.clpx[is.na(bitscore), bitscore := 0] # no blast hit -> NA -> 0 BS
+    dt.cand.clpx[, max.bs := max(bitscore, na.rm=TRUE), by = c("seed","complex")]
+    dt.cand.clpx <- dt.cand.clpx[max.bs == bitscore] # get only the best hits
+    dt.cand.clpx <- dt.cand.clpx[!duplicated(paste(seed,complex, sep = "$"))]
+    dt.cand.clpx[, max.bs := NULL]
+    
+    # filter out "Subunit undefined" rows if they map to a range of a defined subunit of the enzyme
+    dt.cand.clpx[grepl("Subunit undefined", complex), complex := "ZSubunit undefined"]
+    dt.cand.clpx <- dt.cand.clpx[order(stitle,seed,complex,-bitscore)]
+    dt.cand.clpx[grepl("ZSubunit undefined", complex), complex := "Subunit undefined"]
+    dt.cand.clpx[, rm := F]
+    dt.cand.clpx$itmp <- 1:nrow(dt.cand.clpx)
+    # Calculating overlaps
+    for(i in 1:nrow(dt.cand.clpx)) {
+      astart <- dt.cand.clpx[i, sstart]
+      aend <- dt.cand.clpx[i, send]
+      astitle <- dt.cand.clpx[i, stitle]
+      aseed <- dt.cand.clpx[i, seed]
+      dt_g_tmp <- dt.cand.clpx[i < itmp & rm==F & stitle == astitle & seed == aseed & !is.na(sstart)]
+      if(nrow(dt_g_tmp)>0) {
+        dt_g_tmp[calc_seq_overlap(astart, aend, sstart, send) > 0.5, rm := T]
+        ind.rm <- dt_g_tmp[rm==T, itmp]
+        dt.cand.clpx[itmp %in% ind.rm, rm := T]
+      }
     }
+    dt.cand.clpx <- dt.cand.clpx[rm == F]
+    dt.cand.clpx[, rm := NULL]
+    dt.cand.clpx[, itmp := NULL]
+    
+    dt.cand.clpx[is.na(complex.status), median.bs := median(bitscore, na.rm = T), by = "seed"] # to be conservative, choose the subunit with the bitscore closest to the median 
+    dt.cand.clpx[is.na(complex.status), diff.median.bs := abs(bitscore - median.bs)]
+    dt.cand.clpx[is.na(complex.status), min.diff.bs := min(diff.median.bs, na.rm = T), by = "seed"]
+    dt.cand.clpx <- dt.cand.clpx[diff.median.bs == min.diff.bs | is.na(min.diff.bs)]
+    dt.cand.clpx <- dt.cand.clpx[order(seed, bitscore)]
+    dt.cand.clpx <- dt.cand.clpx[!duplicated(paste0(seed, diff.median.bs, sep = "$"))] # This is for the case of ties (same distance of bitscore to median). Chossing the hit with the lower bitscore.
+    dt.cand.clpx[, diff.median.bs := NULL]
+    dt.cand.clpx[, min.diff.bs := NULL]
+    dt.cand.clpx[, median.bs := NULL]
   }
-  dt.cand.clpx <- dt.cand.clpx[rm == F]
-  dt.cand.clpx[, rm := NULL]
-  dt.cand.clpx[, itmp := NULL]
-  
-  dt.cand.clpx[is.na(complex.status), median.bs := median(bitscore, na.rm = T), by = "seed"] # to be conservative, choose the subunit with the bitscore closest to the median 
-  dt.cand.clpx[is.na(complex.status), diff.median.bs := abs(bitscore - median.bs)]
-  dt.cand.clpx[is.na(complex.status), min.diff.bs := min(diff.median.bs, na.rm = T), by = "seed"]
-  dt.cand.clpx <- dt.cand.clpx[diff.median.bs == min.diff.bs | is.na(min.diff.bs)]
-  dt.cand.clpx <- dt.cand.clpx[order(seed, bitscore)]
-  dt.cand.clpx <- dt.cand.clpx[!duplicated(paste0(seed, diff.median.bs, sep = "$"))] # This is for the case of ties (same distance of bitscore to median). Chossing the hit with the lower bitscore.
-  dt.cand.clpx[, diff.median.bs := NULL]
-  dt.cand.clpx[, min.diff.bs := NULL]
-  dt.cand.clpx[, median.bs := NULL]
   
   # 2. Handling of reactions which have pathway topology evidences
   dt.cand.topo <- copy(dt.cand[status %in% c("bad_blast","no_blast") & pathway.status %in% c("full","threshold","keyenzyme")])
