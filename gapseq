@@ -101,7 +101,7 @@ elif [ "$1" == "doall" ]; then
     [[ -s "$3" ]]       && medium=$3
     $dir/src/gapseq_find.sh -v $verbose -b 200 -p all -m bacteria -k "$file"
     $dir/src/transporter.sh -b 200 "$file"
-    Rscript $dir/src/generate_GSdraft.R -r "$id-all-Reactions.tbl" -t "$id-Transporter.tbl" -c "$file" -u 200 -l 100 -a 1 -p "$id-all-Pathways.tbl"
+    Rscript $dir/src/generate_GSdraft.R -r "$id-all-Reactions.tbl" -t "$id-Transporter.tbl" -c "$file" -u 200 -l 100 -p "$id-all-Pathways.tbl"
     Rscript $dir/src/gf.suite.R -m "./${id}-draft.RDS" -n "$medium" -c "./${id}-rxnWeights.RDS" -b 100 -g "./${id}-rxnXgenes.RDS"
 
 elif [ "$1" == "adapt" ]; then
