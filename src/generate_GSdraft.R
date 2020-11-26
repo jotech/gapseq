@@ -307,7 +307,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
                          obj = 1, 
                          reactName = ls.bm$name,
                          metName = dt.bm$name,
-                         metComp = paste0(dt.bm$comp,"0"))
+                         metComp = ifelse(dt.bm$comp=="c",1,ifelse(dt.bm$comp=="e",2,3)))
   mod@react_attr[which(mod@react_id == "bio1"),c("gs.origin","seed")] <- data.frame(gs.origin = 6, seed = "bio1", stringsAsFactors = F)
 
   # add p-cresol sink reaction (further metabolism unclear especially relevant for anaerobic conditions)
