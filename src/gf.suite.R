@@ -434,15 +434,18 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     mod.fill3@obj_coef <- rep(0,mod.fill3@react_num)
     
     # add biolog like test
-    mql <- "cpd15499[c0]"; mqn <- "cpd15500[c0]"
-    uql <- "cpd15561[c0]"; uqn <- "cpd15560[c0]"
-    h   <- "cpd00067[c0]"
-    #nad <- "cpd00003[c0]"; nadh<- "cpd00004[c0]"
+    mql  <- "cpd15499[c0]"; mqn   <- "cpd15500[c0]" # menaquinone
+    uql  <- "cpd15561[c0]"; uqn   <- "cpd15560[c0]" # ubiquinone
+    h    <- "cpd00067[c0]"
+    nad  <- "cpd00003[c0]"; nadh  <- "cpd00004[c0]"
+    fdox <- "cpd11621[c0]"; fdred <- "cpd11620[c0]" # ferredoxin
+    pql  <- "cpd27796[c0]"; pqn   <- "cpd27797[c0]" # plastoquinone
     mod.fill3 <- addReact(mod.fill3, "ESP1", met=c(mql,h,mqn), Scoef=c(-1,2,1), lb=0, ub=1000, metComp = rep(1,3))
     mod.fill3 <- addReact(mod.fill3, "ESP2", met=c(uql,h,uqn), Scoef=c(-1,2,1), lb=0, ub=1000, metComp = rep(1,3))
-    mod.fill3 <- changeObjFunc(mod.fill3, react=c("ESP1", "ESP2"), obj_coef=c(1,1))
-    #mod.fill3 <- addReact(mod.fill3, "ESP3", met=c(nadh,h,nad), Scoef=c(-1,1,1), lb=0, ub=1000)
-    #mod.fill3 <- changeObjFunc(mod.fill3, react=c("ESP1", "ESP2", "ESP3"), obj_coef=c(1,1,1))
+    mod.fill3 <- addReact(mod.fill3, "ESP3", met=c(nadh,h,nad), Scoef=c(-1,1,1), lb=0, ub=1000, metComp = rep(1,3))
+    mod.fill3 <- addReact(mod.fill3, "ESP4", met=c(fdred,fdox), Scoef=c(-1,1), lb=0, ub=1000, metComp = rep(1,2))
+    mod.fill3 <- addReact(mod.fill3, "ESP5", met=c(pql,h,pqn), Scoef=c(-1,2,1), lb=0, ub=1000, metComp = rep(1,3))
+    mod.fill3 <- changeObjFunc(mod.fill3, react=c("ESP1", "ESP2", "ESP3", "ESP4", "ESP5"), obj_coef=c(1,1,1,1,1))
     mod.fill3.counter <- 0
     mod.fill3.names <- c()
     
