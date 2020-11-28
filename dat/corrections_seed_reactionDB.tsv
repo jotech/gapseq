@@ -2301,3 +2301,7 @@ rxn06924			-2:cpd00067:0:0:"H+";-1:cpd00007:0:0:"O2";-1:cpd04446:0:0:"m-Xylene";
 rxn12922			-1:cpd00067:0:0:"H+";-1:cpd00005:0:0:"NADPH";-1:cpd14940:0:0:"(2E)-Octadecenoyl-[acp]";1:cpd00006:0:0:"NADP";1:cpd12458:0:0:"Stearoyl-[acyl-carrier protein]"	[SW] substitute cpd16828 with cpd12458. Plus proton balancing					
 rxn12936			-1:cpd00010:0:0:"CoA";-1:cpd12458:0:0:"Stearoyl-[acyl-carrier protein]";1:cpd11493:0:0:"ACP";1:cpd16825:0:0:"octadecanoyl-CoA"	[SW] substitute cpd16828 with cpd12458					
 rxn13158			-1:cpd12458:1:0:"Stearoyl-[acyl-carrier protein]";1:cpd12458:0:0:"Stearoyl-[acyl-carrier protein]"	[SW] substitute cpd16828 with cpd12458					
+									
+rxn10872		TRUE		[SW] model specific reaction					
+rxn10882		TRUE		[SW] model specific reaction					
+rxn10408		TRUE		[SW] duplicate reaction to rxn05251 but with wrong cpd-id for fatty acid product					
