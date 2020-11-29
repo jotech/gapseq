@@ -123,6 +123,8 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt <- resolve_common_EC_conflicts("1.1.1.27","1.3.1.110", dt) # two hydrogenases, one with NADH one with bifurcation including NADH and Ferredoxin
   dt <- resolve_common_EC_conflicts("6.3.1.1","2.6.1.2", dt) # Asp:NH3 ligase vs ala-aminotransferase
   dt <- resolve_common_EC_conflicts("2.6.1.11","2.6.1.18", dt) # beta-alanine aminotransferase vs acetyl-ornithine aminotransferase
+  dt <- resolve_common_EC_conflicts("2.6.1.66","2.6.1.83", dt) # valine-pyruvate aminotransferase vs L,L-diaminopimelate aminotransferase
+  dt <- resolve_common_EC_conflicts("2.6.1.2","2.6.1.83", dt) # alanine transaminase vs L,L-diaminopimelate aminotransferase
   
   # specific transporter conflict fixes
   dt.trans <- resolve_common_TC_conflicts("1.a.8.2.1","2.a.14.1.3", dt.trans)
