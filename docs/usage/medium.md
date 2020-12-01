@@ -6,6 +6,8 @@ A user gapfill medium can be defined in a 3-column comma-(csv) or tab-(tsv)-sepa
 - **2nd column** "name": List of compound names
 - **3rd column** "maxFlux": Defines the maximum uptake rate of the compound in `mmol/gDW/hr`
 
+A list of database-specific compounds is given in the [database section](../database/biochemistry).  
+
 Example: M9-like medium (aerobic) with limited Glucose+Oxygen uptake and virtually unlimited salts/ions.
 
 ```
