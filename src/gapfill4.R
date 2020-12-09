@@ -206,7 +206,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
   sol <- optimizeProb(mod.orig)
   #if(sol@lp_stat!=ok | sol@lp_obj < min.obj.val){
   if(sol@lp_stat!=ok | sol@lp_obj < 1e-7){
-    warning(paste0("Final model cannot produce enough target even when all candidate reactions are added! obj=", sol@lp_obj, " lp_stat=",sol@lp_stat))
+    warning(paste0("Final model ", mod.orig@mod_name, " cannot produce enough target even when all candidate reactions are added! obj=", sol@lp_obj, " lp_stat=",sol@lp_stat))
     return(list(model = mod.orig.bak,
                 rxns.added = c(),
                 rxn.weights = rxn.weights,
