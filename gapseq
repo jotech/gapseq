@@ -24,7 +24,7 @@ usage()
     echo "  gapseq doall (genome) [medium]"
     echo "  gapseq find (-p pathways | -e enzymes) [-b bitscore] (genome)"
     echo "  gapseq find-transport [-b bitscore] (genome)"
-    echo "  gapseq draft (-r reactions | -t transporter -c genome -p pathways) [-b pos|neg|archae|auto]"
+    echo "  gapseq draft (-r reactions | -t transporter -c genome -p pathways) [-b pos|neg|archaea|auto]"
     echo "  gapseq fill (-m draft -n medium -c rxn_weights -g rxn_genes)"
     echo "  gapseq adapt (add | remove) (reactions,pathways) (model)"
     echo -e "\nExamples:"
