@@ -508,7 +508,7 @@ do
                 [[ ! -s $query ]] && query=$seqpath/unrev/$ec.fasta
             elif [ $seqSrc -eq 3 ]; then
                 query=$(mktemp)
-                cat $seqpath/rev/$ec.fasta $seqpath/unrev/$ec.fasta > $query
+                cat $seqpath/rev/$ec.fasta $seqpath/unrev/$ec.fasta | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query # use awk to remove duplicates
             elif [ $seqSrc -eq 4 ]; then
                 query=$seqpath/unrev/$ec.fasta
             fi
@@ -545,7 +545,7 @@ do
                         [[ ! -s $query_alt ]] && query_alt=$seqpath/unrev/$aec.fasta
                     elif [ $seqSrc -eq 3 ]; then
                         query_alt=$(mktemp)
-                        cat $seqpath/rev/$aec.fasta $seqpath/unrev/$aec.fasta > $query_alt
+                        cat $seqpath/rev/$aec.fasta $seqpath/unrev/$aec.fasta | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query_alt
                     elif [ $seqSrc -eq 4 ]; then
                         query_alt=$seqpath/unrev/$aec.fasta
                     fi
@@ -589,7 +589,7 @@ do
                 [[ ! -s $query ]] && query=$seqpath/unrev/$reaNameHash.fasta
             elif [ $seqSrc -eq 3 ]; then
                 query=$(mktemp)
-                cat $seqpath/rev/$reaNameHash.fasta $seqpath/unrev/$reaNameHash.fasta > $query
+                cat $seqpath/rev/$reaNameHash.fasta $seqpath/unrev/$reaNameHash.fasta | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query
             elif [ $seqSrc -eq 4 ]; then
                 query=$seqpath/unrev/$reaNameHash.fasta
             fi
