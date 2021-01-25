@@ -4,7 +4,25 @@ library(stringr)
 media_check <- function(media.file, mod.orig, seed_x_mets){
   media   <- fread(media.file, stringsAsFactors = F, header = T, col.names = c("compounds", "name", "maxFlux"))
   bm.idx  <- grep("bio1", mod.orig@react_id)
-  
+
+  #
+  # check for invalid compound identifier ids
+  #
+  id_error <- is.na(str_extract(media$compounds, "cpd[0-9]+"))
+  if( any(id_error) ){ 
+    warning(paste("Invalid compound identifier:", media[id_error,compounds], "will be ignored."))
+    media <- media[!id_error]
+  }
+
+  #
+  # check if compounds exist in gapseq metabolite data base
+  #
+  id_miss <- is.na(match(media$compounds, seed_x_mets$id))
+  if( any(id_miss) ){
+    warning(paste("Unknown compound identifier:", media[id_miss,compounds], "will be ignored."))
+    media <- media[!id_miss]
+  }
+
   #
   # Check for very small numbers potentially causing issues with numeric accuracy
   #
@@ -27,5 +45,7 @@ media_check <- function(media.file, mod.orig, seed_x_mets){
   #
   if( "cpd11601" %in% media$compounds ) warning("For pectin the identifier cpd27519 is recommended.")
   if( "cpd11657" %in% media$compounds ) warning("For starch the identifier cpd90003 is recommended.")
+  if( "cpd37273" %in% media$compounds ) warning("For cadmium the identifier cpd01012 is recommended.")
+  if( "cpd37276" %in% media$compounds ) warning("For lead the identifier cpd0i4097 is recommended.")
   
 }
