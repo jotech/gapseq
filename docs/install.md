@@ -40,11 +40,12 @@ Next, the installation of the R SBML package ``sybilSBML`` should be possible:
 ```R
 install.packages("sybilSBML")
 ```
-A common problem ist that the library path could not be foundi during installation of ``sybilSBML``. In this case, it may be necessary to specify the ``include`` and ``lib`` folder:
+A common problem ist that the library path could not be found during installation of ``sybilSBML``. In this case, it may be necessary to specify the ``include`` and ``lib`` folder:
 ```
 R CMD INSTALL --configure-args="--with-sbml-include=/path/to/libsbml-5.18.0/include/ --with-sbml-lib=/path/to/libsbml-5.18.0/lib/" sybilSBML_3.1.2.tar.gz
 ```
-The sybilSBML archive is available at [CRAN](https://cran.r-project.org/package=sybilSBML) together with more detailed [installation information](https://cran.r-project.org/web/packages/sybilSBML/INSTALL).
+The sybilSBML archive is available at [CRAN](https://cran.r-project.org/package=sybilSBML) or [gitlab](https://gitlab.cs.uni-duesseldorf.de/general/ccb/sybilSBML) together with more detailed installation information at [CRAN](https://cran.r-project.org/web/packages/sybilSBML/INSTALL) or [gitlab](https://gitlab.cs.uni-duesseldorf.de/general/ccb/sybilSBML/-/blob/master/inst/INSTALL).
+
 
 ## Troubleshooting
 - NCBI **blast** version 2.2.30 (10/2014) or **newer** is needed. If your disribution only contains an older version, try to download a binary directly from [ncbi](https://shorturl.at/jkAH0)
