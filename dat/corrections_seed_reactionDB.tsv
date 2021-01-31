@@ -2306,7 +2306,7 @@ rxn10872		TRUE		[SW] model specific reaction
 rxn10882		TRUE		[SW] model specific reaction					
 rxn10408		TRUE		[SW] duplicate reaction to rxn05251 but with wrong cpd-id for fatty acid product					
 									
-rxn90070	<		-1:cpd00047:0:0:"Formate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"	[SW] ferredoxin based formate dehydrogenase for CO2 assimilation; possible entry to Ljungdahl-Wood pathway	https://doi.org/10.1186/1475-2859-12-118 https://doi.org/10.3389/fbioe.2020.621166				
+rxn90070	<		-1:cpd00047:0:0:"Formate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"	[SW] ferredoxin based formate dehydrogenase for CO2 assimilation; possible entry to Ljungdahl-Wood pathway	https://doi.org/10.1186/1475-2859-12-118 https://doi.org/10.3389/fbioe.2020.621166		FDH-frdx	formate dehydrogenase (ferredoxin)	
 rxn01211	=			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=METHENYLTHFCYCLOHYDRO-RXN&&detail-level=2				
 rxn06149	>		-1:cpd00067:0:0:"H+";-1:cpd00345:0:0:"5-Methyltetrahydrofolate";-1:cpd12810:0:0:"Corrinoid";1:cpd00087:0:0:"Tetrahydrofolate";1:cpd12809:0:0:"Methylcorrinoid"	[SW] balanced and corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=METHCOCLTH-RXN&&detail-level=2				
 rxn12080	<		-2:cpd00067:0:0:"H+";-1:cpd00022:0:0:"Acetyl-CoA";-1:cpd12810:0:0:"Corrinoid";1:cpd00010:0:0:"CoA";1:cpd00204:0:0:"CO";1:cpd12809:0:0:"Methylcorrinoid"	[SW] balanced and corrected according to MetaCyc; EC 2.3.1.169	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=ACETYLSYNCLTH-RXN&&detail-level=2				
