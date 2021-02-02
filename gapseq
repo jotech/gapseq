@@ -21,7 +21,7 @@ usage()
     echo -e "\nUsage:"
     echo "  gapseq test"
     echo "  gapseq (find | find-transport | draft | fill | doall | adapt) (...)"
-    echo "  gapseq doall (genome) [medium]"
+    echo "  gapseq doall (genome) [medium] [Bacteria|Archaea]"
     echo "  gapseq find (-p pathways | -e enzymes) [-b bitscore] (genome)"
     echo "  gapseq find-transport [-b bitscore] (genome)"
     echo "  gapseq draft (-r reactions | -t transporter -c genome -p pathways) [-b pos|neg|archaea|auto]"
@@ -99,7 +99,10 @@ elif [ "$1" == "doall" ]; then
     [[ ! -s "$file" ]]  && usage
     [[ $file == *.gz ]] && id="${id%.*}" 
     [[ -s "$3" ]]       && medium=$3
-    $dir/src/gapseq_find.sh -v $verbose -b 200 -p all -m bacteria -k "$file"
+    taxonomy=auto
+    [[ ("$3" == "Bacteria" || "$4" == "Bacteria") ]] && taxonomy=Bacteria
+    [[ ("$3" == "Archaea" || "$4" == "Archaea") ]] && taxonomy=Archaea
+    $dir/src/gapseq_find.sh -v $verbose -b 200 -p all -t $taxonomy -k "$file"
     $dir/src/transporter.sh -b 200 "$file"
     Rscript $dir/src/generate_GSdraft.R -r "$id-all-Reactions.tbl" -t "$id-Transporter.tbl" -c "$file" -u 200 -l 100 -p "$id-all-Pathways.tbl"
     Rscript $dir/src/gf.suite.R -m "./${id}-draft.RDS" -n "$medium" -c "./${id}-rxnWeights.RDS" -b 100 -g "./${id}-rxnXgenes.RDS"
