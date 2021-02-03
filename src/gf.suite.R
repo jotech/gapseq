@@ -16,7 +16,8 @@ spec <- matrix(c(
   'limit', 'l', 2, "character", "Test metabolite to which search is limitted",
   'no.core', 'x', 2, "logical", "Use always all reactions insteadof core reactions with have sequence evidence. Default: FALSE",
   'verbose', 'v', 2, "logical", "Verbose output and printing of debug messages. Default: FALSE",
-  'relaxed.constraints', 'r', 2, "logical", "Save final model as unconstraint network (i.e. all exchange reactions are open). Default: FALSE"  
+  'relaxed.constraints', 'r', 2, "logical", "Save final model as unconstraint network (i.e. all exchange reactions are open). Default: FALSE",
+  'environment', 'e', 2, "character", "Adjusting reaction directions according to specific environmental conditions. See documentation for details. CAUTION: experimental option!"
 ), ncol = 5, byrow = T)
 
 opt <- getopt(spec)
@@ -67,6 +68,7 @@ if ( is.null(opt$quick.gf) ) { opt$quick.gf = F }
 if ( is.null(opt$bcore) ) { opt$bcore = 50 }
 if ( is.null(opt$no.core) ) { opt$no.core = F }
 if ( is.null(opt$relaxed.constraints) ) { opt$relaxed.constraints = F }
+if ( is.null(opt$environment) ) { opt$environment = "" }
 
 # Arguments:
 mod.file            <- opt$model
@@ -82,6 +84,7 @@ bcore               <- opt$bcore
 met.limit           <- opt$limit
 no.core             <- opt$no.core
 relaxed.constraints <- opt$relaxed.constraints
+env                 <- opt$environment
 
 # Parameters:
 dummy.weight <- 100
@@ -92,6 +95,10 @@ sbml.export  <- FALSE
 rxn.weights <- readRDS(rxn.weights.file)
 rXg.tab     <- readRDS(rxnXgene.table)
 
+# parsing environment specification string
+env <- unlist(str_split(env, ","))
+env <- env[env %in% c("","highH2")] # Filter for currently supported environment specifications only
+
 # Little helpers
 source(paste0(script.dir,"/add_missing_exRxns.R"))
 source(paste0(script.dir,"/constrain.model.R"))
@@ -101,6 +108,7 @@ source(paste0(script.dir,"/get_gene_logic_string.R"))
 source(paste0(script.dir,"/addMetAttr.R"))
 source(paste0(script.dir,"/addReactAttr.R"))
 source(paste0(script.dir,"/media_check.R"))
+source(paste0(script.dir,"/adjust_model_env.R"))
 
 rm.na <- function(vec){
   idx <- which(is.na(vec))
@@ -132,11 +140,15 @@ if ( length(met.limit) > 0 ){
 # read full model & target model
 cat("Loading model files", mod.file, "\n")
 mod        <- readRDS(fullmod.file)
-#mod        <- changeBounds(mod, react = "rxn00102_c0", lb = -0.1)
+
 if ( toupper(file_ext(mod.file)) == "RDS" ){
   mod.orig <- readRDS(mod.file)
 }else{ 
   mod.orig <- readSBMLmod(mod.file)}
+
+# adjust environment if needed
+if(env[1] != "")
+  mod <- adjust_model_env(mod, env, script.dir)
 
 # This here is needed if another draft than GapSeq's own draft networks are gapfilled
 if((!"gs.origin" %in% colnames(mod.orig@react_attr))) {

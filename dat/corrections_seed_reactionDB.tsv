@@ -544,7 +544,7 @@ rxn08188			-1:cpd00063:0:0:"Ca2+";-3:cpd00971:1:0:"Na+";1:cpd00063:1:0:"Ca2+";3:
 rxn10868		TRUE		[SW] seems to be present only in mamalian kidney					
 rxn05517		TRUE		[SW] Transporter not found in any other database.					
 rxn08767	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17787				
-rxn01602	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-18357				
+rxn01602	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-18357				
 rxn04945	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUCOSE-1-DEHYDROGENASE-NADP%2b-RXN				
 rxn13834	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUCOSE-1-DEHYDROGENASE-NADP%2b-RXN				
 rxn00611	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.1.1.8-RXN				
@@ -593,7 +593,7 @@ rxn01023	<			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn00288	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=SUCCINATE-DEHYDROGENASE-UBIQUINONE6-RXN				
 rxn00673	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=PROPCOASYN-RXN				
 rxn00693	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=HOMOCYSMETB12-RXN				
-rxn00909	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.5.1.20-RXN				
+rxn00909		TRUE		[SW] wrong electron carrier	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.5.1.20-RXN				
 rxn00410	>			[SW] never reported reversible according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=6.3.4.2#SUBSTRATE				
 rxn00859	>			[SW] never reported reversible according to BRENDA. Even reported IR in some cases.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.1.1.23#SUBSTRATE				
 rxn00863	>			[SW] never reported reversible according to BRENDA. Even reported IR in some cases.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.1.1.23#SUBSTRATE				
@@ -604,7 +604,7 @@ rxn01302	<			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn00927	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=PURINE-NUCLEOSIDASE-RXN				
 rxn01649	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=XANTHOSINEPHOSPHORY-RXN				
 rxn02186	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ACETOLACTREDUCTOISOM-RXN				
-rxn00249	>			[SW] never reported reversible according to BRENDA. Plus: Highly exergonic.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.1.1.299#SUBSTRATE				
+									
 rxn01454	<			[SW] never reported reversible according to BRENDA	http://www.brenda-enzymes.org/enzyme.php?ecno=2.3.3.10#NATURAL%20SUBSTRATES				
 rxn13429	<			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-12558				
 rxn05759	>			[SW] Changed according to MetaCyc & BRENDA. [SW+JZ] update, made only forward as otherwise its causing futile cycles (backwards reaction needs chemiosmotic coupling see rxn90057)	http://www.brenda-enzymes.org/enzyme.php?ecno=1.12.7.2#NATURAL%20SUBSTRATES http://dx.doi.org/10.1038/nrmicro1931				
@@ -1185,10 +1185,10 @@ rxn06424	<		-1:cpd00001:0:0:"H2O";-1:cpd01099:0:0:"Calcidiol";-2:cpd11621:0:0:"O
 rxn06451	<		-1:cpd03509:0:0:"(3Z)-Phytochromobilin";-2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd00067:0:0:"H+";1:cpd00389:0:0:"Biliverdin";2:cpd11620:0:0:"Reducedferredoxin"						
 rxn06507	>		-1:cpd00007:0:0:"O2";-2:cpd00067:0:0:"H+";-1:cpd02047:0:0:"DOC";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00001:0:0:"H2O";1:cpd01450:0:0:"Corticosterone";2:cpd11621:0:0:"Oxidizedferredoxin"						
 rxn06926	>		-8:cpd00001:0:0:"H2O";-8:cpd00002:0:0:"ATP";-1:cpd01090:0:0:"Ethyne";-4:cpd11620:0:0:"Reducedferredoxin";4:cpd00067:0:0:"H+";8:cpd00008:0:0:"ADP";8:cpd00009:0:0:"Phosphate";1:cpd03956:0:0:"Ethylene";4:cpd11621:0:0:"Oxidizedferredoxin";1:cpd11640:0:0:"H2"						
-rxn07189	>		-1:cpd00001:0:0:"H2O";-1:cpd00204:0:0:"CO";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";3:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"						
+rxn07189	=		-1:cpd00001:0:0:"H2O";-1:cpd00204:0:0:"CO";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";3:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"						
 rxn07191	>		-1:cpd00001:0:0:"H2O";-1:cpd00102:0:0:"Glyceraldehyde3-phosphate";-2:cpd11621:0:0:"Oxidizedferredoxin";3:cpd00067:0:0:"H+";1:cpd00169:0:0:"3-Phosphoglycerate";2:cpd11620:0:0:"Reducedferredoxin"		https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.2.7.5-RXN				
 rxn13775	>		-2:cpd00047:0:0:"Formate";-2:cpd11621:0:0:"Oxidizedferredoxin";-1:cpd00003:0:0:"NAD";2:cpd00011:0:0:"CO2";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"		http://www.rhea-db.org/reaction?id=46952				
-rxn14108	>		-1:cpd00001:0:0:"H2O";-1:cpd00448:0:0:"D-Glyceraldehyde";-2:cpd11621:0:0:"Oxidizedferredoxin";3:cpd00067:0:0:"H+";1:cpd00223:0:0:"Glycerate";2:cpd11620:0:0:"Reducedferredoxin"		https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.2.7.5-RXN				
+									
 									
 rxn05651	=		-1:cpd00048:1:0:"Sulfate";-2:cpd00067:1:0:"H+";1:cpd00048:0:0:"Sulfate";2:cpd00067:0:0:"H+"	[SW] Rule: sulfate:proton symport with ratio 2:1		transport			
 rxn11268			-1:cpd00012:1:0:"PPi";-3:cpd00067:1:0:"H+";1:cpd00012:0:0:"PPi";3:cpd00067:0:0:"H+"	[SW] Rule: diphosphate:proton symport with ratio 3:1					
@@ -1932,7 +1932,7 @@ rxn90015	>		-1:cpd00047:0:0:"Formate";-1:cpd00067:0:0:"H+";-1:cpd00038:0:0:"GTP"
 rxn90016	>		-1:cpd00047:0:0:"Formate";-1:cpd00067:0:0:"H+";-1:cpd00062:0:0:"UTP";1:cpd00358:0:0:"dUTP";1:cpd00001:0:0:"H2O";1:cpd00011:0:0:"CO2"	[SW] New Reaction. anaerobic ribonucleoside-triphosphate reductase.	https://metacyc.org/META/substring-search?type=NIL&object=1.1.98.6&quickSearch=Quick+Search		UTP-rd	Anaerobic Uridine desoxribonucleotide-triphosphate reductase	
 									
 rxn90017	>		-1:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd00069:0:0:"L-Tyrosine";-1:cpd00005:0:0:"NADPH";1:cpd00060:0:0:"L-Methionine";1:cpd00067:0:0:"H+";1:cpd01042:0:0:"p-Cresol";1:cpd03091:0:0:"5'-Deoxyadenosine";1:cpd14545:0:0:"Iminoglycine";1:cpd00006:0:0:"NADP"	[SW] New Reaction. Important for Thiman biosynthesis.	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-11319&detail-level=3		2-iminoacetate synthase	2-iminoacetate synthase	
-rxn90018	>		-2:cpd11620:0:0:"Reducedferredoxin";-2:cpd00006:0:0:"NADP";-1:cpd00004:0:0:"NADH";-1:cpd00067:0:0:"H+";2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd00005:0:0:"NADPH";1:cpd00003:0:0:"NAD"	[SW] New Reaction. Electron-Bifurcating Enzyme Complex (see reference). Direction in physiological direction.	Shuning Wang, Haiyan Huang, Johanna Moll, Rudolf K. Thauer (2010) Journal of Bacteriology		NfnAB	Coupled NADP reduction via ferredoxin and NADH	
+rxn90018	>		-2:cpd11620:0:0:"Reducedferredoxin";-2:cpd00006:0:0:"NADP";-1:cpd00004:0:0:"NADH";-1:cpd00067:0:0:"H+";2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd00005:0:0:"NADPH";1:cpd00003:0:0:"NAD"	[SW] New Reaction. Electron-Bifurcating Enzyme Complex (see reference). Direction in physiological direction. Nfn	Shuning Wang, Haiyan Huang, Johanna Moll, Rudolf K. Thauer (2010) Journal of Bacteriology		NfnAB	Coupled NADP reduction via ferredoxin and NADH (Nfn)	
 									
 rxn90019	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd00393:1:0:"Folate";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd00067:0:0:"H+";1:cpd00393:0:0:"Folate"	[SW] New reaction for ABC-Transporter for folate (3.a.1.28.2)			Fol-ABC-tr	folate ABC transporter	
 rxn90020	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd00557:1:0:"Siroheme";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd00557:0:0:"Siroheme";1:cpd00067:0:0:"H+"	[SW] New reaction for ABC-Transporter for siroheme			Siroheme-ABC-tr	Siroheme transport via ABC system	
@@ -2305,3 +2305,25 @@ rxn13158			-1:cpd12458:1:0:"Stearoyl-[acyl-carrier protein]";1:cpd12458:0:0:"Ste
 rxn10872		TRUE		[SW] model specific reaction					
 rxn10882		TRUE		[SW] model specific reaction					
 rxn10408		TRUE		[SW] duplicate reaction to rxn05251 but with wrong cpd-id for fatty acid product					
+									
+rxn90070	<		-1:cpd00047:0:0:"Formate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00067:0:0:"H+";2:cpd11620:0:0:"Reducedferredoxin"	[SW] ferredoxin based formate dehydrogenase for CO2 assimilation; possible entry to Ljungdahl-Wood pathway	https://doi.org/10.1186/1475-2859-12-118 https://doi.org/10.3389/fbioe.2020.621166		FDH-frdx	formate dehydrogenase (ferredoxin)	
+rxn01211	=			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=METHENYLTHFCYCLOHYDRO-RXN&&detail-level=2				
+rxn06149	=		-1:cpd00067:0:0:"H+";-1:cpd00345:0:0:"5-Methyltetrahydrofolate";-1:cpd12810:0:0:"Corrinoid";1:cpd00087:0:0:"Tetrahydrofolate";1:cpd12809:0:0:"Methylcorrinoid"	[SW] balanced and corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=METHCOCLTH-RXN&&detail-level=2				
+rxn12080	=		-2:cpd00067:0:0:"H+";-1:cpd00022:0:0:"Acetyl-CoA";-1:cpd12810:0:0:"Corrinoid";1:cpd00010:0:0:"CoA";1:cpd00204:0:0:"CO";1:cpd12809:0:0:"Methylcorrinoid"	[SW] balanced and corrected according to MetaCyc; EC 2.3.1.169	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=ACETYLSYNCLTH-RXN&&detail-level=2				
+rxn15370	>			[SW] Corrected according to BRENDA	https://www.brenda-enzymes.org/enzyme.php?ecno=4.4.1.9#NATURAL%20SUBSTRATE				
+rxn09412		TRUE		[SW] never reported with NAD as electron carrier, but with NADP (rxn02373)	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUTSEMIALDEHYDROG-RXN				
+rxn13071		TRUE		[SW] never reported with NAD as electron carrier, but with NADP (rxn02373)	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUTSEMIALDEHYDROG-RXN				
+rxn13072	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUTSEMIALDEHYDROG-RXN				
+									
+rxn90071	=		-2:cpd11620:0:0:"Reducedferredoxin";-2:cpd00003:0:0:"NAD";-1:cpd00345:0:0:"5-Methyltetrahydrofolate";2:cpd00004:0:0:"NADH";1:cpd00125:0:0:"5-10-Methylenetetrahydrofolate";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] New reaction for EC 1.5.1.M4 within the Ljungdahl-Wood pathway	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-21797&&detail-level=2		MET-HDR birfurcating	methylene tetrahydrofolate reductase (bifurcating)	
+rxn14108		TRUE		[SW] Not reported with ferredoxin					
+									
+rxn16350	<			[SW] electron bifurcating hydrogenase (can be left to right at high hydrogen partial pressure > 50-100 mbar)	https://dx.doi.org/10.1074%2Fjbc.M112.395038		HYD-bif-NAD	electron bifurcating hydrogenase (NAD, ferredoxin)	
+rxn90072	<		-1:cpd00011:0:0:"CO2";-1:cpd11640:0:0:"H2";1:cpd00047:0:0:"Formate";1:cpd00067:0:0:"H+"	[SW] hydrogenase based formate dehydrogenase for CO2 assimilation; possible entry to Ljungdahl-Wood pathway (can be left to right at high hydrogen and CO2 partial pressur with e.g. both > 100 mbar)	https://doi.org/10.1186/1475-2859-12-118 https://doi.org/10.3389/fbioe.2020.621166		FDH-hydrogenase	formate dehydrogenase (hydrogenase)	
+rxn13847		TRUE		[SW] Reaction not found in MetaCyc nor RHEA. Reducing agent is most likely NADH and not H2 (see 1.1.1.103)					
+rxn12136			-2:cpd00005:0:0:"NADPH";-2:cpd00067:0:0:"H+";-2:cpd16529:0:0:"Cinchoninone";2:cpd00006:0:0:"NADP";1:cpd03938:0:0:"Cinchonine";1:cpd08233:0:0:"Cinchonidine"	[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9212				
+rxn12137			-2:cpd00005:0:0:"NADPH";-2:cpd00067:0:0:"H+";-2:cpd16531:0:0:"Quinidinone";2:cpd00006:0:0:"NADP";1:cpd03936:0:0:"Quinine";1:cpd03937:0:0:"Quinidine"						
+rxn00157	<			[SW] Adjusted according to EcoCyc	https://ecocyc.org/ECOLI/NEW-IMAGE?type=REACTION&object=PYRUVFORMLY-RXN				
+rxn10480			-1:cpd00067:1:0:"H+";-1:cpd00204:0:0:"CO";1:cpd00204:1:0:"CO";1:cpd00067:0:0:"H+"	[SW] Since carbon monoxide is stored in the metabolite DB as protonated version (COH), diffusion needs to be implemented as proton antiport in order to achieve a net exchange of CO only					
+rxn03641	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-8889				
+rxn03642	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-20447				
