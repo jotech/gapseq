@@ -1,6 +1,6 @@
 The biomass reaction is an essential part in Flux Balance Analysis of microbial growth. The composition of the biomass reaction (i.e. stoichiometry of  molecular cell constituents) should ideally reflect the molecular makeup of the organism of interest.
 
-### Biomass reaction presets
+#### Biomass reaction presets
 
 gapseq currently provides three template biomass reactions: One for archaea and two for bacteria (Gram positive and Gram negative). 
 
@@ -30,6 +30,6 @@ gapseq currently provides three template biomass reactions: One for archaea and 
 
 
 
-### User-defined biomass reactions
+#### User-defined biomass reactions
 
 We are currently working on an additional feature to gapseq that allows users to specify biomass reactions that are different from the above mentioned presets. We will describe how to use this feature here as soon as it is implemented.
