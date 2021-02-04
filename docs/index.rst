@@ -35,6 +35,7 @@ Installation
    :caption: Database
 
    /database/biochemistry
+   /database/biomassReaction
 
 
 .. Tutorials
