@@ -2337,3 +2337,4 @@ rxn00157	<			[SW] Adjusted according to EcoCyc	https://ecocyc.org/ECOLI/NEW-IMAG
 rxn10480			-1:cpd00067:1:0:"H+";-1:cpd00204:0:0:"CO";1:cpd00204:1:0:"CO";1:cpd00067:0:0:"H+"	[SW] Since carbon monoxide is stored in the metabolite DB as protonated version (COH), diffusion needs to be implemented as proton antiport in order to achieve a net exchange of CO only					
 rxn03641	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-8889				
 rxn03642	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-20447				
+rxn14087			-1:cpd00308:0:0:"Malonate";-1:cpd11494:0:0:"Acetyl-ACP";1:cpd00029:0:0:"Acetate";1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-"	[SW] Mass and charge balanced					
