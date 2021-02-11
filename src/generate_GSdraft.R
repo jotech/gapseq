@@ -182,6 +182,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   
   rxns <- unique(dt_seed_single_and_there[,seed])
   
+  # table of reactions for draft network
   mseed <- mseed[(id %in% rxns)]
   
   #remove duplicate reactions

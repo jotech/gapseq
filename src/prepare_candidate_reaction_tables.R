@@ -21,7 +21,6 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt.trans[bitscore >= high.evi.rxn.BS, status := "good_blast"]
   dt.trans[bitscore <  high.evi.rxn.BS, status := "bad_blast"]
   
-  
   # This function checks if an gene was assigned to two different ec numbers, which however catalyse different reactions that are
   # usually catalysed by individual enzymes. Thus, the EC assignment with the lower bitscore is dismissed.
   resolve_common_EC_conflicts <- function(ec1, ec2, dt) {
@@ -143,10 +142,11 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
       dt[rxn == "NAD-SYNTH-NH3-RXN", pathway.status := NA_character_]
     }
   }
-  
+
   # prepare reaction/transporter blast results table
   dt <- splitcol2rows_mget(dt, "seed", " ")
   dt.trans <- splitcol2rows_mget(dt.trans, "seed", ",")
+  dt.trans <- dt.trans[!(seed %in% c("rxn90052","rxn10576"))] # ad hoc workaround. This is sometimes recognized as sodium transporter
   dt <- rbind(dt, dt.trans)
   
   #
@@ -232,7 +232,7 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt.cand[bs.tmp > high.evi.rxn.BS, bs.tmp := high.evi.rxn.BS] # if bitscore is higher than the bitscore threshold then assign a weight, that woulb be close to 0. 
   dt.cand[, weight := (bs.tmp - high.evi.rxn.BS) * ((0.005 - dummy.weight)/(high.evi.rxn.BS - min.bs.for.core)) + 0.005]
   dt.cand[weight < 0.005, weight := 0.005]
-  dt.cand[weight > dummy.weight, weight := 100]
+  dt.cand[weight > dummy.weight, weight := dummy.weight]
   dt.cand[, bs.tmp := NULL]
 
   return(list(dt = dt, dt.cand = dt.cand))

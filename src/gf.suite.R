@@ -133,7 +133,7 @@ if ( length(met.limit) > 0 ){
   carbon.source <- carbon.source[str_extract(id_seed, "cpd[0-9]+") == met.limit | exid_seed == met.limit | tolower(name) %like% tolower(met.limit) | altname %like% tolower(met.limit)]
   print(carbon.source)
   if( nrow(carbon.source)==0 ){
-    stop("Limittation of carbon sources failed, nothing found!")
+    stop("Limitation of carbon sources failed, nothing found!")
   }
 }
 

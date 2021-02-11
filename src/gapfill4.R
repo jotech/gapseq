@@ -22,7 +22,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
   mseed <- fread(paste0(script.dir, "/../dat/seed_reactions_corrected.tsv"), header=T, stringsAsFactors = F)
   mseed <- mseed[gapseq.status %in% c("approved","corrected")]
   mseed <- mseed[!(id %in% pres.rxns)]
-  #mseed <- mseed[id != "rxn90052"]
+  
   mseed <- merge(mseed, rxn.weights, by.x = "id", by.y = "seed", all.x = T)
   mseed[, core.rxn := !is.na(weight)] # reactions without blast hit are not considered core reactions for gapfill
   mseed[is.na(weight), weight := dummy.weight]
