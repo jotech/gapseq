@@ -1,5 +1,5 @@
 compounds,name,maxFlux
-cpd00363,Ethanol,1
+cpd00363,Ethanol,0.1
 cpd00001,H2O,100
 cpd01420,beta-Carotene,0.1
 cpd00365,Retinol,0.1
@@ -77,10 +77,17 @@ cpd03852,Docosahexaenoic acid,0.1
 cpd00211,Butyrate,1
 cpd03846,octanoate,0.1
 cpd00160,Cholesterol,1
-cpd11601,Pectin,10
+cpd27519,Pectin,10
 cpd00158,CELB,100
 cpd11732,Xylan,0.1
 cpd11970,Arabinoxylan,0.1
 cpd11955,Glucomannan,0.1
 cpd00656,Galactomannan,0.1
 cpd11696,beta-Glucan,1
+cpd00067,H+,100
+cpd00149,Co,0.1
+cpd00011,CO2,100
+cpd11640,H2,100
+cpd00048,SO4,0.1
+cpd00029,Acetate,1
+cpd00141,Propionate,1
