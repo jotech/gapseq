@@ -6,11 +6,20 @@ library(data.table)
 library(stringr)
 
 
-setwd("~/uni/gapseq/")
-reaDB <- fread("dat/seed_reactions_corrected.tsv")
-reaDB.new <- fread("dat/seed_reactions_new.tsv")
-reaEC <- fread("dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv", sep="\t")
-metDB <- fread("dat/seed_metabolites.tsv")
+# get current script path
+if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
+  # RStudio specific code
+  script.dir    <- dirname(rstudioapi::getSourceEditorContext()$path)
+} else{
+  initial.options <- commandArgs(trailingOnly = FALSE)
+  script.name <- sub("--file=", "", initial.options[grep("--file=", initial.options)])
+  script.dir  <- dirname(script.name)
+}
+
+reaDB <- fread(paste0(script.dir, "/../dat/seed_reactions_corrected.tsv"))
+reaDB.new <- fread(paste0(script.dir, "/../dat/seed_reactions_seednew.tsv"))
+reaEC <- fread(paste0(script.dir, "/../dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv"), sep="\t")
+metDB <- fread(paste0(script.dir, "/../dat/seed_metabolites.tsv"))
 
 #test <- reaDB[is_transport==1]
 test <- merge(reaDB[is_transport==1], reaDB.new[,.(id,aliases)], by="id", all.x=T)
@@ -119,30 +128,4 @@ test[lex>=2]
 #export <- test[!is.na(type) & exmet!="",.(id,name,type,exmet,exmetnames,stoichiometry,direction)]
 export <- test[!is.na(type) & exmet!="",.(id,name,type,exmet,exmetnames)]
 export$exmet <- gsub("(cpd[0-9]+)","\\1\\[e0\\]",export$exmet) # add compartment tag
-#fwrite(export, file="~/uni/gapseq/dat/seed_transporter.tbl", sep="\t", quote = F)
-
-
-
-#
-# OLD? tcdb 
-#
-
-library(Biostrings)
-tcdb <- readAAStringSet("/home/jo/uni/gapseq/dat/tcdb.fasta")
-names(tcdb)
-allMets <- unique(sort(unlist(str_split(export$exmetnames,";"))))
-allMets <- allMets[-grep("\\(", allMets)] # TODO: how to handle substance names with brackets?? (causing problems in grep search)
-allMets <- allMets[which(sapply(allMets, str_length) > 2)]
-ignore <- allMets
-allMets <- 
-key <- paste0(allMets, collapse = "|")
-key2 <- paste0("\\b",paste0(allMets, collapse = "\\b|\\b"), "\\b")
-t <- grep(key, names(tcdb),perl=T,value=F)
-t2 <- str_extract(names(tcdb), key)
-
-
-grep("chloride", names(tcdb),value=T)
-
-
-
-
+fwrite(export, file=paste0(script.dir, "/../dat/seed_transporter.tbl"), sep="\t", quote = F)

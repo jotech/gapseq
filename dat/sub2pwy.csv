@@ -382,4 +382,6 @@ Taurocholate	Taurocholic acid	EX_tchola(e)	tchola[e]	Bile acids		EX_cpd03047_e0	
 Glycochenodeoxycholate	Glycochenodeoxycholic acid	EX_dgchol(e)	dgchol[e]	Bile acids		EX_cpd03247_e0	cpd03247[e0]
 Taurochenodeoxycholate	Taurochenodeoxycholic acid	EX_tdchola(e)	tdchola[e]	Bile acids	    	EX_cpd03246_e0	cpd03246[e0]
 Cholate	Cholic acid	EX_cholate(e)	cholate[e]	Bile acids		EX_cpd00526_e0	cpd00526[e0]
-Chenodeoxycholate	Chenodiol	EX_C02528	C02528[e]	Bile acids		EX_cpd01663_e0	cpd01663[e0]
+Chenodeoxycholate	Chenodiol	EX_C02528(e)	C02528[e]	Bile acids		EX_cpd01663_e0	cpd01663[e0]
+Lithocholate	Lithocholic acid	EX_HC02191(e)	HC02191[e]	Bile acids		EX_cpd02475_e0	cpd02475[e0]
+Deoxycholate	Deoxycholic acid	EX_dchac(e)	dchac[e]	Bile acids		EX_cpd02733_e0	cpd02733[e0]

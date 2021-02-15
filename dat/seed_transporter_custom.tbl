@@ -3,3 +3,7 @@ rxn08617	glucose transport via diffusion (extracellular to periplasm)	2.Electroc
 rxn90019	folate ABC transporter	3.Primary active transporters	cpd00393[e0]	Folate
 rxn90020	Siroheme-transporting ATPase	3.Primary active transporters	cpd00557[e0]	Siroheme
 rxn90046	N-acetylgalactosamine PTS	4.Group translocators	cpd00832[e0]	N-acetylgalactosamine
+rxn90083	lithocholate symporter	2.Electrochemical potential-driven transporters	cpd02475[e0]	Lithocholate
+rxn43262	deoxycholate symporter	2.Electrochemical potential-driven transporters	cpd02733[e0]	Deoxycholate
+rxn47305	cholate symporter	2.Electrochemical potential-driven transporters	cpd00526[e0]	Cholate
+rxn40935	chenodeoxycholate symporter	2.Electrochemical potential-driven transporters	cpd01663[e0]	Chenodeoxycholate
