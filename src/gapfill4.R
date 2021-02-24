@@ -4,12 +4,6 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
   # backup model
   mod.orig.bak <- mod.orig
   
-  # square transformation of reaction weights
-  #rxn.weights[, weight := weight*dummy.weight]
-  
-  # linear transformation of reaction weights
-  #rxn.weights[, weight := weight*dummy.weight]
-  
   # Load dummy model
   mod <- mod.full
   mod <- sync_full_mod(mod.orig, mod)

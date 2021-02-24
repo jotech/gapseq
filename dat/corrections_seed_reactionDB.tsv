@@ -209,7 +209,6 @@ rxn02304	>			[SW] never reported reversible according to BRENDA, and irreversibl
 rxn08913	>			[SW] irrev.					
 rxn09941	>			[SW] irrev.					
 rxn08912	>			[SW] irrev.					
-rxn11676	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-7566				
 rxn08354	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=DIMESULFREDUCT-RXN				
 rxn13692	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=DIMESULFREDUCT-RXN				
 rxn09313	>			[SW] never reported reversible according to BRENDA, and irreversible according to MetaCyc.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.7.2.3#NATURAL%20SUBSTRATES # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5264				
@@ -1174,7 +1173,7 @@ rxn05902	<		-3:cpd00001:0:0:"H2O";-1:cpd00239:0:0:"H2S";-6:cpd11621:0:0:"Oxidize
 rxn05937	>		-1:cpd00006:0:0:"NADP";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00005:0:0:"NADPH";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Reaction was incomplete. Here newly balanced full reaction.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17897				
 rxn06990	>		-1:cpd00003:0:0:"NAD";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00004:0:0:"NADH";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Ferredoxin Stoichiometries corrected. Reverse direction possible, but only in the presense of sodium ion potential.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=FERREDOXIN--NAD%2b-REDUCTASE-RXN # Hess, V.; Schuchmann, K.; Mueller, V.; J. Biol. Chem. 288, 31496-31502 (2013)				
 rxn07849	>		-1:cpd00001:0:0:"H2O";-1:cpd00735:0:0:"Formylmethanofuran";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00643:0:0:"Methanofuran";2:cpd11620:0:0:"Reducedferredoxin";1:cpd00067:0:0:"H+"	[JZ][SW] Reaction was incomplete. Here new balances full reaction with correct oxidized/reduced state for ferredoxin	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=FORMYLMETHANOFURAN-DEHYDROGENASE-RXN				
-rxn05938	<		-1:cpd00011:0:0:"CO2";-1:cpd00022:0:0:"Acetyl-CoA";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00010:0:0:"CoA";1:cpd00020:0:0:"Pyruvate";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] never reported to be reversible.	https://www.brenda-enzymes.org/enzyme.php?ecno=3.5.4.27#NATURAL%20SUBSTRATES				
+rxn05938	=		-1:cpd00011:0:0:"CO2";-1:cpd00022:0:0:"Acetyl-CoA";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00010:0:0:"CoA";1:cpd00020:0:0:"Pyruvate";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Should be reversible.	https://www.brenda-enzymes.org/enzyme.php?ecno=3.5.4.27#NATURAL%20SUBSTRATES				
 rxn05939	=		-1:cpd00011:0:0:"CO2";-1:cpd00067:0:0:"H+";-1:cpd00078:0:0:"Succinyl-CoA";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00010:0:0:"CoA";1:cpd00024:0:0:"2-Oxoglutarate";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] reported for both directions.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.2.7.3#NATURAL%20SUBSTRATES				
 rxn05940	>		-1:cpd00010:0:0:"CoA";-1:cpd00094:0:0:"2-Oxobutyrate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00067:0:0:"H+";1:cpd00086:0:0:"Propionyl-CoA";2:cpd11620:0:0:"Reducedferredoxin"						
 rxn05942	>		-2:cpd00067:0:0:"H+";-1:cpd00125:0:0:"5-10-Methylenetetrahydrofolate";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00345:0:0:"5-Methyltetrahydrofolate";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] direction changed according to MetaCyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-5061				
@@ -2359,3 +2358,4 @@ rxn15620	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IM
 rxn15621	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-15105				
 rxn14350	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?object=ERYTHRONOLIDE-SYNTHASE-RXN&&redirect=T				
 rxn14196	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?object=ERYTHRONOLIDE-SYNTHASE-RXN&&redirect=T				
+rxn19214				[JZ] part of 7alpha-dehydroxylation					TRUE

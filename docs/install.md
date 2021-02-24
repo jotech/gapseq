@@ -64,4 +64,4 @@ The R-package for the interface between R and the cplex solver can be optained f
 - *SBML-Export*: In order to export valid SBML files, it is required to have the R-Package [*sybilSBML*](https://cran.r-project.org/web/packages/sybilSBML/index.html) with version 3.1.2 or higher. In addtion libSBML-core-plus-packages (>= 5.16) with *'groups'* and *'fbc'* extensions are required. Install instructions can be found on the CRAN page of [*sybilSBML*](https://cran.r-project.org/web/packages/sybilSBML/index.html).
 
 ***
-*source: [https://developer.ibm.com/docloud/blog/2019/07/04/cplex-optimization-studio-for-students-and-academics/](https://developer.ibm.com/docloud/blog/2019/07/04/cplex-optimization-studio-for-students-and-academics/)
+*source: [https://community.ibm.com/community/user/datascience/blogs/xavier-nodet1/2020/07/09/cplex-free-for-students](https://community.ibm.com/community/user/datascience/blogs/xavier-nodet1/2020/07/09/cplex-free-for-students)
