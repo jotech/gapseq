@@ -1,0 +1,5 @@
+domain	exclude.reaction	exclusion.reason
+Bacteria	rxn15962	involves Archaea-specific co-factor
+Bacteria	rxn15964	involves Archaea-specific co-factor
+Bacteria	rxn90052	involves Archaea-specific co-factor
+Bacteria	rxn03127	involves Archaea-specific co-factor

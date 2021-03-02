@@ -2,6 +2,7 @@
   "name" : "Archaeal biomass reaction",
   "ref" : "derived from https://doi.org/10.1038/msb4100046", 
   "energy_GAM" :  30,
+  "domain" : "Archaea",
   "met_groups" : [
     {
       "group_name" : "DNA",

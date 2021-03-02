@@ -2,6 +2,7 @@
   "name" : "Bacterial Gram-negative biomass reaction",
   "ref"  : "derived from ModelSEED and https://doi.org/10.1038/msb.2011.65",
   "energy_GAM" :  40,
+  "domain" : "Bacteria",
   "met_groups" : [
     {
       "group_name" : "DNA",

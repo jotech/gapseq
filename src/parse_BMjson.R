@@ -98,9 +98,10 @@ parse_BMjson <- function(json.file, gs_mets) {
   grp_tab[, id := paste0(id,"[",comp,"0]")]
   
   res <- list()
-  res$id   <- bmjs$id
-  res$name <- bmjs$name
-  res$bmS  <- grp_tab
+  res$id     <- bmjs$id
+  res$name   <- bmjs$name
+  res$domain <- bmjs$domain
+  res$bmS    <- grp_tab
   
   return(res)
 }

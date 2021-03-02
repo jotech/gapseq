@@ -261,25 +261,22 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     mod <- add_reaction_from_db(mod, react = "rxn05683", gs.origin = 1)
   }
   
-  #mod@genes_table <- copy(dt[bitscore>0])
   cat("\n")
   warnings()
   # Adding Biomass reaction
   if(biomass == "neg" | biomass == "Gram_neg"){
     ls.bm <- parse_BMjson(paste0(script.dir, "/../dat/biomass/biomass_Gram_neg.json"), seed_x_mets)
     dt.bm <- ls.bm$bmS
-    #dt.bm <- fread(paste0(script.dir, "/../dat/biomass/seed_biomass.DT_gramNeg.tsv"))
   }
   if(biomass == "pos" | biomass == "Gram_pos"){
     ls.bm <- parse_BMjson(paste0(script.dir, "/../dat/biomass/biomass_Gram_pos.json"), seed_x_mets)
     dt.bm <- ls.bm$bmS
-    #dt.bm <- fread(paste0(script.dir, "/../dat/biomass/seed_biomass.DT_gramPos.tsv"))
   }
   if(biomass == "archaea" | biomass == "Archaea"){
     ls.bm <- parse_BMjson(paste0(script.dir, "/../dat/biomass/biomass_archaea.json"), seed_x_mets)
     dt.bm <- ls.bm$bmS
-    #dt.bm <- fread(paste0(script.dir, "/../dat/biomass/seed_biomass.DT_archaea.tsv"))
   }
+  mod@mod_attr <- data.frame(annotation = paste0("tax_domain:",ls.bm$domain))
   
   
   if(biomass %in% c("neg","pos","Gram_neg","Gram_pos")) {

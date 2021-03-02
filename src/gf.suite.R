@@ -146,9 +146,38 @@ if ( toupper(file_ext(mod.file)) == "RDS" ){
 }else{ 
   mod.orig <- readSBMLmod(mod.file)}
 
+bu_mod_attr <- mod.orig@mod_attr
+
 # adjust environment if needed
 if(env[1] != "")
   mod <- adjust_model_env(mod, env, script.dir)
+
+# block reactions in domain, which do not have these reactions
+if(any(grepl("tax_domain:", mod.orig@mod_attr[,"annotation"], fixed = T))) {
+  domain.rxn.exclusions <- fread(paste0(script.dir, "/../dat/biomass/excluded_reactions.tsv"), header=T, stringsAsFactors = F)
+  
+  anno_ind   <- which(grepl("tax_domain:", mod.orig@mod_attr[,"annotation"], fixed = T))
+  org.domain <- str_match(mod.orig@mod_attr[anno_ind,"annotation"],"tax_domain\\:\\s*(.*)\\s*")[2]
+  
+  domain.rxn.exclusions <- domain.rxn.exclusions[domain == org.domain, exclude.reaction]
+  if(length(domain.rxn.exclusions) > 0) {
+    excl_rxns <- paste(domain.rxn.exclusions, collapse = "|")
+    
+    block_rxns_ids_orig <- mod.orig@react_id[grep(excl_rxns, mod.orig@react_id)]
+    if(length(block_rxns_ids_orig) > 0) {
+      mod.orig <- changeBounds(mod.orig, react = block_rxns_ids_orig, 
+                               lb = rep(0, length(block_rxns_ids_orig)),
+                               ub = rep(0, length(block_rxns_ids_orig)))
+    }
+    
+    block_rxns_ids_full <- mod@react_id[grep(excl_rxns, mod@react_id)]
+    if(length(block_rxns_ids_full) > 0) {
+      mod <- changeBounds(mod, react = block_rxns_ids_full, 
+                          lb = rep(0, length(block_rxns_ids_full)),
+                          ub = rep(0, length(block_rxns_ids_full)))
+    }
+  }
+}
 
 # This here is needed if another draft than GapSeq's own draft networks are gapfilled
 if((!"gs.origin" %in% colnames(mod.orig@react_attr))) {
@@ -624,9 +653,10 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
 
 mod.out <- add_missing_exchanges(mod.out)
 
-# add metabolite & reactions attributes
+# add metabolite-, reaction-, and model attributes
 mod.out <- addMetAttr(mod.out, seed_x_mets = seed_x_mets)
 mod.out <- addReactAttr(mod.out)
+mod.out@mod_attr <- bu_mod_attr
 
 if(!dir.exists(output.dir))
   system(paste0("mkdir ",output.dir))
