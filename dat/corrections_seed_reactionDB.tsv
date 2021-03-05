@@ -2359,3 +2359,24 @@ rxn15621	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IM
 rxn14350	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?object=ERYTHRONOLIDE-SYNTHASE-RXN&&redirect=T				
 rxn14196	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?object=ERYTHRONOLIDE-SYNTHASE-RXN&&redirect=T				
 rxn19214				[JZ] part of 7alpha-dehydroxylation					TRUE
+									
+rxn16344	>			[SW] Might be important for photosynthesis	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=THIOREDOXIN-RXN				
+									
+rxn00268	<			[SW] Corrected according to MetaCyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=GLYCINE-DEHYDROGENASE-RXN				
+rxn00690	>			[SW] Corrected according to MetaCyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=FORMATETHFLIG-RXN				
+									
+rxn11676	<			[SW] Corrected according to MetaCyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-7566				
+rxn11677	<			[SW] Corrected according to MetaCyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=1.21.4.3-RXN				
+rxn05239	>			[SW] Corrected according to MetaCyc	https://biocyc.org/ECOLI/NEW-IMAGE?type=REACTION&object=1.8.4.8-RXN				
+									
+rxn13098		TRUE		[SW] Wrong thioredoxin identifier (red)					
+rxn13078		TRUE		[SW] Wrong thioredoxin identifier (red)					
+rxn13079		TRUE		[SW] Wrong thioredoxin identifier (red)					
+rxn13080		TRUE		[SW] Wrong thioredoxin identifier (red)					
+rxn13081		TRUE		[SW] Wrong thioredoxin identifier (red)					
+rxn13135		TRUE		[SW] Wrong thioredoxin identifier (red)					
+rxn13136		TRUE		[SW] Wrong thioredoxin identifier (red)					
+rxn13137		TRUE		[SW] Wrong thioredoxin identifier (red)					
+rxn13138		TRUE		[SW] Wrong thioredoxin identifier (red)					
+									
+rxn90084	>		-1:cpd00001:0:0:"H2O";-1:cpd00196:0:0:"Acetylphosphate";-1:cpd00013:0:0:"NH3";-2:cpd00003:0:0:"NAD";-2:cpd11620:0:0:"Reducedferredoxin";2:cpd00004:0:0:"NADH";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00009:0:0:"Phosphate";1:cpd00033:0:0:"Glycine";1:cpd00067:0:0:"H+"	[SW] SAOB					
