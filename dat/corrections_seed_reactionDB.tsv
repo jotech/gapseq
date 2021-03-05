@@ -2378,5 +2378,3 @@ rxn13135		TRUE		[SW] Wrong thioredoxin identifier (red)
 rxn13136		TRUE		[SW] Wrong thioredoxin identifier (red)					
 rxn13137		TRUE		[SW] Wrong thioredoxin identifier (red)					
 rxn13138		TRUE		[SW] Wrong thioredoxin identifier (red)					
-									
-rxn90084	>		-1:cpd00001:0:0:"H2O";-1:cpd00196:0:0:"Acetylphosphate";-1:cpd00013:0:0:"NH3";-2:cpd00003:0:0:"NAD";-2:cpd11620:0:0:"Reducedferredoxin";2:cpd00004:0:0:"NADH";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00009:0:0:"Phosphate";1:cpd00033:0:0:"Glycine";1:cpd00067:0:0:"H+"	[SW] SAOB					
