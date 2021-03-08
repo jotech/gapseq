@@ -2378,3 +2378,8 @@ rxn13135		TRUE		[SW] Wrong thioredoxin identifier (red)
 rxn13136		TRUE		[SW] Wrong thioredoxin identifier (red)					
 rxn13137		TRUE		[SW] Wrong thioredoxin identifier (red)					
 rxn13138		TRUE		[SW] Wrong thioredoxin identifier (red)					
+									
+rxn90084	>		-1:cpd15380:0:0:"5'-deoxyribose";-1:cpd00002:0:0:"ATP";1:cpd00008:0:0:"ADP";1:cpd16441:0:0:"5-Deoxyribose-1-phosphate";1:cpd00067:0:0:"H+"	[SW] New reaction for 5-deoxyadenosine salvage	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-21317		sm5trk	S-methyl-5-thioribose kinase	
+rxn39250	>		-1:cpd00009:0:0:"Phosphate";-1:cpd03091:0:0:"5-Deoxyadenosine";1:cpd00128:0:0:"Adenine";1:cpd16441:0:0:"5-Deoxyribose-1-phosphate"	[SW] Reaction corrected for 5-deoxyadenosine salvage pathway	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-8131				
+rxn39251	=		-1:cpd16441:0:0:"5-Deoxyribose-1-phosphate";1:cpd30797:0:0:"5-deoxy-D-ribulose-1-phosphate"	[SW] Reaction corrected for 5-deoxyadenosine salvage pathway	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-8131		sm5tr1pi	S-methyl-5-thioribose-1-phosphate isomerase	
+rxn39252	=		-1:cpd30797:0:0:"5-deoxy-D-ribulose-1-phosphate";1:cpd00071:0:0:"Acetaldehyde";1:cpd00095:0:0:"Glycerone-phosphate"	[SW] Reaction corrected for 5-deoxyadenosine salvage pathway	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-8131				
