@@ -1,7 +1,7 @@
 # gapseq
 _Informed prediction and analysis of bacterial metabolic pathways and genome-scale networks_  
 [![Documentation Status](https://readthedocs.org/projects/gapseq/badge/?version=latest)](https://gapseq.readthedocs.io/en/latest/?badge=latest)
-[![DOI:10.1101/2020.03.20.000737](https://zenodo.org/badge/DOI/10.1101/2020.03.20.000737.svg)](https://doi.org/10.1101/2020.03.20.000737)  
+[![DOI:10.1186/s13059-021-02295-1](https://zenodo.org/badge/DOI/10.1186/s13059-021-02295-1.svg)](https://doi.org/10.1186/s13059-021-02295-1)  
 
 
 _gapseq_ is designed to combine metabolic pathway analysis with metabolic network reconstruction and curation.
@@ -16,9 +16,7 @@ Based on genomic information and databases for pathways and reactions, _gapseq_ 
 </p>
 
 ## Publication
-*gapseq: Informed prediction of bacterial metabolic pathways and reconstruction of accurate metabolic models.* \
-Johannes Zimmermann, Christoph Kaleta, Silvio Waschina.\
-preprint [bioRxiv](https://doi.org/10.1101/2020.03.20.000737)
+Zimmermann, J., Kaleta, C. & Waschina, S. [gapseq: informed prediction of bacterial metabolic pathways and reconstruction of accurate metabolic models.](https://doi.org/10.1186/s13059-021-02295-1) *Genome Biol* 22, 81 (2021)
 
 
 ## Installation
