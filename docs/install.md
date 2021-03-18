@@ -27,6 +27,17 @@ R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("Bi
 git clone https://github.com/jotech/gapseq && cd gapseq
 ```
 
+## conda
+There is no conda gapseq package available yet but all dependencies can be installed from conda channels without super user rights:
+```
+conda create --name gapseq
+conda activate gapseq
+conda config --add channels defaults && conda config --add channels bioconda && conda config --add channels conda-forge
+conda install bash blast r perl barrnap parallel gawk sed grep bc bedtools exonerate glpk hmmer r-data.table r-stringr r-stringi r-getopt r-reshape2 r-doParallel r-foreach r-r.utils r-sybil bioconductor-biostrings r-jsonlite
+R -e 'install.packages(c("glpkAPI", "CHNOSZ"))'
+git clone https://github.com/jotech/gapseq && cd gapseq
+```
+
 ## SBML
 The Systems Biology markup Language (SBML) can be used to exchange model files between gapseq and other programs.
 Occasionally, the installation can cause some issues that is why SBML is listed as optional dependency.
