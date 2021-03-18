@@ -25,7 +25,7 @@ Besides this, the current development version can be accessed via:
 ```
 git clone https://github.com/jotech/gapseq
 ```
-Detailed information and troubleshooting are listed [here](https://github.com/jotech/gapseq/blob/master/docs/install.md).
+Detailed information on [installation and troubleshooting](https://github.com/jotech/gapseq/blob/master/docs/install.md).
 
 
 ## Quickstart
