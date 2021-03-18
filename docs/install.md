@@ -33,7 +33,7 @@ There is no conda gapseq package available yet but all dependencies can be insta
 conda create --name gapseq
 conda activate gapseq
 conda config --add channels defaults && conda config --add channels bioconda && conda config --add channels conda-forge
-conda install bash blast r perl barrnap parallel gawk sed grep bc bedtools exonerate glpk hmmer r-data.table r-stringr r-stringi r-getopt r-reshape2 r-doParallel r-foreach r-r.utils r-sybil bioconductor-biostrings r-jsonlite
+conda install bash blast r perl barrnap parallel gawk sed grep bc bedtools exonerate glpk hmmer r-data.table r-stringr r-stringi r-getopt r-reshape2 r-doParallel r-foreach r-r.utils r-sybil bioconductor-biostrings r-jsonlite git
 R -e 'install.packages(c("glpkAPI", "CHNOSZ"))'
 git clone https://github.com/jotech/gapseq && cd gapseq
 ```
