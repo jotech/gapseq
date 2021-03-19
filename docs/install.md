@@ -21,7 +21,7 @@ git clone https://github.com/jotech/gapseq && cd gapseq
 ## MacOS
 Using [homebrew](https://brew.sh)
 ```
-brew install coreutils binutils git glpk blast bedtools r brewsci/bio/barrnap grep bc
+brew install coreutils binutils git glpk blast bedtools r brewsci/bio/barrnap grep bc gzip
 R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite"))'
 R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Biostrings")'
 git clone https://github.com/jotech/gapseq && cd gapseq
