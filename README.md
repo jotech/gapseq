@@ -16,7 +16,7 @@ Based on genomic information and databases for pathways and reactions, _gapseq_ 
 </p>
 
 ## Publication
-Zimmermann, J., Kaleta, C. & Waschina, S. [gapseq: informed prediction of bacterial metabolic pathways and reconstruction of accurate metabolic models.](https://doi.org/10.1186/s13059-021-02295-1) *Genome Biol* 22, 81 (2021)
+Zimmermann, J., Kaleta, C. & Waschina, S. [gapseq: informed prediction of bacterial metabolic pathways and reconstruction of accurate metabolic models.](https://doi.org/10.1186/s13059-021-02295-1) *Genome Biology* 22, 81 (2021)
 
 
 ## Installation
