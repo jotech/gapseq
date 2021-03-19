@@ -26,7 +26,7 @@ R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "reshape2",
 R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Biostrings")'
 git clone https://github.com/jotech/gapseq && cd gapseq
 ```
-Some additional discussion and and trouble shooting can be found [here](https://github.com/jotech/gapseq/issues/28).
+Some additional discussion and and trouble shooting can be found here: [1](https://apple.stackexchange.com/a/69332), [2](https://github.com/jotech/gapseq/issues/28).
 
 ## conda
 There is no conda gapseq package available yet but all dependencies can be installed from conda channels without super user rights:
