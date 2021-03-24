@@ -2389,3 +2389,9 @@ rxn07291		TRUE		[SW] duplicate reaction to rxn25839. Removing rxn07291
 rxn07292		TRUE		[SW] duplicate reaction to rxn25837. Removing rxn07292					
 rxn07293		TRUE		[SW] incomplete reaction and dead end					
 rxn07294		TRUE		[SW] incomplete reaction and dead end					
+									
+rxn90085	>		-1:cpd00313:0:0:"Quercetin";-1:cpd00005:0:0:"NADPH";-2:cpd00067:0:0:"H+";1:cpd01135:0:0:"Taxifolin";1:cpd00006:0:0:"NADP"	[SW] new pathway for anaerobic quercetin degradation	10.1128/AEM.67.12.5558-5567.2001		Quc-red	Quercetin reductase	
+rxn90086	=		-1:cpd01135:0:0:"Taxifolin";1:cpd90015:0:0:"Alphitonin"	[SW] new pathway for anaerobic quercetin degradation. Chalcone isomerase EC 5.5.1.6	10.1128/JB.00490-16		tai	Taxofolin isomerase	
+rxn90087	>		-1:cpd90015:0:0:"Alphitonin";-2:cpd00001:0:0:"H2O";-1:cpd00003:0:0:"NAD";1:cpd00004:0:0:"NADH";2:cpd00067:0:0:"H+";1:cpd00011:0:0:"CO2";1:cpd01473:0:0:"Phloroglucinol";1:cpd00854:0:0:"Homoprotocatechuate"	[SW] new pathway for anaerobic quercetin degradation	10.1128/AEM.67.12.5558-5567.2001		Alph-decarboxy-oxi	Alphitonine decarboxylase (oxidative)	
+rxn90088	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd00313:1:0:"Quercetin";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd00313:0:0:"Quercetin";1:cpd00067:0:0:"H+"	[SW] ABC transporter for Quercetin import			Quc-abc-transport	Quercetin ABC transporter (putative)	
+rxn90089	=		-1:cpd00854:0:0:"Homoprotocatechuate";-1:cpd00067:0:0:"H+";1:cpd00854:1:0:"Homoprotocatechuate";1:cpd00067:1:0:"H+"	[SW] Homoprotocatechuate/3,4-dihydroxyphenyl-acetate permease			34DOPACpermease	3,4-dihydroxyphenylacetate permease (putative)	
