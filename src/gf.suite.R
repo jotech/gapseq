@@ -193,6 +193,7 @@ mod.orig       <- add_missing_diffusion(mod.orig)
 #mod.orig       <- changeBounds(mod.orig, react="EX_cpd11640_e0", lb=0, ub=1) # TODO: Limit the hydrogen evolution rate. Check if it's necessary.
 
 # create complete medium
+cat("using media file", media.file, "\n")
 if( media.file == "complete" ){
   met.pos <- findExchReact(mod.orig)@met_pos
   met.id  <- gsub("\\[.0\\]","",mod.orig@met_id[met.pos])
