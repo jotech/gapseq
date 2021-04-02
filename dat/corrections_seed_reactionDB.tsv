@@ -13,7 +13,6 @@ rxn00610	>			[SW] Reaction never reported to be reversible.	https://www.brenda-e
 rxn00220	>			[SW] Reaction never reported to be reversible.	https://www.brenda-enzymes.org/enzyme.php?ecno=3.1.3.58#SUBSTRATE				
 rxn00391	>			[SW] Reaction never reported to be reversible.	https://www.brenda-enzymes.org/enzyme.php?ecno=3.1.3.102#SUBSTRATE				
 rxn01172	>			[SW] Reaction irreversible.	Nakamura, K.; Bernheim, F.; Biochim. Biophys. Acta 50, 147-152 (1961)				
-rxn00532	>			[SW] Reaction irreversible.	Hayaishi, O.; Nishizuka, Y.; Tatibana, M.; Takeshita, M.; Kuno, S.; J. Biol. Chem. 236, 781-790 (1961)				
 rxn00132	>			[SW] Reaction never reported to be reversible.	https://www.brenda-enzymes.org/enzyme.php?ecno=3.1.3.5#NATURAL%20SUBSTRATES				
 rxn02058	>			[SW] Reaction never reported to be reversible.	https://www.brenda-enzymes.org/enzyme.php?ecno=3.1.3.50#NATURAL%20SUBSTRATES				
 rxn00578	>			[SW] Reaction never reported to be reversible.	https://www.brenda-enzymes.org/enzyme.php?ecno=3.1.3.24#NATURAL%20SUBSTRATES				
@@ -147,7 +146,6 @@ rxn00910	<			[SW] Reaction mainly irreversible according to BRENDA and MetaCyc	h
 rxn04954	<			[SW] Reaction mainly irreversible according to BRENDA and MetaCyc	http://www.brenda-enzymes.org/enzyme.php?ecno=1.5.1.20#SUBSTRATE # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.5.1.20-RXN				
 rxn01874	>			[SW] Reaction irreversible according to BRENDA and MetaCyc	http://www.brenda-enzymes.org/enzyme.php?ecno=2.1.1.96#SUBSTRATE # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=THIOETHER-S-METHYLTRANSFERASE-RXN				
 rxn00421	>			[SW] Reaction irreversible according to BRENDA	https://www.brenda-enzymes.org/enzyme.php?ecno=2.7.1.80#SUBSTRATE				
-rxn02181		TRUE		[SW] cannot find this reaction in other databases					
 rxn02708	>			[SW] Strongly exergonic reaction. Most likely irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=DTDP-GALACTOSE-6-DEHYDROGENASE-RXN				
 rxn01243	>			[SW] Reaction reported irreversible.	https://www.brenda-enzymes.org/enzyme.php?ecno=1.2.4.2#SUBSTRATE				
 rxn11355	>			[SW] New direction according to Metacyc. Kinases are most commonly irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-8443				
@@ -612,7 +610,7 @@ rxn01867	>			[SW] Reaction highly exergonic.	https://metacyc.org/META/NEW-IMAGE?
 rxn10770	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-6021				
 rxn01459	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=AMINOBUTDEHYDROG-RXN				
 rxn01851	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=AMINOBUTDEHYDROG-RXN				
-rxn16141	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-5293				
+rxn16141	<			[JZ] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-11002				
 rxn00085	<			[SW] Most commonly found irreversible	http://www.brenda-enzymes.org/enzyme.php?ecno=1.4.1.13#NATURAL%20SUBSTRATES				
 rxn03005	=		-1:cpd00201:0:0:"10-Formyltetrahydrofolate";-1:cpd02394:0:0:"GAR";1:cpd00067:0:0:"H+";1:cpd00087:0:0:"Tetrahydrofolate";1:cpd02678:0:0:"N-Formyl-GAR"	[SW] 5-10 THF is wrong reactant here. Should be 10-THF	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GART-RXN				
 rxn03004	=			[SW] Rev. according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GART-RXN				
@@ -2395,3 +2393,5 @@ rxn90086	=		-1:cpd01135:0:0:"Taxifolin";1:cpd90015:0:0:"Alphitonin"	[SW] new pat
 rxn90087	>		-1:cpd90015:0:0:"Alphitonin";-2:cpd00001:0:0:"H2O";-1:cpd00003:0:0:"NAD";1:cpd00004:0:0:"NADH";2:cpd00067:0:0:"H+";1:cpd00011:0:0:"CO2";1:cpd01473:0:0:"Phloroglucinol";1:cpd00854:0:0:"Homoprotocatechuate"	[SW] new pathway for anaerobic quercetin degradation	10.1128/AEM.67.12.5558-5567.2001		Alph-decarboxy-oxi	Alphitonine decarboxylase (oxidative)	
 rxn90088	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd00313:1:0:"Quercetin";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd00313:0:0:"Quercetin";1:cpd00067:0:0:"H+"	[SW] ABC transporter for Quercetin import			Quc-abc-transport	Quercetin ABC transporter (putative)	
 rxn90089	=		-1:cpd00854:0:0:"Homoprotocatechuate";-1:cpd00067:0:0:"H+";1:cpd00854:1:0:"Homoprotocatechuate";1:cpd00067:1:0:"H+"	[SW] Homoprotocatechuate/3,4-dihydroxyphenyl-acetate permease			34DOPACpermease	3,4-dihydroxyphenylacetate permease (putative)	
+									
+rxn43573	>		-1:cpd07946:0:0:4-Hydroxybutyryl-CoA;1:cpd00001:0:0:H2O;1:cpd00650:0:0:Crotonyl-CoA	[JZ] Added from new seed reactions + forward direction only	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-8890			4-hydroxybutanoyl-CoA dehydratase	
