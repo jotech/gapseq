@@ -144,9 +144,9 @@ correct_seed_rxnDB <- function(script.path) {
                   rownames = FALSE)
     widget$sizingPolicy$browser$fill <- TRUE 
     
-    DT::saveWidget(widget,
-                   file=paste0(script.path,"/../dat/gapseq_reactions.html"),
-                   title="gapseq reactions", selfcontained=TRUE)
+    #DT::saveWidget(widget,
+    #               file=paste0(script.path,"/../dat/gapseq_reactions.html"),
+    #               title="gapseq reactions", selfcontained=TRUE)
   }
   print(table(mseed$gapseq.status))
 }

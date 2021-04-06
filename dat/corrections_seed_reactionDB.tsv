@@ -2007,7 +2007,7 @@ rxn03173			-1:cpd00001:0:0:"H2O";-1:cpd02978:0:0:"7,8-Dihydroneopterin 3'-tripho
 rxn03542			-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd00149:0:0:"Co2+";-1:cpd03913:0:0:"Hydrogenobyrinate diamide";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";5:cpd00067:0:0:"H+";1:cpd03914:0:0:"Cob(II)yrinate diamide"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
 rxn00302			-1:cpd00001:0:0:"H2O";-1:cpd00038:0:0:"GTP";1:cpd03518:0:0:"Formamidopyrimidine nucleoside triphosphate";1:cpd00067:0:0:"H+"	[SW] proton balance due to update formula of cpd00423 and cpd00635					
 									
-rxn04959			-1:cpd00013:0:0:"NH3";-1:cpd00165:0:0:"Hydroxylamine";1:cpd00001:0:0:"H2O";1:cpd03177:0:0:"Hydrazine";1:cpd00067:0:0:"H+"						
+rxn04959		TRUE							
 rxn11779			-1:cpd00001:0:0:"H2O";-1:cpd04344:0:0:"Isoniazid";1:cpd03177:0:0:"Hydrazine";1:cpd04623:0:0:"Isonicotinic acid";1:cpd00067:0:0:"H+"						
 rxn12218			-1:cpd10515:0:0:"Fe2+";-1:cpd01476:0:0:"Protoporphyrin";1:cpd00028:0:0:"Heme";2:cpd00067:0:0:"H+"						
 rxn12221			-1:cpd10515:0:0:"Fe2+";-1:cpd03426:0:0:"Sirohydrochlorin";2:cpd00067:0:0:"H+";1:cpd00557:0:0:"Siroheme"						
@@ -2395,3 +2395,7 @@ rxn90088	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd00313:1:0:"Quercet
 rxn90089	=		-1:cpd00854:0:0:"Homoprotocatechuate";-1:cpd00067:0:0:"H+";1:cpd00854:1:0:"Homoprotocatechuate";1:cpd00067:1:0:"H+"	[SW] Homoprotocatechuate/3,4-dihydroxyphenyl-acetate permease			34DOPACpermease	3,4-dihydroxyphenylacetate permease (putative)	
 									
 rxn43573	>		-1:cpd07946:0:0:4-Hydroxybutyryl-CoA;1:cpd00001:0:0:H2O;1:cpd00650:0:0:Crotonyl-CoA	[JZ] Added from new seed reactions + forward direction only	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-8890			4-hydroxybutanoyl-CoA dehydratase	
+									
+rxn90090	>		-1:cpd00007:0:0:"O2";-1:cpd00013:0:0:"NH3";-1:cpd15561:0:0:"Ubiquinol-8";1:cpd00001:0:0:"H2O";1:cpd00067:0:0:"H+";1:cpd00165:0:0:"Hydroxylamine";1:cpd15560:0:0:"Ubiquinone-8"	[JZ] Electron carrier is not certain but quinone pool is used in other metabolic models	https://amb-express.springeropen.com/track/pdf/10.1186/s13568-018-0635-y.pdf		AMO	ammonia monooxygenase	
+rxn40053	>		-1:cpd00001:0:0:"H2O";-4:cpd00109:0:0:"Cytochrome c3+";-1:cpd00165:0:0:"Hydroxylamine";5:cpd00067:0:0:"H+";1:cpd00075:0:0:"Nitrite";4:cpd00110:0:0:"Cytochrome c2+"	[JZ] imported from new seed reactions + corrected to only forward	https://modelseed.org/biochem/reactions/rxn40053		HAO	hydroxylamine dehydrogenase	
+rxn90091	>		-1:cpd00001:0:0:"H2O";-1:cpd00075:0:0:"Nitrite";-2:cpd00109:0:0:"Cytochrome c3+";2:cpd00067:0:0:"H+";1:cpd00209:0:0:"Nitrate";2:cpd00110:0:0:"Cytochrome c2+"	[JZ] identical to rxn20694 but with different cytochrome pair	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=P282-PWY		NOR	Nitrite oxidoreductase	
