@@ -64,7 +64,7 @@ if  grep -q "OK" opt.log; then
 fi
 
 # blast
-fasta=$dir/../dat/seq/Bacteria/rev/1.2.4.1.fasta
+fasta=$dir/../dat/seq/Bacteria/user/1.2.1.87.fasta
 tmp_file=$(mktemp)
 gunzip -c $dir/../toy/myb71.fna.gz > $tmp_file
 makeblastdb -in $tmp_file -dbtype nucl -out orgdb >/dev/null
