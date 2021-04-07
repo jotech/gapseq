@@ -19,7 +19,7 @@ git clone https://github.com/jotech/gapseq && cd gapseq
 ```
 
 ## MacOS
-Using [homebrew](https://brew.sh)
+Using [homebrew](https://brew.sh). Please note: Some Mac-Users reported difficulties to install gapseq on MacOS using the following commands. The issues are mainly due to some Mac-specific functioning of central programs such as sed, awk, and grep. If you are experiencing issues, we recommend to try to install gapseq in an own conda environment using the steps describes [below](#conda).
 ```
 brew install coreutils binutils git glpk blast bedtools r brewsci/bio/barrnap grep bc gzip
 R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite"))'
@@ -29,34 +29,76 @@ git clone https://github.com/jotech/gapseq && cd gapseq
 Some additional discussion and and trouble shooting can be found here: [1](https://apple.stackexchange.com/a/69332), [2](https://github.com/jotech/gapseq/issues/28).
 
 ## conda
-There is no conda gapseq package available yet but all dependencies can be installed from conda channels without super user rights:
-```
+There is no conda gapseq package available yet but all dependencies can be installed from conda channels without super user rights using the following steps:
+
+##### 1. Install Mini-/Anaconda
+
+Follow the instructions provided by conda to Install [Anaconda/Miniconda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html).
+
+##### 2. Create conda environment for gapseq and adding package sources
+
+```sh
 conda create --name gapseq
 conda activate gapseq
 conda config --add channels defaults && conda config --add channels bioconda && conda config --add channels conda-forge
-conda install bash blast r perl barrnap parallel gawk sed grep bc bedtools exonerate glpk hmmer r-data.table r-stringr r-stringi r-getopt r-reshape2 r-doParallel r-foreach r-r.utils r-sybil bioconductor-biostrings r-jsonlite git
-R -e 'install.packages(c("glpkAPI", "CHNOSZ"))'
-git clone https://github.com/jotech/gapseq && cd gapseq
 ```
 
-## SBML
+##### 3. Install required packages
+```sh
+# basic dependencies
+conda install bash r perl parallel gawk sed grep bc git coreutils wget
+# packages for handling biological sequences
+conda install barrnap bedtools exonerate glpk hmmer blast
+# R-package dependencies (via conda repos)
+conda install r-data.table r-stringr r-stringi r-getopt r-doParallel r-foreach r-r.utils r-sybil r-biocmanager bioconductor-biostrings r-jsonlite 
+# additional R-package dependencies (via CRAN)
+Rscript -e 'if( file.access(Sys.getenv("R_LIBS_USER"), mode=2) == -1 ) dir.create(path = Sys.getenv("R_LIBS_USER"), showWarnings = FALSE, recursive = TRUE)'
+R -e 'install.packages(c("glpkAPI", "CHNOSZ"), repos="http://cran.us.r-project.org")'
+```
+
+##### 4. Clone latest version of gapseq and dowload reference sequence database
+
+First, use `cd` to go to the directory where you would like to install gapseq to. E.g. `cd ~/Software`. Next, use the following commands to fetch the latest version of gapseq from github:
+```sh
+# cloning gapseq
+git clone https://github.com/jotech/gapseq && cd gapseq
+# download ref.-sequence DB
+src/./update_sequences.sh
+```
+
+##### 5. Test the installation
+```sh
+./gapseq test
+```
+
+## <a name="sbmlsupport"></a> SBML support
 The Systems Biology markup Language (SBML) can be used to exchange model files between gapseq and other programs.
 Occasionally, the installation can cause some issues that is why SBML is listed as optional dependency.
-There should be a ``libsbml`` package available for most linux distributions:
+There should be a ``libsbml`` package (version 5.18.0 or later) available for most linux distributions:
 ```
 sudo apt install libsbml5-dev # debian/ubuntu
 sudo yum install libsbml-devel # fedora/centos
 ```
 For MacOS, libsbml is not part of homebrew but a installation file can be downloaded from [here](https://sourceforge.net/projects/sbml/files/libsbml/5.18.0/stable/Mac%20OS%20X/).
-Next, the installation of the R SBML package ``sybilSBML`` should be possible:
-```R
-install.packages("sybilSBML")
+
+Please make sure, that `libsbml` is installed together with its [fbc-extension](http://sbml.org/Main_Page).
+
+Next, we need to install the R-package `sybilSBML`, version 3.1.2. Unfortunately, the package is currently not available anymore from the CRAN repository. However, the latest version can still be downloaded and installed from CRAN's archives:
+
+```
+wget https://cran.r-project.org/src/contrib/Archive/sybilSBML/sybilSBML_3.1.2.tar.gz
+R CMD INSTALL sybilSBML_3.1.2.tar.gz
 ```
 A common problem ist that the library path could not be found during installation of ``sybilSBML``. In this case, it may be necessary to specify the ``include`` and ``lib`` folder:
 ```
 R CMD INSTALL --configure-args="--with-sbml-include=/path/to/libsbml-5.18.0/include/ --with-sbml-lib=/path/to/libsbml-5.18.0/lib/" sybilSBML_3.1.2.tar.gz
 ```
-The sybilSBML archive is available at [CRAN](https://cran.r-project.org/package=sybilSBML) or [gitlab](https://gitlab.cs.uni-duesseldorf.de/general/ccb/sybilSBML) together with more detailed installation information at [CRAN](https://cran.r-project.org/web/packages/sybilSBML/INSTALL) or [gitlab](https://gitlab.cs.uni-duesseldorf.de/general/ccb/sybilSBML/-/blob/master/inst/INSTALL).
+The sybilSBML archive is available at [gitlab](https://gitlab.cs.uni-duesseldorf.de/general/ccb/sybilSBML) together with more detailed installation information also at [gitlab](https://gitlab.cs.uni-duesseldorf.de/general/ccb/sybilSBML/-/blob/master/inst/INSTALL). Also, you may find more information on troubleshooting sybilSBML installation at this [gist-discussion](https://gist.github.com/dosorio/ea4baf66ee68821014d7dc6d92a48c55).
+
+## cplex solver support
+
+We recommend using *cplex* als LP-solver as it is usually faster than *glpk*. The cplex solver is included in the *IBM ILOG CPLEX Optimization Studio*, which is free* for students and academics through the **IBM Academic Initiative** programm ([see here](https://developer.ibm.com/docloud/blog/2019/07/04/cplex-optimization-studio-for-students-and-academics/)). Please follow the installation instructions for *cplex* provided by IBM.
+The R-package for the interface between R and the cplex solver can be optained from CRAN ([cplexAPI on CRAN](https://cran.r-project.org/web/packages/cplexAPI/index.html)). For *cplexAPI* installation please refer to instructions [here](https://cran.r-project.org/web/packages/cplexAPI/INSTALL).
 
 
 ## Troubleshooting
@@ -71,9 +113,7 @@ Rscript -e 'if( file.access(Sys.getenv("R_LIBS_USER"), mode=2) == -1 ) dir.creat
 wget https://cran.r-project.org/src/contrib/glpkAPI_1.3.2.tar.gz
 R CMD INSTALL --configure-args="--enable-gmp=no" glpkAPI_1.3.2.tar.gz
 ```
-- we recommend using *cplex* als LP-solver as it is usually faster than *glpk*. The cplex solver is included in the *IBM ILOG CPLEX Optimization Studio*, which is free* for students and academics through the **IBM Academic Initiative** programm ([see here](https://developer.ibm.com/docloud/blog/2019/07/04/cplex-optimization-studio-for-students-and-academics/)). Please follow the installation instructions for *cplex* provided by IBM.
-The R-package for the interface between R and the cplex solver can be optained from CRAN ([cplexAPI on CRAN](https://cran.r-project.org/web/packages/cplexAPI/index.html)). For *cplexAPI* installation please refer to instructions [here](https://cran.r-project.org/web/packages/cplexAPI/INSTALL).
-- *SBML-Export*: In order to export valid SBML files, it is required to have the R-Package [*sybilSBML*](https://cran.r-project.org/web/packages/sybilSBML/index.html) with version 3.1.2 or higher. In addtion libSBML-core-plus-packages (>= 5.16) with *'groups'* and *'fbc'* extensions are required. Install instructions can be found on the CRAN page of [*sybilSBML*](https://cran.r-project.org/web/packages/sybilSBML/index.html).
+- *SBML-Export*: In order to export valid SBML files, it is required to have the R-Package [*sybilSBML*](https://cran.r-project.org/web/packages/sybilSBML/index.html) with version 3.1.2 or higher. In addtion libSBML-core-plus-packages (>= 5.16) with *'groups'* and *'fbc'* extensions are required. See also [SBML Support](#sbmlsupport)
 
 ***
 *source: [https://community.ibm.com/community/user/datascience/blogs/xavier-nodet1/2020/07/09/cplex-free-for-students](https://community.ibm.com/community/user/datascience/blogs/xavier-nodet1/2020/07/09/cplex-free-for-students)
