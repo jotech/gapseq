@@ -31,11 +31,11 @@ Some additional discussion and and trouble shooting can be found here: [1](https
 ## conda
 There is no conda gapseq package available yet but all dependencies can be installed from conda channels without super user rights using the following steps:
 
-##### 1. Install Mini-/Anaconda
+**1. Install Mini-/Anaconda**
 
 Follow the instructions provided by conda to Install [Anaconda/Miniconda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html).
 
-##### 2. Create conda environment for gapseq and adding package sources
+**2. Create conda environment for gapseq and adding package sources**
 
 ```sh
 conda create --name gapseq
@@ -43,7 +43,7 @@ conda activate gapseq
 conda config --add channels defaults && conda config --add channels bioconda && conda config --add channels conda-forge
 ```
 
-##### 3. Install required packages
+**3. Install required packages**
 ```sh
 # basic dependencies
 conda install bash r perl parallel gawk sed grep bc git coreutils wget
@@ -56,7 +56,7 @@ Rscript -e 'if( file.access(Sys.getenv("R_LIBS_USER"), mode=2) == -1 ) dir.creat
 R -e 'install.packages(c("glpkAPI", "CHNOSZ"), repos="http://cran.us.r-project.org")'
 ```
 
-##### 4. Clone latest version of gapseq and dowload reference sequence database
+**4. Clone latest version of gapseq and dowload reference sequence database**
 
 First, use `cd` to go to the directory where you would like to install gapseq to. E.g. `cd ~/Software`. Next, use the following commands to fetch the latest version of gapseq from github:
 ```sh
@@ -66,7 +66,7 @@ git clone https://github.com/jotech/gapseq && cd gapseq
 src/./update_sequences.sh
 ```
 
-##### 5. Test the installation
+**5. Test the installation**
 ```sh
 ./gapseq test
 ```
