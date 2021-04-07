@@ -175,12 +175,12 @@ The output:
 
 ```
    species Metabolite summed.Flux
-1:    bilo    Acetate    978.7569
-2:    eure    Acetate   -453.8853
-3:    bilo   Butyrate      0.0000
-4:    eure   Butyrate    727.4100
-5:    bilo    Lactate    385.9537
+1:    eure    Acetate   -418.7086
+2:    bilo    Acetate    826.0749
+3:    eure   Butyrate    683.6783
+4:    bilo   Butyrate      0.0000
+5:    bilo    Lactate    358.0108
 ```
 
-We can see, that *B. longum* (bilo) secretes acetate and lactate as main end product. Approximately 46 % of the acetate is consumed by *E. rectale* (eure). *B. longum* produces in addition lactate and *E. rectale* secretes butyrate.
+We can see, that *B. longum* (bilo) secretes acetate and lactate as main end product. Approximately 50 % of the acetate is consumed by *E. rectale* (eure). *B. longum* produces in addition lactate and *E. rectale* secretes butyrate.
 
