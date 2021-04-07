@@ -71,7 +71,7 @@ src/./update_sequences.sh
 ./gapseq test
 ```
 
-## <a name="sbmlsupport"></a> SBML support
+## SBML support
 The Systems Biology markup Language (SBML) can be used to exchange model files between gapseq and other programs.
 Occasionally, the installation can cause some issues that is why SBML is listed as optional dependency.
 There should be a ``libsbml`` package (version 5.18.0 or later) available for most linux distributions:
@@ -113,7 +113,7 @@ Rscript -e 'if( file.access(Sys.getenv("R_LIBS_USER"), mode=2) == -1 ) dir.creat
 wget https://cran.r-project.org/src/contrib/glpkAPI_1.3.2.tar.gz
 R CMD INSTALL --configure-args="--enable-gmp=no" glpkAPI_1.3.2.tar.gz
 ```
-- *SBML-Export*: In order to export valid SBML files, it is required to have the R-Package [*sybilSBML*](https://cran.r-project.org/web/packages/sybilSBML/index.html) with version 3.1.2 or higher. In addtion libSBML-core-plus-packages (>= 5.16) with *'groups'* and *'fbc'* extensions are required. See also [SBML Support](#sbmlsupport)
+- *SBML-Export*: In order to export valid SBML files, it is required to have the R-Package [*sybilSBML*](https://cran.r-project.org/web/packages/sybilSBML/index.html) with version 3.1.2 or higher. In addtion libSBML-core-plus-packages (>= 5.16) with *'groups'* and *'fbc'* extensions are required. See also "SBML Support".
 
 ***
 *source: [https://community.ibm.com/community/user/datascience/blogs/xavier-nodet1/2020/07/09/cplex-free-for-students](https://community.ibm.com/community/user/datascience/blogs/xavier-nodet1/2020/07/09/cplex-free-for-students)
