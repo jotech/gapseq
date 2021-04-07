@@ -19,7 +19,7 @@ git clone https://github.com/jotech/gapseq && cd gapseq
 ```
 
 ## MacOS
-Using [homebrew](https://brew.sh). Please note: Some Mac-Users reported difficulties to install gapseq on MacOS using the following commands. The issues are mainly due to some Mac-specific functioning of central programs such as sed, awk, and grep. If you are experiencing issues, we recommend to try to install gapseq in an own conda environment using the steps describes [below](#conda).
+Using [homebrew](https://brew.sh). Please note: Some Mac-Users reported difficulties to install gapseq on MacOS using the following commands. The issues are mainly due to some Mac-specific functioning of central programs such as sed, awk, and grep. If you are experiencing issues, we recommend to try to install gapseq in an own conda environment using the steps described [below](#conda).
 ```
 brew install coreutils binutils git glpk blast bedtools r brewsci/bio/barrnap grep bc gzip
 R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite"))'
