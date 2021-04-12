@@ -47,13 +47,26 @@ conda config --add channels defaults && conda config --add channels bioconda && 
 ```sh
 # basic dependencies
 conda install bash r perl parallel gawk sed grep bc git coreutils wget
+
 # packages for handling biological sequences
 conda install barrnap bedtools exonerate glpk hmmer blast
+
+# install libSBML from bioconda
+conda install -c bioconda libsbml 
+
 # R-package dependencies (via conda repos)
 conda install r-data.table r-stringr r-stringi r-getopt r-doParallel r-foreach r-r.utils r-sybil r-biocmanager bioconductor-biostrings r-jsonlite 
+
 # additional R-package dependencies (via CRAN)
 Rscript -e 'if( file.access(Sys.getenv("R_LIBS_USER"), mode=2) == -1 ) dir.create(path = Sys.getenv("R_LIBS_USER"), showWarnings = FALSE, recursive = TRUE)'
 R -e 'install.packages(c("glpkAPI", "CHNOSZ"), repos="http://cran.us.r-project.org")'
+
+# Download & Install R-package 'sybilSBML'
+wget https://cran.r-project.org/src/contrib/Archive/sybilSBML/sybilSBML_3.1.2.tar.gz
+R CMD INSTALL --configure-args=" \
+--with-sbml-include=$CONDA_PREFIX/include \
+--with-sbml-lib=$CONDA_PREFIX/lib" sybilSBML_3.1.2.tar.gz
+
 ```
 
 **4. Clone latest version of gapseq and dowload reference sequence database**
