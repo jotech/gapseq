@@ -189,7 +189,11 @@ fi
 
 # tmp working directory
 fasta=$(readlink -f "$1") # save input file before changing to temporary directory
-cd $(mktemp -d)
+tmpdir=$(mktemp -d)
+echo $tmpdir
+cd $tmpdir
+trap 'rm -rf "$tmpdir"' EXIT
+
 
 # get fasta file
 if [[ "$fasta" == *.gz ]]; then # in case fasta is in a archive
