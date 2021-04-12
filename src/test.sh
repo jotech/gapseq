@@ -50,7 +50,7 @@ echo -e "\nMissing dependencies: $i\n\n"
 echo "#####################"
 echo "#Checking R packages#"
 echo "#####################"
-Rscript -e 'needed.packages <- c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "BiocManager", "Biostrings", "jsonlite", "CHNOSZ"); avail.packages <- installed.packages(); i=0; for( pkg in needed.packages ){; idx <- match(pkg, avail.packages[,"Package"]); if( ! is.na(idx) ){; cat(pkg, avail.packages[idx,"Version"], "\n"); }else{; cat(pkg, "NOT FOUND", "\n"); i=i+1; }; }; cat("\nMissing R packages: ", i, "\n\n\n")'
+Rscript -e 'needed.packages <- c("data.table", "stringr", "sybil", "getopt", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "BiocManager", "Biostrings", "jsonlite", "CHNOSZ"); avail.packages <- installed.packages(); i=0; for( pkg in needed.packages ){; idx <- match(pkg, avail.packages[,"Package"]); if( ! is.na(idx) ){; cat(pkg, avail.packages[idx,"Version"], "\n"); }else{; cat(pkg, "NOT FOUND", "\n"); i=i+1; }; }; cat("\nMissing R packages: ", i, "\n\n\n")'
 
 echo "##############################"
 echo "#Checking basic functionality#"
