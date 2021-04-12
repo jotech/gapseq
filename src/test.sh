@@ -12,7 +12,7 @@ echo -e `$dir/../gapseq -v`
 
 # printing operation system
 echo $OSTYPE
-echo -e `uname -v` "\n"
+echo -e `uname -v` "\n\n"
 
 echo "#######################"
 echo "#Checking dependencies#"
@@ -44,12 +44,13 @@ check_cmd barrnap "--help | head -n 2 | tail -n 1"
 check_cmd R "--version | head -n 1"
 check_cmd Rscript "--version | head -n 1" false
 check_cmd git "--version"
-echo -e "\nMissing dependencies: $i\n\n\n"
+check_cmd parallel "--version | head -n 1"
+echo -e "\nMissing dependencies: $i\n\n"
 
 echo "#####################"
 echo "#Checking R packages#"
 echo "#####################"
-Rscript -e 'needed.packages <- c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "BiocManager", "Biostrings", "jsonlite", "CHNOSZ"); avail.packages <- installed.packages(); i=0; for( pkg in needed.packages ){; idx <- match(pkg, avail.packages[,"Package"]); if( ! is.na(idx) ){; cat(pkg, avail.packages[idx,"Version"], "\n"); }else{; cat(pkg, "NOT FOUND", "\n"); i=i+1; }; }; cat("\nMissing R packages: ", i, "\n\n")'
+Rscript -e 'needed.packages <- c("data.table", "stringr", "sybil", "getopt", "reshape2", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "BiocManager", "Biostrings", "jsonlite", "CHNOSZ"); avail.packages <- installed.packages(); i=0; for( pkg in needed.packages ){; idx <- match(pkg, avail.packages[,"Package"]); if( ! is.na(idx) ){; cat(pkg, avail.packages[idx,"Version"], "\n"); }else{; cat(pkg, "NOT FOUND", "\n"); i=i+1; }; }; cat("\nMissing R packages: ", i, "\n\n\n")'
 
 echo "##############################"
 echo "#Checking basic functionality#"
