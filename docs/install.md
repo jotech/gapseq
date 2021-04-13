@@ -2,7 +2,7 @@
 
 ## Ubuntu/Debian/Mint
 ```
-sudo apt install ncbi-blast+ git libglpk-dev r-base-core exonerate bedtools barrnap bc
+sudo apt install ncbi-blast+ git libglpk-dev r-base-core exonerate bedtools barrnap bc parallel
 R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite"))'
 R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Biostrings")'
 git clone https://github.com/jotech/gapseq && cd gapseq
@@ -10,7 +10,7 @@ git clone https://github.com/jotech/gapseq && cd gapseq
 
 ## Centos/Fedora/RHEL
 ```
-sudo yum install ncbi-blast+ git glpk-devel BEDTools exonerate hmmer bc
+sudo yum install ncbi-blast+ git glpk-devel BEDTools exonerate hmmer bc parallel
 git clone https://github.com/tseemann/barrnap.git
 export PATH=$PATH:barrnap/bin/barrnap # needs to be permanent => .bashrc ?
 R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite"))'
@@ -21,7 +21,7 @@ git clone https://github.com/jotech/gapseq && cd gapseq
 ## MacOS
 Using [homebrew](https://brew.sh). Please note: Some Mac-Users reported difficulties to install gapseq on MacOS using the following commands. The issues are mainly due to some Mac-specific functioning of central programs such as sed, awk, and grep. If you are experiencing issues, we recommend to try to install gapseq in an own conda environment using the steps described [below](#conda).
 ```
-brew install coreutils binutils git glpk blast bedtools r brewsci/bio/barrnap grep bc gzip
+brew install coreutils binutils git glpk blast bedtools r brewsci/bio/barrnap grep bc gzip parallel
 R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite"))'
 R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Biostrings")'
 git clone https://github.com/jotech/gapseq && cd gapseq
