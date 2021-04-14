@@ -1970,7 +1970,11 @@ rxn20632	>		-2:cpd00001:0:0:"H2O";-1:cpd11632:0:0:"hn";-2:cpd27797:0:0:"PLASTOQU
 rxn20633		TRUE		[JZ] duplicate to rxn20632					
 rxn37614				[JZ] photosystem					TRUE
 rxn20595	>		-2:cpd27746:0:0:"Oxidized-Plastocyanins";-1:cpd27796:0:0:"PLASTOQUINOL-1";-2:cpd00067:0:0:"H+";1:cpd27797:0:0:"PLASTOQUINONE";2:cpd27884:0:0:"Plastocyanin-Reduced";4:cpd00067:1:0:"H+"	[JZ] Should be irreversible + proton missing on both sides (was balanced but no proton pumping)	https://metacyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-7.1.1.6				
-rxn37613				[JZ] photosystem					TRUE
+rxn37613	>			[JZ] photosystem [SW] Corrected direction	https://metacyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-7.1.1.6				TRUE
+									
+rxn11995	>			[SW] Corrected direction	https://metacyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-7.1.1.6				
+rxn12059	>			[SW] Corrected direction	https://metacyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-7.1.1.6				
+									
 rxn31154				[JZ] photons crossing cell boundaries					TRUE
 rxn25456				[SW] Reactions for 2-demethylmenaquinol-6					TRUE
 rxn36796				[SW] Reactions for 2-demethylmenaquinol-6					TRUE
