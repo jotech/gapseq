@@ -2,7 +2,7 @@ Documentation for gapseq
 ========================
 gapseq is a program for the prediction and analysis of metabolic pathways and genome-scale networks.
 This documentation covers software installation, basic use cases and sample workflows with focus on application.
-For details on the biological and technical background please check the `gapseq publication <https://doi.org/10.1101/2020.03.20.000737>`_.
+For details on the biological and technical background please check the `gapseq publication <https://doi.org/10.1186/s13059-021-02295-1>`_.
 In addition, the source is available at `github <https://github.com/jotech/gapseq>`_.
 
 .. meta::
