@@ -625,7 +625,7 @@ rxn01644	>		-1:cpd00020:0:0:"Pyruvate";-1:cpd00346:0:0:"L-Aspartate4-semialdehyd
 rxn02928	<		-1:cpd00003:0:0:"NAD";-1:cpd02465:0:0:"tetrahydrodipicolinate";-1:cpd00001:0:0:"H2O";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd21488:0:0:"(2S,4S)-4-Hydroxy-2,3,4,5-tetrahydrodipicolinate"	[SW] Reaction stoichiometry was corrected by the enzyme commission in 2012.	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-14014				
 rxn02929	<		-1:cpd00006:0:0:"NADP";-1:cpd02465:0:0:"tetrahydrodipicolinate";-1:cpd00001:0:0:"H2O";1:cpd00005:0:0:"NADPH";1:cpd00067:0:0:"H+";1:cpd21488:0:0:"(2S,4S)-4-Hydroxy-2,3,4,5-tetrahydrodipicolinate"	[SW] Reaction stoichiometry was corrected by the enzyme commission in 2012.	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-14014				
 rxn25797	>			[SW] Reaction might be important for sulfur metabolism.	https://metacyc.org/META/NEW-IMAGE?type=NIL&object=RXN-9739&redirect=T				
-rxn20818	>			[SW] Reaction might be important for quinate metabolism.	https://metacyc.org/META/NEW-IMAGE?type=NIL&object=RXN-10032&redirect=T				
+rxn20818	>		-1:cpd00001:0:0:"H2O";-1:cpd00003:0:0:"NAD";-1:cpd17159:0:0:"2-Amino-3,7-dideoxy-D-threo-hept-6-ulosonic acid";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd00699:0:0:"5-Dehydroquinate";1:cpd00013:0:0:"Ammonium"	[SW] Reaction might be important for quinate metabolism.	https://metacyc.org/META/NEW-IMAGE?type=NIL&object=RXN-10032&redirect=T				
 rxn20643	>			[SW] Important reaction for de novo thiamine biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=PYRIMSYN1-RXN				
 rxn27289	>			[SW] Reaction important for Thiamin biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=THIAZOLSYN2-RXN&detail-level=3				
 rxn25839	>			[SW] Reaction important for Thiamin biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6892&detail-level=3				
@@ -1226,11 +1226,11 @@ rxn12625	<			H+-coupled transport w/o chemical transformation of transported mol
 rxn12631	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn13392	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn13398	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
-rxn29255	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
-rxn29256	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
+rxn29255		TRUE		[SW] generic reaction.		transport			
+rxn29256		TRUE		[SW] Transport with wrong metabolite identifier.		transport			
 rxn29262	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn29263	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
-rxn29492	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
+rxn29492		TRUE		[SW] generic reaction.		transport			
 rxn29736	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn29791	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn29827	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
@@ -1959,11 +1959,11 @@ rxn26102									TRUE
 rxn16823									TRUE
 rxn23042									TRUE
 									
-rxn47796	>		-3:cpd00007:0:0:O2;-1:cpd02083:0:0:CoproporphyrinogenIII;3:cpd00025:0:0:H2O2;1:cpd03418:0:0:Coproporphyrin III	[SW] Added from newer Version from ModelSEED Database (24.6.2019). Direction according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7766		RXN-17517	coproporphyrinogen III oxidase (coproporphyrin-forming) 	
-rxn46036	>		-1:cpd03418:0:0:Coproporphyrin III;-1:cpd10515:0:0:Fe2+;2:cpd00067:0:0:H+;1:cpd32319:0:0:Fe-coproporphyrin III	[SW] Added from newer Version from ModelSEED Database (24.6.2019). Direction according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7766		coproporphyrin ferrochelatase	coproporphyrin ferrochelatase	
-rxn41718	>		-2:cpd00025:0:0:H2O2;-2:cpd00067:0:0:H+;-1:cpd32319:0:0:Fe-coproporphyrin III;4:cpd00001:0:0:H2O;2:cpd00011:0:0:CO2;1:cpd00028:0:0:Heme	[SW] Added from newer Version from ModelSEED Database (24.6.2019). Direction according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7766		RXN-17519	hydrogen peroxide-dependent heme synthase 	
+rxn47796	>		-3:cpd00007:0:0:"O2";-1:cpd02083:0:0:"CoproporphyrinogenIII";3:cpd00025:0:0:"H2O2";1:cpd03418:0:0:"Coproporphyrin III"	[SW] Added from newer Version from ModelSEED Database (24.6.2019). Direction according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7766		RXN-17517	coproporphyrinogen III oxidase (coproporphyrin-forming) 	
+rxn46036	>		-1:cpd03418:0:0:"Coproporphyrin III";-1:cpd10515:0:0:"Fe2+";2:cpd00067:0:0:"H+";1:cpd32319:0:0:"Fe-coproporphyrin III"	[SW] Added from newer Version from ModelSEED Database (24.6.2019). Direction according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7766		coproporphyrin ferrochelatase	coproporphyrin ferrochelatase	
+rxn41718	>		-2:cpd00025:0:0:"H2O2";-2:cpd00067:0:0:"H+";-1:cpd32319:0:0:"Fe-coproporphyrin III";4:cpd00001:0:0:"H2O";2:cpd00011:0:0:"CO2";1:cpd00028:0:0:"Heme"	[SW] Added from newer Version from ModelSEED Database (24.6.2019). Direction according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7766		RXN-17519	hydrogen peroxide-dependent heme synthase 	
 									
-rxn29966				[JZ] not accessed until now, but needed for phenylethylamine degradation					TRUE
+rxn29966			-1:cpd00001:0:0:"H2O";-1:cpd00007:0:0:"O2";-1:cpd03161:0:0:"Phenethylamine";1:cpd00025:0:0:"H2O2";1:cpd00464:0:0:"alpha-Tolualdehyde";1:cpd00013:0:0:"Ammonium"	[JZ] not accessed until now, but needed for phenylethylamine degradation					TRUE
 rxn25164				[SW] not accessed until now, but needed for succinate fermentation to butyrate	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-5677				TRUE
 									
 rxn20632	>		-2:cpd00001:0:0:"H2O";-1:cpd11632:0:0:"hn";-2:cpd27797:0:0:"PLASTOQUINONE";-4:cpd00067:0:0:"H+";1:cpd00007:0:0:"O2";2:cpd27796:0:0:"PLASTOQUINOL-1";4:cpd00067:1:0:"H+"	[JZ] photosystem2 wrong direction + proton missing on both sides (was balanced but no proton pumping) + set photon uptake to 1	https://biocyc.org/META/NEW-IMAGE?type=EC-NUMBER&object=EC-1.10.3.9				
@@ -2414,3 +2414,10 @@ rxn90097	>		-1:cpd03971:0:0:"Genistein";-2:cpd00005:0:0:"NADPH";-2:cpd00067:0:0:
 rxn90098	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd03971:1:0:"Genistein";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd03971:0:0:"Genistein";1:cpd00067:0:0:"H+"	[SW] ABC transporter for Genistein import			Gsn-abc-transport	Genistein ABC transporter (putative)	
 rxn90099	=		-1:cpd01975:0:0:"2-(4-Hydroxyphenyl)-propionate";-1:cpd00067:0:0:"H+";1:cpd01975:1:0:"2-(4-Hydroxyphenyl)-propionate";1:cpd00067:1:0:"H+"	[SW] 2-(4-Hydroxyphenyl)-propionate permease			4OPPPA-permease	 2-(4-Hydroxyphenyl)-propionate permease (putative)	
 rxn90100	>		-1:cpd90016:0:0:"6'-Hydroxy-O-desmethylangolensin";-1:cpd00001:0:0:"H2O";1:cpd00067:0:0:"H+";1:cpd01473:0:0:"Phloroglucinol";1:cpd01975:0:0:"2-(4-Hydroxyphenyl)-propionate"	[SW] Part of proposed anaerobic Genistein degradation as in E. ramulus	Schoefer et al. FEMS Microbiology Letters 208 (2002) 197-202		6O-O-Desmetyl-AGL	6'-Hydroxy-O-desmethylangolensin hydrolase	
+									
+rxn09809		TRUE		[SW] model specific reaction					
+rxn09726		TRUE		[SW] model specific reaction					
+rxn05510		TRUE		[SW] generic reaction.					
+rxn12877		TRUE		[SW] model specific reaction					
+rxn13038		TRUE		[SW] model specific reaction					
+rxn13040		TRUE		[SW] generic reaction.					

@@ -49,7 +49,31 @@ construct_full_model <- function(script.path) {
   }
   cat("\n")
   mod <- add_missing_exchanges(mod) 
-  saveRDS(mod,file = paste0(script.dir, "/../dat/full.model.RDS"), version=2)  
+  saveRDS(mod,file = paste0(script.dir, "/../dat/full.model.RDS"), version=2)
+  
+  # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ #
+  # Identification of potential nutrients #
+  # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ #
+  cat("Identifying potential nutrients...")
+  fmod <- mod
+  fmod@lowbnd[grep("^EX_cpd", fmod@react_id)] <- -1000
+  ex_mets <- fmod@met_id[grep("\\[e0\\]", fmod@met_id)]
+  
+  de_mets <- deadEndMetabolites(fmod)
+  de_mets <- de_mets$dem
+  
+  ex_mets_in <- ex_mets[!(ex_mets %in% de_mets)] # removing dead end metabolites
+  ex_mets_in <- gsub("\\[e0\\]","",ex_mets_in)
+  
+  all_mets <- fread(paste0(script.dir, "/../dat/seed_metabolites_edited.tsv"))
+  
+  nutr_dt <- all_mets[id %in% ex_mets_in, .(id, name, formula, charge, MNX_ID)]
+  nutr_dt <- nutr_dt[formula != "null"]
+  fwrite(nutr_dt,
+         paste0(script.dir, "/../dat/nutrients.tsv"),
+         sep = "\t")
+  cat("\n")
+  
 }
 
 # get current script path
