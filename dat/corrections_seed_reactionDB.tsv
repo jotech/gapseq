@@ -2421,3 +2421,12 @@ rxn05510		TRUE		[SW] generic reaction.
 rxn12877		TRUE		[SW] model specific reaction					
 rxn13038		TRUE		[SW] model specific reaction					
 rxn13040		TRUE		[SW] generic reaction.					
+									
+rxn47991	>		-1:cpd00001:0:0:"H2O";-1:cpd35525:0:0:"1-(6-sulfo-alpha-D-quinovosyl)glycerol";1:cpd00100:0:0:"Glycerol";1:cpd22614:0:0:"sulfoquinovose"	[SW] imported from new seed reactions. Important for sulfoquinovose degradation	https://biocyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7446		sulfoquinovosidase	sulfoquinovosidase	
+rxn48462	=		-1:cpd22614:0:0:"sulfoquinovose";1:cpd35501:0:0:"6-deoxy-6-sulfo-D-fructose"	[SW] imported from new seed reactions. Important for sulfoquinovose degradation	https://biocyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7446		sulfoquinovose isomerase	sulfoquinovose isomerase	
+rxn41748	>		-1:cpd00002:0:0:"ATP";-1:cpd35501:0:0:"6-deoxy-6-sulfo-D-fructose";1:cpd00008:0:0:"ADP";1:cpd00067:0:0:"H+";1:cpd32891:0:0:"6-deoxy-6-sulfo-D-fructose 1-phosphate"	[SW] imported from new seed reactions. Important for sulfoquinovose degradation	https://biocyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7446		sulfofructose kinase	sulfofructose kinase	
+rxn42916	>		-1:cpd32891:0:0:"6-deoxy-6-sulfo-D-fructose 1-phosphate";1:cpd00095:0:0:"Glycerone-phosphate";1:cpd31357:0:0:"2-Hydroxy-3-oxopropane-1-sulfonate"	[SW] imported from new seed reactions. Important for sulfoquinovose degradation	https://biocyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7446		sulfofructosephosphate aldolase	sulfofructosephosphate aldolase	
+rxn40453	<		-1:cpd00003:0:0:"NAD";-1:cpd31356:0:0:"2,3-Dihydroxypropane-1-sulfonate";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd31357:0:0:"2-Hydroxy-3-oxopropane-1-sulfonate"	[SW] imported from new seed reactions. Important for sulfoquinovose degradation	https://biocyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7446		sulfolactaldehyde 3-reductase	sulfolactaldehyde 3-reductase	
+									
+rxn90101	=		-1:cpd22614:1:0:"sulfoquinovose";-1:cpd00067:1:0:"H+";1:cpd22614:0:0:"sulfoquinovose";1:cpd00067:0:0:"H+"	[SW] Importer of sulfoquinovose	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=TRANS-RXN0-580		sulfoquinovose transporter	putative sulfoquinovose transporter	
+rxn90102	=		-1:cpd31356:1:0:"(S)-2,3-Dihydroxypropane-1-sulfonate";-1:cpd00067:1:0:"H+";1:cpd31356:0:0:"(S)-2,3-Dihydroxypropane-1-sulfonate";1:cpd00067:0:0:"H+"	[SW] Importer for DHPS			DHPS transporter	DHPS transporter	

@@ -7,3 +7,5 @@ rxn90083	lithocholate symporter	2.Electrochemical potential-driven transporters	
 rxn43262	deoxycholate symporter	2.Electrochemical potential-driven transporters	cpd02733[e0]	Deoxycholate
 rxn47305	cholate symporter	2.Electrochemical potential-driven transporters	cpd00526[e0]	Cholate
 rxn40935	chenodeoxycholate symporter	2.Electrochemical potential-driven transporters	cpd01663[e0]	Chenodeoxycholate
+rxn90101	sulfoquinovose symporter	2.Electrochemical potential-driven transporters	cpd22614[e0]	sulfoquinovose
+rxn90102	DHPS transporter	2.Electrochemical potential-driven transporters	cpd31356[e0]	(S)-2,3-Dihydroxypropane-1-sulfonate
