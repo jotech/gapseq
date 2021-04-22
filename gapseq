@@ -93,7 +93,7 @@ elif [ "$1" == "fill" ]; then
 
 elif [ "$1" == "doall" ]; then
     parm=$(echo $@ | sed 's/doall//')
-    file=$2
+    file=$(readlink -f $2)
     base=$(basename "$file")
     id="${base%.*}"
     [[ ! -s "$file" ]]  && usage
