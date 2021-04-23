@@ -1,0 +1,65 @@
+Nutrient	cpd.id	rule	maxFlux	proton.balance	Comment	Category
+Water	cpd00001	TRUE	100	FALSE	Core medium compound	Inorganics
+Sodium	cpd00971	TRUE	10	FALSE	Core medium compound	Inorganics
+K+	cpd00205	TRUE	10	FALSE	Core medium compound	Inorganics
+Cl-	cpd00099	TRUE	10	FALSE	Core medium compound	Inorganics
+Fe2+	cpd10515	TRUE	10	FALSE	Core medium compound	Inorganics
+Fe3+	cpd10516	TRUE	0.1	FALSE	Core medium compound	Inorganics
+Phosphate	cpd00009	TRUE	10	FALSE	Core medium compound	Inorganics
+Co2+	cpd00149	TRUE	10	FALSE	Core medium compound	Inorganics
+Mg2+	cpd00254	TRUE	10	FALSE	Core medium compound	Inorganics
+Ni2+	cpd00244	TRUE	1	FALSE	Core medium compound	Inorganics
+Sulfate	cpd00048	TRUE	10	FALSE	Core medium compound	Inorganics
+Zn2+	cpd00034	TRUE	10	FALSE	Core medium compound	Inorganics
+Cu2+	cpd00058	TRUE	10	FALSE	Core medium compound	Inorganics
+Mn2+	cpd00030	TRUE	10	FALSE	Core medium compound	Inorganics
+Ca2+	cpd00063	TRUE	10	FALSE	Core medium compound	Inorganics
+Ammonium	cpd00013	TRUE	10	FALSE	Core medium compound	Inorganics
+O2	cpd00007	"PWY-3781" | "PWY1YI0-3" | "PWY-7279" | "PWY1YI0-6"	12.5	FALSE	aerobic respiration (1 - I (cytochrome c); 2- NDH-1 to cytochrome c oxidase via plastocyanin; 3 - II (cytochrome c); 3 - ;4- in cyanobacteria)	Inorganics
+O2	cpd00007	"PWY0-1565" | "PWY0-1561" | "PWY0-1544" | "PWY-7545" | "PWY-7544" | "PWY0-1353" | "PWY0-1329"	12.5	FALSE	1 - D-Lactate to Cytochrome bo; 2 - glyc3p to cytochrome bo; 3 - Pro to Cytochom bo; 4 - Pyr to cytochrome bd; 5  - Pyr to cytochrome bo; 6 - Succ to cytochrome bd; 7  - Succ to cytochrome bo	Inorganics
+O2	cpd00007	"PWY0-1334" | "PWY0-1568" | "PWY0-1335" | "PWY0-1567"	12.5	FALSE	NADH to cytochrome	Inorganics
+CO2	cpd00011	"CALVIN-PWY" | "METHANOGENESIS-PWY" | "CODH-PWY" | "PWY-5789"	25	FALSE		Inorganics
+Photons	cpd11632	"PWY-101"	50	FALSE	photosynthesis light reactions	Inorganics
+						
+D-Glucose	cpd00027	rxn05226 | rxn08612	5	TRUE	D-glucose transport via PEP:Pyr PTS	Saccharides
+D-Glucose	cpd00027	rxn05573 | rxn08616	5	TRUE	D-glucose transport in via proton symport	Saccharides
+D-Glucose	cpd00027	rxn05147 | rxn08606	5	TRUE	D-Glucose-ABC transport	Saccharides
+D-Fructose	cpd00082	rxn05560 | rxn08536	5	TRUE	D-Fructose-specific PTS-System	Saccharides
+Lactose	cpd00208	"LACTOSECAT-PWY" | "LACTOSEUTIL-PWY" | "BGALACT-PWY"	2.5	TRUE		Saccharides
+Starch (n=27)	cpd90003	rxn90043 & rxn90034	0.18	TRUE	Pullulanase-type debranching enzyme and alpha-amylase	Saccharides
+Maltose	cpd00179	"MALTOSECAT-PWY"	2.5	TRUE		Saccharides
+2'-Fucosyllactose	cpd90001	"2FLHYD"	1.67	TRUE	Alpha-fucosidase & ABC transport	Saccharides
+Pectin	cpd27519	"PWY-7246" | "PWY-7248"	1.67	TRUE		Saccharides
+Melitose/Raffinose	cpd00382	rxn05643 & (rxn00818 | rxn34781)	1.67	TRUE	Raffinose transporter AND galactohydrolase	Saccharides
+Sucrose	cpd00076	"SUCUTIL-PWY" | "PWY-621" | "PWY-5384" | "SUCROSEUTIL2-PWY"	2.5	TRUE		Saccharides
+Inulin	cpd28763	"INULIN-DEGRADATION-EXO"	0.42	TRUE		Saccharides
+						
+L-Tryptophan	cpd00065	!("TRPSYN-PWY2" | "TRPSYN-PWY")	0.1	TRUE		Amino acids
+L-Histidine	cpd00119	!"HISTSYN-PWY"	0.1	TRUE		Amino acids
+L-Serine	cpd00054	!"SERSYN-PWY"	0.1	TRUE		Amino acids
+L-Arginine	cpd00051	!("ARGSYN-PWY" | "ARGSYNBSUB-PWY" | "PWY-5154" | "PWY-7400")	0.1	TRUE		Amino acids
+L-Asparagine	cpd00132	!("ASPARAGINE-BIOSYNTHESIS" | "ASPARAGINESYN-PWY" | "PWY490-4")	0.1	TRUE		Amino acids
+L-Glutamine	cpd00053	!"GLNSYN-PWY"	0.1	TRUE	EC 6.3.1.2	Amino acids
+Glycine	cpd00033	!("GLYSYN-PWY" | "GLYSYN-ALA-PWY" | "GLYSYN-THR-PWY")	0.1	TRUE		Amino acids
+Chorismate	cpd00216	rxn02213 + (rxn01740 | rxn01741) + (rxn01739 | rxn38708) + rxn02476 + rxn01255 < 3	0.1	TRUE	Chorismate biosynthesis from 3-dehydroquinate is <40% complete	Amino acids
+L-Cysteine	cpd00084	!("CYSTSYN-PWY" | "PWY-6308" | "HOMOCYSDEGR-PWY" | "PWY-7289" | "PWY-8009" | "PWY-8010")	0.1	TRUE		Amino acids
+L-Isoleucine	cpd00322	!("ILEUSYN-PWY" | "PWY-5101" | "PWY-5104")	0.1	TRUE		Amino acids
+L-Leucine	cpd00107	!("LEUSYN-PWY" & (rxn00003 | rxn33164) & rxn02186 & rxn00898)	0.1	TRUE	LEUSYN-PWY and the first three steps of VALSYN-PWY	Amino acids
+L-Lysine	cpd00039	!("DAPLYSINESYN-PWY" | "PWY-2941" | "PWY-2942" | "PWY-3081" | "PWY-5097")	0.1	TRUE		Amino acids
+L-Methionine	cpd00060	!("HOMOSER-METSYN-PWY" | "PWY-702" | "HSERMETANA-PWY" | "PWY-7977")	0.1	TRUE		Amino acids
+L-Phenylalanine	cpd00066	!((rxn01256 & rxn01000 & (rxn00493 | rxn21134 | rxn28060 | rxn38254)) | "PWY-3462" | "PWY-7432")	0.1	TRUE		Amino acids
+L-Proline	cpd00129	!("PROSYN-PWY" | "PWY-3341")	0.1	TRUE		Amino acids
+L-Threonine	cpd00161	!("HOMOSER-THRESYN-PWY")	0.1	TRUE		Amino acids
+L-Tyrosine	cpd00069	!((rxn01256 & rxn01268 & (rxn00527 | rxn30444 | rxn30445)) | "PWY-3461" | "PWY-6120" | "PWY-6134")	0.1	TRUE		Amino acids
+L-Valine	cpd00156	!"VALSYN-PWY"	0.1	TRUE		Amino acids
+						
+L-Lactate	cpd00159	rxn90054	15	TRUE	Electron-bifurcating lactate dehydrogenase forming pyruvate (EC 1.3.1.110)	Organic acids
+L-Lactate	cpd00159	"PWY-5494"	15	TRUE	acrylate pathway	Organic acids
+Acetate	cpd00029	rxn00875 & rxn00225 & rxn00173 & rxn90001	20	TRUE	EC 2.8.3.8, EC 2.7.2.1, EC 2.3.1.8, EC 1.3.1.109	Organic acids
+Succinate	cpd00036	"PWY-5677"	10	TRUE	Succinate fermentation to butyrate	Organic acids
+Succinate	cpd00036	(rxn00602 | rxn01996) & rxn90096 & rxn09174	10	TRUE	Succinate transformation to propionate (Na+ exporting). Part of PWY-8086	Organic acids
+						
+sulfoquinovose	cpd22614	"PWY-7446" | "PWY-7722"	10	TRUE		Secondary plant metabolites
+Gallate	cpd01020	"GALLATE-DEGRADATION-II-PWY" | "GALLATE-DEGRADATION-I-PWY" | "P3-PWY"	10	TRUE		Secondary plant metabolites
+Quercetin	cpd00313	"QUERCETIN-ANAERO-DEG"	10	TRUE	Key-reaction: Taxifolin isomerase (EC 5.5.1.6)	Secondary plant metabolites
+Genistein	cpd03971	rxn90097	10	TRUE	Genistein reductase	Secondary plant metabolites
