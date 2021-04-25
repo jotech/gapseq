@@ -20,6 +20,7 @@ O2	cpd00007	"PWY-3781" | "PWY1YI0-3" | "PWY-7279" | "PWY1YI0-6"	12.5	FALSE	aerob
 O2	cpd00007	"PWY0-1565" | "PWY0-1561" | "PWY0-1544" | "PWY-7545" | "PWY-7544" | "PWY0-1353" | "PWY0-1329"	12.5	FALSE	1 - D-Lactate to Cytochrome bo; 2 - glyc3p to cytochrome bo; 3 - Pro to Cytochom bo; 4 - Pyr to cytochrome bd; 5  - Pyr to cytochrome bo; 6 - Succ to cytochrome bd; 7  - Succ to cytochrome bo	Inorganics
 O2	cpd00007	"PWY0-1334" | "PWY0-1568" | "PWY0-1335" | "PWY0-1567"	12.5	FALSE	NADH to cytochrome	Inorganics
 CO2	cpd00011	"CALVIN-PWY" | "METHANOGENESIS-PWY" | "CODH-PWY" | "PWY-5789"	25	FALSE		Inorganics
+H2	cpd11640	"METHANOGENESIS-PWY"	50	FALSE		Inorganics
 Photons	cpd11632	"PWY-101"	50	FALSE	photosynthesis light reactions	Inorganics
 						
 D-Glucose	cpd00027	rxn05226 | rxn08612	5	TRUE	D-glucose transport via PEP:Pyr PTS	Saccharides
@@ -57,6 +58,7 @@ L-Valine	cpd00156	!"VALSYN-PWY"	0.1	TRUE		Amino acids
 L-Lactate	cpd00159	rxn90054	15	TRUE	Electron-bifurcating lactate dehydrogenase forming pyruvate (EC 1.3.1.110)	Organic acids
 L-Lactate	cpd00159	"PWY-5494"	15	TRUE	acrylate pathway	Organic acids
 Acetate	cpd00029	rxn00875 & rxn00225 & rxn00173 & rxn90001	20	TRUE	EC 2.8.3.8, EC 2.7.2.1, EC 2.3.1.8, EC 1.3.1.109	Organic acids
+Acetate	cpd00029	"METH-ACETATE-PWY"	25	TRUE	Methanogenisis from acetate	Organic acids
 Succinate	cpd00036	"PWY-5677"	10	TRUE	Succinate fermentation to butyrate	Organic acids
 Succinate	cpd00036	(rxn00602 | rxn01996) & rxn90096 & rxn09174	10	TRUE	Succinate transformation to propionate (Na+ exporting). Part of PWY-8086	Organic acids
 						

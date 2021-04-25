@@ -26,21 +26,25 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   if(is.na(model.name))
     model.name <- gsub("-all-Reactions.tbl","",basename(blast.res), fixed = T)
   
-  if(biomass=="auto") {
+  if(biomass %in% c("auto","Bacteria","bacteria")) {
     if(grepl("\\.gz$", genome.seq)) {
       suppressMessages(require(R.utils))
       genome.seq <- R.utils::gunzip(genome.seq, remove = F, temporary = T, overwrite = T)
-    } else {
-      
-    }
+    } 
+    
+    forced_bacterial <- biomass %in% c("Bacteria", "bacteria")
 
     biomass <- system(paste0(script.dir,"/./predict_biomass_from16S.sh ",genome.seq), intern = T)
     
+    # If user specified Bacteria but sequence-based prediction tool says archaeal
+    if(biomass == "Archaea" & forced_bacterial)
+      biomass <- "ambiguous"
+    
     cat("\nPredicted biomass: ",biomass,"\n")
     if(biomass == "ambiguous" & !is.na(pathway.pred)) {
-        cat("Trying to predict biomass by metabolic network similarity\n")
+      cat("Trying to predict biomass by metabolic network similarity\n")
       biomass <- find_gram_by_network(pathway.pred, script.dir)
-        cat("New predicted biomass: ",biomass,"\n")
+      cat("New predicted biomass: ",biomass,"\n")
     }
     
     if(!biomass %in% c("pos","neg", "archaea", "Archaea", "Gram_pos", "Gram_neg")) {

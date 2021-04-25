@@ -56,6 +56,12 @@ if [[ $res == "ambiguous" ]]; then
   fi
 fi
 
+if [[ $res == "ambiguous" ]]; then
+  echo "Biomass/Domain prediction from 16S ambiguous. Trying kmer-based prediction..."
+  res=`Rscript $dir/predict_biomass_fromKmers.R $gnseqbase.tmp`
+fi
+
+
 # cleaning up
 rm -f -r $tmpdir
 
