@@ -112,8 +112,8 @@ predict_medium <- function(mod, pathway.pred, manual.conc = NULL) {
                         Category = "Inorganics")
     medium_rules <- rbind(medium_rules, dttmp, fill = T)
   }
-  #medium_rules[,.(comppounds = cpd.id, name, maxFlux, Category, charge)]
-  return(medium_rules[,.(comppounds = cpd.id, name, maxFlux, Category, charge)])
+  #medium_rules[,.(compounds = cpd.id, name, maxFlux, Category, charge)]
+  return(medium_rules[,.(compounds = cpd.id, name, maxFlux, Category, charge)])
 }
 
 # get current script path
