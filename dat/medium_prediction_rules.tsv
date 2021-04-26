@@ -19,7 +19,7 @@ N2	cpd00528	"N2FIX-PWY" | "PWY-7576"	25	FALSE	Nitrogen fixation	Inorganics
 O2	cpd00007	"PWY-3781" | "PWY1YI0-3" | "PWY-7279" | "PWY1YI0-6"	12.5	FALSE	aerobic respiration (1 - I (cytochrome c); 2- NDH-1 to cytochrome c oxidase via plastocyanin; 3 - II (cytochrome c); 3 - ;4- in cyanobacteria)	Inorganics
 O2	cpd00007	"PWY0-1565" | "PWY0-1561" | "PWY0-1544" | "PWY-7545" | "PWY-7544" | "PWY0-1353" | "PWY0-1329"	12.5	FALSE	1 - D-Lactate to Cytochrome bo; 2 - glyc3p to cytochrome bo; 3 - Pro to Cytochom bo; 4 - Pyr to cytochrome bd; 5  - Pyr to cytochrome bo; 6 - Succ to cytochrome bd; 7  - Succ to cytochrome bo	Inorganics
 O2	cpd00007	"PWY0-1334" | "PWY0-1568" | "PWY0-1335" | "PWY0-1567"	12.5	FALSE	NADH to cytochrome	Inorganics
-CO2	cpd00011	"CALVIN-PWY" | "METHANOGENESIS-PWY" | "CODH-PWY" | "PWY-5789"	25	FALSE		Inorganics
+CO2	cpd00011	"CALVIN-PWY" | "METHANOGENESIS-PWY" | "CODH-PWY" | "PWY-5789" | "PWY-7784" | "LWP-GS"	25	FALSE	CO2 fixation	Inorganics
 H2	cpd11640	"METHANOGENESIS-PWY"	50	FALSE		Inorganics
 Photons	cpd11632	"PWY-101"	50	FALSE	photosynthesis light reactions	Inorganics
 						
