@@ -2430,3 +2430,6 @@ rxn40453	<		-1:cpd00003:0:0:"NAD";-1:cpd31356:0:0:"2,3-Dihydroxypropane-1-sulfon
 									
 rxn90101	=		-1:cpd22614:1:0:"sulfoquinovose";-1:cpd00067:1:0:"H+";1:cpd22614:0:0:"sulfoquinovose";1:cpd00067:0:0:"H+"	[SW] Importer of sulfoquinovose	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=TRANS-RXN0-580		sulfoquinovose transporter	putative sulfoquinovose transporter	
 rxn90102	=		-1:cpd31356:1:0:"(S)-2,3-Dihydroxypropane-1-sulfonate";-1:cpd00067:1:0:"H+";1:cpd31356:0:0:"(S)-2,3-Dihydroxypropane-1-sulfonate";1:cpd00067:0:0:"H+"	[SW] Importer for DHPS			DHPS transporter	DHPS transporter	
+									
+rxn90103	>		-1:cpd00003:0:0:"NAD";-5:cpd00001:0:0:"H2O";-5:cpd00002:0:0:"ATP";1:cpd00004:0:0:"NADH";5:cpd00008:0:0:"ADP";5:cpd00009:0:0:"Phosphate";4:cpd00067:0:0:"H+"	[JZ] Reduction of NAD needed for reverse electron transport in chemolithotrophy	10.1016/j.watres.2019.01.054			Reverse electron transport to NAD	
+rxn90104	>		-1:cpd00006:0:0:"NADP";-5:cpd00001:0:0:"H2O";-5:cpd00002:0:0:"ATP";1:cpd00005:0:0:"NADPH";5:cpd00008:0:0:"ADP";5:cpd00009:0:0:"Phosphate";4:cpd00067:0:0:"H+"	[JZ] Reduction of NADP needed for reverse electron transport in chemolithotrophy	10.1016/j.watres.2019.01.054			Reverse electron transport to NADP	
