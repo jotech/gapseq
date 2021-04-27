@@ -121,7 +121,7 @@ rxn01973	>			[SW] Reaction never reported to be reversible. Irrev. According to 
 rxn11167		TRUE		[SW] Reaction unbalanced?					
 rxn11339		TRUE		[SW] Reaction unbalanced?					
 rxn10062	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7230				
-rxn08972	>			[SW] Reaction never reported to be reversible.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.6.5.3#NATURAL%20SUBSTRATES				
+rxn08972	=		-1:cpd00004:0:0:"NADH";-5:cpd00067:0:0:"H+";-1:cpd15560:0:0:"Ubiquinone-8";1:cpd00003:0:0:"NAD";4:cpd00067:1:0:"H+";1:cpd15561:0:0:"Ubiquinol-8"	[SW] Reaction never reported to be reversible. [SW] Reverted back to original direction.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.6.5.3#NATURAL%20SUBSTRATES				
 rxn03978	<			[SW] Reaction never reported to be reversible. Irrev. According to MetaCyc	http://www.brenda-enzymes.org/enzyme.php?ecno=1.7.2.2#NATURAL%20SUBSTRATES # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.7.2.2-RXN				
 rxn11933	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-7229				
 rxn01053	>			[SW] Reaction never reported to be reversible. Irrev. According to MetaCyc	http://www.brenda-enzymes.org/enzyme.php?ecno=1.2.1.22#NATURAL%20SUBSTRATES # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=LACTALDDEHYDROG-RXN				
@@ -186,7 +186,7 @@ rxn12649	>			[SW] "equilibrium strongly favors tetrahydrofolate production"	Huen
 rxn14120	<			[SW] "equilibrium strongly favors tetrahydrofolate production"	Huennekens, F.M.; Vitols, K.S.; Whiteley, J.M.; Neef, V.G.; Methods Cancer Res. 13, 199-225 (1976)				
 rxn01476	>			[SW] irrev.	Kupor, S.R.; Fraenkel, D.G.; J. Biol. Chem. 247, 1904-1910 (1972)				
 rxn13906	>			[SW] Reaction never reported to be reversible. Irrev. According to Ref.	https://www.brenda-enzymes.org/enzyme.php?ecno=1.5.99.6#SUBSTRATE # https://books.google.de/books?id=HiL0BgAAQBAJ&pg=PA115&lpg=PA115&dq=spermidine+dehydrogenase+irreversible&source=bl&ots=ZZCxRcgy8V&sig=O2LkBTkU62eBop9NxjjsnmLPYoU&hl=de&sa=X&ved=0ahUKEwio8e-9p87ZAhUKlSwKHVWjD6QQ6AEIMzAB#v=onepage&q=spermidine%20dehydrogenase%20irreversible&f=false				
-rxn13726	>			[SW] Reverse electron transport only in photosynthetic bacteria.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NADH-DEHYDROG-A-RXN				
+rxn13726	=		-1:cpd00004:0:0:"NADH";-5:cpd00067:0:0:"H+";-1:cpd15560:0:0:"Ubiquinone-8";1:cpd00003:0:0:"NAD";4:cpd00067:1:0:"H+";1:cpd15561:0:0:"Ubiquinol-8"	[SW] Reverse electron transport only in photosynthetic bacteria. [SW] Reversted to original direction and changing number of transporeted protons according to rxn08972	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NADH-DEHYDROG-A-RXN				
 rxn03275	>			[SW] never reported reversible according to BRENDA, and irreversible according to MetaCyc	https://www.brenda-enzymes.org/enzyme.php?ecno=3.1.1.17#NATURAL%20SUBSTRATES # https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUCONOLACT-RXN				
 rxn02705	>			[SW] irrev.	Baiocco, P.; Poce, G.; Alfonso, S.; Cocozza, M.; Porretta, G.C.; Colotti, G.; Biava, M.; Moraca, F.; Botta, M.; Yardley, V.; Fiorillo, A.; Lantella, A.; Malatesta, F.; Ilari, A.; ChemMedChem 8, 1175-1183 (2013)				
 rxn00443	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GALACTONOLACTONE-DEHYDROGENASE-RXN				
@@ -2161,10 +2161,10 @@ rxn07307	<			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn90051	>		-1:cpd00001:0:0:"H2O";-4:cpd00089:0:0:"Glucose-1-phosphate";-4:cpd00002:0:0:"ATP";4:cpd00012:0:0:"PPi";4:cpd00008:0:0:"ADP";1:cpd15302:0:0:"glycogen(n-1)"	[SW] dummy reaction for glycogen(n-1) biosynthesis from glucose-1-phoshate. Here n=5 is assumed.					
 rxn90052	>		-2:cpd00971:0:0:"Na+";-1:cpd02246:0:0:"CoM";-1:cpd02737:0:0:"5-Methyl-H4MPT";1:cpd00895:0:0:"H4MPT";1:cpd02438:0:0:"Methyl CoM";2:cpd00971:1:0:"Na+"	[SW] sodium-pumping CH3-THSPT:HS-CoM methyltransferase (MtrA-H)	DOI: 10.1128/JB.00593-12		sodium-pumping CH3-THSPT:HS-CoM methyltransferase	sodium-pumping CH3-THSPT:HS-CoM methyltransferase	
 									
-rxn90053	>		-2:cpd11620:0:0:"Reducedferredoxin";-1:cpd00003:0:0:"NAD";-2:cpd00971:0:0:"Na";-1:cpd00067:0:0:"H+";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00004:0:0:"NADH";2:cpd00971:1:0:"Na"	[SW] New reaction for H+ exporting Rnf electron transport complex	10.1101/2020.06.09.139246		RNF-Na-TRANSLOCATION	Na(+)-translocating ferredoxin:NAD(+) oxidoreductase complex	
+rxn90053	>		-2:cpd11620:0:0:"Reducedferredoxin";-1:cpd00003:0:0:"NAD";-2:cpd00971:0:0:"Na+";-1:cpd00067:0:0:"H+";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00004:0:0:"NADH";2:cpd00971:1:0:"Na+"	[SW] New reaction for H+ exporting Rnf electron transport complex	10.1101/2020.06.09.139246		RNF-Na-TRANSLOCATION	Na(+)-translocating ferredoxin:NAD(+) oxidoreductase complex	
 rxn90054	>		-2:cpd11620:0:0:"Reducedferredoxin";-2:cpd00003:0:0:"NAD";-1:cpd00159:0:0:"L-Lactate";2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd00004:0:0:"NADH";1:cpd00020:0:0:"Pyruvate"	[SW] Anaerobic oxidation of L-Lactate to Pyruvate needs a little help (by a coupled oxidation of reduced ferredoxin)	10:1111/1462-2920.12493		LDH-Etf_L	LDH-Etf complex (electron bifurcating)	
 rxn90056	>		-2:cpd11620:0:0:"Reducedferredoxin";-2:cpd00003:0:0:"NAD";-1:cpd00221:0:0:"D-Lactate";2:cpd11621:0:0:"Oxidizedferredoxin";2:cpd00004:0:0:"NADH";1:cpd00020:0:0:"Pyruvate"	[SW] Anaerobic oxidation of D-Lactate to Pyruvate needs a little help (by a coupled oxidation of reduced ferredoxin)	10:1111/1462-2920.12493		LDH-Etf_D	LDH-Etf complex (electron bifurcating)	
-rxn90055	>		-1:cpd00008:0:0:"ADP";-1:cpd00009:0:0:"Phosphate";-1:cpd00067:0:0:"H+";-4:cpd00971:1:0:"Na";1:cpd00001:0:0:"H2O";1:cpd00002:0:0:"ATP";4:cpd00971:0:0:"Na"	[SW] Na+ gradient dependen F0F1 ATPase.	10.1016/j.bbabio.2008.12.015		Na-F0F1ATPase	Na+ F1FO ATP synthase	
+rxn90055	>		-1:cpd00008:0:0:"ADP";-1:cpd00009:0:0:"Phosphate";-1:cpd00067:0:0:"H+";-4:cpd00971:1:0:"Na+";1:cpd00001:0:0:"H2O";1:cpd00002:0:0:"ATP";4:cpd00971:0:0:"Na+"	[SW] Na+ gradient dependen F0F1 ATPase.	10.1016/j.bbabio.2008.12.015		Na-F0F1ATPase	Na+ F1FO ATP synthase	
 									
 rxn10521			-1:cpd00011:0:0:"CO2";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";-1:cpd15892:0:0:"methanofuran b";1:cpd00001:0:0:"H2O";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd15879:0:0:"formylmethanofuran b"	[SW] Corrected ID of ferredoxin metabolites					
 rxn10561			-1:cpd00010:0:0:"CoA";-1:cpd00278:0:0:"Indolepyruvate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd11175:0:0:"S-2-(Indol-3-yl)acetyl-CoA";2:cpd11620:0:0:"Reducedferredoxin"	[SW] Corrected ID of ferredoxin metabolites					
@@ -2252,7 +2252,7 @@ rxn90064	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd21755:1:0:"1-4-alp
 rxn90065	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd27519:1:0:"Methylesterified-homogalacturonan";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd27519:0:0:"Methylesterified-homogalacturonan";1:cpd00067:0:0:"H+"	[SW] Reaction for Pectin component import (ABC)			Methylestherified-homogalacturonate ABC transporter	Methylestherified-homogalacturonate ABC transporter	
 rxn90066	>		-1:cpd21755:0:0:"1-4-alpha-D-galacturonosyl";-1:cpd00001:0:0:"H2O";1:cpd01532:0:0:"Digalacturonate";1:cpd00280:0:0:"D-Galacturonate"	[SW] Reaction for pectin degradation	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=3.2.1.82-RXN		Exo-poly-alpha-galacturonosidase 	Exo-poly-alpha-galacturonosidase 	
 rxn21843									TRUE
-rxn90067	>		-1:cpd02387:0:0:"2-Dehydro-3-deoxy-L-fuconate";1:cpd00334:0:0:"L-Lactaldehyde";1:cpd00020:0:0:"Pyruvate"	[SW] Reaction for recently describes L-2-Keto-3-deoxyfuconate aldolase	10.1074/jbc.RA119.011854		L-KDF-aldolase	L-2-keto-3-deoxyfuconate aldolase	
+rxn90067	>		-1:cpd02387:0:0:"2-Dehydro-3-deoxy-L-fuconate";1:cpd00334:0:0:"L-Lactaldehyde";1:cpd00020:0:0:"Pyruvate"	[SW] Reaction for recently described L-2-Keto-3-deoxyfuconate aldolase	10.1074/jbc.RA119.011854		L-KDF-aldolase	L-2-keto-3-deoxyfuconate aldolase	
 									
 rxn13667			-8:cpd00005:0:0:"NADPH";-12:cpd00067:0:0:"H+";-4:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd17015:0:0:"Iso-C6:0 ACP";4:cpd00001:0:0:"H2O";8:cpd00006:0:0:"NADP";4:cpd00011:0:0:"CO2";4:cpd11493:0:0:"ACP";1:cpd17011:0:0:"Iso-C14:0 ACP"	[SW] Mass and charge balanced					
 rxn13668			-8:cpd00005:0:0:"NADPH";-12:cpd00067:0:0:"H+";-4:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd17014:0:0:"Iso-C7:0 ACP";4:cpd00001:0:0:"H2O";8:cpd00006:0:0:"NADP";4:cpd00011:0:0:"CO2";4:cpd11493:0:0:"ACP";1:cpd17012:0:0:"iso-C15:0 ACP"	[SW] Mass and charge balanced					
@@ -2404,7 +2404,7 @@ rxn32427			-1:cpd00006:0:0:"NADP";-1:cpd12173:0:0:"Reduced flavodoxin";1:cpd0000
 rxn90090	>		-1:cpd00007:0:0:"O2";-1:cpd00013:0:0:"NH3";-1:cpd15561:0:0:"Ubiquinol-8";1:cpd00001:0:0:"H2O";1:cpd00067:0:0:"H+";1:cpd00165:0:0:"Hydroxylamine";1:cpd15560:0:0:"Ubiquinone-8"	[JZ] Electron carrier is not certain but quinone pool is used in other metabolic models	https://amb-express.springeropen.com/track/pdf/10.1186/s13568-018-0635-y.pdf		AMO	ammonia monooxygenase	
 rxn40053	>		-1:cpd00001:0:0:"H2O";-4:cpd00109:0:0:"Cytochrome c3+";-1:cpd00165:0:0:"Hydroxylamine";5:cpd00067:1:0:"H+";1:cpd00075:0:0:"Nitrite";4:cpd00110:0:0:"Cytochrome c2+"	[JZ] imported from new seed reactions + corrected to only forward + proton pumping	https://modelseed.org/biochem/reactions/rxn40053 https://amb-express.springeropen.com/track/pdf/10.1186/s13568-018-0635-y.pdf 		HAO	hydroxylamine dehydrogenase	
 rxn90091	>		-1:cpd00001:0:0:"H2O";-1:cpd00075:0:0:"Nitrite";-2:cpd00109:0:0:"Cytochrome c3+";2:cpd00067:0:0:"H+";1:cpd00209:0:0:"Nitrate";2:cpd00110:0:0:"Cytochrome c2+"	[JZ] identical to rxn20694 but with different cytochrome pair	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=P282-PWY		NOR	Nitrite oxidoreductase	
-rxn90092	>		-2:cpd00067:1:0:"H+";-2:cpd00110:0:0:"Cytochrome c2+";-1:cpd15560:0:0:"Ubiquinone-8";2:cpd00109:0:0:"Cytochrome c3+";1:cpd15561:0:0:"Ubiquinol-8"	[JZ] Electrons from cytochrome are transferred to quinone pool (hypothetical in amonia oxidation)	https://amb-express.springeropen.com/track/pdf/10.1186/s13568-018-0635-y.pdf https://core.ac.uk/download/pdf/82626765.pdf		QRED	Quinone reductase	
+rxn90092	>		-3:cpd00067:1:0:"H+";-2:cpd00110:0:0:"Cytochrome c2+";-1:cpd15560:0:0:"Ubiquinone-8";2:cpd00109:0:0:"Cytochrome c3+";1:cpd15561:0:0:"Ubiquinol-8";1:cpd00067:0:0:"H+"	[JZ] Electrons from cytochrome are transferred to quinone pool (hypothetical in amonia oxidation)	https://amb-express.springeropen.com/track/pdf/10.1186/s13568-018-0635-y.pdf https://core.ac.uk/download/pdf/82626765.pdf		QRED	Quinone reductase	
 rxn90093	<		-1:cpd00001:0:0:"H2O";-1:cpd00418:0:0:"NO";-1:cpd00109:0:0:"Cytochrome c3+";2:cpd00067:0:0:"H+";1:cpd00075:0:0:"Nitrite";1:cpd00110:0:0:"Cytochrome c2+"	[JZ] identical to rxn20286 but with different cytochrome pair	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=NITRITE-REDUCTASE-CYTOCHROME-RXN		NIR	Nitrite reductase (NO forming)	
 rxn90094	=		-1:cpd00001:0:0:"H2O";-1:cpd00659:0:0:"Nitrous oxide";-2:cpd00109:0:0:"Cytochrome c3+";2:cpd00067:1:0:"H+";2:cpd00418:0:0:"NO";2:cpd00110:0:0:"Cytochrome c2+"	[JZ] identical to rxn20282 but with different cytochrome pair and periplasm protons	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=NITRIC-OXIDE-REDUCTASE-RXN		NOR	nitric oxide reductase (cytochrome c)	
 rxn90095	<		-1:cpd00001:0:0:"H2O";-1:cpd00528:0:0:"N2";-2:cpd00109:0:0:"Cytochrome c3+";2:cpd00067:1:0:"H+";1:cpd00659:0:0:"Nitrous oxide";2:cpd00110:0:0:"Cytochrome c2+"	[JZ] identical to rxn22446 but with different cytochrome pair and periplasm protons	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-12130		N2OR	nitrous-oxide reductase	
@@ -2433,3 +2433,68 @@ rxn90102	=		-1:cpd31356:1:0:"(S)-2,3-Dihydroxypropane-1-sulfonate";-1:cpd00067:1
 									
 rxn90103	>		-1:cpd00003:0:0:"NAD";-5:cpd00001:0:0:"H2O";-5:cpd00002:0:0:"ATP";1:cpd00004:0:0:"NADH";5:cpd00008:0:0:"ADP";5:cpd00009:0:0:"Phosphate";4:cpd00067:0:0:"H+"	[JZ] Reduction of NAD needed for reverse electron transport in chemolithotrophy	10.1016/j.watres.2019.01.054			Reverse electron transport to NAD	
 rxn90104	>		-1:cpd00006:0:0:"NADP";-5:cpd00001:0:0:"H2O";-5:cpd00002:0:0:"ATP";1:cpd00005:0:0:"NADPH";5:cpd00008:0:0:"ADP";5:cpd00009:0:0:"Phosphate";4:cpd00067:0:0:"H+"	[JZ] Reduction of NADP needed for reverse electron transport in chemolithotrophy	10.1016/j.watres.2019.01.054			Reverse electron transport to NADP	
+									
+rxn13935		TRUE		[SW] Scaled duplicate to rxn08972					
+rxn13945		TRUE		[SW] Scaled duplicate to rxn08972					
+rxn13928		TRUE		[SW] Scaled duplicate to rxn08972					
+rxn13927		TRUE		[SW] Scaled duplicate to rxn08972					
+rxn10122		TRUE		[SW] Scaled duplicate to rxn08972					
+									
+rxn00551	>			[SW] reverse transformation (f16p - > f6p) is facilitated by different enzymes: EC  4.1.2.13, EC 2.7.1.146, EC 3.1.3.11					
+rxn15298	>			[SW] reverse transformation (f16p - > f6p) is facilitated by different enzymes: EC  4.1.2.13, EC 2.7.1.146, EC 3.1.3.11					
+rxn00553	>			[SW] changed according to metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=SUCROSE-PHOSPHATE-SYNTHASE-RXN				
+									
+rxn01215	>			[SW] Unsure. Described for formation of g16p and exergonic	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUCOSE-16-BISPHOSPHATE-SYNTHASE-RXN				
+rxn00258		TRUE		[SW] EC 2.1.3.1 acts on Propionyl-CoA and not on Acetyl-CoA	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.1.3.1-RXN				
+									
+rxn05231	>			[SW] changed according to metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ADPREDUCT-RXN				
+rxn05232	>			[SW] changed according to metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=ADPREDUCT-RXN				
+rxn05233	>			[SW] changed according to metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GDPREDUCT-RXN				
+rxn05234	>			[SW] changed according to metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GDPREDUCT-RXN				
+rxn05235	>			[SW] changed according to metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GDPREDUCT-RXN				
+rxn05236	>			[SW] changed according to metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GDPREDUCT-RXN				
+rxn06076	<			[SW] changed according to metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GDPREDUCT-RXN				
+rxn06075	<			[SW] changed according to metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GDPREDUCT-RXN				
+									
+rxn00520	>			[SW] highly exergonic according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-12511				
+rxn33785		TRUE		[SW] duplicate to rxn00520. Removing					
+									
+rxn10981		TRUE		[SW] no equivalent in other databases except one specific model from BIGG	https://modelseed.org/biochem/reactions/rxn10981				
+									
+rxn00622		TRUE		[SW] generic reaction: Alcohol					
+rxn01078		TRUE		[SW] generic reaction: Alcohol					
+rxn04035		TRUE		[SW] generic reaction: Alcohol					
+rxn05874		TRUE		[SW] generic reaction: Alcohol					
+rxn05876		TRUE		[SW] generic reaction: Alcohol					
+rxn06005		TRUE		[SW] generic reaction: Alcohol					
+rxn06035		TRUE		[SW] generic reaction: Alcohol					
+rxn06184		TRUE		[SW] generic reaction: Alcohol					
+rxn06328		TRUE		[SW] generic reaction: Alcohol					
+rxn06349		TRUE		[SW] generic reaction: Alcohol					
+rxn15210		TRUE		[SW] generic reaction: Alcohol					
+rxn15211		TRUE		[SW] generic reaction: Alcohol					
+rxn15242		TRUE		[SW] generic reaction: Alcohol					
+rxn15243		TRUE		[SW] generic reaction: Alcohol					
+rxn16302		TRUE		[SW] generic reaction: Alcohol					
+rxn16303		TRUE		[SW] generic reaction: Alcohol					
+rxn05875		TRUE		[SW] generic reaction: Alcohol					
+rxn05877		TRUE		[SW] generic reaction: Alcohol					
+rxn05878		TRUE		[SW] generic reaction: Alcohol					
+rxn06573		TRUE		[SW] generic reaction: Alcohol					
+rxn06615		TRUE		[SW] generic reaction: Alcohol					
+rxn11604		TRUE		[SW] generic reaction: Alcohol					
+rxn12013		TRUE		[SW] generic reaction: Alcohol					
+rxn15464		TRUE		[SW] generic reaction: Alcohol					
+rxn15465		TRUE		[SW] generic reaction: Alcohol					
+rxn11042		TRUE		[SW] generic reaction: an acyl-CoA					
+rxn11061		TRUE		[SW] generic reaction: an acyl-CoA					
+rxn11044		TRUE		[SW] generic reaction: a trans-enoyl-CoA(n)					
+rxn11043		TRUE		[SW] generic reaction: a trans-enoyl-CoA(n)					
+rxn11041		TRUE		[SW] generic reaction: a fatty-acid(n)					
+rxn11042		TRUE		[SW] generic reaction: a fatty-acid(n)					
+									
+rxn02260	>			[SW] changed according to metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-6384				
+rxn16149	<			[SW] changed according to metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-8974				
+rxn00503	>			[SW] changed according to metacyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=PYRROLINECARBDEHYDROG-RXN				
+rxn00504	>			[SW] changed according to metacyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=PYRROLINECARBDEHYDROG-RXN				
+rxn20649	>			[SW] changed according to metacyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=PYRROLINECARBDEHYDROG-RXN				
