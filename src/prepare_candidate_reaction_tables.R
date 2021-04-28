@@ -1,4 +1,4 @@
-prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.evi.rxn.BS, min.bs.for.core, curve.alpha = 1) {
+prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.evi.rxn.BS, min.bs.for.core) {
   # Read reaction blast results
   require(data.table)
   

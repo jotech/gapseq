@@ -11,6 +11,7 @@ use_alternatives=true
 includeSeq=false
 use_parallel=true
 only_met=""
+verbose=1
 
 usage()
 {
@@ -22,11 +23,12 @@ usage()
     echo "  -q Include sequences of hits in log files; default $includeSeq"
     echo "  -k do not use parallel"
     echo "  -m only check for this keyword/metabolite (default: all)"
+    echo "  -v Verbose level, 0 for nothing, 1 for full (default $verbose)"
 exit 1
 }
 
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
-while getopts "h?i:b:c:qkm:" opt; do
+while getopts "h?i:b:c:qkm:v:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -49,6 +51,9 @@ while getopts "h?i:b:c:qkm:" opt; do
         ;;
     m)
         only_met=$OPTARG
+        ;;
+    v)  
+        verbose=$OPTARG
         ;;
     esac
 done
@@ -119,7 +124,6 @@ else
     cat tcdbsmall.fasta | parallel --gnu --will-cite --block 500k --recstart '>' --pipe tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt \'"6 $blast_format"\' -query - > out
 fi
 
-#IDtcdb=$(cat out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $5>=covcutoff && $4>=bitcutoff) print $1}' | cut -d "|" -f 3 | sort | uniq) 
 IDtcdb=$(cat out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $5>=covcutoff) print $1}' | cut -d "|" -f 3 | sort | uniq) 
 
 TC[1]="1.Channels and pores"
@@ -132,20 +136,16 @@ for id in $IDtcdb
 do
     descr=$(grep $id tcdb_header | grep -P "(?<= ).*" -o) # extract description
     [[ -n "$only_met" ]] && { echo -e "\t\n"$descr; } 
-    #tc=$(grep $id tcdb_header | grep -Pw "([1-4]\\.[A-z]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | uniq | tr '\n' ',' | sed 's/,$//g') # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
     tc=$(grep $id tcdb_header | grep -Pw "([1-4]\\.[A-z]\\.[0-9]+)" -o | uniq | tr '\n' ',' | sed 's/,$//g') # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
     i=$(echo $tc | head -c1) # get first character of TC number => transporter type
     type=${TC[$i]}
     [ -z "$tc" ] && continue
-    #subl=$(echo "$descr" | grep -wEio "$key" | grep -iwf - redSubDB | awk -F '\t' '{ if ($2 != "") print $2; else print $1}' | tr ' ' '_' | sort | uniq) # could be more then one hit (e.g. transporter with two substances)
     subl=$(echo "$descr" | grep -wEio "$key" | tr ' ' '_' | sort | uniq)
     [[ -n "$only_met" ]] && { echo -e "\t"$id $tc $subl; } 
     #echo $id $descr $tc $i $type $subl
     for subst in $subl
     do
         subst=$(echo "$subst" | tr '_' ' ') # get space character back (was changed for look)
-        #echo -e $subst"\t"$type"\t"$tc"\t"$descr >> newTransporter.tbl
-        #exmetall=$(cat $subDB | grep -wi "$subst" | awk -F '\t' '{if ($8 != "NA") print $8}')
         exmetall=$(cat $subDB | awk -F '\t' -v subst="$subst" '{if ( (tolower($1) == tolower(subst) || tolower($2) == tolower(subst)) && $8 != "NA" ) print $8}')
         for exmet in $exmetall
         do
@@ -167,26 +167,26 @@ do
     done
 done
 
-echo -e "\nFound transporter for:"
-echo ${sublist:1} | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort | uniq -c
+[[ verbose -ge 1 ]] && echo -e "\nFound transporter for:"
+[[ verbose -ge 1 ]] && echo ${sublist:1} | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort | uniq -c
 echo ${sublist:1} | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort | uniq  > hit1
 
-echo -e "\nFound transporter and import reactions for:"
+[[ verbose -ge 1 ]] && echo -e "\nFound transporter and import reactions for:"
 echo ${sublist2:1} | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort | uniq > hit2
-cat hit2
+[[ verbose -ge 1 ]] && cat hit2
 
-echo -e "\nNo transport reactions found in database for:"
+[[ verbose -ge 1 ]] && echo -e "\nNo transport reactions found in database for:"
 for sub in $(comm -23 hit1 hit2 | tr ' ' '_')
 do
     sub=$(echo "$sub" | tr '_' ' ')
-    cat "$sub" | awk -F ',' '{print $3, $6}' | sort | uniq
+    [[ verbose -ge 1 ]] && { cat "$sub" | awk -F ',' '{print $3, $6}' | sort | uniq; }
     id=$(cat "$sub" | awk -F ',' '{print $1}' | sort | uniq | tr '\n' '|' | rev | cut -c2- | rev)
     tc=$(cat "$sub" | awk -F ',' '{print $6}' | sort | uniq)
     for exmet in $(cat "$sub" | cut -d ',' -f 4 | sort | uniq)
     do
         alter=$(cat allDB | awk -F '\t' -v exmet="$exmet" '{if($4==exmet) print $1}' | sort | uniq)
         if [ -n "$alter" ]; then
-            echo -e "\tAlternatives:" $alter
+            [[ verbose -ge 1 ]] && echo -e "\tAlternatives:" $alter
             if [ "$use_alternatives" = true ] ; then
                 cand="$cand $alter $exid"
                 alter_str=$(echo "$alter" | tr '\n' ',' | rev | cut -c2- | rev) 
@@ -196,10 +196,10 @@ do
     done
 done
 
-echo -e "\nNo transporter found for compounds (existing transporter/exchanges should be removed?):"
+[[ verbose -ge 1 ]] && echo -e "\nNo transporter found for compounds (existing transporter/exchanges should be removed?):"
 echo $allDBsubs | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort > hit3
 cat hit1 | tr '\n' '|' | rev | cut -c 2- | rev | grep -f - -iE $subDB | cut -d '	' -f1,2 | tr '[:upper:]' '[:lower:]' | tr '\t' '\n' | tr ',' '\n' | sort | uniq > hit4 # expand hits with substance alternative names to avoid false positive reporting
-comm -13 hit4 hit3
+[[ verbose -ge 1 ]] && comm -13 hit4 hit3
 
 cand="$(echo $cand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')"
 #echo -e "\nReactions to be added:"
