@@ -2500,3 +2500,13 @@ rxn00504	>			[SW] changed according to metacyc	https://biocyc.org/META/NEW-IMAGE
 rxn20649	>			[SW] changed according to metacyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=PYRROLINECARBDEHYDROG-RXN				
 									
 rxn90105	=		-1:cpd00004:0:0:"NADH";-5:cpd00067:0:0:"H+";-1:cpd15560:0:0:"Ubiquinone-8";1:cpd00003:0:0:"NAD";4:cpd00067:1:0:"H+";1:cpd15561:0:0:"Ubiquinol-8"	[SW] Complex 1, reversible, transporting 4 protons and with NADPH	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-21274		Complex1-NADPH-DH	NADPH dehydrogenase (ubiquinone-8 & 4 protons)	
+									
+rxn05466			-1:cpd00067:0:0:"H+";-1:cpd00013:1:0:"Ammonium";1:cpd00067:1:0:"H+";1:cpd00013:0:0:"Ammonium"	[SW] Changed to achieve charge-neutral transport 					
+rxn08986		TRUE		[SW] duplicate reaction to rxn05466					
+rxn08987		TRUE		[SW] duplicate reaction to rxn05466					
+rxn09736		TRUE		[SW] duplicate reaction to rxn05466					
+rxn09835		TRUE		[SW] duplicate reaction to rxn05466					
+rxn13364		TRUE		[SW] duplicate reaction to rxn05466					
+rxn29187		TRUE		[SW] duplicate reaction to rxn05466					
+rxn29241		TRUE		[SW] duplicate reaction to rxn05466					
+rxn29242		TRUE		[SW] duplicate reaction to rxn05466					

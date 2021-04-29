@@ -11,13 +11,14 @@ spec <- matrix(c(
   \t\t\t Format: [Compound 1]:[Compound 1 maxFlux];[Compound 2]:[Compound 2 maxFlux]",
   'output.file', 'o', 2, "character", "(optional, character). File name for medium
   \t\t\t table in csv format. Default: Replacement of 'model' file extension 
-  \t\t\t (eg. '.RDS' or '-draft.RDS') with '-medium.csv."
+  \t\t\t (eg. '.RDS' or '-draft.RDS') with '-medium.csv.",
+  'help' , 'h', 0, "logical", "help"
 ), ncol = 5, byrow = T)
 
 opt <- getopt(spec)
 
 # Help Screen
-if ( is.null(opt$model) | is.null(opt$pathway.pred)) {
+if ( !is.null(opt$help) | is.null(opt$model) | is.null(opt$pathway.pred)) {
   cat(getopt(spec, usage=TRUE))
   q(status=1)
 }
