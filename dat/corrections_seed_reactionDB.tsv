@@ -2498,3 +2498,12 @@ rxn16149	<			[SW] changed according to metacyc	https://metacyc.org/META/NEW-IMAG
 rxn00503	>			[SW] changed according to metacyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=PYRROLINECARBDEHYDROG-RXN				
 rxn00504	>			[SW] changed according to metacyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=PYRROLINECARBDEHYDROG-RXN				
 rxn20649	>			[SW] changed according to metacyc	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=PYRROLINECARBDEHYDROG-RXN				
+									
+rxn08986		TRUE		[SW] duplicate reaction to rxn05466					
+rxn08987		TRUE		[SW] duplicate reaction to rxn05466					
+rxn09736		TRUE		[SW] duplicate reaction to rxn05466					
+rxn09835		TRUE		[SW] duplicate reaction to rxn05466					
+rxn13364		TRUE		[SW] duplicate reaction to rxn05466					
+rxn29187		TRUE		[SW] duplicate reaction to rxn05466					
+rxn29241		TRUE		[SW] duplicate reaction to rxn05466					
+rxn29242		TRUE		[SW] duplicate reaction to rxn05466					
