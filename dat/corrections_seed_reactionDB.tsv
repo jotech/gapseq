@@ -1943,7 +1943,7 @@ rxn90024	>		-3:cpd00001:0:0:"H2O";-1:cpd11976:0:0:"Maltodextrin";4:cpd00027:0:0:
 rxn90025	>		-1:cpd00002:0:0:"ATP";-1:cpd00832:0:0:"N-Acetyl-D-chondrosamine";1:cpd00008:0:0:"ADP";1:cpd03812:0:0:"N-Acetyl-alpha-D-galactosamine 6-phosphate"	[JZ] Added reaction for n-acetyl galactosamine kinase	https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-13547		RXN-13547	n-acetyl galactosamine kinase	
 rxn90026	>		-1:cpd00001:1:0:"H2O";-1:cpd11842:1:0:"core3";1:cpd00122:1:0:"acgam";1:cpd21520:1:0:"Tn_antigen"	[JZ] Mucus o-glycan degradation, imported from vmh	https://www.vmh.life/#reaction/GLCNACASE_OGLYCAN6e		GLCNACASE_OGLYCAN6e	N-acetylglucosaminidase, extracellular	
 rxn90027	>		-1:cpd00001:1:0:"H2O";-1:cpd02992:1:0:"core4";1:cpd00122:1:0:"acgam";1:cpd11842:1:0:"core3"	[JZ] Mucus o-glycan degradation, imported from vmh	https://www.vmh.life/#reaction/GLCNACASE_OGLYCAN5e		GLCNACASE_OGLYCAN5e	N-acetylglucosaminidase, extracellular	
-rxn90028	>		-1:cpd00001:1:0:"H2O";-1:cpd21520:1:0:"Tn_antigen";1:cpd00832:1:0:"acgal"	[JZ] Mucus o-glycan degradation, imported from vmh NOT BALANCED! (tmp: ser-thr protein residue missing)	https://www.vmh.life/#reaction/GALNACASE_OGLYCAN1e		GALNACASE_OGLYCAN1e	N-acetylglucosaminidase, extracellular	
+rxn90028	>		-1:cpd00001:1:0:"H2O";-1:cpd21520:1:0:"Tn_antigen";1:cpd00832:1:0:"acgal";1:cpd90017:1:0:"Protein-Linked Serine Or Threonine Residue (O-Glycosylation Site)"	[JZ] Mucus o-glycan degradation, imported from vmh NOT BALANCED! (tmp: ser-thr protein residue missing) [SW] Added missing part	https://www.vmh.life/#reaction/GALNACASE_OGLYCAN1e		GALNACASE_OGLYCAN1e	N-acetylglucosaminidase, extracellular	
 									
 rxn90029	>		-1:cpd00004:0:0:"NADH";-1:cpd00663:0:0:"Acrylyl-CoA";1:cpd00003:0:0:"NAD";1:cpd00086:0:0:"Propionyl-CoA"	[SW] Reaction for 1.3.1.95 ( acrylate pathway )	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-5494		Acryl-coa-nadh-red	acryloyl-CoA reductase	
 									
@@ -1955,7 +1955,7 @@ rxn22386				[SW] Important for Rhmanose degradatiion without phosphorylated inte
 rxn39175				[SW] Diffusion of butanol					TRUE
 rxn36810				[SW] EC 1.6.5.3					TRUE
 rxn26477			-1:cpd00001:0:0:"H2O";-1:cpd08615:0:0:"1-Hydroxy-2-methyl-2-butenyl 4-diphosphate";-2:cpd11621:0:0:"Oxidizedferredoxins";2:cpd00067:0:0:"H+";1:cpd08301:0:0:"2-C-methyl-D-erythritol2-4-cyclodiphosphate";2:cpd11620:0:0:"Reducedferredoxins"						TRUE
-rxn26102									TRUE
+rxn26102			-1:cpd15484:0:0:"heptosyl-heptosyl-kdo2-lipidA";-1:cpd00026:0:0:"UDP-glucose";1:cpd00014:0:0:"UDP";1:cpd26538:0:0:"glucosyl-(heptosyl)2-Kdo2-lipid A"	[??] (no comment before) [SW] corrected mass and charge balance and replaced identfier of UDP-glucose with the correct one.					TRUE
 rxn16823									TRUE
 rxn23042									TRUE
 									
@@ -2280,13 +2280,13 @@ rxn21855									TRUE
 rxn90075	=		-1:cpd00003:0:0:"NAD";-1:cpd00526:1:0:"Cholate";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd23431:1:0:"3-dehydrocholate"	[JZ] identical to rxn21854 but external redox-pair	https://www.vmh.life/#reaction/CA3aHSDHe		CA3aHSDHe	3-alpha hydroxysteroid dehydrogenase, NAD+ dependent	
 rxn90076	=		-1:cpd00004:0:0:"NADH";-1:cpd00067:0:0:"H+";-1:cpd23431:1:0:"3-dehydrocholate";1:cpd00003:0:0:"NAD";1:cpd23430:1:0:"isocholate"	[JZ] identical to rxn21855 but external redox-pair	https://www.vmh.life/#reaction/ICA3bHSDHe		ICA3bHSDHe	3-beta hydroxysteroid dehydrogenase, NAD+ dependent	
 rxn42818	>		-1:cpd00003:0:0:"NAD";-1:cpd01663:0:0:"Chenodiol";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd35610:0:0:"3alpha-hydroxy-7-oxo-5beta-cholan-24-oate"	[JZ] Added from new seed reactions + forward direction only	https://modelseed.org/biochem/reactions/rxn42818 https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-16033		chenodeoxycholate dehydrogenase chenodeoxycholate dehydrogenase	chenodeoxycholate dehydrogenase chenodeoxycholate dehydrogenase	
-rxn45750	<		-1:cpd00006:0:0:"NADP";-1:cpd04945:0:0:"Ursodiol";1:cpd00005:0:0:"NADPH";1:cpd00067:0:0:"H+";1:cpd35610:0:0:"3alpha-hydroxy-7-oxo-5beta-cholan-24-oate"	[JZ] Added from new seed reactions + backward direction only	https://modelseed.org/biochem/reactions/rxn45750 https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-16034		7β-hydroxysteroid dehydrogenase	7β-hydroxysteroid dehydrogenase	
+rxn45750	<		-1:cpd00006:0:0:"NADP";-1:cpd04945:0:0:"Ursodiol";1:cpd00005:0:0:"NADPH";1:cpd00067:0:0:"H+";1:cpd35610:0:0:"3alpha-hydroxy-7-oxo-5beta-cholan-24-oate"	[JZ] Added from new seed reactions + backward direction only	https://modelseed.org/biochem/reactions/rxn45750 https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-16034		7-hydroxysteroid dehydrogenase	7-hydroxysteroid dehydrogenase	
 rxn90077	>		-1:cpd00003:0:0:"NAD";-1:cpd01663:1:0:"Chenodiol";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd35610:1:0:"3alpha-hydroxy-7-oxo-5beta-cholan-24-oate"	[JZ] identical to rxn42818 but external redox-pair	https://www.vmh.life/#reaction/CDCA7aHSDHe		CDCA7aHSDHe	7-alpha hydroxysteroid dehydrogenase, NAD+ dependent	
 rxn90078	<		-1:cpd00003:0:0:"NAD";-1:cpd04945:1:0:"Ursodiol";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd35610:1:0:"3alpha-hydroxy-7-oxo-5beta-cholan-24-oate"	[JZ] identical to rxn45750 but external redox-pair and with NADH instead of NADPH	https://www.vmh.life/#reaction/UDCA7bHSDHe		UDCA7bHSDHe	7-beta hydroxysteroid dehydrogenase, NAD+ dependent	
 rxn19220	>			[JZ] wrong direction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=BAI3OXO-OXRED-RXN				
 rxn90079	>		-1:cpd00067:0:0:"H+";-1:cpd22042:0:0:"3-oxo-delta4,6-cholyl-CoA, 4";-1:cpd00526:0:0:"Cholate";1:cpd11235:0:0:"12alpha-Hydroxy-3-oxochola-4,6-dienoate, 4";1:cpd01237:0:0:"Choloyl-CoA"	[JZ] new reaction for BaiF needed for 7-alpha-dehydroxylation pathways (new pathway was described only in 2020 => BaiE and BaiF reactions are mixed in metacyc)	https://doi.org/10.1038/s41586-020-2396-4		BaiF	bile acid CoA-transferase	
 rxn36658									TRUE
-rxn46416	=		-1:cpd00003:0:0:"NAD";-1:cpd03164:0:0:"Chenodeoxycholoyl-CoA";1:cpd00004:0:0:"NADH";2:cpd00067:0:0:"H+";1:cpd32588:0:0:"3-oxochenodeoxycholoyl-CoA"	[JZ] Added from new seed reactions	https://modelseed.org/biochem/reactions/rxn46416		3α-hydroxy bile acid-CoA-ester 3-dehydrogenase	3α-hydroxy bile acid-CoA-ester 3-dehydrogenase	
+rxn46416	=		-1:cpd00003:0:0:"NAD";-1:cpd03164:0:0:"Chenodeoxycholoyl-CoA";1:cpd00004:0:0:"NADH";2:cpd00067:0:0:"H+";1:cpd32588:0:0:"3-oxochenodeoxycholoyl-CoA"	[JZ] Added from new seed reactions	https://modelseed.org/biochem/reactions/rxn46416		3-hydroxy bile acid-CoA-ester 3-dehydrogenase	3-hydroxy bile acid-CoA-ester 3-dehydrogenase	
 rxn41945	=		-1:cpd00003:0:0:"NAD";-1:cpd32588:0:0:"3-oxochenodeoxycholoyl-CoA";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd32967:0:0:"7alpha-hydroxy-3-oxochol-4-en-24-oyl-CoA"	[JZ] Added from new seed reactions	https://modelseed.org/biochem/reactions/rxn41945		3-oxocholoyl-CoA 4-desaturase	3-oxocholoyl-CoA 4-desaturase	
 rxn43831	=		-1:cpd32967:0:0:"7alpha-hydroxy-3-oxochol-4-en-24-oyl-CoA";1:cpd00001:0:0:"H2O";1:cpd34820:0:0:"3-oxo-delta4,6-7-deoxy-chenodeoxycholoyl-CoA"	[JZ] Added from new seed reactions	https://modelseed.org/biochem/reactions/rxn43831				
 rxn41554	<		-1:cpd00003:0:0:"NAD";-1:cpd32012:0:0:"12-alpha-hydroxy-3 oxochol-4-enoate";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd11235:0:0:"12alpha-Hydroxy-3-oxochola-4,6-dienoate"	[JZ] Added from new seed reactions	https://modelseed.org/biochem/reactions/rxn41554		BaiH	3-dehydro-bile acid Δ4,6-reductase	
@@ -2492,6 +2492,8 @@ rxn11044		TRUE		[SW] generic reaction: a trans-enoyl-CoA(n)
 rxn11043		TRUE		[SW] generic reaction: a trans-enoyl-CoA(n)					
 rxn11041		TRUE		[SW] generic reaction: a fatty-acid(n)					
 rxn11042		TRUE		[SW] generic reaction: a fatty-acid(n)					
+rxn16265		TRUE		[SW] generic reaction: Acceptor beta-D-glucuronoside					
+rxn12330		TRUE		[SW] Generic/model-specific reaction					
 									
 rxn02260	>			[SW] changed according to metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-6384				
 rxn16149	<			[SW] changed according to metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-8974				
@@ -2507,3 +2509,19 @@ rxn13364		TRUE		[SW] duplicate reaction to rxn05466
 rxn29187		TRUE		[SW] duplicate reaction to rxn05466					
 rxn29241		TRUE		[SW] duplicate reaction to rxn05466					
 rxn29242		TRUE		[SW] duplicate reaction to rxn05466					
+									
+rxn11750			-1:cpd00009:0:0:"Phosphate";-1:cpd16329:0:0:"Doxifluridine";1:cpd04810:0:0:"5-FU";1:cpd16441:0:0:"5-Deoxyribose-1-phosphate"	[SW] Corrected charge and mass balance.					
+rxn11029			-1:cpd00067:0:0:"H+";-1:cpd00004:0:0:"NADH";-1:cpd16121:0:0:"2,5-diketo-3-deoxygluconate";1:cpd00003:0:0:"NAD";1:cpd00176:0:0:"2-keto-3-deoxygluconate"	[SW] Corrected charge and mass balance.					
+rxn12333			-1:cpd03584:0:0:"UDP-3-O-(beta-hydroxymyristoyl)-D-glucosamine";-1:cpd16594:0:0:"3-hydroxyacyl-acp";1:cpd02835:0:0:"UDP-2,3-bis(3-hydroxytetradecanoyl)glucosamine";1:cpd11493:0:0:"ACP";1:cpd00067:0:0:"H+"	[SW] Corrected charge and mass balance.					
+rxn11345			-1:cpd00067:0:0:"H+";-1:cpd00869:0:0:"4-methylthio 2-oxobutyrate";1:cpd00011:0:0:"CO2";1:cpd16244:0:0:"MTAL"						
+									
+rxn13006		TRUE		[SW] Duplicate reaction to rxn08043 but with wrong metabolite identifier					
+rxn13009		TRUE		[SW] Duplicate reaction to rxn08764 but with wrong metabolite identifier					
+rxn11512		TRUE		[SW] Incomplete and unbalanced reaction					
+rxn08257	=			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-14936				
+rxn09422			-6:cpd00005:0:0:"NADPH";-9:cpd00067:0:0:"H+";-3:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd11494:0:0:"Acetyl-ACP";3:cpd00001:0:0:"H2O";6:cpd00006:0:0:"NADP";3:cpd00011:0:0:"CO2";1:cpd11470:0:0:"Octanoyl-ACP";3:cpd11493:0:0:"ACP"	[SW] Corrected charge and mass balance.					
+rxn09428			-2:cpd00005:0:0:"NADPH";-3:cpd00067:0:0:"H+";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";-1:cpd15277:0:0:"Palmitoyl-ACP";1:cpd00001:0:0:"H2O";2:cpd00006:0:0:"NADP";1:cpd00011:0:0:"CO2";1:cpd11493:0:0:"ACP";1:cpd15268:0:0:"Octadecanoyl-ACP"	[SW] Corrected charge and mass balance.					
+rxn09439			-2:cpd00005:0:0:"NADPH";-3:cpd00067:0:0:"H+";-1:cpd11474:0:0:"Decanoyl-ACP";-1:cpd11492:0:0:"Malonyl-acyl-carrierprotein-";1:cpd00001:0:0:"H2O";2:cpd00006:0:0:"NADP";1:cpd00011:0:0:"CO2";1:cpd11468:0:0:"Dodecanoyl-ACP";1:cpd11493:0:0:"ACP"	[SW] Corrected charge and mass balance.					
+rxn11091	>		-1:cpd00003:0:0:"NAD";-1:cpd16167:0:0:"dihydroorotate";1:cpd00004:0:0:"NADH";1:cpd00247:0:0:"Orotate";1:cpd00067:0:0:"H+"	[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=OROTATE-REDUCTASE-NADH-RXN				
+rxn11157			-1:cpd00067:0:0:"H+";-1:cpd00343:0:0:"N-Carbamoyl-L-aspartate";1:cpd00001:0:0:"H2O";1:cpd16167:0:0:"dihydroorotate"	[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=DIHYDROOROT-RXN				
+rxn14270			-1:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd08368:0:0:"Cobalt-precorrin 2";1:cpd00019:0:0:"S-Adenosyl-homocysteine";1:cpd17535:0:0:"Cobalt-factor III"	[SW] Corrected charge and mass balance.					

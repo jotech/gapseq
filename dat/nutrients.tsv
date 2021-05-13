@@ -160,7 +160,7 @@ cpd00216	Chorismate	C10H8O6	-2	MNXM337
 cpd00218	Niacin	C6H4NO2	-1	MNXM274
 cpd00220	Riboflavin	C17H19N4O6	-1	MNXM270
 cpd00221	D-Lactate	C3H5O3	-1	MNXM285
-cpd00222	GLCN	C6H11O7	-1	MNXM341
+cpd00222	D-Gluconate	C6H11O7	-1	MNXM341
 cpd00223	Glycerate	C3H5O4	-1	MNXM189
 cpd00224	L-Arabinose	C5H10O5	0	MNXM461
 cpd00226	HYXN	C5H4N4O	0	MNXM213
@@ -224,7 +224,7 @@ cpd00350	Farnesyldiphosphate	C15H26O7P2	-2	MNXM34
 cpd00355	Nicotinamide ribonucleotide	C11H14N2O8P	-1	MNXM355
 cpd00357	TTP	C10H14N2O14P3	-3	MNXM394
 cpd00359	indol	C8H7N	0	MNXM377
-cpd00361	ACTN	C4H8O2	0	MNXM1268
+cpd00361	Acetoin	C4H8O2	0	MNXM1268
 cpd00363	Ethanol	C2H6O	0	MNXM303
 cpd00366	Ribitol	C5H12O5	0	MNXM1820
 cpd00367	Cytidine	C9H13N3O5	0	MNXM338
@@ -329,7 +329,7 @@ cpd00776	Squalene 2,3-oxide	C30H50O	0	MNXM130
 cpd00781	5-Dehydrogluconate	C6H9O7	-1	MNXM963
 cpd00791	ProtoporphyrinogenIX	C34H38N4O4	-2	MNXM351
 cpd00793	Thiamine phosphate	C12H16N4O4PS	-1	MNXM662
-cpd00794	TRHL	C12H22O11	0	MNXM198
+cpd00794	Trehalose	C12H22O11	0	MNXM198
 cpd00797	(R)-3-Hydroxybutanoate	C4H7O3	-1	MNXM663
 cpd00800	8-Amino-7-oxononanoate	C9H17NO3	0	MNXM1141
 cpd00802	D-fructose-1-phosphate	C6H11O9P	-2	MNXM145568
@@ -499,7 +499,7 @@ cpd07333	Dihydrocaffeic acid	C9H9O4	-1	MNXM3476
 cpd08021	Dimethyl sulfoxide	C2H6OS	0	MNXM745
 cpd08023	methanesulfonate	CH3O3S	-1	MNXM1485
 cpd08304	Dihydro-3-coumaric acid	C9H9O3	-1	MNXM1634
-cpd08305	crotonobetaine	C8H16NO	1	MNXM724515
+cpd08305	crotonobetaine	C7H13NO2	0	MNXM724515
 cpd08374	alpha-Mannosylglycerate	C9H15O9	-1	MNXM1624
 cpd08928	L-Threonine phosphate	C4H8NO6P	-2	MNXM1492
 cpd09068	Isoamyl acetate	C7H14O2	0	MNXM7451
@@ -706,6 +706,7 @@ cpd15609	heptadecanoate (C17:0)	C17H33O2	-1	MNXM8705
 cpd15895	monomethylamine	CH6N	1	MNXM8882
 cpd15901	2-oxohexanedioic acid	C6H6O5	-2	MNXM6073
 cpd15911	unknown riboflavin degradation product	C10H14N2O5	0	MNXM7875
+cpd16244	3-(methylsulfanyl)propanal	C4H8OS	0	MNXM6829
 cpd16336	Isoprene	C5H8	0	MNXM3288
 cpd16654	tricarballylate	C6H5O6	-3	MNXM4854
 cpd16657	ethylsalicylate	C9H10O3	0	MNXM11533
@@ -723,6 +724,7 @@ cpd17085	2-heptyl-3-hydroxy-4-quinolone	C16H21NO2	0	MNXM9825
 cpd17760	Ursocholate	C24H39O5	-1	MNXM10417
 cpd18072	Cytochrome-C-ox	FeR	3	MNXM11246
 cpd18074	Cytochrome-C-red	FeR	2	MNXM11247
+cpd21520	Tn antigen	C8H14NO6R	0	MNXM7559
 cpd21755	1-4-alpha-D-galacturonosyl	C18H23O19	-3	MNXM56632
 cpd22614	sulfoquinovose	C6H11O8S	-1	MNXM83070
 cpd23430	isocholate	C24H39O5	-1	MNXM18754
@@ -738,3 +740,4 @@ cpd90005	malto-8-ose	C48H82O41	0	""
 cpd90006	malto-11-ose	C66H112O56	0	""
 cpd90007	malto-6-ose	C36H62O31	0	""
 cpd90008	malto-13-ose	C78H132O66	0	""
+cpd90017	Protein-Linked Serine Or Threonine Residue (O-Glycosylation Site)	HOR	0	MNXM147296
