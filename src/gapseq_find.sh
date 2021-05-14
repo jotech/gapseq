@@ -526,7 +526,6 @@ do
                     fi
                 fi
                 if [ -s "$seqpath_user/${ec[i]}.fasta" ]; then
-                    [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences: $seqpath_user/${ec[i]}.fasta"
                     query_tmp=$seqpath_user/${ec[i]}.fasta
                 elif [ $seqSrc -eq 1 ]; then
                     query_tmp=$seqpath/rev/${ec[i]}.fasta
@@ -541,8 +540,10 @@ do
                 fi
                 if [[ -s $query_tmp ]]; then
                     cat $query_tmp >> $query_all
-                    if [[ $i -eq 0 ]]; then
-                        [[ verbose -ge 1 ]] && echo -e "\t\t$query_tmp"
+                    if [[ "$query_tmp" == "$seqpath_user"* ]]; then
+                        [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences: $query_tmp" 
+                    elif [[ $i -eq 0 ]]; then
+                        [[ verbose -ge 1 ]] && echo -e "\t\t--> Found sequences: $query_tmp"
                     else
                         [[ verbose -ge 1 ]] && echo -e "\t\t--> Found alternative EC ${ec[i]}: $query_tmp"
                     fi
@@ -571,7 +572,6 @@ do
                 fi
             fi
             if [ -s "$seqpath_user/$reaNameHash.fasta" ]; then
-                [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences $seqpath_user/$reaNameHash.fasta"
                 query=$seqpath_user/$reaNameHash.fasta
             elif [ $seqSrc -eq 1 ]; then
                 query=$seqpath/rev/$reaNameHash.fasta
@@ -583,6 +583,13 @@ do
                 cat $seqpath/rev/$reaNameHash.fasta $seqpath/unrev/$reaNameHash.fasta | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query
             elif [ $seqSrc -eq 4 ]; then
                 query=$seqpath/unrev/$reaNameHash.fasta
+            fi
+            if [[ -s $query ]]; then
+                if [[ "$query" == "$seqpath_user"* ]]; then
+                    [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences: $seqpath_user/$reaNameHash.fasta"
+                else
+                    [[ verbose -ge 1 ]] && echo -e "\t\t--> Found sequences: $seqpath_user/$reaNameHash.fasta"
+                fi
             fi
         fi
 
@@ -610,14 +617,17 @@ do
             fi
             
             if [ -s "$seqpath_user/$rea.fasta" ]; then
-                [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences: $seqpath_user/$rea.fasta"
                 query_gene=$seqpath_user/$rea.fasta
             else
                 query_gene=$seqpath/rxn/$rea.fasta
             fi
             #merge sequence data
             if [[ -s $query_gene ]]; then
-                [[ verbose -ge 1 ]] && echo -e "\t\t--> Found reaction sequences: $query_gene"
+                if [[ "$query_gene" == "$seqpath_user"* ]]; then
+                    [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences: $seqpath/rxn/$rea.fasta"
+                else
+                    [[ verbose -ge 1 ]] && echo -e "\t\t--> Found sequences: $seqpath/rxn/$rea.fasta"
+                fi
                 query_merge2=$(mktemp)
                 cat $query $query_gene | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query_merge2 # no duplicates
                 query=$query_merge2
