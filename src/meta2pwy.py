@@ -126,14 +126,12 @@ def getReaInfos(pwy):
                 ec = meta[r2]["ec_number"]
                 if ec == None:
                     ec = [""]
-        ec_nr=len(ec)
-        ec = str(",".join(ec)).replace("|","").replace("EC-","") # more than one EC possible
+        #ec_nr=len(ec)
+        ec = str("/".join(ec)).replace("|","").replace("EC-","") # more than one EC possible
         ec_list.append(ec)
         reaId = reaId.replace("|","")
-        reaId_list.append(",".join([reaId for i in range(0,ec_nr)]))
-        #reaName = reaName.replace("|","")
-        reaName_list.append(";".join([reaName for i in range(0,ec_nr)]))
-        #print("END:", r,reaName,ec)
+        reaId_list.append(reaId)
+        reaName_list.append(reaName)
     ec_col = (",".join(ec_list))
     rea_col= (",".join(reaId_list)) 
     spont_col = (",".join(spont_list))

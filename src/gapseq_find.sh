@@ -86,6 +86,8 @@ seedEnzymesNames=$dir/../dat/seed_Enzyme_Name_Reactions_Aliases.tsv
 altecdb=$dir/../dat/altec.csv
 metaGenes=$dir/../dat/meta_genes.csv
 
+function join_by { local IFS="$1"; shift; echo "$*"; }
+
 
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
@@ -346,41 +348,50 @@ fi
 # function to get database hits for ec number
 getDBhit(){
     kegg=$(grep -wFe "|$rea" $metaRea | awk -F "\t" {'print $5'})
+    altec=""
 
-    # 1) search in reaction db by EC
-    if [[ -n "$EC_test" ]]; then
+    for i in "${!ec[@]}"; do
+        # 1) search in reaction db by EC
+        if [[ -n "${EC_test[i]}" ]]; then
+            if [ "$database" == "vmh" ]; then
+                dbhit=$(grep -wF ${ec[i]} $reaDB1 | awk -F ',' '{print $1}')
+            elif [ "$database" == "seed" ]; then
+                dbhit=$(cat $seedEC | cut -f1,3 | grep -wF ${ec[i]} | cut -f1 | tr '|' ' ')
+                #dbhit="$dbhit $(grep -wF ${ec[i]} $reaDB4 | awk -F '\t' '{print $4}' | tr '\n' ' ')" # mnxref considers also obsolete seed hits 
+            fi
+        fi
+
+        # 2) search in reaction db by kegg identifier 
         if [ "$database" == "vmh" ]; then
-            dbhit=$(grep -wF $ec $reaDB1 | awk -F ',' '{print $1}')
+            [ -n "$kegg" ]  && dbhit="$dbhit $(grep -wE "$(echo $kegg |tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')"
         elif [ "$database" == "seed" ]; then
-            dbhit=$(cat $seedEC | cut -f1,3 | grep -wF $ec | cut -f1 | tr '|' ' ')
-            #dbhit="$dbhit $(grep -wF $ec $reaDB4 | awk -F '\t' '{print $4}' | tr '\n' ' ')" # mnxref considers also obsolete seed hits 
-        fi
-    fi
-
-    # 2) search in reaction db by kegg identifier 
-    if [ "$database" == "vmh" ]; then
-        [ -n "$kegg" ]  && dbhit="$dbhit $(grep -wE "$(echo $kegg |tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')"
-    elif [ "$database" == "seed" ]; then
-        [ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB3 | awk -F '\t' '$18 == "OK" {print $1}' )" # only consider reactions which are OK
-        #[ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}' | tr '\n' ' ')"
-        [ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB5 | awk -F '\t' '{print $2}' | tr '\n' ' ')" # use single database (reaDB4,5 are similiar)
-    fi
-
-    # 3) search in reaction db by alternative EC
-    if [[ -n "$EC_test" ]]; then
-        altec=$(grep -wF $ec $altecdb | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -v $ec)
-        if [ -z "$altec" ]; then  
-            brendaec=$(grep -wF $ec $brenda | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -v $ec)
-            [[ `echo "$brendaec" | wc -l` -eq 1 ]] && altec=brendaec # only take unique hits (too many multiple transferred ECs)
+            [ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB3 | awk -F '\t' '$18 == "OK" {print $1}' )" # only consider reactions which are OK
+            #[ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}' | tr '\n' ' ')"
+            [ -n "$kegg" ] && dbhit="$dbhit $(grep -wE "$(echo $kegg | tr ' ' '|')" $reaDB5 | awk -F '\t' '{print $2}' | tr '\n' ' ')" # use single database (reaDB4,5 are similiar)
         fi
 
-        if [ "$database" == "vmh" ]; then
-            [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo ${altec//./\\.} | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')" # take care of multiple EC numbers
-        elif [ "$database" == "seed" ]; then
-            [ -n "$altec" ] && dbhit="$dbhit $(cat $seedEC | cut -f1,3 | grep -wE "$(echo ${altec//./\\.} | tr ' ' '|')" | cut -f1 | tr '|' ' ')" # take care of multiple EC numbers
-            #[ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo ${altec//./\\.} | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')" # mnxref considers also obsolete seed hits 
+        # 3) search in reaction db by alternative EC
+        if [[ -n "${EC_test[i]}" ]]; then
+            altec=$(grep -wF ${ec[i]} $altecdb | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -vw ${ec[i]})
+            if [ -z "$altec" ]; then  
+                brendaec=$(grep -wF ${ec[i]} $brenda | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -vw ${ec[i]})
+                [[ `echo "$brendaec" | wc -l` -eq 1 ]] && altec=$brendaec # only take unique hits (too many multiple transferred ECs)
+            fi
+
+            if [ "$database" == "vmh" ]; then
+                [ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo ${altec//./\\.} | tr ' ' '|')" $reaDB1 | awk -F ',' '{print $1}')" # take care of multiple EC numbers
+            elif [ "$database" == "seed" ]; then
+                [ -n "$altec" ] && dbhit="$dbhit $(cat $seedEC | cut -f1,3 | grep -wE "$(echo ${altec//./\\.} | tr ' ' '|')" | cut -f1 | tr '|' ' ')" # take care of multiple EC numbers
+                #[ -n "$altec" ] && dbhit="$dbhit $(grep -wE "$(echo ${altec//./\\.} | tr ' ' '|')" $reaDB4 | awk -F '\t' '{print $4}')" # mnxref considers also obsolete seed hits 
+            fi
         fi
-    fi
+    done
+    for aec in $altec; do
+        if [[ ! " ${ec[@]} " =~ " ${aec} " ]]; then
+            ec+=($aec)
+            EC_test+=($(if [[ $aec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi))
+        fi
+    done
 
     # 4) search in bigg db by metacyc id (does only make sense for vmh/bigg namespace)
     if [ "$database" == "vmh" ]; then
@@ -455,11 +466,19 @@ do
     #for ec in $(echo $ecs | tr "," "\n")
     do 
         dbhit=""
-        ec=$(echo $ecs | awk -v j=$j -F ',' '{print $j}')
+        ec_all=$(echo $ecs | awk -v j=$j -F ',' '{print $j}')
+        IFS='/' read -r -a ec <<< "$ec_all" # put splitted string into array
+        re="([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
+        EC_test=()
+        EC_test_bool=false # at least one full EC number found for reaction
+        for i in "${!ec[@]}"
+        do
+            EC_test[i]=$(if [[ ${ec[i]} =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
+            #echo EC check: $i ${ec[i]} ${EC_test[i]}
+            [[ -n "{$EC_test[i]}" ]] && EC_test_bool=true
+        done
         rea=$(echo $reaids | awk -v j=$j -F ',' '{print $j}')
         reaName=$(echo $reaNames | awk -v j=$j -F ';' '{print $j}' | tr -d '|')
-        re="([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
-        EC_test=$(if [[ $ec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
         geneName=$(cat $metaGenes | awk -v rea=$rea -F ',' '$1~rea {print $2}')
         geneRef=$(cat $metaGenes | awk -v rea=$rea -F ',' '$1~rea  {print $5}')
         [[ verbose -ge 1 ]] && echo -e "\t$j) $rea $reaName $ec" $geneName
@@ -486,87 +505,55 @@ do
             continue
         fi
         ((count++))
-        if [[ -n "$EC_test" ]]; then
-            # check if sequence is not available => try to download
-            if [[ ! -f $seqpath/rev/$ec.fasta || "$update_manually" = true ]]; then
-                if ! already_downloaded "$seqpath/rev/$ec.fasta"; then
-                    [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $ec 
-                    $dir/uniprot.sh -e "$ec" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
-                    echo $seqpath/rev/$ec.fasta >> $download_log
-                fi
-            fi
-            if [[ (! -f $seqpath/unrev/$ec.fasta && $seqSrc -gt 1) || "$update_manually" = true ]]; then 
-                if ! already_downloaded "$seqpath/unrev/$ec.fasta"; then
-                    [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unreviewed sequences for: $ec 
-                     $dir/uniprot.sh -u -e "$ec" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
-                    echo $seqpath/unrev/$ec.fasta >> $download_log
-                fi
-            fi
-            if [ -s "$seqpath_user/$ec.fasta" ]; then
-                [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
-                query=$seqpath_user/$ec.fasta
-            elif [ $seqSrc -eq 1 ]; then
-                query=$seqpath/rev/$ec.fasta
-            elif [ $seqSrc -eq 2 ]; then
-                query=$seqpath/rev/$ec.fasta
-                [[ ! -s $query ]] && query=$seqpath/unrev/$ec.fasta
-            elif [ $seqSrc -eq 3 ]; then
-                query=$(mktemp)
-                cat $seqpath/rev/$ec.fasta $seqpath/unrev/$ec.fasta | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query # use awk to remove duplicates
-            elif [ $seqSrc -eq 4 ]; then
-                query=$seqpath/unrev/$ec.fasta
-            fi
-            
-            # if an alternative ec numbers exists and has additional sequence data merge both files
-            EC_test2=$(if [[ $altec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
-            if [[ -n "$EC_test2" ]]; then
-                [[ verbose -ge 1 ]] && echo -e "\t\t--> Found alternative EC number:" $altec "<--"
+        query=$(mktemp)
+        query_all=$(mktemp)
+        for i in "${!ec[@]}"; do
+            #echo test: ${ec[i]} ${EC_test[i]}
+            if [[ -n "${EC_test[i]}" ]]; then
                 # check if sequence is not available => try to download
-                #[[ `echo "$altec" | wc -l` -gt 1 ]] && exit 1 # multiple alternative EC
-                query_alt_all=$(mktemp)
-                for aec in $altec; do
-                    if [[ ! -f $seqpath/rev/$aec.fasta || "$update_manually" = true ]]; then
-                        if ! already_downloaded "$seqpath/rev/$aec.fasta"; then
-                            [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $aec 
-                            $dir/uniprot.sh -e "$aec" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
-                            echo $seqpath/rev/$aec.fasta >> $download_log
-                        fi
+                if [[ ! -f $seqpath/rev/${ec[i]}.fasta || "$update_manually" = true ]]; then
+                    if ! already_downloaded "$seqpath/rev/${ec[i]}.fasta"; then
+                        [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: ${ec[i]}
+                        $dir/uniprot.sh -e "${ec[i]}" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
+                        echo $seqpath/rev/${ec[i]}.fasta >> $download_log
                     fi
-                    if [[ (! -f $seqpath/unrev/$aec.fasta && $seqSrc -gt 1) || "$update_manually" = true ]]; then 
-                        if ! already_downloaded "$seqpath/unrev/$aec.fasta"; then
-                            [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unreviewed sequences for: $aec 
-                            $dir/uniprot.sh -u -e "$aec" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
-                            echo $seqpath/unrev/$aec.fasta >> $download_log
-                        fi
+                fi
+                if [[ (! -f $seqpath/unrev/${ec[i]}.fasta && $seqSrc -gt 1) || "$update_manually" = true ]]; then 
+                    if ! already_downloaded "$seqpath/unrev/${ec[i]}.fasta"; then
+                        [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unreviewed sequences for: ${ec[i]}
+                         $dir/uniprot.sh -u -e "${ec[i]}" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
+                        echo $seqpath/unrev/${ec[i]}.fasta >> $download_log
                     fi
-                    if [ -s "$seqpath_user/$aec.fasta" ]; then
-                        [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
-                        query_alt=$seqpath_user/$aec.fasta
-                    elif [ $seqSrc -eq 1 ]; then
-                        query_alt=$seqpath/rev/$aec.fasta
-                    elif [ $seqSrc -eq 2 ]; then
-                        query_alt=$seqpath/rev/$aec.fasta
-                        [[ ! -s $query_alt ]] && query_alt=$seqpath/unrev/$aec.fasta
-                    elif [ $seqSrc -eq 3 ]; then
-                        query_alt=$(mktemp)
-                        cat $seqpath/rev/$aec.fasta $seqpath/unrev/$aec.fasta | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query_alt
-                    elif [ $seqSrc -eq 4 ]; then
-                        query_alt=$seqpath/unrev/$aec.fasta
+                fi
+                if [ -s "$seqpath_user/${ec[i]}.fasta" ]; then
+                    [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences: $seqpath_user/${ec[i]}.fasta"
+                    query_tmp=$seqpath_user/${ec[i]}.fasta
+                elif [ $seqSrc -eq 1 ]; then
+                    query_tmp=$seqpath/rev/${ec[i]}.fasta
+                elif [ $seqSrc -eq 2 ]; then
+                    query_tmp=$seqpath/rev/${ec[i]}.fasta
+                    [[ ! -s $query_tmp ]] && query_tmp=$seqpath/unrev/${ec[i]}.fasta
+                elif [ $seqSrc -eq 3 ]; then
+                    query_tmp=$(mktemp)
+                    cat $seqpath/rev/${ec[i]}.fasta $seqpath/unrev/${ec[i]}.fasta | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query_tmp # use awk to remove duplicates
+                elif [ $seqSrc -eq 4 ]; then
+                    query_tmp=$seqpath/unrev/${ec[i]}.fasta
+                fi
+                if [[ -s $query_tmp ]]; then
+                    cat $query_tmp >> $query_all
+                    if [[ $i -eq 0 ]]; then
+                        [[ verbose -ge 1 ]] && echo -e "\t\t$query_tmp"
+                    else
+                        [[ verbose -ge 1 ]] && echo -e "\t\t--> Found alternative EC ${ec[i]}: $query_tmp"
                     fi
-                    cat $query_alt >> $query_alt_all
-                done
-                #merge sequence data
-                if [[ -s $query_alt_all ]]; then
-                    [[ verbose -ge 1 ]] && { echo -e "\t\tMerge sequence data from `basename $query` and" $altec;  }
-                    query_merge=$(mktemp)
-                    cat $query $query_alt_all | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query_merge # no duplicates
-                    query=$query_merge
                 fi
             fi
-        fi
+        done
+        [[ -s $query_all ]] && { cat $query_all | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query; } # no duplicates
+        ec_avail=$(join_by / "${EC_test[@]}") # all valid ec numbers
         
         # if no EC number is available or no sequence was found for EC number then use reaction name instead for sequence search
-        if [[ -n "$reaName" ]] && ( [[ -z "$EC_test" ]] || [[ ! -s "$query" ]] );then
+        if [[ -n "$reaName" ]] && ( [[ "$EC_test_bool" = false ]] || [[ ! -s "$query" ]] );then
             reaNameHash=$(echo -n "$reaName" | md5sum | awk '{print $1}')
             # check if sequence is not available => try to download
             if [[ ! -f $seqpath/rev/$reaNameHash.fasta  || "$update_manually" = true ]]; then
@@ -584,7 +571,7 @@ do
                 fi
             fi
             if [ -s "$seqpath_user/$reaNameHash.fasta" ]; then
-                [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
+                [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences $seqpath_user/$reaNameHash.fasta"
                 query=$seqpath_user/$reaNameHash.fasta
             elif [ $seqSrc -eq 1 ]; then
                 query=$seqpath/rev/$reaNameHash.fasta
@@ -623,14 +610,14 @@ do
             fi
             
             if [ -s "$seqpath_user/$rea.fasta" ]; then
-                [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user defined sequence file <--"
+                [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences: $seqpath_user/$rea.fasta"
                 query_gene=$seqpath_user/$rea.fasta
             else
                 query_gene=$seqpath/rxn/$rea.fasta
             fi
             #merge sequence data
             if [[ -s $query_gene ]]; then
-                [[ verbose -ge 1 ]] && { echo -e "\t\tMerge sequence data from `basename $query` and" `basename $query_gene`;  }
+                [[ verbose -ge 1 ]] && echo -e "\t\t--> Found reaction sequences: $query_gene"
                 query_merge2=$(mktemp)
                 cat $query $query_gene | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query_merge2 # no duplicates
                 query=$query_merge2
@@ -641,8 +628,7 @@ do
         [[ "$skipBlast" = true ]] && { continue; }
 
         if [ -s $query ]; then
-            [[ verbose -ge 1 ]] && echo -e "\t\t$query (`cat $query | grep ">" | wc -l` sequences)"
-            #out=$rea.blast #$ec.blast
+            [[ verbose -ge 1 ]] && echo -e "\t\tFinal file: $query (`cat $query | grep ">" | wc -l` sequences)"
             query_id=$(basename $query)
             out="${query_id%.fasta}".blast
             subunits_found=0
@@ -701,16 +687,16 @@ do
                             [[ verbose -ge 1 ]] && [[ $iterations -gt 1 ]] && echo "$bestsubunithit" | head -1 | cut -f1 | grep -f - $query | sed "s/^/\t\t\t$subunit_id hit: /" 
                             ((subunits_found++))
                             [[ "$subunit_id" == "Subunit undefined" ]] && ((subunits_undefined_found++))
-                            [[ $iterations -gt 1 ]] && echo "$bestsubunithit" | awk -v exception="$is_exception" -v subunit="$subunit_id" -v rea="$rea" -v reaName="$reaName" -v ec=$ec -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"NA"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t"subunit"\t"exception"\t""NA"}' >> reactions.tbl
+                            [[ $iterations -gt 1 ]] && echo "$bestsubunithit" | awk -v exception="$is_exception" -v subunit="$subunit_id" -v rea="$rea" -v reaName="$reaName" -v ec=$ec_avail -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"NA"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t"subunit"\t"exception"\t""NA"}' >> reactions.tbl
                             [[ "$exhaustive" = false ]] && break 
                         fi
                         rm query.blast
                     done
                     if [[ $subunits_found -eq $subunits_found_old ]] && [[ $iterations -gt 1 ]]; then
                         if [ "$includeSeq" = true ]; then
-                            echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\t$subunit_id\t$is_exception\tNA" >> reactions.tbl # subunit not found 
+                            echo -e "$rea\t$reaName\t$ec_avail\tNA\t\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\t$subunit_id\t$is_exception\tNA" >> reactions.tbl # subunit not found 
                         else
-                            echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\t$subunit_id\t$is_exception\tNA" >> reactions.tbl # subunit not found 
+                            echo -e "$rea\t$reaName\t$ec_avail\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\t$subunit_id\t$is_exception\tNA" >> reactions.tbl # subunit not found 
                         fi
                     fi
                     rm query_subunit.part-*.fasta*
@@ -744,7 +730,7 @@ do
                         [[ verbose -ge 1 ]] && echo -e '\t\t--> KEY reaction found <--'
                         keyReaFound="$keyReaFound $rea"
                     fi
-                    [[ $iterations -le 1 ]] && echo "$besthit_all" | awk -v exception="$is_exception" -v rea="$rea" -v reaName="$reaName" -v ec=$ec -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"NA"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t""NA""\t"exception"\t""NA"}' >> reactions.tbl # only for non-subunit hits
+                    [[ $iterations -le 1 ]] && echo "$besthit_all" | awk -v exception="$is_exception" -v rea="$rea" -v reaName="$reaName" -v ec=$ec_avail -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"NA"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t""NA""\t"exception"\t""NA"}' >> reactions.tbl # only for non-subunit hits
                     awk -v rea="$rea" -v status="1" 'BEGIN {OFS=FS="\t"} $1==rea {$19=status} 1' reactions.tbl > reactions.tmp.tbl && mv reactions.tmp.tbl reactions.tbl # change protein complex status for all subunits found
                     
 #blast hit back to uniprot enzyme database
@@ -805,11 +791,11 @@ do
                     somehit_all=$( cat $out | sort -rgk 4,4 | head -1)
                     if [ $subunit_fraction -gt $subunit_cutoff ] || [ $iterations -eq 1 ] ; then
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO good blast hit"\n\t\t\t(best one: bit=$someBitscore id=$someIdentity cov=$someCoverage)"
-                        echo -e "$rea\t$reaName\t$ec\tNA\t$somehit_all\t$pwy\tbad_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
+                        echo -e "$rea\t$reaName\t$ec_avail\tNA\t$somehit_all\t$pwy\tbad_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
                     else
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO hit because of missing subunits
                         if [[ "$subunits_former_run" = true ]];then # log also subunits from former run
-                            tmp_log=$(cat reactions.tbl | awk -F '\t' -v rea="$rea" -v reaName="$reaName" -v ec="$ec" -v pwy="$pwy" '{OFS=FS} $1==rea && $2==reaName && $3==ec {$13=pwy; print}')
+                            tmp_log=$(cat reactions.tbl | awk -F '\t' -v rea="$rea" -v reaName="$reaName" -v ec="$ec_avail" -v pwy="$pwy" '{OFS=FS} $1==rea && $2==reaName && $3==ec {$13=pwy; print}')
                             echo "$tmp_log" >> reactions.tbl
                         fi
                     fi 
@@ -822,9 +808,9 @@ do
                 if [[ -n "$dbhit" ]];then
                     pwyNoHitFound="$pwyNoHitFound$dbhit "
                     if [ "$includeSeq" = true ]; then
-                        echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
+                        echo -e "$rea\t$reaName\t$ec_avail\tNA\t\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
                     else
-                        echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
+                        echo -e "$rea\t$reaName\t$ec_avail\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
                     fi
                 fi
             fi
@@ -834,9 +820,9 @@ do
             [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
             [[ $keyRea = *"$rea"* ]] && vagueKeyReaFound="$vagueKeyReaFound $rea"
             if [ "$includeSeq" = true ]; then
-                echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t\t$pwy\tno_seq_data\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
+                echo -e "$rea\t$reaName\t$ec_avail\tNA\t\t\t\t\t\t\t\t\t\t$pwy\tno_seq_data\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
             else
-                echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_seq_data\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
+                echo -e "$rea\t$reaName\t$ec_avail\tNA\t\t\t\t\t\t\t\t\t$pwy\tno_seq_data\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
             fi
         fi
         [[ verbose -ge 2 ]] && echo -e "\t\tCandidate reactions: $dbhit"
