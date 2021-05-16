@@ -13,7 +13,14 @@ addReactAttr <- function(mod) {
   reacttmp$annotation <- "bqbiol_is;http://identifiers.org/SBO:0000167" # "biochemical or transport reaction"
   
   # EC-code
-  reacttmp[!is.na(ec) & ec!="", annotation := paste0(annotation,";http://identifiers.org/ec-code:",ec)]
+  ec_id_mult <- function(ec) {
+    ecs <- unique(unlist(strsplit(ec, "/", fixed = T)))
+    
+    ecs_out <- paste0("http://identifiers.org/ec-code:",ecs, collapse = ";")
+    
+    return(ecs_out)
+  }
+  reacttmp[!is.na(ec) & ec!="", annotation := paste0(annotation,";",ec_id_mult(ec)), by = seed]
   
   # SEED
   reacttmp[!is.na(seed) & seed!="" & grepl("^rxn", seed) & !grepl("^rxn9", seed), 
