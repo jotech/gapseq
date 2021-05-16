@@ -1,4 +1,4 @@
-# file with enzymes having a high similair sequence identity to differently working enzymes (false friends) => need more strict blast search
+# file with enzymes having a high similar sequence identity to differently working enzymes (false friends) => need more strict blast search
 enzyme/reaction comment
 1.9.3.1 cytochrome-c oxidase
 4.1.1.39 RuBisCo
