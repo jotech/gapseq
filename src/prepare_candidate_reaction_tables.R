@@ -115,7 +115,7 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt <- resolve_common_EC_conflicts("2.3.1.29","2.3.1.50", dt)
   dt <- resolve_common_EC_conflicts("2.3.1.37","2.3.1.50", dt)
   dt <- resolve_common_EC_conflicts("1.17.3.2","1.17.1.4", dt) # xanthine oxidase vs xanthine dehydrogenase
-  dt <- resolve_common_EC_conflicts("1.17.3.2/1.1.3.22","1.17.1.4//1.1.1.204", dt) # xanthine oxidase vs xanthine dehydrogenase
+  dt <- resolve_common_EC_conflicts("1.17.3.2/1.1.3.22","1.17.1.4/1.1.1.204", dt) # xanthine oxidase vs xanthine dehydrogenase
   dt <- resolve_common_EC_conflicts("1.3.3.6","1.3.1.8", dt) # acyl-CoA oxidase vs acyl-CoA dehydrogenase
   dt <- resolve_common_EC_conflicts("1.2.7.1","1.2.1.51", dt) # NADP-dependent Pyruvate dehydrogenase vs FMN-dependent PDH
   dt <- resolve_common_EC_conflicts("1.2.7.1/1.2.7.2","1.2.1.51", dt) # NADP-dependent Pyruvate dehydrogenase vs FMN-dependent PDH
