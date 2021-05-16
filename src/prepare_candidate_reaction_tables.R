@@ -107,21 +107,27 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   
   # specific reaction conflict fixes
   dt <- resolve_common_EC_conflicts("1.3.8.1","1.3.8.13", dt)
+  dt <- resolve_common_EC_conflicts("1.3.8.1/1.3.99.2","1.3.8.13", dt)
   dt <- resolve_common_EC_conflicts("4.1.2.9","4.1.2.22", dt)
   dt <- resolve_common_EC_conflicts("2.6.1.13","2.6.1.11", dt)
+  dt <- resolve_common_EC_conflicts("2.6.1.13","2.6.1.11/2.6.1.69", dt)
   dt <- resolve_common_EC_conflicts("2.3.1.29","2.3.1.37", dt)
   dt <- resolve_common_EC_conflicts("2.3.1.29","2.3.1.50", dt)
   dt <- resolve_common_EC_conflicts("2.3.1.37","2.3.1.50", dt)
   dt <- resolve_common_EC_conflicts("1.17.3.2","1.17.1.4", dt) # xanthine oxidase vs xanthine dehydrogenase
+  dt <- resolve_common_EC_conflicts("1.17.3.2/1.1.3.22","1.17.1.4//1.1.1.204", dt) # xanthine oxidase vs xanthine dehydrogenase
   dt <- resolve_common_EC_conflicts("1.3.3.6","1.3.1.8", dt) # acyl-CoA oxidase vs acyl-CoA dehydrogenase
   dt <- resolve_common_EC_conflicts("1.2.7.1","1.2.1.51", dt) # NADP-dependent Pyruvate dehydrogenase vs FMN-dependent PDH
+  dt <- resolve_common_EC_conflicts("1.2.7.1/1.2.7.2","1.2.1.51", dt) # NADP-dependent Pyruvate dehydrogenase vs FMN-dependent PDH
   dt <- resolve_common_EC_conflicts("2.6.1.11","2.6.1.19", dt) # acetylornithine transaminase VS 4-aminobutyrate—2-oxoglutarate transaminase
+  dt <- resolve_common_EC_conflicts("2.6.1.11/2.6.1.69","2.6.1.19", dt) # acetylornithine transaminase VS 4-aminobutyrate—2-oxoglutarate transaminase
   dt <- resolve_common_EC_conflicts("1.1.1.100","1.1.1.36", dt) # 3-oxoacyl-ACP reductase VS acetoacetyl-CoA reductase
   dt <- resolve_common_EC_conflicts("4.1.3.36","4.2.1.150", dt) # 1,4-dihydroxy-2-naphthoyl-CoA synthase VS (S)-3-hydroxybutanoyl-CoA dehydrogenase
   dt <- resolve_common_EC_conflicts("1.2.1.76","1.2.1.10", dt) # succinate semialdehyde dehydrogenase VS acetaldehyde dehydrogenase
   dt <- resolve_common_EC_conflicts("1.1.1.27","1.3.1.110", dt) # two hydrogenases, one with NADH one with bifurcation including NADH and Ferredoxin
   dt <- resolve_common_EC_conflicts("6.3.1.1","2.6.1.2", dt) # Asp:NH3 ligase vs ala-aminotransferase
   dt <- resolve_common_EC_conflicts("2.6.1.11","2.6.1.18", dt) # beta-alanine aminotransferase vs acetyl-ornithine aminotransferase
+  dt <- resolve_common_EC_conflicts("2.6.1.11/2.6.1.69","2.6.1.18", dt) # beta-alanine aminotransferase vs acetyl-ornithine aminotransferase
   dt <- resolve_common_EC_conflicts("2.6.1.66","2.6.1.83", dt) # valine-pyruvate aminotransferase vs L,L-diaminopimelate aminotransferase
   dt <- resolve_common_EC_conflicts("2.6.1.2","2.6.1.83", dt) # alanine transaminase vs L,L-diaminopimelate aminotransferase
   
