@@ -347,7 +347,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   
   
   media2 <- fread(paste0(script.dir,"/../dat/media/MM_glu.csv")) # load minimal medium and add available carbon sources
-  if( length(grep("cpd00007", fread(media.file)[[1]])) > 0 ){
+  if( nrow(fread(media.file, header=F)[V1=="cpd00007" & V3!=0]) ){
     cat("\n\n2b. Anaerobic biomass gapfilling using core reactions only\n")
     media2 <- media2[name!="O2"] # remove oxygen
   }else{
