@@ -27,7 +27,7 @@ media_check <- function(media.file, mod.orig, seed_x_mets){
   # Check for very small numbers potentially causing issues with numeric accuracy
   #
   media.2small <- media[maxFlux<1e-6 & maxFlux > 0]
-  if( nrow(media.2small) >0 ) warning(paste("Media components with very small numbers:", paste(media.2small$compunds, collapse = ",")))
+  if( nrow(media.2small) >0 ) warning(paste("Media components with very small numbers:", paste(media.2small$compounds, collapse = ",")))
   
   #
   # Check for presence of important biomass components (e.g. metals)
