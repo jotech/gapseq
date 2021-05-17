@@ -376,7 +376,7 @@ getDBhit(){
             altec_src=altec.csv
             if [ -z "$altec" ]; then  
                 brendaec=$(grep -wF ${ec[i]} $brenda | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -vw ${ec[i]})
-                [[ `echo "$brendaec" | wc -l` -eq 1 ]] && altec=$brendaec # only take unique hits (too many multiple transferred ECs)
+                [[ `echo "$brendaec" | wc -l` -le 3 ]] && altec=$brendaec # only take unique hits (too many multiple transferred ECs)
                 altec_src=brenda
             fi
 
