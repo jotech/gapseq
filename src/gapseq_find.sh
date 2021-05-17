@@ -373,9 +373,11 @@ getDBhit(){
         # 3) search in reaction db by alternative EC
         if [[ -n "${EC_test[i]}" ]]; then
             altec=$(grep -wF ${ec[i]} $altecdb | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -vw ${ec[i]})
+            altec_src=altec.csv
             if [ -z "$altec" ]; then  
                 brendaec=$(grep -wF ${ec[i]} $brenda | grep -P "([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)" -o | grep -vw ${ec[i]})
                 [[ `echo "$brendaec" | wc -l` -eq 1 ]] && altec=$brendaec # only take unique hits (too many multiple transferred ECs)
+                altec_src=brenda
             fi
 
             if [ "$database" == "vmh" ]; then
@@ -387,9 +389,12 @@ getDBhit(){
         fi
     done
     for aec in $altec; do
-        if [[ ! " ${ec[@]} " =~ " ${aec} " ]]; then
+        altec_unspecific=$(echo $aec | grep -P "(\\.99\\.[0-9]+$)") # do not accept EC number with unknown acceptors as alternatives
+        #echo $aec $altec_unspecific
+        if [[ ! " ${ec[@]} " =~ " ${aec} " ]] && [[ -z "$altec_unspecific" ]]; then
             ec+=($aec)
             EC_test+=($(if [[ $aec =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi))
+            EC_src+=($altec_src)
         fi
     done
 
@@ -470,10 +475,12 @@ do
         IFS='/' read -r -a ec <<< "$ec_all" # put splitted string into array
         re="([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)"
         EC_test=()
+        EC_src=()
         EC_test_bool=false # at least one full EC number found for reaction
         for i in "${!ec[@]}"
         do
             EC_test[i]=$(if [[ ${ec[i]} =~ $re ]]; then echo ${BASH_REMATCH[1]}; fi) # check if not trunked ec number (=> too many hits)
+            EC_src[i]=metacyc
             #echo EC check: $i ${ec[i]} ${EC_test[i]}
             [[ -n "{$EC_test[i]}" ]] && EC_test_bool=true
         done
@@ -541,11 +548,11 @@ do
                 if [[ -s $query_tmp ]]; then
                     cat $query_tmp >> $query_all
                     if [[ "$query_tmp" == "$seqpath_user"* ]]; then
-                        [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences: $query_tmp" 
+                        [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences: $query_tmp (`cat $query_tmp | grep ">" | wc -l` sequences)" 
                     elif [[ $i -eq 0 ]]; then
-                        [[ verbose -ge 1 ]] && echo -e "\t\t--> Found sequences: $query_tmp"
+                        [[ verbose -ge 1 ]] && echo -e "\t\t--> Found sequences: $query_tmp (`cat $query_tmp | grep ">" | wc -l` sequences)"
                     else
-                        [[ verbose -ge 1 ]] && echo -e "\t\t--> Found alternative EC ${ec[i]}: $query_tmp"
+                        [[ verbose -ge 1 ]] && echo -e "\t\t--> Found alternative EC ${ec[i]} from ${EC_src[i]}: $query_tmp (`cat $query_tmp | grep ">" | wc -l` sequences)"
                     fi
                 fi
             fi
@@ -586,9 +593,9 @@ do
             fi
             if [[ -s $query ]]; then
                 if [[ "$query" == "$seqpath_user"* ]]; then
-                    [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences: $seqpath_user/$reaNameHash.fasta"
+                    [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences: $query (`cat $query | grep ">" | wc -l` sequences)"
                 else
-                    [[ verbose -ge 1 ]] && echo -e "\t\t--> Found sequences: $seqpath_user/$reaNameHash.fasta"
+                    [[ verbose -ge 1 ]] && echo -e "\t\t--> Found sequences: $query (`cat $query | grep ">" | wc -l` sequences)"
                 fi
             fi
         fi
@@ -624,9 +631,9 @@ do
             #merge sequence data
             if [[ -s $query_gene ]]; then
                 if [[ "$query_gene" == "$seqpath_user"* ]]; then
-                    [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences: $seqpath/rxn/$rea.fasta"
+                    [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences: $query_gene (`cat $query_gene | grep ">" | wc -l` sequences)"
                 else
-                    [[ verbose -ge 1 ]] && echo -e "\t\t--> Found sequences: $seqpath/rxn/$rea.fasta"
+                    [[ verbose -ge 1 ]] && echo -e "\t\t--> Found sequences: $query_gene (`cat $query_gene | grep ">" | wc -l` sequences)"
                 fi
                 query_merge2=$(mktemp)
                 cat $query $query_gene | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query_merge2 # no duplicates
@@ -825,7 +832,7 @@ do
                 fi
             fi
         else
-            [[ verbose -ge 1 ]] && { echo -e "\t\tNO sequence data found"; echo -e "\t\t$query"; }
+            [[ verbose -ge 1 ]] && echo -e "\t\tNo sequence data found"
             ((vague++))
             [[ -n "$dbhit" ]] && pwyVage="$pwyVage$dbhit "
             [[ $keyRea = *"$rea"* ]] && vagueKeyReaFound="$vagueKeyReaFound $rea"
