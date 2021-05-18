@@ -24,14 +24,20 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   # This function checks if an gene was assigned to two different ec numbers, which however catalyse different reactions that are
   # usually catalysed by individual enzymes. Thus, the EC assignment with the lower bitscore is dismissed.
   resolve_common_EC_conflicts <- function(ec1, ec2, dt) {
+    ec1 <- gsub("\\.","\\\\.", ec1)
+    ec1 <- paste0("(^|/)",ec1,"($|/)")
+    
+    ec2 <- gsub("\\.","\\\\.", ec2)
+    ec2 <- paste0("(^|/)",ec2,"($|/)")
+    
     rm.ids <- c()
     all_cont <- unique(dt$stitle)
     all_cont <- all_cont[all_cont != ""]
     for(i_cont in all_cont) {
-      if(ec1 %in% dt[stitle == i_cont]$ec & ec2 %in% dt[stitle == i_cont]$ec) {
+      if(any(grepl(ec1,dt[stitle == i_cont, ec])) & any(grepl(ec2,dt[stitle == i_cont, ec]))) {
         
-        one.hits.id <- which(dt$ec == ec1 & !is.na(dt$bitscore) & dt$stitle == i_cont)
-        two.hits.id <- which(dt$ec == ec2 & !is.na(dt$bitscore) & dt$stitle == i_cont)
+        one.hits.id <- which(grepl(ec1,dt[, ec]) & !is.na(dt$bitscore) & dt$stitle == i_cont)
+        two.hits.id <- which(grepl(ec2,dt[, ec]) & !is.na(dt$bitscore) & dt$stitle == i_cont)
         
         oneIR <- IRanges(start = apply(dt[one.hits.id,.(sstart,send)],1,min),
                                   end   = apply(dt[one.hits.id,.(sstart,send)],1,max))
@@ -107,27 +113,21 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   
   # specific reaction conflict fixes
   dt <- resolve_common_EC_conflicts("1.3.8.1","1.3.8.13", dt)
-  dt <- resolve_common_EC_conflicts("1.3.8.1/1.3.99.2","1.3.8.13", dt)
   dt <- resolve_common_EC_conflicts("4.1.2.9","4.1.2.22", dt)
   dt <- resolve_common_EC_conflicts("2.6.1.13","2.6.1.11", dt)
-  dt <- resolve_common_EC_conflicts("2.6.1.13","2.6.1.11/2.6.1.69", dt)
   dt <- resolve_common_EC_conflicts("2.3.1.29","2.3.1.37", dt)
   dt <- resolve_common_EC_conflicts("2.3.1.29","2.3.1.50", dt)
   dt <- resolve_common_EC_conflicts("2.3.1.37","2.3.1.50", dt)
   dt <- resolve_common_EC_conflicts("1.17.3.2","1.17.1.4", dt) # xanthine oxidase vs xanthine dehydrogenase
-  dt <- resolve_common_EC_conflicts("1.17.3.2/1.1.3.22","1.17.1.4/1.1.1.204", dt) # xanthine oxidase vs xanthine dehydrogenase
   dt <- resolve_common_EC_conflicts("1.3.3.6","1.3.1.8", dt) # acyl-CoA oxidase vs acyl-CoA dehydrogenase
   dt <- resolve_common_EC_conflicts("1.2.7.1","1.2.1.51", dt) # NADP-dependent Pyruvate dehydrogenase vs FMN-dependent PDH
-  dt <- resolve_common_EC_conflicts("1.2.7.1/1.2.7.2","1.2.1.51", dt) # NADP-dependent Pyruvate dehydrogenase vs FMN-dependent PDH
   dt <- resolve_common_EC_conflicts("2.6.1.11","2.6.1.19", dt) # acetylornithine transaminase VS 4-aminobutyrate—2-oxoglutarate transaminase
-  dt <- resolve_common_EC_conflicts("2.6.1.11/2.6.1.69","2.6.1.19", dt) # acetylornithine transaminase VS 4-aminobutyrate—2-oxoglutarate transaminase
   dt <- resolve_common_EC_conflicts("1.1.1.100","1.1.1.36", dt) # 3-oxoacyl-ACP reductase VS acetoacetyl-CoA reductase
   dt <- resolve_common_EC_conflicts("4.1.3.36","4.2.1.150", dt) # 1,4-dihydroxy-2-naphthoyl-CoA synthase VS (S)-3-hydroxybutanoyl-CoA dehydrogenase
   dt <- resolve_common_EC_conflicts("1.2.1.76","1.2.1.10", dt) # succinate semialdehyde dehydrogenase VS acetaldehyde dehydrogenase
   dt <- resolve_common_EC_conflicts("1.1.1.27","1.3.1.110", dt) # two hydrogenases, one with NADH one with bifurcation including NADH and Ferredoxin
   dt <- resolve_common_EC_conflicts("6.3.1.1","2.6.1.2", dt) # Asp:NH3 ligase vs ala-aminotransferase
   dt <- resolve_common_EC_conflicts("2.6.1.11","2.6.1.18", dt) # beta-alanine aminotransferase vs acetyl-ornithine aminotransferase
-  dt <- resolve_common_EC_conflicts("2.6.1.11/2.6.1.69","2.6.1.18", dt) # beta-alanine aminotransferase vs acetyl-ornithine aminotransferase
   dt <- resolve_common_EC_conflicts("2.6.1.66","2.6.1.83", dt) # valine-pyruvate aminotransferase vs L,L-diaminopimelate aminotransferase
   dt <- resolve_common_EC_conflicts("2.6.1.2","2.6.1.83", dt) # alanine transaminase vs L,L-diaminopimelate aminotransferase
   
