@@ -54,14 +54,20 @@ The medium prediction module requires two inputs: The pathway prediction table (
 gapseq medium -m ecoli-draft.RDS -p ecoli-all-Pathways.tbl
 ```
 
-Using the optional flag `-c` specific metabolites can be added/removed from the medium prediction. The syntax for the flag option is `-c [CompoundID_1]:[maxFlux_1];[CompoundID_2]:[maxFlux_2]`. For example, to remove oxygen from the final medium you can use:
+Using the optional flag `-c` specific metabolites can be added/removed from the medium prediction. The syntax for the flag option is
+
+`-c [CompoundID_1]:[maxFlux_1];[CompoundID_2]:[maxFlux_2]`.
+
+For example, to remove oxygen from the final medium you can use:
 
 ```bash
 gapseq medium -m ecoli-draft.RDS -p ecoli-all-Pathways.tbl -c "cpd00007:0"
 ```
+
 This option is for instance helpful to ensure an anaerobic environment.
 
 To remove oxygen and add L-Lactate with 10 mmol/gDW/hr to the final medium you can use:
+
 ```bash
 gapseq medium -m ecoli-draft.RDS -p ecoli-all-Pathways.tbl -c "cpd00007:0;cpd00159:10"
 ```
