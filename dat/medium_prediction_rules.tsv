@@ -52,7 +52,7 @@ L-Methionine	cpd00060	!("HOMOSER-METSYN-PWY" | "PWY-702" | "HSERMETANA-PWY" | "P
 L-Phenylalanine	cpd00066	!((rxn01256 & rxn01000 & (rxn00493 | rxn21134 | rxn28060 | rxn38254)) | "PWY-3462" | "PWY-7432")	0.1	TRUE		Amino acids
 L-Proline	cpd00129	!("PROSYN-PWY" | "PWY-3341")	0.1	TRUE		Amino acids
 L-Threonine	cpd00161	!("HOMOSER-THRESYN-PWY")	0.1	TRUE		Amino acids
-L-Tyrosine	cpd00069	!((rxn01256 & rxn01268 & (rxn00527 | rxn30444 | rxn30445)) | "PWY-3461" | "PWY-6120" | "PWY-6134")	0.1	TRUE		Amino acids
+L-Tyrosine	cpd00069	!("TYRSYN" | "PWY-3461" | "PWY-6120" | "PWY-6134")	0.1	TRUE		Amino acids
 L-Valine	cpd00156	!"VALSYN-PWY"	0.1	TRUE		Amino acids
 						
 L-Lactate	cpd00159	rxn90054	15	TRUE	Electron-bifurcating lactate dehydrogenase forming pyruvate (EC 1.3.1.110)	Organic acids

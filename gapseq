@@ -25,6 +25,7 @@ usage()
     echo "  gapseq find (-p pathways | -e enzymes) [-b bitscore] (genome)"
     echo "  gapseq find-transport [-b bitscore] (genome)"
     echo "  gapseq draft (-r reactions | -t transporter -c genome -p pathways) [-b pos|neg|archaea|auto]"
+    echo "  gapseq medium (-m draft -p pathways) [-c manual_fluxes - o output_file]"
     echo "  gapseq fill (-m draft -n medium -c rxn_weights -g rxn_genes)"
     echo "  gapseq adapt (add | remove) (reactions,pathways) (model)"
     echo -e "\nExamples:"
@@ -35,6 +36,7 @@ usage()
     echo "  gapseq find -p all toy/myb71.fna.gz"
     echo "  gapseq find-transport toy/myb71.fna.gz"
     echo "  gapseq draft -r toy/ecoli-all-Reactions.tbl -t toy/ecoli-Transporter.tbl -c toy/ecoli.fna.gz -p toy/ecoli-all-Pathways.tbl"
+    echo "  gapseq medium -m toy/ecoli-draft.RDS -p toy/ecoli-all-Pathways.tbl"
     echo "  gapseq fill -m toy/ecoli-draft.RDS -n dat/media/ALLmed.csv -c toy/ecoli-rxnWeights.RDS -g toy/ecoli-rxnXgenes.RDS"
     echo "  gapseq adapt add 14DICHLORBENZDEG-PWY toy/myb71.RDS"
     echo -e "\nOptions:"
@@ -42,6 +44,7 @@ usage()
     echo "  find            Pathway analysis, try to find enzymes based on homology."
     echo "  find-transport  Search for transporters based on homology."
     echo "  draft           Draft model construction based on results from find and find-transport."
+    echo "  medium          (gapfill-)Medium prediction based on results from find and draft"
     echo "  fill            Gap filling of a model."
     echo "  doall           Combine find, find-transport, draft and fill."
     echo "  adapt           Add or remove reactions or pathways."
@@ -86,6 +89,10 @@ elif [ "$1" == "find-transport" ]; then
 elif [ "$1" == "draft" ]; then
     shift
     Rscript $dir/src/generate_GSdraft.R "$@"
+    
+elif [ "$1" == "medium" ]; then
+    shift
+    Rscript $dir/src/predict_medium.R "$@"
 
 elif [ "$1" == "fill" ]; then
     shift
@@ -119,3 +126,4 @@ elif [ "$1" == "adapt" ]; then
 else
     usage
 fi
+
