@@ -56,7 +56,7 @@ gapseq medium -m ecoli-draft.RDS -p ecoli-all-Pathways.tbl
 
 Using the optional flag `-c` specific metabolites can be added/removed from the medium prediction. The syntax for the flag option is
 
-`-c [CompoundID_1]:[maxFlux_1];[CompoundID_2]:[maxFlux_2]`.
+`-c "[CompoundID_1]:[maxFlux_1];[CompoundID_2]:[maxFlux_2]"`.
 
 For example, to remove oxygen from the final medium you can use:
 
