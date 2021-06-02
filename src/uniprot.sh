@@ -92,7 +92,7 @@ LC_NUMERIC=$numeric_old
 mkdir -p $seqpath
 cd $seqpath
 
-[[ ! -f ../updating.log && "$overwrite" = true ]] && echo "date sequences change file" > ../updating.log
+[[ ! -f ../updating.log && "$overwrite" = true ]] && echo "date sequences change file status" > ../updating.log
 
 if [ -n "$ecnumber" ]; then
     # create dummpy pwy template for given ec number
