@@ -77,7 +77,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   dt_seed_single_and_there <- dt_seed_single_and_there[!duplicated(seed)]
   
   # check if contig names match conventions and are unique. if not, assign new ones.
-  #dt <- fread("Clostridium_difficile_NAP07-all-Reactions.tbl", fill = T)
+  #dt <- fread("Clostridium_difficile_NAP07-all-Reactions.tbl", fill = T, skip = "rxn	")
   contig.names.full  <- unique(dt$stitle)
   contig.names.full  <- contig.names.full[contig.names.full != ""]
   n.contigs          <- length(contig.names.full)
@@ -195,7 +195,11 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   
   cat("Constructing draft model: \n")
   mod <- sybil::modelorg(name = model.name, id = model.name)
-  mod@mod_desc <- model.name
+  
+  # add gapseq version info to model object
+  gapseq_version <- system(paste0(script.dir,"/.././gapseq -v"), intern = T)
+  mod@mod_desc <- gapseq_version
+  
   mod@react_attr <- data.frame(rxn = character(0), name = character(0), ec = character(0), tc = character(0), qseqid = character(0),
                                pident = numeric(0), evalue = numeric(0), bitscore = numeric(0), qcovs = numeric(0),
                                stitle = character(0), sstart = numeric(0), send = numeric(0), pathway = character(0),

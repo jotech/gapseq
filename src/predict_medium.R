@@ -134,7 +134,7 @@ if(grepl("\\.RDS", opt$model)) {
 if(!grepl("\\.RDS", opt$model) & "sybilSBML" %in% rownames(installed.packages())) {
   mod <- sybilSBML::readSBMLmod(opt$model)
 }
-pathway.pred     <- fread(opt$pathway.pred)
+pathway.pred     <- fread(opt$pathway.pred, skip = "ID	")
 manual.flux      <- opt$manual.flux
 output.file      <- opt$output.file
 

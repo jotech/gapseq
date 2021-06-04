@@ -935,6 +935,16 @@ echo $cand > newReactions.lst
 cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
 [[ -s reactions.tbl ]] && echo "rxn name ec bihit $blast_format pathway status pathway.status dbhit complex exception complex.status" | tr ' ' '\t' | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-Reactions.tbl # add header and remove duplicates
 
+# add gapseq vesion and sequence database status to table comments head
+gapseq_version=`$dir/.././gapseq -v`
+seqdb_version=`md5sum $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1-7`
+seqdb_date=$(stat -c %y $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1-10)
+
+sed -i "1s/^/# $gapseq_version\n/" $curdir/${fastaID}-$output_suffix-Reactions.tbl
+sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $curdir/${fastaID}-$output_suffix-Reactions.tbl
+sed -i "1s/^/# $gapseq_version\n/" $curdir/${fastaID}-$output_suffix-Pathways.tbl
+sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $curdir/${fastaID}-$output_suffix-Pathways.tbl
+
 # print annotation genome coverage
 [[ verbose -ge 1 ]] && [[ "$anno_genome_cov" = true ]] && Rscript $dir/coverage.R "$fasta" $curdir/${fastaID}-$output_suffix-Reactions.tbl 
 

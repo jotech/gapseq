@@ -673,8 +673,12 @@ if( verbose ){
   cat(mod.out.rxns.added.without.seq, file = paste0(output.dir,"/",out.id,"-gapfilled.without.seq.rxnlst"))  
 }
 
+# add gapseq version info to model object
+gapseq_version <- system(paste0(script.dir,"/.././gapseq -v"), intern = T)
+mod.out@mod_desc <- gapseq_version
+
 out.rds <- paste0(output.dir,"/",out.id,".RDS")
-#if(file.exists(out.rds)) out.rds <- paste0(output.dir,"/",out.id,"-gapfilled.RDS")
+
 if(file.exists(out.rds)) warning("Model file already exists and will be overwritten!")
 saveRDS(mod.out, file = out.rds)
 # Write SBML

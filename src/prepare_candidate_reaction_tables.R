@@ -2,7 +2,7 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   # Read reaction blast results
   require(data.table)
   
-  dt <- fread(blast.res, header=T, stringsAsFactors = F, blank.lines.skip = T)
+  dt <- fread(blast.res, header=T, stringsAsFactors = F, blank.lines.skip = T, skip = "rxn	")
   
   dt <- dt[pathway != "|PWY-6168|"] # pathway exists only in fungi
   dt <- dt[pathway != "|PWY-1042|"] # pathway exists only in plants
@@ -14,7 +14,7 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
               pathway.status, seed = dbhit, complex, exception, complex.status)]
   
   # Read transporter blast results
-  dt.trans <- fread(transporter.res, header=T, stringsAsFactors = F, blank.lines.skip = T)
+  dt.trans <- fread(transporter.res, header=T, stringsAsFactors = F, blank.lines.skip = T, skip = "id	")
   dt.trans <- dt.trans[,.(rxn = id, name = paste("transport",tc,sub,sep="-"), ec = NA_character_, tc, qseqid, pident, evalue, bitscore, qcovs, stitle, 
                           sstart, send, pathway = NA_character_, status = NA_character_, pathway.status = NA_character_, seed = rea, 
                           complex = NA_character_, exception = 0, complex.status = NA_integer_)]

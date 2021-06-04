@@ -14,12 +14,12 @@ suppressMessages(library(IRanges))
 
 coverage <- function(genome.filestr, anno.filestr, anno.filestr2=NA){
   #genome <- readDNAStringSet("~/uni/gapseq/toy/ecoli.fna.gz")
-  #anno   <- fread("~/uni/gapseq/toy/ecoli-all-Reactions.tbl", fill = T)
+  #anno   <- fread("~/uni/gapseq/toy/ecoli-all-Reactions.tbl", fill = T, skip = "rxn	")
   genome   <- readDNAStringSet(genome.filestr)
-  anno.raw <- fread(anno.filestr, fill = T)
+  anno.raw <- fread(anno.filestr, fill = T, skip = "rxn	")
   anno     <- unique(anno.raw[,.(sstart, send, stitle)])
   if( !is.na(anno.filestr2) ){
-    anno.raw2<- fread(anno.filestr2, fill = T)  
+    anno.raw2<- fread(anno.filestr2, fill = T, skip = "id	")  
     anno2    <- unique(anno.raw2[,.(sstart, send, stitle)])
     anno     <- rbind(anno, anno2)
   }

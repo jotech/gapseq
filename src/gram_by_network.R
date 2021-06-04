@@ -7,7 +7,7 @@ find_gram_by_network <- function(file, script.dir){
   dcast.gapseq <- readRDS(paste0(script.dir, "/../dat/", "dist_reference-networks.RDS"))
   ref.info <- fread(paste0(script.dir, "/../dat/", "reference_genomes_edited.tbl"))
   
-  dt.new <- fread(file)
+  dt.new <- fread(file, skip = "ID	")
   dt.new[,Prediction:=Prediction*1]
   org    <- gsub("-all-Pathways.tbl","",basename(file))
   
