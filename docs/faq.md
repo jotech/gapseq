@@ -2,7 +2,7 @@
 By default gaspeq searches for pathways using bacterial sequences.
 This can be changed to other taxonomic ranks, for example to animals ``gapseq find -t Metazoa``.
 The taxonomic rank should be compatible with [uniprot](https://www.uniprot.org/help/taxonomy) because the respective sequences are download from uniprot.
-However, the reconstruction and gapfilling of metabolic networks is currently limited to bacteria only.
+However, the reconstruction and gapfilling of metabolic networks is currently limited to bacteria and archaea.
 
 # What are the output files of gapseq?
 Predicted pathways, reactions, and transporters are stored in tabulator-seperated text files (.tbl) and the final metabolic network is saved as [systems biology markup language (SBML)](http://sbml.org) (.xml), which is an xml-based markup language for biological model exchange.
