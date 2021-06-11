@@ -10,6 +10,7 @@ Co2+	cpd00149	TRUE	10	FALSE	Core medium compound	Inorganics
 Mg2+	cpd00254	TRUE	10	FALSE	Core medium compound	Inorganics
 Ni2+	cpd00244	TRUE	1	FALSE	Core medium compound	Inorganics
 Sulfate	cpd00048	TRUE	10	FALSE	Core medium compound	Inorganics
+H2S	cpd00239	TRUE	1	FALSE	Core medium compound	Inorganics
 Zn2+	cpd00034	TRUE	10	FALSE	Core medium compound	Inorganics
 Cu2+	cpd00058	TRUE	10	FALSE	Core medium compound	Inorganics
 Mn2+	cpd00030	TRUE	10	FALSE	Core medium compound	Inorganics
@@ -35,6 +36,8 @@ Pectin	cpd27519	"PWY-7246" | "PWY-7248"	1.67	TRUE		Saccharides
 Melitose/Raffinose	cpd00382	rxn05643 & (rxn00818 | rxn34781)	1.67	TRUE	Raffinose transporter AND galactohydrolase	Saccharides
 Sucrose	cpd00076	"SUCUTIL-PWY" | "PWY-621" | "PWY-5384" | "SUCROSEUTIL2-PWY"	2.5	TRUE		Saccharides
 Inulin	cpd28763	"INULIN-DEGRADATION-EXO"	0.42	TRUE		Saccharides
+N-acetylneuraminate	cpd00232	"PWY0-1324" & "GLUAMCAT-PWY"	5	TRUE		Saccharides
+N-Acetyl-D-glucosamine	cpd00122	"GLUAMCAT-PWY" & (rxn05485 | rxn08041)	5	TRUE	Including PTS for uptake	Saccharides
 						
 L-Tryptophan	cpd00065	!("TRPSYN-PWY2" | "TRPSYN-PWY")	0.1	TRUE		Amino acids
 L-Histidine	cpd00119	!"HISTSYN-PWY"	0.1	TRUE		Amino acids
