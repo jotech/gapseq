@@ -112,7 +112,6 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   }
   
   # specific reaction conflict fixes
-  dt <- resolve_common_EC_conflicts("1.3.8.1","1.3.8.13", dt)
   dt <- resolve_common_EC_conflicts("4.1.2.9","4.1.2.22", dt)
   dt <- resolve_common_EC_conflicts("2.6.1.13","2.6.1.11", dt)
   dt <- resolve_common_EC_conflicts("2.3.1.29","2.3.1.37", dt)
