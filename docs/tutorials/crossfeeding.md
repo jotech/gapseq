@@ -97,7 +97,7 @@ bl <- readRDS("bilo.RDS") # B. longum
 
 # Small fix to D/L-Lactate secretion (*) and model names
 bl <- rmReact(bl, react = "EX_cpd00221_e0")
-er@mod_desc <- "E. recale"
+er@mod_desc <- "E. rectale"
 bl@mod_desc <- "B. longum"
 
 # Construct the organism objects for BacArena simulations
