@@ -95,8 +95,10 @@ sybil::SYBIL_SETTINGS("SOLVER","cplexAPI") # (optional)
 er <- readRDS("eure.RDS") # E. rectale
 bl <- readRDS("bilo.RDS") # B. longum
 
-# Small fix to D/L-Lactate secretion *
+# Small fix to D/L-Lactate secretion (*) and model names
 bl <- rmReact(bl, react = "EX_cpd00221_e0")
+er@mod_desc <- "E. recale"
+bl@mod_desc <- "B. longum"
 
 # Construct the organism objects for BacArena simulations
 eure <- Bac(er)
@@ -126,8 +128,8 @@ arena <- rmSubs(arena, mediac = "EX_cpd00029_e0")
 Now we are ready to perform the actual community simulation and plot results:
 
 ```R
-# Simulation for 20 time steps
-CF_sim <- simEnv(arena,time=20, sec_obj = "mtf")
+# Simulation for 13 time steps
+CF_sim <- simEnv(arena,time=13, sec_obj = "mtf")
 
 # Plot levels of Acetate, Buyrate, and Lactate as well as growth
 par(mfrow=c(1,2))
@@ -145,8 +147,8 @@ The simulations predicted, that acetate, butyrate, and lactate are produced duri
 Next, let's see, if some of the fermentation products are partially consumed by one of the organisms. This involves a few lines of data wrangling:
 
 ```R
-# Lets get the exchange fluxs for each grid cell at time step 20
-dt.cf <- CF_sim@exchangeslist[[20]]
+# Lets get the exchange fluxs for each grid cell at time step 11
+dt.cf <- CF_sim@exchangeslist[[11]]
 
 # Limit output to Acetate, Butyrate, and Lactate
 dt.cf <- as.data.table(dt.cf[,c("species",
@@ -167,20 +169,20 @@ dt.cf <- melt(dt.cf,
               value.name = "Flux")
 dt.cf <- dt.cf[!is.na(Flux)] # rm NA entries (no exchange reaction in grid cell)
 
-# Sum exhanges for each species and metabolite over all 100 grid cells
+# Sum exchanges for each species and metabolite over all 100 grid cells
 dt.cf[, .(summed.Flux = sum(Flux)), by = c("species","Metabolite")]
 ```
 
 The output:
 
 ```
-   species Metabolite summed.Flux
-1:    eure    Acetate   -418.7086
-2:    bilo    Acetate    826.0749
-3:    eure   Butyrate    683.6783
-4:    bilo   Butyrate      0.0000
-5:    bilo    Lactate    358.0108
+     species Metabolite summed.Flux
+1: E. recale    Acetate   -1630.224
+2: B. longum    Acetate    2879.571
+3: E. recale   Butyrate    2604.208
+4: B. longum   Butyrate       0.000
+5: B. longum    Lactate    1243.223
 ```
 
-We can see, that *B. longum* (bilo) secretes acetate and lactate as main end product. Approximately 50 % of the acetate is consumed by *E. rectale* (eure). *B. longum* produces in addition lactate and *E. rectale* secretes butyrate.
+We can see, that *B. longum* (bilo) secretes acetate and lactate as main end product. Approximately 57 % of the acetate is consumed by *E. rectale* (eure). *B. longum* produces in addition lactate and *E. rectale* secretes butyrate.
 
