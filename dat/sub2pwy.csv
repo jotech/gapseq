@@ -387,3 +387,4 @@ Lithocholate	Lithocholic acid	EX_HC02191(e)	HC02191[e]	Bile acids		EX_cpd02475_e
 Deoxycholate	Deoxycholic acid	EX_dchac(e)	dchac[e]	Bile acids		EX_cpd02733_e0	cpd02733[e0]
 sulfoquinovose	sulfoquinovose					EX_cpd22614_e0	cpd22614[e0]
 (S)-2,3-Dihydroxypropane-1-sulfonate	2,3-dihydroxypropane-1-sulfonate					EX_cpd31356_e0	cpd31356[e0]
+Agmatine		EX_agm(e)	agm[e]	Amines		EX_cpd00152_e0	cpd00152[e0]
