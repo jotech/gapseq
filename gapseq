@@ -46,7 +46,7 @@ usage()
     echo "  draft           Draft model construction based on results from find and find-transport."
     echo "  medium          (gapfill-)Medium prediction based on results from find and draft"
     echo "  fill            Gap filling of a model."
-    echo "  doall           Combine find, find-transport, draft and fill."
+    echo "  doall           Combine find, find-transport, draft, (medium,) and fill."
     echo "  adapt           Add or remove reactions or pathways."
     echo "  -v              Show version."
     echo "  -h              Show this screen."
@@ -105,13 +105,15 @@ elif [ "$1" == "doall" ]; then
     id="${base%.*}"
     [[ ! -s "$file" ]]  && usage
     [[ $file == *.gz ]] && id="${id%.*}" 
+    medium=${id}-medium.csv
     [[ -s "$3" ]]       && medium=$3
     taxonomy=auto
     [[ ("$3" == "Bacteria" || "$4" == "Bacteria") ]] && taxonomy=Bacteria
     [[ ("$3" == "Archaea" || "$4" == "Archaea") ]] && taxonomy=Archaea
-    $dir/src/gapseq_find.sh -v $verbose -b 200 -p all -t $taxonomy -k "$file"
-    $dir/src/transporter.sh -b 200 "$file"
-    Rscript $dir/src/generate_GSdraft.R -r "$id-all-Reactions.tbl" -t "$id-Transporter.tbl" -c "$file" -u 200 -l 100 -p "$id-all-Pathways.tbl"
+    #$dir/src/gapseq_find.sh -v $verbose -b 200 -p all -t $taxonomy -k "$file"
+    #$dir/src/transporter.sh -b 200 "$file"
+    #Rscript $dir/src/generate_GSdraft.R -r "$id-all-Reactions.tbl" -t "$id-Transporter.tbl" -c "$file" -u 200 -l 100 -p "$id-all-Pathways.tbl"
+    [[ ! -s "$3" ]] && Rscript $dir/src/predict_medium.R -m "./${id}-draft.RDS" -p "$id-all-Pathways.tbl"
     Rscript $dir/src/gf.suite.R -m "./${id}-draft.RDS" -n "$medium" -c "./${id}-rxnWeights.RDS" -b 100 -g "./${id}-rxnXgenes.RDS"
 
 elif [ "$1" == "adapt" ]; then

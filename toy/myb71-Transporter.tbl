@@ -1,3 +1,5 @@
+# gapseq version: 1.1 4a17997
+# Transporter sequence DB md5sum: da16924 (2021-04-20)
 id	tc	sub	exid	rea	qseqid	pident	evalue	bitscore	qcovs	stitle	sstart	send
 658118070	3.a.1	zinc		rxn05150,rxn09388,rxn09392,rxn13918	gnl|tc-db|658118070|3.a.1.15.16	29.630	4.00e-22	91.3	100	unitig_2 Ochrobactrum sp. strain Myb71.	626337	625804
 658118072	3.a.1	zinc		rxn05150,rxn09388,rxn09392,rxn13918	gnl|tc-db|658118072|3.a.1.15.16	25.847	0.065	32.3	85	unitig_2 Ochrobactrum sp. strain Myb71.	625421	624750
@@ -468,6 +470,7 @@ p54710	1.a.27	potassium		rxn05206,rxn27350	gnl|tc-db|p54710|1.a.27.2.1	35.000	0.
 p54710	1.a.27	sodium		rxn34393,rxn34515,rxn10899	gnl|tc-db|p54710|1.a.27.2.1	35.000	0.59	25.0	89	unitig_0 Ochrobactrum sp. strain Myb71.	761438	761614
 p56579	4.a.4	sorbitol	EX_cpd00588_e0	rxn09242,rxn10184,rxn29070	gnl|tc-db|p56579|4.a.4.1.1	40.116	9.07e-35	127	88	unitig_2 Ochrobactrum sp. strain Myb71.	714353	713838
 p56580	4.a.4	sorbitol	EX_cpd00588_e0	rxn09242,rxn10184,rxn29070	gnl|tc-db|p56580|4.a.4.1.1	50.789	4.27e-88	286	97	unitig_2 Ochrobactrum sp. strain Myb71.	713792	712845
+p60061	2.a.3	agmatine		rxn12597	gnl|tc-db|p60061|2.a.3.2.5	20.975	5.47e-05	43.1	100	unitig_2 Ochrobactrum sp. strain Myb71.	1544042	1545442
 p60061	2.a.3	arginine	EX_cpd00051_e0	rxn05303,rxn08154,rxn09783,rxn12437,rxn13228,rxn30457,rxn10840,rxn33718	gnl|tc-db|p60061|2.a.3.2.5	20.975	5.47e-05	43.1	100	unitig_2 Ochrobactrum sp. strain Myb71.	1544042	1545442
 p63183	2.a.72	potassium		rxn05595,rxn05596,rxn08769,rxn08770,rxn10820,rxn38724	gnl|tc-db|p63183|2.a.72.1.1	45.177	2.47e-152	484	99	unitig_0 Ochrobactrum sp. strain Myb71.	1738469	1736607
 p67444	2.a.40	xanthine		rxn05202,rxn09377,rxn12440	gnl|tc-db|p67444|2.a.40.4.3	29.530	2.20e-32	129	95	unitig_2 Ochrobactrum sp. strain Myb71.	461655	462953
@@ -931,6 +934,7 @@ q9xcs2	3.a.1	iron	EX_cpd10516_e0	rxn05195,rxn08477,rxn34370	gnl|tc-db|q9xcs2|3.a
 q9z3q3	2.a.63	potassium		rxn05595,rxn05596,rxn08769,rxn08770,rxn10820,rxn38724	gnl|tc-db|q9z3q3|2.a.63.1.1	45.690	1.27e-19	80.5	96	unitig_2 Ochrobactrum sp. strain Myb71.	1380550	1380203
 q9z4r9	3.a.1	iron	EX_cpd10516_e0	rxn05555,rxn08472	gnl|tc-db|q9z4r9|3.a.1.20.1	25.369	1.57e-24	102	99	unitig_2 Ochrobactrum sp. strain Myb71.	2143317	2142331
 q9z4r9	3.a.1	iron	EX_cpd10516_e0	rxn05195,rxn08477,rxn34370	gnl|tc-db|q9z4r9|3.a.1.20.1	25.369	1.57e-24	102	99	unitig_2 Ochrobactrum sp. strain Myb71.	2143317	2142331
+q9z6m8	2.a.3	agmatine		rxn12597	gnl|tc-db|q9z6m8|2.a.3.2.7	19.431	3.3	27.7	83	unitig_2 Ochrobactrum sp. strain Myb71.	531126	529945
 q9z6m8	2.a.3	arginine	EX_cpd00051_e0	rxn05303,rxn08154,rxn09783,rxn12437,rxn13228,rxn30457,rxn10840,rxn33718	gnl|tc-db|q9z6m8|2.a.3.2.7	19.431	3.3	27.7	83	unitig_2 Ochrobactrum sp. strain Myb71.	531126	529945
 q9z7n9	2.a.1	phosphate	EX_cpd00016_e0,EX_cpd00079_e0,EX_cpd00080_e0,EX_cpd00235_e0,EX_cpd00793_e0,EX_cpd01912_e0	rxn05210,rxn05312,rxn05313,rxn09120,rxn09723,rxn09811,rxn09833,rxn09872,rxn12450,rxn34261,rxn34397,rxn34522	gnl|tc-db|q9z7n9|2.a.1.4.6	21.389	4.79e-04	40.0	76	unitig_0 Ochrobactrum sp. strain Myb71.	1759908	1758958
 r4jtf7	2.a.56	dctp	EX_cpd00356_e0	rxn29860	gnl|tc-db|r4jtf7|2.a.56.1.9	43.491	1.05e-89	291	99	unitig_2 Ochrobactrum sp. strain Myb71.	2103816	2102809

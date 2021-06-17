@@ -1,3 +1,5 @@
+# gapseq version: 1.1 4a17997
+# Transporter sequence DB md5sum: da16924 (2021-04-20)
 id	tc	sub	exid	rea	qseqid	pident	evalue	bitscore	qcovs	stitle	sstart	send
 509169.3.peg.801	4.a.1	n-acetyl-d-glucosamine		rxn05485,rxn08041	fig|rast|509169.3.peg.801|4.a.1.1.15	28.809	3.13e-29	118	83	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	2934364	2935425
 658118070	3.a.1	zinc		rxn05150,rxn09388,rxn09392,rxn13918	gnl|tc-db|658118070|3.a.1.15.16	26.702	1.50e-18	80.9	100	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	1942671	1943204
@@ -198,7 +200,7 @@ o32332	4.a.4	sorbitol	EX_cpd00588_e0	rxn09242,rxn10184,rxn29070	gnl|tc-db|o32332
 o32333	4.a.4	sorbitol	EX_cpd00588_e0	rxn09242,rxn10184,rxn29070	gnl|tc-db|o32333|4.a.4.1.2	53.593	4.87e-107	341	99	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	2826395	2827348
 o34315.2	3.a.1	cysteine	EX_cpd00084_e0	rxn05237,rxn08280,rxn08281,rxn30473	gnl|tc-db|o34315.2|3.a.1.3.13	38.462	1.27e-26	105	94	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	1998350	1997826
 o34362	3.a.1	thiamine		rxn05177,rxn09297	gnl|tc-db|o34362|3.a.1.30.1	26.679	3.52e-37	145	97	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	2276312	2277844
-o34406	3.a.1	glutamine	EX_cpd00053_e0	rxn05155,rxn08624,rxn11101	gnl|tc-db|o34406|3.a.1.3.13	28.807	7.15e-21	89.7	87	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	2000274	1999588
+o34406	3.a.1	glutamine	EX_cpd00053_e0	rxn05155,rxn08624,rxn11101	gnl|tc-db|o34406|3.a.1.3.13	31.739	1.31e-20	89.0	87	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	847926	847267
 o34521	4.a.1	n-acetylglucosamine		rxn05485,rxn08041	gnl|tc-db|o34521|4.a.1.1.7	50.431	3.25e-114	367	99	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	703950	705341
 o34610	3.a.1	zinc		rxn05150,rxn09388,rxn09392,rxn13918	gnl|tc-db|o34610|3.a.1.15.11	31.557	4.55e-18	81.6	86	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	1943417	1944139
 o34742	3.a.1	betaine	EX_cpd08306_e0	rxn05181,rxn08637,rxn11216	gnl|tc-db|o34742|3.a.1.12.4	39.698	1.79e-23	95.9	95	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	2216320	2215736
@@ -668,6 +670,7 @@ p54708	3.a.3	potassium		rxn08762,rxn10168,rxn10558,rxn10578,rxn13842,rxn18910	gn
 p56579	4.a.4	sorbitol	EX_cpd00588_e0	rxn09242,rxn10184,rxn29070	gnl|tc-db|p56579|4.a.4.1.1	100.000	4.74e-107	333	100	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	2825832	2826392
 p56580	4.a.4	sorbitol	EX_cpd00588_e0	rxn09242,rxn10184,rxn29070	gnl|tc-db|p56580|4.a.4.1.1	100.000	0.0	596	100	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	2826392	2827348
 p58300	3.a.1	maltodextrin		rxn11140	gnl|tc-db|p58300|3.a.1.1.16	28.065	4.98e-33	130	82	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	4246329	4245268
+p60061	2.a.3	agmatine		rxn12597	gnl|tc-db|p60061|2.a.3.2.5	100.000	0.0	804	100	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	4337031	4335697
 p60061	2.a.3	arginine	EX_cpd00051_e0	rxn05303,rxn08154,rxn09783,rxn12437,rxn13228,rxn30457,rxn10840,rxn33718	gnl|tc-db|p60061|2.a.3.2.5	100.000	0.0	804	100	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	4337031	4335697
 p63183	2.a.72	potassium		rxn05595,rxn05596,rxn08769,rxn08770,rxn10820,rxn38724	gnl|tc-db|p63183|2.a.72.1.1	100.000	0.0	1153	100	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	3931316	3933181
 p67444	2.a.40	xanthine		rxn05202,rxn09377,rxn12440	gnl|tc-db|p67444|2.a.40.4.3	100.000	0.0	867	100	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	3024351	3025748
@@ -1236,6 +1239,7 @@ q9xcs2	3.a.1	iron	EX_cpd10516_e0	rxn05555,rxn08472	gnl|tc-db|q9xcs2|3.a.1.15.7	2
 q9xcs2	3.a.1	iron	EX_cpd10516_e0	rxn05195,rxn08477,rxn34370	gnl|tc-db|q9xcs2|3.a.1.15.7	20.319	5.14e-09	54.7	76	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	1942502	1941756
 q9y2c5	2.a.1	phosphate	EX_cpd00016_e0,EX_cpd00079_e0,EX_cpd00080_e0,EX_cpd00235_e0,EX_cpd00793_e0,EX_cpd01912_e0	rxn05210,rxn05312,rxn05313,rxn09120,rxn09723,rxn09811,rxn09833,rxn09872,rxn12450,rxn34261,rxn34397,rxn34522	gnl|tc-db|q9y2c5|2.a.1.14.24	27.764	2.33e-21	95.5	77	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	3274745	3273567
 q9y2c5	2.a.1	sodium		rxn10576,rxn13753,rxn25832,rxn27363,rxn30509,rxn37569,rxn37570,rxn37571	gnl|tc-db|q9y2c5|2.a.1.14.24	27.764	2.33e-21	95.5	77	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	3274745	3273567
+q9z6m8	2.a.3	agmatine		rxn12597	gnl|tc-db|q9z6m8|2.a.3.2.7	42.081	4.93e-95	313	91	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	1679560	1680834
 q9z6m8	2.a.3	arginine	EX_cpd00051_e0	rxn05303,rxn08154,rxn09783,rxn12437,rxn13228,rxn30457,rxn10840,rxn33718	gnl|tc-db|q9z6m8|2.a.3.2.7	42.081	4.93e-95	313	91	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	1679560	1680834
 q9z7n9	2.a.1	phosphate	EX_cpd00016_e0,EX_cpd00079_e0,EX_cpd00080_e0,EX_cpd00235_e0,EX_cpd00793_e0,EX_cpd01912_e0	rxn05210,rxn05312,rxn05313,rxn09120,rxn09723,rxn09811,rxn09833,rxn09872,rxn12450,rxn34261,rxn34397,rxn34522	gnl|tc-db|q9z7n9|2.a.1.4.6	46.172	2.92e-127	404	92	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	3848615	3847392
 q9ze92	2.a.1	glycerol-3-phosphate		rxn05578	gnl|tc-db|q9ze92|2.a.1.4.11	38.025	6.33e-72	243	97	NC_000913.3 Escherichia coli str. K-12 substr. MG1655, complete genome	3848558	3847344
