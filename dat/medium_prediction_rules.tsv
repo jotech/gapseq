@@ -70,3 +70,4 @@ sulfoquinovose	cpd22614	"PWY-7446" | "PWY-7722"	10	TRUE		Secondary plant metabol
 Gallate	cpd01020	"GALLATE-DEGRADATION-II-PWY" | "GALLATE-DEGRADATION-I-PWY" | "P3-PWY"	10	TRUE		Secondary plant metabolites
 Quercetin	cpd00313	"QUERCETIN-ANAERO-DEG"	10	TRUE	Key-reaction: Taxifolin isomerase (EC 5.5.1.6)	Secondary plant metabolites
 Genistein	cpd03971	rxn90097	10	TRUE	Genistein reductase	Secondary plant metabolites
+Daidzein	cpd07097	"PWY-6996"	10	TRUE	Anaerobic daidzein degradation to equol	Secondary plant metabolites

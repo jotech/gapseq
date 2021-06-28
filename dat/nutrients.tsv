@@ -495,6 +495,8 @@ cpd05235	tetracosanoate	C24H47O2	-1	MNXM3297
 cpd05262	galacturonate	C6H9O7	-1	MNXM114564
 cpd05267	Ribose	C5H10O5	0	MNXM3224
 cpd06201	Sulfur dioxide	O2S	0	MNXM4835
+cpd07097	Daidzein	C15H10O4	0	MNXM1227
+cpd07105	Daidzin	C21H20O9	0	MNXM3575
 cpd07333	Dihydrocaffeic acid	C9H9O4	-1	MNXM3476
 cpd08021	Dimethyl sulfoxide	C2H6OS	0	MNXM745
 cpd08023	methanesulfonate	CH3O3S	-1	MNXM1485
@@ -506,6 +508,7 @@ cpd09068	Isoamyl acetate	C7H14O2	0	MNXM7451
 cpd09075	Phenethyl acetate	C10H12O2	0	MNXM12629
 cpd09252	3-Coumaric acid	C9H7O3	-1	MNXM1799
 cpd09429	3-Hexaprenyl-4-hydroxybenzoate	C37H53O3	-1	MNXM3167
+cpd09832	Equol	C15H14O3	0	MNXM52438
 cpd09878	Sulfoacetate	C2H2O5S	-2	MNXM1949
 cpd10408	Isobutyl alcohol	C4H10O	0	MNXM5188
 cpd10515	Fe2+	Fe	2	MNXM111

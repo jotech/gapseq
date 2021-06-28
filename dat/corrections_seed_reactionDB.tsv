@@ -2525,3 +2525,12 @@ rxn09439			-2:cpd00005:0:0:"NADPH";-3:cpd00067:0:0:"H+";-1:cpd11474:0:0:"Decanoy
 rxn11091	>		-1:cpd00003:0:0:"NAD";-1:cpd16167:0:0:"dihydroorotate";1:cpd00004:0:0:"NADH";1:cpd00247:0:0:"Orotate";1:cpd00067:0:0:"H+"	[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=OROTATE-REDUCTASE-NADH-RXN				
 rxn11157			-1:cpd00067:0:0:"H+";-1:cpd00343:0:0:"N-Carbamoyl-L-aspartate";1:cpd00001:0:0:"H2O";1:cpd16167:0:0:"dihydroorotate"	[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=DIHYDROOROT-RXN				
 rxn14270			-1:cpd00017:0:0:"S-Adenosyl-L-methionine";-1:cpd08368:0:0:"Cobalt-precorrin 2";1:cpd00019:0:0:"S-Adenosyl-homocysteine";1:cpd17535:0:0:"Cobalt-factor III"	[SW] Corrected charge and mass balance.					
+									
+rxn23867			-1:cpd00001:0:0:"H2O";-1:cpd07105:0:0:"Daidzin";1:cpd00027:0:0:"D-Glucose";1:cpd07097:0:0:"Daidzein"	[SW] Replaced Glucose identifier to standard					
+rxn22013	>		-1:cpd00005:0:0:"NADPH";-1:cpd00067:0:0:"H+";-1:cpd07097:0:0:"Daidzein";1:cpd00006:0:0:"NADP";1:cpd90018:0:0:"(R)-4',7-dihydroxyisoflavanone"	[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-11640				
+rxn90105	=		-1:cpd90018:0:0:"(R)-4',7-dihydroxyisoflavanone";1:cpd23494:0:0:"(S)-4',7-dihydroxyisoflavanone"	[SW] Newly introduced based on new MetaCyc reaction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-22410		dihydrodaizein racemase	dihydrodaizein racemase	
+rxn23386	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-13101				
+rxn23387	>		-2:cpd24186:0:0:"(3R,4S)-tetrahydrodaidzein";1:cpd00001:0:0:"H2O";1:cpd09832:0:0:"Equol";1:cpd23494:0:0:"(S)-4',7-dihydroxyisoflavanone"	[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-13102		tetrahydrodaidzein reductase	tetrahydrodaidzein reductase	
+rxn90106	=		-1:cpd09832:1:0:"Equol";1:cpd09832:0:0:"Equol"	[SW] Putative equol permease			Equol permease	Equol permease	
+rxn90107	=		-1:cpd07097:1:0:"Daidzein";1:cpd07097:0:0:"Daidzein"	[SW] Putative daidzein permease			Daidzein permease	Daidzein permease	
+rxn90108	=		-1:cpd07105:1:0:"Daidzin";1:cpd07105:0:0:"Daidzin"	[SW] Putative daidzin permease			Daidzin permease	Daidzin permease	
