@@ -2,7 +2,7 @@ library(getopt)
 
 # get options first
 spec <- matrix(c(
-  'model', 'm', 1, "character", "GapSeq-Draft-Model to be gapfilled (RDS or SBML)",
+  'model', 'm', 1, "character", "gapseq-Draft-Model to be gapfilled (RDS or SBML)",
   'help' , 'h', 0, "logical", "help",
   'media', 'n', 1, "character", "tab- or komma separated table for media components. Requires three named columns: 1 - \"compounds\" (for metab. IDs), 2 - \"name\" (metab. name), 3 - \"maxFlux\" (maximum inflow flux)",
   'full.model', 'f', 2, "character","(Deprecated) RDS file of the full model. Please do not use; Option has currently no effect.",
@@ -183,7 +183,7 @@ if(any(grepl("tax_domain:", mod.orig@mod_attr[,"annotation"], fixed = T))) {
   }
 }
 
-# This here is needed if another draft than GapSeq's own draft networks are gapfilled
+# This here is needed if another draft than gapseq's own draft networks are gapfilled
 if((!"gs.origin" %in% colnames(mod.orig@react_attr))) {
   mod.orig@react_attr <- data.frame(seed      = gsub("_.0","",mod.orig@react_id),
                                     gs.origin = 0,
@@ -678,7 +678,10 @@ if( verbose ){
 
 # add gapseq version info to model object
 gapseq_version <- system(paste0(script.dir,"/.././gapseq -v"), intern = T)
-mod.out@mod_desc <- gapseq_version
+seqdb_version  <- str_match(mod.orig@mod_desc, "Sequence DB md5sum: .*")
+if( !is.na(seqdb_version) ){
+    mod.out@mod_desc <- paste0(gapseq_version, "; ", seqdb_version)
+} else mod.out@mod_desc <- gapseq_version
 
 out.rds <- paste0(output.dir,"/",out.id,".RDS")
 
