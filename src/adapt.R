@@ -68,10 +68,15 @@ sbml.export  <- FALSE
 
 # Little helpers
 source(paste0(script.dir,"/add_missing_exRxns.R"))
+source(paste0(script.dir,"/addMetAttr.R"))
+source(paste0(script.dir,"/addReactAttr.R"))
 
 # database files
 meta.pwy <- fread(paste0(script.dir, "/../dat/meta_pwy.tbl"))
+custom.pwy <- fread(paste0(script.dir, "/../dat/custom_pwy.tbl"))
+all.pwy <- rbind(meta.pwy[,1:9],custom.pwy)
 meta.rxn <- fread(paste0(script.dir, "/../dat/meta_rea.tbl"))
+seed_x_mets   <- fread(paste0(script.dir,"/../dat/seed_metabolites_edited.tsv"), header=T, stringsAsFactors = F, na.strings = c("null","","NA"))
 
 cat("Loading model files", mod.file, "\n")
 mod        <- readRDS(fullmod.file)
@@ -86,10 +91,10 @@ if ( toupper(file_ext(mod.file)) == "RDS" ){
 
 ids2seed <- function(ids){
   id.seed   <- str_extract(ids, "rxn[0-9]+")
-  idx.pwy   <- match(gsub("\\|","",ids), gsub("\\|","",meta.pwy$id))
+  idx.pwy   <- match(gsub("\\|","",ids), gsub("\\|","",all.pwy$id))
   idx.ec    <- str_extract(ids, "[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+")
   idx.rxn   <- match(gsub("\\|","",ids), gsub("\\|","",meta.rxn$id))
-  idx.sub   <- unname(sapply(ids, function(id){ hit <- grep(gsub("\\|","",id), meta.pwy$hierarchy, ignore.case = T); ifelse(length(hit)>0, paste0(hit, collapse = ","), NA) }))
+  idx.sub   <- unname(sapply(ids, function(id){ hit <- grep(gsub("\\|","",id), all.pwy$hierarchy, ignore.case = T); ifelse(length(hit)>0, paste0(hit, collapse = ","), NA) }))
   id.kegg   <- str_extract(ids, "R[0-9]+")
   
   ids2seed.dt <- data.table()
@@ -97,9 +102,9 @@ ids2seed <- function(ids){
     if( !is.na(id.seed[i]) ){
       ids2seed.dt <- rbind(ids2seed.dt, data.table(id=ids[i], id.type="seed rxn", db.rxn="", seed=ids[i]))
     }else if ( !is.na(idx.pwy[i]) ){
-      rxn <- unlist(str_split(meta.pwy[idx.pwy[i], reaId], ","))
-      ec  <- unlist(str_split(meta.pwy[idx.pwy[i], reaEc], ","))
-      rxn.name <- unlist(str_split(meta.pwy[idx.pwy[i], reaName], ";"))
+      rxn <- unlist(str_split(all.pwy[idx.pwy[i], reaId], ","))
+      ec  <- unlist(str_split(all.pwy[idx.pwy[i], reaEc], ","))
+      rxn.name <- unlist(str_split(all.pwy[idx.pwy[i], reaName], ";"))
       rxn.str <- c()
       for(j in seq_along(rxn)){
         rxn.str <- c(rxn.str, system(paste0(script.dir, "/getDBhit.sh ", paste(rxn[j], paste0("'",rxn.name[j],"'"), ec[j], "seed")), intern=T))
@@ -116,9 +121,9 @@ ids2seed <- function(ids){
       ids2seed.dt <- rbind(ids2seed.dt, data.table(id=ids[i], id.type="metacyc rxn", db.rxn=ids[i], seed=rxn.str))
     }else if ( !is.na(idx.sub[i]) ){
       idx.sub.split <- as.numeric(unlist(str_split(idx.sub[i], ",")))
-      rxn <- unlist(str_split(meta.pwy[idx.sub.split, reaId], ","))
-      ec  <- unlist(str_split(meta.pwy[idx.sub.split, reaEc], ","))
-      rxn.name <- unlist(str_split(meta.pwy[idx.sub.split, reaName], ";"))
+      rxn <- unlist(str_split(all.pwy[idx.sub.split, reaId], ","))
+      ec  <- unlist(str_split(all.pwy[idx.sub.split, reaEc], ","))
+      rxn.name <- unlist(str_split(all.pwy[idx.sub.split, reaName], ";"))
       rxn.str <- c()
       for(j in seq_along(rxn)){
         rxn.str <- c(rxn.str, system(paste0(script.dir, "/getDBhit.sh ", paste(rxn[j], paste0("'",rxn.name[j],"'"), ec[j], "seed")), intern=T))
@@ -156,6 +161,11 @@ if( !is.null(ids.add) ){
   rxn.add <- rxn.avail
   
   mod.out <- add_reaction_from_db(mod.orig, react = rxn.add, gs.origin = 10)
+  
+  # add metabolite & reaction attributes
+  mod.out <- addMetAttr(mod.out, seed_x_mets = seed_x_mets)
+  mod.out <- addReactAttr(mod.out)
+
   print(paste("Added reactions: ", paste0(rxn.add, collapse = ",")))
 }
 
