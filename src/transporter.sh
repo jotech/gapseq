@@ -175,8 +175,9 @@ echo ${sublist:1} | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort | uniq  > hi
 echo ${sublist2:1} | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort | uniq > hit2
 [[ verbose -ge 1 ]] && cat hit2
 
-[[ verbose -ge 1 ]] && echo -e "\nNo transport reactions found in database for:"
-for sub in $(comm -23 hit1 hit2 | tr ' ' '_')
+missed=$(comm -23 hit1 hit2 | tr ' ' '_')
+[[ -n "$missed" && verbose -ge 1 ]] && echo -e "\nNo transport reactions found in database for:"
+for sub in $missed
 do
     sub=$(echo "$sub" | tr '_' ' ')
     [[ verbose -ge 1 ]] && { cat "$sub" | awk -F ',' '{print $3, $6}' | sort | uniq; }
@@ -196,10 +197,13 @@ do
     done
 done
 
-[[ verbose -ge 1 ]] && echo -e "\nNo transporter found for compounds (existing transporter/exchanges should be removed?):"
 echo $allDBsubs | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort > hit3
 cat hit1 | tr '\n' '|' | rev | cut -c 2- | rev | grep -f - -iE $subDB | cut -d '	' -f1,2 | tr '[:upper:]' '[:lower:]' | tr '\t' '\n' | tr ',' '\n' | sort | uniq > hit4 # expand hits with substance alternative names to avoid false positive reporting
-[[ verbose -ge 1 ]] && comm -13 hit4 hit3
+comm -13 hit4 hit3 > hit5
+if [[ -s hit5 ]]; then
+    [[ verbose -ge 1 ]] && echo -e "\nNo transporter found for compounds (existing transporter/exchanges should be removed?):"
+    [[ verbose -ge 1 ]] && cat hit5
+fi
 
 cand="$(echo $cand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')"
 #echo -e "\nReactions to be added:"
