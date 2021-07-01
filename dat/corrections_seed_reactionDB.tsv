@@ -2545,3 +2545,12 @@ rxn41263	>		-1:cpd00067:0:0:"H+";-1:cpd27451:0:0:"3,5-diphosphomevalonate";1:cpd
 									
 rxn20827	>			[SW] Reaction required for 3-dehydroquinate biosynthesis in some archaea and corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-10053				
 rxn33374		TRUE		[SW] duplicate reaction to rxn01643					
+									
+rxn28980		TRUE		[SW] duplicate reaction to rxn03147					
+rxn27691		TRUE		[SW] duplicate reaction to rxn03136					
+rxn35698		TRUE		[SW] duplicate reaction to rxn03136					
+rxn27692		TRUE		[SW] duplicate reaction to rxn03137					
+rxn27945		TRUE		[SW] duplicate reaction to rxn00832					
+rxn19830		TRUE		[SW] duplicate reaction to rxn03135					
+rxn37546		TRUE		[SW] duplicate reaction to rxn03147					
+rxn41476	>		-1:cpd00008:0:0:"ADP";-1:cpd00475:0:0:" Ribose 1-phosphate";1:cpd00018:0:0:"AMP";1:cpd00847:0:0:"Ribose 1,5-bisphosphate"	[SW] Reaction required in nucleoside and nucleotide degradation in some archaea, EC 2.7.1.212	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17337		D-ribose-1-phosphate 5-kinase (ADP) 	D-ribose-1-phosphate 5-kinase (ADP) 	
