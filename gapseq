@@ -89,6 +89,10 @@ elif [ "$1" == "find-transport" ]; then
 elif [ "$1" == "draft" ]; then
     shift
     Rscript $dir/src/generate_GSdraft.R "$@"
+
+elif [ "$1" == "adapt" ]; then
+    shift
+    Rscript $dir/src/adapt.R "$@"
     
 elif [ "$1" == "medium" ]; then
     shift
