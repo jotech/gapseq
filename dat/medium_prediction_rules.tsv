@@ -59,7 +59,7 @@ L-Tyrosine	cpd00069	!("TYRSYN" | "PWY-3461" | "PWY-6120" | "PWY-6134")	0.1	TRUE	
 L-Valine	cpd00156	!"VALSYN-PWY"	0.1	TRUE		Amino acids
 						
 L-Lactate	cpd00159	rxn90054	15	TRUE	Electron-bifurcating lactate dehydrogenase forming pyruvate (EC 1.3.1.110)	Organic acids
-L-Lactate	cpd00159	"PWY-5494"	15	TRUE	acrylate pathway	Organic acids
+L-Lactate	cpd00159	"PWY-5494" | "PWY-8086" | "PWY-8086-GS"	15	TRUE	acrylate pathway or lactate fermentation to propionate, acetate and h2	Organic acids
 Acetate	cpd00029	rxn00875 & rxn00225 & rxn00173 & rxn90001	20	TRUE	EC 2.8.3.8, EC 2.7.2.1, EC 2.3.1.8, EC 1.3.1.109	Organic acids
 Acetate	cpd00029	"METH-ACETATE-PWY"	25	TRUE	Methanogenisis from acetate	Organic acids
 Succinate	cpd00036	"PWY-5677"	10	TRUE	Succinate fermentation to butyrate	Organic acids
