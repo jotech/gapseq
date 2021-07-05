@@ -70,6 +70,7 @@ otherDB=$dir/../dat/seq/transporter.fasta
 subDB=$dir/../dat/sub2pwy.csv
 seedDB=$dir/../dat/seed_transporter.tbl
 customDB=$dir/../dat/seed_transporter_custom.tbl
+tcdb_sub=$dir/../dat/tcdb_substrates.tbl
 
 # tmp working directory
 fasta=$(readlink -f "$1") # save input file before changing to temporary directory
@@ -97,14 +98,16 @@ fi
 
 cat $tcdb $otherDB > all.fasta.tmp # join transporter databases
 perl -ne 'if (/>(.*?)\s+(.*)/){push(@{$hash{$1}},$2) ;}}{open(I, "<","all.fasta.tmp");while(<I>){if(/>(.*?)\s+/){ $t = 0; next if $h{$1}; $h{$1} = 1 if $hash{$1}; $t = 1; chomp; print $_ . " @{$hash{$1}}\n"}elsif($t==1){print $_} } close I;' all.fasta.tmp > all.fasta # remove duplicate entries by ID
-sed -i "s/\(>.*\)/\L\1/" all.fasta # header to lower case
+#sed -i "s/\(>.*\)/\L\1/" all.fasta # header to lower case
 grep -e ">" all.fasta > tcdb_header
 sed '1d' $subDB | awk -F '\t' '{if ($8 != "NA") print $0}' > redSubDB
-[[ -n "$only_met" ]] && { cat redSubDB | grep -i $only_met > redSubDB.tmp; mv redSubDB.tmp redSubDB; }
+[[ -n "$only_met" ]] && { cat redSubDB | grep -wi $only_met > redSubDB.tmp; mv redSubDB.tmp redSubDB; }
 [[ ! -s redSubDB ]] && { echo keyword/metabolite not found; exit 1; }
 key=$(cat redSubDB | awk -F '\t' '{if ($2 != "") print $1"\n"$2; else print $1}' | sort | uniq | paste -s -d '|') # ignore substances without linked exchange reaction
 [[ -n "$only_met" ]] && { echo Search keys: "$key"; } 
-grep -wEi "$key" tcdb_header | awk '{print substr($1,2)}' > hits
+#grep -wEi "$key" tcdb_header | awk '{print substr($1,2)}' > hits
+TC_hits=$(grep -wEi "$key" $tcdb_sub | awk -F '\t' '{print $1}' | paste -s -d '|')
+grep -wE "$TC_hits" tcdb_header | awk '{print substr($1,2)}' > hits
 #grep -wEio "$key" tcdb_header | sort | uniq -c # status print
 [[ -n "$only_met" ]] && { echo -e "\n"Found transporter sequences:; cat hits; } 
 subhits=$(grep -wEio "$key" tcdb_header | sort | uniq | paste -s -d '|')
