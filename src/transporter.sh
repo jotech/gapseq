@@ -1,10 +1,7 @@
-#
-# TODO: update sub2pwy to contain more linked substances
-#
+#!/bin/bash
 
 start_time=`date +%s`
-
-bitcutoff=50 # cutoff blast: min bit score
+bitcutoff=50
 identcutoff=0   # cutoff blast: min identity
 covcutoff=75 # cutoff blast: min coverage
 use_alternatives=true
@@ -67,10 +64,11 @@ path=$(readlink -f "$0")
 dir=$(dirname "$path")
 tcdb=$dir/../dat/seq/tcdb.fasta
 otherDB=$dir/../dat/seq/transporter.fasta
-subDB=$dir/../dat/sub2pwy.csv
+subDB=$dir/../dat/subex.tbl
 seedDB=$dir/../dat/seed_transporter.tbl
 customDB=$dir/../dat/seed_transporter_custom.tbl
 tcdb_sub=$dir/../dat/tcdb_substrates.tbl
+tcdb_custom=$dir/../dat/tcdb_custom.tbl
 
 # tmp working directory
 fasta=$(readlink -f "$1") # save input file before changing to temporary directory
@@ -96,131 +94,120 @@ else
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send"
 fi
 
-cat $tcdb $otherDB > all.fasta.tmp # join transporter databases
-perl -ne 'if (/>(.*?)\s+(.*)/){push(@{$hash{$1}},$2) ;}}{open(I, "<","all.fasta.tmp");while(<I>){if(/>(.*?)\s+/){ $t = 0; next if $h{$1}; $h{$1} = 1 if $hash{$1}; $t = 1; chomp; print $_ . " @{$hash{$1}}\n"}elsif($t==1){print $_} } close I;' all.fasta.tmp > all.fasta # remove duplicate entries by ID
-#sed -i "s/\(>.*\)/\L\1/" all.fasta # header to lower case
-grep -e ">" all.fasta > tcdb_header
-sed '1d' $subDB | awk -F '\t' '{if ($8 != "NA") print $0}' > redSubDB
-[[ -n "$only_met" ]] && { cat redSubDB | grep -wi $only_met > redSubDB.tmp; mv redSubDB.tmp redSubDB; }
-[[ ! -s redSubDB ]] && { echo keyword/metabolite not found; exit 1; }
-key=$(cat redSubDB | awk -F '\t' '{if ($2 != "") print $1"\n"$2; else print $1}' | sort | uniq | paste -s -d '|') # ignore substances without linked exchange reaction
-[[ -n "$only_met" ]] && { echo Search keys: "$key"; } 
-#grep -wEi "$key" tcdb_header | awk '{print substr($1,2)}' > hits
-TC_hits=$(grep -wEi "$key" $tcdb_sub | awk -F '\t' '{print $1}' | paste -s -d '|')
-grep -wE "$TC_hits" tcdb_header | awk '{print substr($1,2)}' > hits
-#grep -wEio "$key" tcdb_header | sort | uniq -c # status print
-[[ -n "$only_met" ]] && { echo -e "\n"Found transporter sequences:; cat hits; } 
-subhits=$(grep -wEio "$key" tcdb_header | sort | uniq | paste -s -d '|')
-allDBsubs=$(cat redSubDB | grep -wEi "$subhits" | awk -F '\t' '{if ($2 != "") print $2; else print $1}' | sort | uniq | paste -s -d ';') # list of substances that are covered by DB
-[[ -n "$only_met" ]] && { echo -e "\n"Covered metabolites: $allDBsubs; } 
-touch transporter.tbl
-#apt install exonerate
-fastaindex all.fasta tcdb.idx 
-fastafetch -f all.fasta -i tcdb.idx -Fq <(sort -u hits ) > tcdbsmall.fasta
-#
-makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
+cat $tcdb $otherDB > all.fasta # join transporter databases
+grep -e ">" all.fasta | sort > fasta_header
+sed '1d' $subDB | awk -F '\t' '{if ($4 != "") print $0}' > redSubDB
+cat $tcdb_sub $tcdb_custom > tcdb_all
 
-#tblastn -db orgdb -query tcdbsmall.fasta -outfmt "6 $blast_format" > out 
-if ! [ -x "$(command -v parallel)" ] || [ "$use_parallel" = false ]; then # try to use parallelized version
-    tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" -query tcdbsmall.fasta > out
+# custom fasta_header corrections to avoid mismatches
+sed -i 's/amino butyrate/aminobutyrate/g' fasta_header
+sed -i 's/GABA butyrate/GABA/g' fasta_header
+
+if [[ -n "$only_met" ]]; then
+    cat redSubDB | grep -wi "$only_met" | awk -F '\t' '{n=split($1,a,";"); for(i=0;++i<=n;){print a[i]"\t"$4}}' > SUBid
+    echo Search keys: `cat SUBid | cut -f1 | paste -s -d ';'`
 else
-    cat tcdbsmall.fasta | parallel --gnu --will-cite --block 500k --recstart '>' --pipe tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt \'"6 $blast_format"\' -query - > out
+    cat redSubDB | awk -F '\t' '{n=split($1,a,";"); for(i=0;++i<=n;){print a[i]"\t"$4}}' > SUBid
 fi
+cat SUBid | cut -f1 | sort | uniq > SUBkey
+grep -Fiwf SUBkey tcdb_all | cut -f1 > TCkey
+grep -Fivf TCkey fasta_header > fasta_header.noTCkey
+grep -Fivf SUBkey fasta_header.noTCkey > fasta_header.noKey
+comm -23 fasta_header fasta_header.noKey > fasta_header.small
+awk 'BEGIN{while((getline<"fasta_header.small")>0)l[$1]=1}/^>/{f=l[$1]}f' all.fasta > small.fasta 
 
-IDtcdb=$(cat out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $5>=covcutoff) print $1}' | cut -d "|" -f 3 | sort | uniq) 
+makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
+tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" -query small.fasta > out
 
-TC[1]="1.Channels and pores"
-TC[2]="2.Electrochemical potential-driven transporters"
-TC[3]="3.Primary active transporters"
-TC[4]="4.Group translocators"
+cat out | awk -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $5>=covcutoff) print $0}'> blasthits
+TC_blasthits=$(grep -Pwo "([1-4]\\.[A-z]\\.[0-9]+\\.[0-9]+\\.[0-9]+)" blasthits | sort | uniq)
+TC_types[1]="1.Channels and pores"
+TC_types[2]="2.Electrochemical potential-driven transporters"
+TC_types[3]="3.Primary active transporters"
+TC_types[4]="4.Group translocators"
 
-[[ -n "$only_met" ]] && { echo -e "\n"Blast hits:; } 
-for id in $IDtcdb
+touch DBfound DBfound_bitscore DBmissing DBmissing_bitscore transporter.tbl transporter_bitscore.tbl
+IFS=$'\n' # only splits by newline in for-loop
+for tc in $TC_blasthits
 do
-    descr=$(grep $id tcdb_header | grep -P "(?<= ).*" -o) # extract description
-    [[ -n "$only_met" ]] && { echo -e "\t\n"$descr; } 
-    tc=$(grep $id tcdb_header | grep -Pw "([1-4]\\.[A-z]\\.[0-9]+)" -o | uniq | tr '\n' ',' | sed 's/,$//g') # ATTENTION: only TC numbers starting with 1,2,3,4 are selected (others are electron carrier and accessoirs)
     i=$(echo $tc | head -c1) # get first character of TC number => transporter type
-    type=${TC[$i]}
-    [ -z "$tc" ] && continue
-    subl=$(echo "$descr" | grep -wEio "$key" | tr ' ' '_' | sort | uniq)
-    [[ -n "$only_met" ]] && { echo -e "\t"$id $tc $subl; } 
-    #echo $id $descr $tc $i $type $subl
-    for subst in $subl
-    do
-        subst=$(echo "$subst" | tr '_' ' ') # get space character back (was changed for look)
-        exmetall=$(cat $subDB | awk -F '\t' -v subst="$subst" '{if ( (tolower($1) == tolower(subst) || tolower($2) == tolower(subst)) && $8 != "NA" ) print $8}')
-        for exmet in $exmetall
-        do
-            exid=$(cat $subDB | grep -w "$subst" | awk -F '\t' '{if ($7 != "NA") print $7}')
-            sublist="$sublist;$subst"
-            echo $id,$tc,$subst,$exmet,$exid,$type,$descr >> "`echo "$subst" | tr '[:upper:]' '[:lower:]'`"
-            cat allDB | awk -F '\t' -v type="$type" -v exmet="$exmet" '{if($3==type && $4==exmet) print $0}' > tr_cand
-            if [ -s tr_cand ]; then
-                rea=$(cat tr_cand | awk -F '\t' '{print $1}')
-                [[ -n "$only_met" ]] && { echo -e "\t"Found reaction: $rea; } 
-                #echo -e "\t"Found: $rea
-                cand="$cand $rea $exid"
-                sublist2="$sublist2;$subst"
+    type=${TC_types[$i]}
+    substrates=$(grep -F $tc tcdb_all | cut -f2)
+    sub_hit=$(echo "$substrates" | grep -woiFf SUBkey | sort | uniq)
+    if [[ -z "$sub_hit" ]]; then
+        sub_hit=$(grep -F $tc fasta_header.small | grep -woiFf SUBkey | sort | uniq)
+    fi
+    if [[ -z "$sub_hit" ]]; then
+        echo -e "$substrates\t$tc\t$type" >> SUBmissing
+        continue
+    fi
+    best_hit=$(grep -F $tc blasthits | sort -rgk 4,4 | head -1)
+    hit_good=$(echo "`echo "$best_hit" | cut -f4` >= $bitcutoff" | bc)
+
+    for sub in $sub_hit
+    do 
+        exid_all=$(awk -F '\t' -v subl="$sub" 'tolower($1)==tolower(subl) {print $2}' SUBid | sort | uniq) # get id of substance to avoid mismatches
+        for exid in $exid_all
+        do 
+            exmet=$(echo "$exid" | sed 's/EX_//g' | sed 's/_e0/\[e0\]/g')
+            candidates=$(cat allDB | awk -F '\t' -v type="$type" -v exmet="$exmet" '{if($3==type && $4==exmet) print $0}')
+            if [[ -n "$candidates" ]]; then
+                rea=$(echo "$candidates" | cut -f1)
                 rea_export=$(echo "$rea" | tr '\n' ',' | sed 's/,$//g')
                 exid_export=$(echo "$exid" | tr '\n' ',' | sed 's/,$//g')
-                cat out | grep -w $id | sort -rgk 4,4 | head -1 | awk -v id="$id" -v tc="$tc" -v subst="$subst" -v exid="$exid_export" -v rea=$rea_export '{print id"\t"tc"\t"subst"\t"exid"\t"rea"\t"$0}' >> transporter.tbl 
+                echo -e "`echo $best_hit | cut -f1`\t$tc\t$missing\t$exid_export\t$rea_export\t$best_alter\ttransporter" >> transporter.tbl
+                echo -e "$sub\t$exmet\t$tc\t$type" >> DBfound
+                if [[ $hit_good -eq 1 ]]; then
+                    [[ verbose -ge 1 ]] && echo $sub_hit $tc $type 
+                    [[ -n "$only_met" ]] && { echo -e "\t"Found reaction: $rea; } 
+                    echo -e "`echo $best_hit | cut -f1`\t$tc\t$missing\t$exid_export\t$rea_export\t$best_alter\ttransporter" >> transporter_bitscore.tbl
+                    echo -e "$sub\t$exmet\t$tc\t$type" >> DBfound_bitscore
+                fi
+            else
+                echo -e "$sub\t$exmet\t$tc\t$type" >> DBmissing
+                [[ $hit_good -eq 1 ]] && echo -e "$sub\t$exmet\t$tc\t$type" >> DBmissing_bitscore
             fi
         done
     done
 done
 
-[[ verbose -ge 1 ]] && echo -e "\nFound transporter for:"
-[[ verbose -ge 1 ]] && echo ${sublist:1} | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort | uniq -c
-echo ${sublist:1} | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort | uniq  > hit1
+cat DBfound | cut -f1 | sort | uniq -i > IDfound
+cat DBfound_bitscore | cut -f1 | sort | uniq -i > IDfound_bitscore
+[[ verbose -ge 1 ]] && { echo -e "\nFound transporter for substances:"; cat IDfound_bitscore; }
+cat DBmissing | cut -f1 | sort | uniq -i > IDmissing
+cat DBmissing_bitscore | cut -f1 | sort | uniq -i > IDmissing_bitscore
+[[ verbose -ge 1 ]] && { echo -e "\nFound transporter without reaction in DB:"; comm -23 IDmissing_bitscore IDfound_bitscore; }
 
-[[ verbose -ge 1 ]] && echo -e "\nFound transporter and import reactions for:"
-echo ${sublist2:1} | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort | uniq > hit2
-[[ verbose -ge 1 ]] && cat hit2
 
-missed=$(comm -23 hit1 hit2 | tr ' ' '_')
-[[ -n "$missed" && verbose -ge 1 ]] && echo -e "\nNo transport reactions found in database for:"
-for sub in $missed
-do
-    sub=$(echo "$sub" | tr '_' ' ')
-    [[ verbose -ge 1 ]] && { cat "$sub" | awk -F ',' '{print $3, $6}' | sort | uniq; }
-    id=$(cat "$sub" | awk -F ',' '{print $1}' | sort | uniq | tr '\n' '|' | rev | cut -c2- | rev)
-    tc=$(cat "$sub" | awk -F ',' '{print $6}' | sort | uniq)
-    for exmet in $(cat "$sub" | cut -d ',' -f 4 | sort | uniq)
+if [ "$use_alternatives" = true ] ; then
+    [[ verbose -ge 1 && -s IDmissing ]] && echo -e "\nAdd alternative transport reactions:"
+    for missing in `comm -23 IDmissing IDfound`
     do
-        alter=$(cat allDB | awk -F '\t' -v exmet="$exmet" '{if($4==exmet) print $1}' | sort | uniq)
-        if [ -n "$alter" ]; then
-            [[ verbose -ge 1 ]] && echo -e "\tAlternatives:" $alter
-            if [ "$use_alternatives" = true ] ; then
-                cand="$cand $alter $exid"
-                alter_str=$(echo "$alter" | tr '\n' ',' | rev | cut -c2- | rev) 
-                cat out | grep -wE $id | sort -rgk 4,4 | head -1 | awk -v id="$id" -v tc="alternative" -v subst="$sub" -v exid="$exmet" -v rea="$alter_str" '{print id"\t"tc"\t"subst"\t"exid"\t"rea"\t"$0}' >> transporter.tbl 
-            fi
-        fi
+        [[ verbose -ge 1 ]] && echo $missing
+        exid_all=$(awk -F '\t' -v subl="$missing" 'tolower($1)==tolower(subl) {print $2}' SUBid | sort | uniq)
+        for exid in $exid_all
+        do
+            exmet=$(echo "$exid" | sed 's/EX_//g' | sed 's/_e0/\[e0\]/g')
+            candidates=$(cat allDB | awk -F '\t' -v exmet="$exmet" '{if($4==exmet) print $0}')
+            rea=$(echo "$candidates" | cut -f1)
+            rea_export=$(echo "$rea" | tr '\n' ',' | sed 's/,$//g')
+            exid_export=$(echo "$exid" | tr '\n' ',' | sed 's/,$//g')
+            tc=$(grep $missing DBmissing | cut -f3 | paste -s -d '|')
+            best_alter=$(grep -E $tc blasthits | sort -rgk 4,4 | head -1)
+            echo -e "`echo $best_alter | cut -f1`\t`echo $best_alter|grep -Pwo "([1-4]\\.[A-z]\\.[0-9]+\\.[0-9]+\\.[0-9]+)"`\t$missing\t$exid_export\t$rea_export\t$best_alter\talt-transporter" >> transporter.tbl
+        done
     done
-done
-
-echo $allDBsubs | tr '[:upper:]' '[:lower:]' | tr ';' '\n' | sort > hit3
-cat hit1 | tr '\n' '|' | rev | cut -c 2- | rev | grep -f - -iE $subDB | cut -d '	' -f1,2 | tr '[:upper:]' '[:lower:]' | tr '\t' '\n' | tr ',' '\n' | sort | uniq > hit4 # expand hits with substance alternative names to avoid false positive reporting
-comm -13 hit4 hit3 > hit5
-if [[ -s hit5 ]]; then
-    [[ verbose -ge 1 ]] && echo -e "\nNo transporter found for compounds (existing transporter/exchanges should be removed?):"
-    [[ verbose -ge 1 ]] && cat hit5
 fi
+unset IFS
+echo Total number of found substance transporter for $fastaid: `cat transporter_bitscore.tbl | cut -f4 | sort | uniq | wc -l`
 
-cand="$(echo $cand | tr ' ' '\n' | sort | uniq | tr '\n' ' ')"
-#echo -e "\nReactions to be added:"
-#echo $cand
-echo $cand > newTransporter.lst
-#cp newTransporter.lst $curdir/${fastaid}-Transporter.lst
 cp transporter.tbl $curdir/${fastaid}-Transporter.tbl
-[[ -s transporter.tbl ]] && echo "id tc sub exid rea $blast_format" | tr ' ' '\t' | cat - transporter.tbl | awk '!a[$0]++' > $curdir/${fastaid}-Transporter.tbl # add header and remove duplicates
+[[ -s transporter.tbl ]] && echo "id tc sub exid rea $blast_format comment" | tr ' ' '\t' | cat - transporter.tbl | awk '!a[$0]++' > $curdir/${fastaid}-Transporter.tbl # add header and remove duplicates
 
 # add gapseq vesion and sequence database status to table comments head
 gapseq_version=$($dir/.././gapseq -v)
 seqdb_version=$(md5sum $dir/../dat/seq/transporter.fasta | cut -c1-7)
 seqdb_date=$(stat -c %y $dir/../dat/seq/transporter.fasta | cut -c1-10)
-
 sed -i "1s/^/# $gapseq_version\n/" $curdir/${fastaid}-Transporter.tbl
 sed -i "2s/^/# Transporter sequence DB md5sum: $seqdb_version ($seqdb_date)\n/" $curdir/${fastaid}-Transporter.tbl
 

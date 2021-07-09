@@ -128,14 +128,14 @@ if( no.core ){
 }
 
 # database files
-carbon.source <- fread(paste0(script.dir, "/../dat/sub2pwy.csv"))
+carbon.source <- fread(paste0(script.dir, "/../dat/subex.tbl"))
 seed_x_mets   <- fread(paste0(script.dir,"/../dat/seed_metabolites_edited.tsv"), header=T, stringsAsFactors = F, na.strings = c("null","","NA"))
 seed_x_metCyc <- fread(paste0(script.dir,"/../dat/mnxref_seed-other.tsv"), header = T)
 
 # potentially limit carbon.source
 if ( length(met.limit) > 0 ){
-  carbon.source <- carbon.source[str_extract(id_seed, "cpd[0-9]+") == met.limit | exid_seed == met.limit | tolower(name) %like% tolower(met.limit) | altname %like% tolower(met.limit)]
-  print(carbon.source)
+  carbon.source <- carbon.source[str_extract(seed, "cpd[0-9]+") == met.limit | seed == met.limit | tolower(name) %like% tolower(met.limit)]
+  #print(carbon.source)
   if( nrow(carbon.source)==0 ){
     stop("Limitation of carbon sources failed, nothing found!")
   }
@@ -267,19 +267,19 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   
   # load minimal medium and add available carbon sources
   media2 <- fread(paste0(script.dir,"/../dat/media/MM_glu.csv"))
-  src.met <- carbon.source[guild %in% c("Carbohydrates", "Polymers", "Carboxylic acids", "Amino acids") & exid_seed %in% mod.orig2@react_id, .(id_seed,name,guild)]
+  src.met <- carbon.source[group %in% c("Carbohydrates", "Polymers", "Carboxylic acids", "Amino acids") & seed %in% mod.orig2@react_id, .(seed,name,group)] 
   if( nrow(src.met) == 0){
     warnings("No carbon source exchange reactions found in model, considering all available.")
-    src.met <- carbon.source[exid_seed %in% mod.orig2@react_id, .(id_seed,name,guild)]
+    src.met <- carbon.source[seed %in% mod.orig2@react_id, .(seed,name,group)]
   }
   # if glucose is not usable then add other carbon source(s)
-  if( !"alpha-D-Glucose" %in% src.met$name ){
-    src.carbo <- src.met[guild=="Carbohydrates"]
+  if( !any(grepl("alpha-D-Glucose", src.met$name)) ){
+    src.carbo <- src.met[group=="Carbohydrates"]
     if( nrow(src.carbo)>0 )
       src.add <- src.carbo # if no glucose is there, then add all other available carbohydrates
     else
       src.add <- src.met # if no carbohydrates is avaiable, then take everything else (probably amino acid biosynthesis is not gapfilled because amino acids are part of the medium)
-    media2 <- rbind(media2, data.table(compounds=gsub("\\[.0\\]","",src.add$id_seed), name=src.add$name, maxFlux=100))  
+    media2 <- rbind(media2, data.table(compounds=gsub("\\[.0\\]","",src.add$seed), name=src.add$name, maxFlux=100))  
   }
   
   
@@ -359,19 +359,19 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   
   mod.orig2 <- mod.out
   
-  src.met <- carbon.source[guild %in% c("Carbohydrates", "Polymers", "Carboxylic acids", "Amino acids") & exid_seed %in% mod.orig2@react_id, .(id_seed,name,guild)]
+  src.met <- carbon.source[group %in% c("Carbohydrates", "Polymers", "Carboxylic acids", "Amino acids") & seed %in% mod.orig2@react_id, .(seed,name,group)]
   if( nrow(src.met) == 0){
     warnings("No carbon source exchange reactions found in model, considering all available.")
-    src.met <- carbon.source[exid_seed %in% mod.orig2@react_id, .(id_seed,name,guild)]
+    src.met <- carbon.source[seed %in% mod.orig2@react_id, .(seed,name,group)]
   }
   # if glucose is not usable then add other carbon source(s)
-  if( !"alpha-D-Glucose" %in% src.met$name ){
-    src.carbo <- src.met[guild=="Carbohydrates"]
+  if( !any(grepl("alpha-D-Glucose", src.met$name)) ){
+    src.carbo <- src.met[group=="Carbohydrates"]
     if( nrow(src.carbo)>0 )
       src.add <- src.carbo # if no glucose is there, then add all other available carbohydrates
     else
       src.add <- src.met # if no carbohydrates is avaiable, then take everything else (probably amino acid biosynthesis is not papfilled because amino acids are part of the medium)
-    media2 <- rbind(media2, data.table(compounds=gsub("\\[.0\\]","",src.add$id_seed), name=src.add$name, maxFlux=100))  
+    media2 <- rbind(media2, data.table(compounds=gsub("\\[.0\\]","",src.add$seed), name=src.add$name, maxFlux=100))  
   }
   
   
@@ -444,12 +444,11 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   # Add list of exchange reactions for step 3 and 4 in order to check for a wide range of carbon sources or fermentation products
   # (Unused exchanges will be deleted afterwards)
   mod.out <- add_missing_exchanges(mod.out)
-  carbon.source <- carbon.source[!is.na(id_seed) & !is.na(name) & !is.na(exid_seed) & exid_seed!=""]
-  idx <- which( !carbon.source$exid_seed %in% mod.out@react_id )
-  exchanges.new.met  <- carbon.source$id_seed[idx]
-  #exchanges.new.name <- carbon.source$name[idx]
-  exchanges.new.name <- mod@met_name[match(carbon.source$id_seed[idx],mod@met_id)]
-  exchanges.new.ids  <- carbon.source$exid_seed[idx]
+  carbon.source <- carbon.source[!is.na(name) & !is.na(seed) & seed!=""]
+  idx <- which( !carbon.source$seed %in% mod.out@react_id )
+  exchanges.new.met  <- str_replace(str_remove(carbon.source$seed[idx], "EX_"),"_e0","\\[e0\\]")
+  exchanges.new.name <- mod@met_name[match(exchanges.new.met,mod@met_id)]
+  exchanges.new.ids  <- carbon.source$seed[idx]
   exchanges.new.used  <- rep(FALSE, length(exchanges.new.ids))  # delete unused addionally added exchange reactions later
   mod.out       <- add_exchanges(mod.out, exchanges.new.met, metname=exchanges.new.name)
 
@@ -466,7 +465,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     ex.met      <- ex@met_id
     ex.met.name <- mod.orig3@met_name[ex@met_pos]
     if ( length(met.limit) > 0 ){ # # potentially limit carbon.source
-      ex.idx <- match(intersect(ex.id, carbon.source$exid_seed), ex.id)
+      ex.idx <- match(intersect(ex.id, carbon.source$seed), ex.id)
       ex.ind      <- ex.ind[ex.idx]
       ex.id       <- ex.id[ex.idx]
       ex.met      <- ex.met[ex.idx]
@@ -564,7 +563,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     ex.met      <- ex@met_id
     ex.met.name <- mod.orig4@met_name[ex@met_pos]
     if ( length(met.limit) > 0 ){ # # potentially limit carbon.source
-      ex.idx <- match(intersect(ex.id, carbon.source$exid_seed), ex.id)
+      ex.idx <- match(intersect(ex.id, carbon.source$seed), ex.id)
       ex.ind      <- ex.ind[ex.idx]
       ex.id       <- ex.id[ex.idx]
       ex.met      <- ex.met[ex.idx]
