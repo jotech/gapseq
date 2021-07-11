@@ -155,12 +155,12 @@ do
                 rea=$(echo "$candidates" | cut -f1)
                 rea_export=$(echo "$rea" | tr '\n' ',' | sed 's/,$//g')
                 exid_export=$(echo "$exid" | tr '\n' ',' | sed 's/,$//g')
-                echo -e "`echo $best_hit | cut -f1`\t$tc\t$missing\t$exid_export\t$rea_export\t$best_alter\ttransporter" >> transporter.tbl
+                echo -e "`echo $best_hit | cut -f1`\t$tc\t$sub\t$exid_export\t$rea_export\t$best_hit\ttransporter" >> transporter.tbl
                 echo -e "$sub\t$exmet\t$tc\t$type" >> DBfound
                 if [[ $hit_good -eq 1 ]]; then
                     [[ verbose -ge 1 ]] && echo $sub_hit $tc $type 
                     [[ -n "$only_met" ]] && { echo -e "\t"Found reaction: $rea; } 
-                    echo -e "`echo $best_hit | cut -f1`\t$tc\t$missing\t$exid_export\t$rea_export\t$best_alter\ttransporter" >> transporter_bitscore.tbl
+                    echo -e "`echo $best_hit | cut -f1`\t$tc\t$sub\t$exid_export\t$rea_export\t$hit_good\ttransporter" >> transporter_bitscore.tbl
                     echo -e "$sub\t$exmet\t$tc\t$type" >> DBfound_bitscore
                 fi
             else
