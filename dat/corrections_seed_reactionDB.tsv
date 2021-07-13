@@ -551,8 +551,8 @@ rxn14229	>			[SW] direction changed according to MetaCyc	https://metacyc.org/MET
 rxn07251	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=NQOR-RXN				
 rxn14299	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=DIHYDROOROTATE-DEHYDROGENASE-RXN				
 rxn16165	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.1.99.25-RXN				
-rxn20655		TRUE		[SW] Reaction specific to C4-Plants	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=PYRUVATEORTHOPHOSPHATE-DIKINASE-RXN				
-rxn00151		TRUE		[SW] Reaction specific to C4-Plants	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=PYRUVATEORTHOPHOSPHATE-DIKINASE-RXN				
+rxn20655		TRUE		[SW] Reaction is duplicate to rxn00151					
+									
 rxn00641	>			[SW] direction changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=2.7.7.13-RXN				
 rxn00649	>			[SW] Unsure but seems unlikely to be reversible as reaction is highly exergonic.					
 rxn05733	>			[SW] Unsure but seems unlikely to be reversible as reaction is highly exergonic.					
