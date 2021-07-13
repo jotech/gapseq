@@ -2554,3 +2554,5 @@ rxn27945		TRUE		[SW] duplicate reaction to rxn00832
 rxn19830		TRUE		[SW] duplicate reaction to rxn03135					
 rxn37546		TRUE		[SW] duplicate reaction to rxn03147					
 rxn41476	>		-1:cpd00008:0:0:"ADP";-1:cpd00475:0:0:" Ribose 1-phosphate";1:cpd00018:0:0:"AMP";1:cpd00847:0:0:"Ribose 1,5-bisphosphate"	[SW] Reaction required in nucleoside and nucleotide degradation in some archaea, EC 2.7.1.212	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17337		D-ribose-1-phosphate 5-kinase (ADP) 	D-ribose-1-phosphate 5-kinase (ADP) 	
+									
+rxn13659		TRUE		[SW] Reaction not found in MetaCyc nor RHEA, BIGG, etc.					
