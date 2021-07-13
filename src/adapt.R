@@ -4,7 +4,7 @@ library(getopt)
 spec <- matrix(c(
   'model', 'm', 1, "character", "GapSeq model to be extended (RDS or SBML)",
   'help' , 'h', 0, "logical", "help",
-  'full.model', 'f', 2, "character","RDS file of the full (dummy) model. (ask Silvio for it :) ). Defaut: dat/full.model.RDS",
+  'full.model', 'f', 2, "(Deprecated) RDS file of the full model. Please do not use; Option has currently no effect.",
   'add' , 'a', 2, "character", "reactions or pathways that should be added to the model (comma-separated)",
   'remove' , 'r', 2, "character", "reactions or pathways that should be removed from the model (comma-separated)"
 ), ncol = 5, byrow = T)
@@ -56,6 +56,8 @@ if ( is.null(opt$full.model ) ) { opt$full.model = paste0(script.dir,"/../dat/fu
 #if ( is.null(opt$sbml.output) ) { opt$sbml.output = F }
 if ( is.null(opt$model) ) { opt$model =  paste0(script.dir,"/../toy/myb71.RDS")}
 
+# overwrite -f Option with default (This option might be used in future for a different purpose)
+opt$full.model = paste0(script.dir,"/../dat/full.model.RDS")
 
 # Arguments:
 mod.file            <- opt$model
