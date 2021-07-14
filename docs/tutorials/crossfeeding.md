@@ -176,13 +176,13 @@ dt.cf[, .(summed.Flux = sum(Flux)), by = c("species","Metabolite")]
 The output:
 
 ```
-     species Metabolite summed.Flux
-1: E. recale    Acetate   -1630.224
-2: B. longum    Acetate    2879.571
-3: E. recale   Butyrate    2604.208
-4: B. longum   Butyrate       0.000
-5: B. longum    Lactate    1243.223
+      species Metabolite summed.Flux
+1: E. rectale    Acetate  -1066.7647
+2:  B. longum    Acetate   1925.5036
+3: E. rectale   Butyrate   2694.5406
+4:  B. longum   Butyrate      0.0000
+5:  B. longum    Lactate    806.4733
 ```
 
-We can see, that *B. longum* (bilo) secretes acetate and lactate as main end product. Approximately 57 % of the acetate is consumed by *E. rectale* (eure). *B. longum* produces in addition lactate and *E. rectale* secretes butyrate.
+We can see, that *B. longum* (bilo) secretes acetate and lactate as main end product. Approximately 55 % of acetate is consumed by *E. rectale* (eure). *B. longum* produces in addition lactate and *E. rectale* secretes butyrate.
 
