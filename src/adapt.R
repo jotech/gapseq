@@ -4,7 +4,7 @@ library(getopt)
 spec <- matrix(c(
   'model', 'm', 1, "character", "GapSeq model to be extended (RDS or SBML)",
   'help' , 'h', 0, "logical", "help",
-  'full.model', 'f', 2, "(Deprecated) RDS file of the full model. Please do not use; Option has currently no effect.",
+  'full.model', 'f', 2, "character", "(Deprecated) RDS file of the full model. Please do not use; Option has currently no effect.",
   'add' , 'a', 2, "character", "reactions or pathways that should be added to the model (comma-separated)",
   'remove' , 'r', 2, "character", "reactions or pathways that should be removed from the model (comma-separated)"
 ), ncol = 5, byrow = T)
