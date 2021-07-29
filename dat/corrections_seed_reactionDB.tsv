@@ -1949,7 +1949,7 @@ rxn90029	>		-1:cpd00004:0:0:"NADH";-1:cpd00663:0:0:"Acrylyl-CoA";1:cpd00003:0:0:
 									
 rxn90030	=		-1:cpd00118:1:0:"Putrescine";-1:cpd00152:0:0:"Agmatine";1:cpd00118:0:0:"Putrescine";1:cpd00152:1:0:"Agmatine"	[SW] Agmatine-Putrescine antiporter as found in En. faecalis	DOI: 10.1126/sciadv.aat0062 		Agm-ptrc-anitport	agmatine-putrescine antiporter 	
 									
-rxn35560				[SW] Important for Lacto-N-tetraose degradatiion					TRUE
+rxn35560	>		-1:cpd00001:0:0:"H2O";-1:cpd01354:0:0:"beta-Lactose";1:cpd00108:0:0:"Galactose";1:cpd00027:0:0:"D-Glucose"	[SW] Important for Lacto-N-tetraose degradatiion					
 rxn22385				[SW] Important for Rhmanose degradatiion without phosphorylated intermediates.					TRUE
 rxn22386				[SW] Important for Rhmanose degradatiion without phosphorylated intermediates.					TRUE
 rxn39175				[SW] Diffusion of butanol					TRUE
@@ -2557,3 +2557,8 @@ rxn41476	>		-1:cpd00008:0:0:"ADP";-1:cpd00475:0:0:" Ribose 1-phosphate";1:cpd000
 									
 rxn13659		TRUE		[SW] Reaction not found in MetaCyc nor RHEA, BIGG, etc.					
 rxn28327		TRUE		[SW] duplicate reaction to rxn00616					
+									
+rxn09953	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-9718				
+rxn15597		TRUE		[SW] aggregate reaction with EC 3.2.1.4 and 3.2.1.91. These should not be aggregated					
+rxn90110	>		-4:cpd11746:1:0:"Cellulose";-1:cpd00001:1:0:"H2O";1:cpd01376:1:0:"Cellotetraose"	[SW] Extracellular cellulase			Exo-cellulase	Exo-cellulase	
+rxn90111	>		-1:cpd01376:1:0:"Cellotetraose";-1:cpd00001:1:0:"H2O";2:cpd00158:1:0:"D-Cellobiose"	[SW] Extracellular cellobiohydrolase			Exo-cellobiohydrolase	Exo-cellobiohydrolase	
