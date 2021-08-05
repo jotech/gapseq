@@ -433,7 +433,7 @@ echo -e "ID\tName\tPrediction\tCompleteness\tVagueReactions\tKeyReactions\tKeyRe
 #taxRange=Proteobacteria
 if [ -n "$taxRange" ]; then
     validTax=$(grep -i $taxRange $dir/../dat/taxonomy.tbl | cut -f1 | tr '\n' '|' | sed 's/.$//')
-    pwyDB_new=$(echo "$pwyDB" | grep -wE `echo TAX-$validTax`)
+    pwyDB_new=$(echo "$pwyDB" | grep -wE `echo "TAX-($validTax)"`)
     pwyDB_old=$(echo "$pwyDB" | awk -F '\t' 'BEGIN {OFS=FS="\t"} $5=="" {print $0}')
     pwyDB=$(echo "$pwyDB_new""$pwyDB_old")
     [[ -z "$pwyDB" ]] && { echo "No pathways found"; exit 0; }
