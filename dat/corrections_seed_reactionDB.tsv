@@ -2562,3 +2562,8 @@ rxn09953	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IM
 rxn15597		TRUE		[SW] aggregate reaction with EC 3.2.1.4 and 3.2.1.91. These should not be aggregated					
 rxn90110	>		-4:cpd11746:1:0:"Cellulose";-1:cpd00001:1:0:"H2O";1:cpd01376:1:0:"Cellotetraose"	[SW] Extracellular cellulase			Exo-cellulase	Exo-cellulase	
 rxn90111	>		-1:cpd01376:1:0:"Cellotetraose";-1:cpd00001:1:0:"H2O";2:cpd00158:1:0:"D-Cellobiose"	[SW] Extracellular cellobiohydrolase			Exo-cellobiohydrolase	Exo-cellobiohydrolase	
+									
+rxn15999	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-9891				
+rxn16000	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-9891				
+rxn01474	<			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.1.1.43-RXN				
+rxn01475	<			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.1.1.43-RXN				
