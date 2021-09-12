@@ -31,28 +31,42 @@ write_gapseq_sbml <- function(mod, out.id) {
     # - - - - - - - - #
     # Patch xml file  #
     # - - - - - - - - #
+    cat("Patching file",out.id,".xml ...")
     xml_lines <- readLines(paste0(out.id, ".xml"))
+    n_lines <- length(xml_lines)
     # (1) following patch adds an attribute to the sbml-file syntax, that is required by SBML-file validator (http://sbml.org/Facilities/Validator)
-    system(paste0("perl -pi -w -e 's/fbc:required=\"false\"/fbc:required=\"false\" groups:required=\"false\"/g;' ", out.id, ".xml"))
+    indtmp <- grep("fbc:required=\"false\">", xml_lines, fixed = TRUE)
+    xml_lines[indtmp] <- gsub("fbc:required=\"false\">","fbc:required=\"false\" groups:required=\"false\">",
+                              xml_lines[indtmp], fixed = TRUE)
     
     # (2) Following patch adds the "groups:id" attribute to each subsystem
-    grp_block_start <- grep("<groups:listOfGroups>", xml_lines, fixed = T)
+    grp_block_start <- grep("<groups:listOfGroups>", xml_lines, fixed = TRUE)
     for(i in 1:ncol(mod@subSys)) {
       grpID <- colnames(mod@subSys)[i]
-      grpID_deform <- paste0("subsys_",gsub("-","_", grpID, fixed = T))
+      grpID_deform <- paste0("subsys_",gsub("-","_", grpID, fixed = TRUE))
       
       grpSearch  <- paste0("groups:name=\"",grpID,"\"")
       grpReplace <- paste0("groups:id=\"",grpID_deform,"\" groups:name=\"",grpID,"\"")
       
-      system(paste0("perl -pi -w -e 's/",grpSearch,"/",grpReplace,"/g if $. > ",grp_block_start,"' ", out.id, ".xml"))
+      indtmp <- grep(grpSearch, xml_lines[(grp_block_start+1):n_lines])
+      xml_lines[grp_block_start + indtmp] <- gsub(grpSearch, grpReplace,
+                                                  xml_lines[grp_block_start + indtmp],
+                                                  fixed = TRUE) 
     }
     
     # (3) add model name and id
-    system(paste0("perl -pi -w -e 's/<model fbc:strict=\"true\">/<model fbc:strict=\"true\" id=\"", mod@mod_id,
-                  "\" name=\"",mod@mod_name,"\">/g;' ", out.id, ".xml"))
+    indtmp <- grep("<model fbc:strict=\"true\">", xml_lines, fixed = TRUE)
+    xml_lines[indtmp] <- gsub("<model fbc:strict=\"true\">",
+                              paste0("<model fbc:strict=\"true\" id=\"",
+                                     mod@mod_id,
+                                     "\" name=\"",mod@mod_name,"\">"),
+                              xml_lines[indtmp], fixed = TRUE)
     
+    # rewrite patched sbml file
+    writeLines(xml_lines, paste0(out.id, ".xml"))
+    cat(" done\n")
     
   }else{
-    print("sybilSBML not found, please install sybilSBML for sbml output")
+    print("R-package sybilSBML not found. Please install sybilSBML for sbml output.")
   }
 }
