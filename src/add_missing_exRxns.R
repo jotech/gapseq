@@ -183,3 +183,16 @@ add_exchanges <- function(mod, cpd, ub = 1000, metname=NA) {
   
   return(mod)
 }
+
+# find orphan exchange reactions that are not linked to other reactions
+rm_unused_exchanges <- function(mod) {
+  mod <- copy(mod)
+  present.exchanges <- str_match(mod@react_id[grep("^EX_.*_e0",mod@react_id)],"_(.*?)_")
+  ex.using.rxn <- sapply(present.exchanges[,2], function(exmet){length(mod@react_id[which(mod@S[match(paste0(exmet,"[e0]"),mod@met_id),]!=0)])})
+  using.count <- unname(which(ex.using.rxn < 2))
+  if(identical(using.count, integer(0))) return(mod)
+  ex.unused <- paste0("EX_", present.exchanges[,2][using.count],"_e0") # external metabolites only used by one reactions
+  if(!all(ex.unused %in% mod@react_id)) warning("Exchange reactions not found")
+  mod <- rmReact(mod, react=ex.unused)
+  return(mod)
+}

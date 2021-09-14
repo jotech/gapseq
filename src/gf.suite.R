@@ -649,13 +649,15 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   }
   
   
-  # delete unused addionally added exchange reactions later
-  exchanges.rm <- exchanges.new.ids[!exchanges.new.used]
-  if( length(exchanges.rm) > 0 )
-    mod.out <- rmReact(mod.out, react=exchanges.rm)
 }
-
 mod.out <- add_missing_exchanges(mod.out)
+
+# delete unused addionally added exchange reactions later
+exchanges.rm <- exchanges.new.ids[!exchanges.new.used]
+if( length(exchanges.rm) > 0 )
+mod.out <- rmReact(mod.out, react=exchanges.rm)
+mod.out <- rm_unused_exchanges(mod.out)
+
 
 # add metabolite-, reaction-, and model attributes
 mod.out <- addMetAttr(mod.out, seed_x_mets = seed_x_mets)
