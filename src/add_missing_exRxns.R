@@ -154,6 +154,7 @@ add_reaction_from_db <- function(mod, react, gs.origin = NA) {
 
 # do I still use this?
 add_exchanges <- function(mod, cpd, ub = 1000, metname=NA) {
+  metname <- gsub("-e0$","",metname)
   metname <- ifelse(!is.na(metname),paste0(metname,"-e0"),metname)
   
   for(m in cpd){
