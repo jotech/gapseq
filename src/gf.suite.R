@@ -279,11 +279,12 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
       src.add <- src.carbo # if no glucose is there, then add all other available carbohydrates
     else
       src.add <- src.met # if no carbohydrates is avaiable, then take everything else (probably amino acid biosynthesis is not gapfilled because amino acids are part of the medium)
-    media2 <- rbind(media2, data.table(compounds=gsub("\\[.0\\]","",src.add$seed), name=src.add$name, maxFlux=100))  
+    media2 <- rbind(media2, data.table(compounds=gsub("^EX_|_e0$","",src.add$seed), name=src.add$name, maxFlux=100))
   }
   
   
   # constrain model  
+  print(media2)
   mod.orig2 <- constrain.model(mod.orig2, media = media2)
   mod.orig2@obj_coef <- rep(0,mod.orig2@react_num)
   
