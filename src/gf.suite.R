@@ -284,7 +284,6 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   
   
   # constrain model  
-  print(media2)
   mod.orig2 <- constrain.model(mod.orig2, media = media2)
   mod.orig2@obj_coef <- rep(0,mod.orig2@react_num)
   
