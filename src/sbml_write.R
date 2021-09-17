@@ -15,7 +15,7 @@ write_gapseq_sbml <- function(mod, out.id) {
     # gpr terms
     mod@gpr <- gsub("\\&", "and", mod@gpr)
     mod@gpr <- gsub("\\|", "or",  mod@gpr)
-    
+
     # Model notes to include gapseq version
     notes_str <- paste0("<notes>\n  <html xmlns=\"http://www.w3.org/1999/xhtml\">\n    <p>",mod@mod_desc,"</p>\n  </html>\n</notes>")
     mod@mod_attr <- data.frame(notes = notes_str)
@@ -58,7 +58,7 @@ write_gapseq_sbml <- function(mod, out.id) {
     indtmp <- grep("<model fbc:strict=\"true\">", xml_lines, fixed = TRUE)
     xml_lines[indtmp] <- gsub("<model fbc:strict=\"true\">",
                               paste0("<model fbc:strict=\"true\" id=\"",
-                                     mod@mod_id,
+                                     gsub("\\.","_",mod@mod_id),
                                      "\" name=\"",mod@mod_name,"\">"),
                               xml_lines[indtmp], fixed = TRUE)
     
