@@ -68,6 +68,7 @@ exit 1
 curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
+script_name=$(basename -- "$0")
 uniprotIdentity=0.9 # clustered uniprot database (0.5 or 0.9)
 metaPwy=$dir/../dat/meta_pwy.tbl
 keggPwy=$dir/../dat/kegg_pwy.tbl
@@ -87,7 +88,6 @@ altecdb=$dir/../dat/altec.csv
 metaGenes=$dir/../dat/meta_genes.csv
 
 function join_by { local IFS="$1"; shift; echo "$*"; }
-
 
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
@@ -277,8 +277,9 @@ seqpath_user=$dir/../dat/seq/$taxonomy/user
 mkdir -p $seqpath/rev $seqpath/unrev $seqpath_user
 
 #check for updates if internet connection is available
-wget -q --spider http://rz.uni-kiel.de
-if [ $? -eq 0 ]; then
+is_online=$(wget -q --spider http://rz.uni-kiel.de)
+is_running=$(pidof -x "$script_name" -o $$) # do not check for updates if running in parallel mode
+if [[ $is_online -eq 0 && -z "$is_running" ]]; then
     $dir/update_sequences.sh $taxonomy
 fi
 if [[ ! -f $seqpath/rev/sequences.tar.gz  ]] || [[ ! -f $seqpath/unrev/sequences.tar.gz ]] || [[ ! -f $seqpath/rxn/sequences.tar.gz ]]; then
