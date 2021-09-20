@@ -31,7 +31,7 @@ write_gapseq_sbml <- function(mod, out.id) {
     # - - - - - - - - #
     # Patch xml file  #
     # - - - - - - - - #
-    cat("Patching file",out.id,".xml ...")
+    cat("Patching file ",out.id,".xml ...", sep = "")
     xml_lines <- readLines(paste0(out.id, ".xml"))
     n_lines <- length(xml_lines)
     # (1) following patch adds an attribute to the sbml-file syntax, that is required by SBML-file validator (http://sbml.org/Facilities/Validator)
@@ -62,8 +62,26 @@ write_gapseq_sbml <- function(mod, out.id) {
                                      "\" name=\"",mod@mod_name,"\">"),
                               xml_lines[indtmp], fixed = TRUE)
     
+    # (4) Gene name correction
+    ind_gp <- grep("fbc:geneProduct", xml_lines, fixed = T)
+    
+    xml_lines[ind_gp] <- gsub("__MINUS__","_", xml_lines[ind_gp])
+    xml_lines[ind_gp] <- gsub("__COLON__","_", xml_lines[ind_gp])
+    xml_lines[ind_gp] <- gsub("__DOT__","_", xml_lines[ind_gp])
+    xml_lines[ind_gp] <- gsub("__ONE__","1", xml_lines[ind_gp])
+    xml_lines[ind_gp] <- gsub("__TWO__","2", xml_lines[ind_gp])
+    xml_lines[ind_gp] <- gsub("__THREE__","3", xml_lines[ind_gp])
+    xml_lines[ind_gp] <- gsub("__FOUR__","4", xml_lines[ind_gp])
+    xml_lines[ind_gp] <- gsub("__FIVE__","5", xml_lines[ind_gp])
+    xml_lines[ind_gp] <- gsub("__SIX__","6", xml_lines[ind_gp])
+    xml_lines[ind_gp] <- gsub("__SEVEN__","7", xml_lines[ind_gp])
+    xml_lines[ind_gp] <- gsub("__EIGHT__","8", xml_lines[ind_gp])
+    xml_lines[ind_gp] <- gsub("__NINE__","9", xml_lines[ind_gp])
+    xml_lines[ind_gp] <- gsub("__ZERO__","0", xml_lines[ind_gp])
+    
     # rewrite patched sbml file
     writeLines(xml_lines, paste0(out.id, ".xml"))
+    
     cat(" done\n")
     
   }else{
