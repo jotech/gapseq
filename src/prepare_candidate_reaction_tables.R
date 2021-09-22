@@ -21,6 +21,8 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt.trans[bitscore >= high.evi.rxn.BS, status := "good_blast"]
   dt.trans[bitscore <  high.evi.rxn.BS, status := "bad_blast"]
   
+  dt.trans <- dt.trans[!grepl("B8F5K7",rxn)] # sequence wrongly mapped to Glucose-transport
+  
   # This function checks if an gene was assigned to two different ec numbers, which however catalyse different reactions that are
   # usually catalysed by individual enzymes. Thus, the EC assignment with the lower bitscore is dismissed.
   resolve_common_EC_conflicts <- function(ec1, ec2, dt) {
@@ -131,6 +133,8 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt <- resolve_common_EC_conflicts("2.6.1.11","2.6.1.18", dt) # beta-alanine aminotransferase vs acetyl-ornithine aminotransferase
   dt <- resolve_common_EC_conflicts("2.6.1.66","2.6.1.83", dt) # valine-pyruvate aminotransferase vs L,L-diaminopimelate aminotransferase
   dt <- resolve_common_EC_conflicts("2.6.1.2","2.6.1.83", dt) # alanine transaminase vs L,L-diaminopimelate aminotransferase
+  dt <- resolve_common_EC_conflicts("1.1.1.37","1.1.1.27", dt) # malate dehydrogenase vs lactate dehydrogenase
+  dt <- resolve_common_EC_conflicts("1.2.1.88","1.2.1.18", dt) # 1-pyrroline-5-carboxylate dehydrogenase vs malonate-semialdehyde dehydrogenase
   
   # specific transporter conflict fixes
   dt.trans <- resolve_common_TC_conflicts("1.a.8.2.1","2.a.14.1.3", dt.trans)
