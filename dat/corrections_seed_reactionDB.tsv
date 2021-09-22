@@ -2567,3 +2567,15 @@ rxn15999	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IM
 rxn16000	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-9891				
 rxn01474	<			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.1.1.43-RXN				
 rxn01475	<			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.1.1.43-RXN				
+									
+rxn27926		TRUE		[SW] duplicate reaction to rxn02320					
+rxn32479		TRUE		[SW] duplicate reaction to rxn02373					
+rxn34566		TRUE		[SW] duplicate reaction to rxn02373					
+rxn34567		TRUE		[SW] duplicate reaction to rxn02373					
+rxn33819		TRUE		[SW] duplicate reaction to rxn00183					
+rxn33820		TRUE		[SW] duplicate reaction to rxn00183					
+rxn30382		TRUE		[SW] duplicate reaction to rxn02374					
+rxn20496		TRUE		[SW] duplicate reaction to rxn00467					
+rxn33315		TRUE		[SW] duplicate reaction to rxn00467					
+									
+rxn00247	=			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=PEPCARBOXYKIN-RXN				
