@@ -186,7 +186,12 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   rxns <- unique(dt_seed_single_and_there[,seed])
   
   # table of reactions for draft network
-  mseed <- mseed[(id %in% rxns)]
+  if(any(mseed$id %in% rxns)) {
+    mseed <- mseed[(id %in% rxns)]
+  } else {
+    mseed <- mseed[id %in% c("rxn00062")] # Adding ATP phosphohydrolase as dummy if no other reaction has been found. What kind of minimalist monster is this?
+    warning("No reactions have been found to be added to the draft network. Returning a minimalist draft network.")
+  }
   
   #remove duplicate reactions
   mseed[, rxn.hash := generate_rxn_stoich_hash(stoichiometry, reversibility)]
@@ -237,10 +242,11 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     
     # get reaction-associated stretches of DNA 
     dtg.tmp <- dt_genes[seed == mseed[i,id] & bitscore >= high.evi.rxn.BS & rm == F, .(complex,gene)]
-    if(nrow(dtg.tmp)>0)
+    if(nrow(dtg.tmp)>0) {
       gpr.tmp <- get_gene_logic_string(dtg.tmp$complex, dtg.tmp$gene)
-    else
+    } else {
       gpr.tmp <- ""
+    }
     
     # get reaction-associated subsystems
     dts.tmp <- dt_subsys[seed == mseed[i,id], pathway]
@@ -261,6 +267,17 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     if(mseed[i,id] %in% dt_seed_single_and_there[,seed])
       mod@react_attr[which(mod@react_id == paste0(mseed[i,id],"_c0")),] <- as.data.frame(dt_seed_single_and_there[seed == mseed[i,id]])
   }
+  
+  # In case no genes have been associated with any reactions, the slots
+  # 'genes' 'grp' and 'gprRules' are of length zero, causing an error in SBML
+  # export
+  if(length(mod@genes) == 0) {
+    for(k in 1:mod@react_num)
+      mod@genes[[k]] <- ""
+    mod@gpr <- rep("", mod@react_num)
+    mod@gprRules <- rep("", mod@react_num)
+  }
+
   mod@react_attr$gs.origin <- 0
   mod@react_attr$gs.origin[mod@react_attr$bitscore < high.evi.rxn.BS] <- 9 # Added due to Pathway Topology criteria
   #mod <- add_reaction_from_db(mod, react = c("rxn13782","rxn13783","rxn13784"), gs.origin = 6) # Adding pseudo-reactions for Protein biosynthesis, DNA replication and RNA transcription

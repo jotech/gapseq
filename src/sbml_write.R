@@ -7,10 +7,20 @@ write_gapseq_sbml <- function(mod, out.id) {
     if( any(is.na(mod@met_attr$chemicalFormula)) ) mod@met_attr$chemicalFormula[which(is.na(mod@met_attr$chemicalFormula))] <- ""
     if( any( mod@met_attr$chemicalFormula=="null"))mod@met_attr$chemicalFormula[which(mod@met_attr$chemicalFormula=="null")]<- ""
     
-   
     # handling of subunit names (and remove empty subunits)
     colnames(mod@subSys) <- gsub("^\\||\\|$","",colnames(mod@subSys))
     mod@subSys <- mod@subSys[, apply(mod@subSys,2,any)]
+    
+    # Bug in sybilSBML: if subSys table has only one row with at least all TRUE
+    # entries and the other rows only with FLASE, this error occurs:
+    # VECTOR_ELT() can only be applied to a 'list', not a 'character'
+    # as fix: Include a new dummy subsystem with only FALSE entries
+    if(sum(apply(mod@subSys,1,all)) == 1)
+      mod@subSys <- cbind(mod@subSys, Matrix::Matrix(F,
+                                                     ncol = 1,
+                                                     nrow = nrow(mod@subSys),
+                                                     sparse = T))
+    colnames(mod@subSys)[ncol(mod@subSys)] <- "Dummy subsystem"
     
     # gpr terms
     mod@gpr <- gsub("\\&", "and", mod@gpr)
