@@ -11,3 +11,4 @@ The overall goal is to provide a harmonized and completely futile cycle free dat
 - Ammonia: cpd00013 (labeled NH3 in seed with formula NH4...) do not use cpd19013
 - Starch: cpd90003 (27xglucose)
 - Pectin: cpd27519 (3xMethylesterified-homogalacturonate)
+- Cellulose: cpd90020 (500xglucose)

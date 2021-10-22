@@ -2579,3 +2579,5 @@ rxn20496		TRUE		[SW] duplicate reaction to rxn00467
 rxn33315		TRUE		[SW] duplicate reaction to rxn00467					
 									
 rxn00247	=			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=PEPCARBOXYKIN-RXN				
+									
+rxn90112	>		-499:cpd00001:1:0:"H2O";-1:cpd90020:1:0:"Cellulose";500:cpd00027:1:0:"D-Glucose">	[JZ] Added from vmh with units per chain n=500 (fibers from cellulose contain 250–500 repeating units per chain cf. 10.1002/anie.200460587)	https://www.vmh.life/#metabolite/cellul		CELLUL_DEGe	Extracellular cellulose degradation	

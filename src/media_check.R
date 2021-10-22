@@ -46,6 +46,7 @@ media_check <- function(media.file, mod.orig, seed_x_mets){
   if( "cpd11601" %in% media$compounds ) warning("For pectin the identifier cpd27519 is recommended.")
   if( "cpd11657" %in% media$compounds ) warning("For starch the identifier cpd90003 is recommended.")
   if( "cpd37273" %in% media$compounds ) warning("For cadmium the identifier cpd01012 is recommended.")
-  if( "cpd37276" %in% media$compounds ) warning("For lead the identifier cpd0i4097 is recommended.")
+  if( "cpd37276" %in% media$compounds ) warning("For lead the identifier cpd014097 is recommended.")
+  if( "cpd11746" %in% media$compounds ) warning("For cellulose the identifier cpd90020 is recommended.")
   
 }
