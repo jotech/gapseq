@@ -58,13 +58,16 @@ L-Threonine	cpd00161	!("HOMOSER-THRESYN-PWY" | "THRBIOSYN-GS")	0.1	TRUE	Either M
 L-Tyrosine	cpd00069	!("TYRSYN" | "PWY-3461" | "PWY-6120" | "PWY-6134")	0.1	TRUE		Amino acids
 L-Valine	cpd00156	!"VALSYN-PWY"	0.1	TRUE		Amino acids
 						
+Pantothenic acid	cpd00644	!("PANTO-PWY" | "PWY-6654")	0.025	TRUE		Vitamins
+Thiamin	cpd00305	!("PWY-6894" | "PWY-6893" | "PWY-6907")	0.025	TRUE		Vitamins
+						
 L-Lactate	cpd00159	rxn90054	15	TRUE	Electron-bifurcating lactate dehydrogenase forming pyruvate (EC 1.3.1.110)	Organic acids
 L-Lactate	cpd00159	"PWY-5494" | "PWY-8086" | "PWY-8086-GS"	15	TRUE	acrylate pathway or lactate fermentation to propionate, acetate and h2	Organic acids
 Acetate	cpd00029	rxn00875 & rxn00225 & rxn00173 & rxn90001	20	TRUE	EC 2.8.3.8, EC 2.7.2.1, EC 2.3.1.8, EC 1.3.1.109	Organic acids
 Acetate	cpd00029	"METH-ACETATE-PWY"	25	TRUE	Methanogenisis from acetate	Organic acids
 Succinate	cpd00036	"PWY-5677"	10	TRUE	Succinate fermentation to butyrate	Organic acids
 Succinate	cpd00036	(rxn00602 | rxn01996) & rxn90096 & rxn09174	10	TRUE	Succinate transformation to propionate (Na+ exporting). Part of PWY-8086	Organic acids
-Methanol	cpd00116	"CO2FORM-PWY"	10	TRUE		
+Methanol	cpd00116	"CO2FORM-PWY"	10	TRUE		Other
 						
 sulfoquinovose	cpd22614	"PWY-7446" | "PWY-7722"	10	TRUE		Secondary plant metabolites
 Gallate	cpd01020	"GALLATE-DEGRADATION-II-PWY" | "GALLATE-DEGRADATION-I-PWY" | "P3-PWY"	10	TRUE		Secondary plant metabolites
