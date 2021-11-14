@@ -58,8 +58,8 @@ L-Threonine	cpd00161	!("HOMOSER-THRESYN-PWY" | "THRBIOSYN-GS")	0.1	TRUE	Either M
 L-Tyrosine	cpd00069	!("TYRSYN" | "PWY-3461" | "PWY-6120" | "PWY-6134")	0.1	TRUE		Amino acids
 L-Valine	cpd00156	!"VALSYN-PWY"	0.1	TRUE		Amino acids
 						
-Pantothenic acid	cpd00644	!("PANTO-PWY" | "PWY-6654")	0.025	TRUE		Vitamins
-Thiamin	cpd00305	!("PWY-6894" | "PWY-6893" | "PWY-6907")	0.025	TRUE		Vitamins
+Pantothenic acid	cpd00644	!(rxn01791 | rxn16218)	0.025	TRUE	EC 6.3.2.1 or EC 6.3.2.36	Vitamins
+Thiamin	cpd00305	!(rxn02305 | rxn23042)	0.025	TRUE	EC 2.5.1.3	Vitamins
 						
 L-Lactate	cpd00159	rxn90054	15	TRUE	Electron-bifurcating lactate dehydrogenase forming pyruvate (EC 1.3.1.110)	Organic acids
 L-Lactate	cpd00159	"PWY-5494" | "PWY-8086" | "PWY-8086-GS"	15	TRUE	acrylate pathway or lactate fermentation to propionate, acetate and h2	Organic acids
