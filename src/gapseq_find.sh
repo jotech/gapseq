@@ -29,6 +29,7 @@ anno_genome_cov=false
 use_gene_seq=true
 stop_on_files_exist=false
 update_manually=false
+user_temp=false
 
 usage()
 {
@@ -47,18 +48,19 @@ usage()
     echo "  -a blast hits back against uniprot enzyme database"
     echo "  -n Consider superpathways of metacyc database"
     echo "  -l Select the pathway database (MetaCyc, KEGG, SEED, all; default: $pwyDatabase)"
-    echo "  -o Only list pathways found for keyword; default $onlyList)"
-    echo "  -x Do not blast only list pathways, reactions and check for available sequences; default $skipBlast"
-    echo "  -q Include sequences of hits in log files; default $includeSeq"
-    echo "  -v Verbose level, 0 for nothing, 1 for pathway infos, 2 for full (default $verbose)"
+    echo "  -o Only list pathways found for keyword (default: $onlyList)"
+    echo "  -x Do not blast only list pathways, reactions and check for available sequences (default: $skipBlast)"
+    echo "  -q Include sequences of hits in log files (default: $includeSeq)"
+    echo "  -v Verbose level, 0 for nothing, 1 for pathway infos, 2 for full (default: $verbose)"
     echo "  -k Do not use parallel"
-    echo "  -g Exhaustive search, continue blast even when cutoff is reached (default $exhaustive)"
-    echo "  -z Quality of sequences for homology search: 1:only reviewed (swissprot), 2:unreviewed only if reviewed not available, 3:reviewed+unreviewed, 4:only unreviewed (default $seqSrc)"
-    echo "  -m Limit pathways to taxonomic range (default $taxRange)"
-    echo "  -w Use additional sequences derived from gene names (default $use_gene_seq)"
-    echo "  -y Print annotation genome coverage (default $anno_genome_cov)"
-    echo "  -j Quit if output files already exist (default $stop_on_files_exist)"
-    echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default $update_manually)"
+    echo "  -g Exhaustive search, continue blast even when cutoff is reached (default: $exhaustive)"
+    echo "  -z Quality of sequences for homology search: 1:only reviewed (swissprot), 2:unreviewed only if reviewed not available, 3:reviewed+unreviewed, 4:only unreviewed (default: $seqSrc)"
+    echo "  -m Limit pathways to taxonomic range (default: $taxRange)"
+    echo "  -w Use additional sequences derived from gene names (default: $use_gene_seq)"
+    echo "  -y Print annotation genome coverage (default: $anno_genome_cov)"
+    echo "  -j Quit if output files already exist (default: $stop_on_files_exist)"
+    echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default: $update_manually)"
+    echo "  -T Set user-defined temporary folder (default: $user_temp)"
 
 exit 1
 }
@@ -92,7 +94,7 @@ function join_by { local IFS="$1"; shift; echo "$*"; }
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjU" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjUT:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -174,6 +176,9 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjU" opt; do
     U)
         update_manually=true
         ;;
+    T)
+        user_temp=true
+        user_temp_folder=$OPTARG
     esac
 done
 shift $((OPTIND-1))
@@ -191,15 +196,19 @@ fi
 
 # tmp working directory
 fasta=$(readlink -f "$1") # save input file before changing to temporary directory
-tmpdir=$(mktemp -d)
+tmp_fasta=$(basename "${fasta}" .gz | tr ' ' '_')
+if [[ "$user_temp" = true ]]; then
+    mkdir -p $user_temp_folder
+    tmpdir=$(mktemp -d $user_temp_folder/"$tmp_fasta"_XXXXXX)
+else
+    tmpdir=$(mktemp -d)
+    trap 'rm -rf "$tmpdir"' EXIT
+fi
 echo $tmpdir
 cd $tmpdir
-trap 'rm -rf "$tmpdir"' EXIT
-
 
 # get fasta file
 if [[ "$fasta" == *.gz ]]; then # in case fasta is in a archive
-    tmp_fasta=$(basename "${fasta}" .gz | tr ' ' '_')
     gunzip -c "$fasta" > "$tmp_fasta"
     fasta="$tmp_fasta"
 fi
