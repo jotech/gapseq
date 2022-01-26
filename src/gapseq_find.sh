@@ -34,12 +34,12 @@ user_temp=false
 usage()
 {
     echo "Usage"
-    echo "$0 -p keyword / -e ec [-d database] [-t taxonomy] file.fasta."
+    echo "$0 -p <keyword> / -e <EC> [-d <database>] [-t <taxonomy>] file.fasta"
     echo "  -p keywords such as pathways or subsystems (for example amino,nucl,cofactor,carbo,polyamine)"
     echo "  -e Search by ec numbers (comma separated)"
     echo "  -r Search by enzyme name (colon separated)"
     echo "  -d Database: vmh or seed (default: $database)"
-    echo "  -t Taxonomic range for sequences to be downloaded (default: $taxonomy)"
+    echo "  -t Taxonomic range for reference sequences to be used. (Bacteria, Archaea, auto; default: $taxonomy). See Details."
     echo "  -b Bit score cutoff for local alignment (default: $bitcutoff)"
     echo "  -i Identity cutoff for local alignment (default: $identcutoff)"
     echo "  -c Coverage cutoff for local alignment (default: $covcutoff)"
@@ -61,6 +61,9 @@ usage()
     echo "  -j Quit if output files already exist (default: $stop_on_files_exist)"
     echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default: $update_manually)"
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
+    echo ""
+    echo "Details:"
+    echo "\"-t\": if 'auto', gapseq tries to predict if the organism is Bacteria or Archaea based on the provided genome sequence. The prediction is based on the 16S rRNA gene sequence using a classifier that was trained on 16S rRNA genes from organisms with known Gram-staining phenotype. In case no 16S rRNA gene was found, a k-mer based classifier is used instead."
 
 exit 1
 }
