@@ -38,48 +38,30 @@ Follow the instructions provided by conda to Install [Anaconda/Miniconda](https:
 **2. Create conda environment for gapseq and adding package sources**
 
 ```sh
-conda create --name gapseq
-conda activate gapseq
-conda config --add channels defaults && conda config --add channels bioconda && conda config --add channels conda-forge
-```
+# Cloning the development version of gapseq
+git clone https://github.com/jotech/gapseq
+cd gapseq
 
-**3. Install required packages**
-```sh
-# basic dependencies
-conda install bash r perl parallel gawk sed grep bc git coreutils wget
+# Create and activate a conda environment "gapseq-dev"
+conda env create -n gapseq-dev --file gapseq_env.yml
+conda activate gapseq-dev
 
-# packages for handling biological sequences
-conda install barrnap bedtools exonerate glpk hmmer blast
-
-# install libSBML from bioconda
-conda install -c bioconda libsbml 
-
-# R-package dependencies (via conda repos)
-conda install r-data.table r-stringr r-stringi r-getopt r-doParallel r-foreach r-r.utils r-sybil r-biocmanager bioconductor-biostrings r-jsonlite 
-
-# additional R-package dependencies (via CRAN)
-Rscript -e 'if( file.access(Sys.getenv("R_LIBS_USER"), mode=2) == -1 ) dir.create(path = Sys.getenv("R_LIBS_USER"), showWarnings = FALSE, recursive = TRUE)'
-R -e 'install.packages(c("glpkAPI", "CHNOSZ"), repos="http://cran.us.r-project.org")'
+# install one additional R-package
+R -e 'install.packages("CHNOSZ", repos="http://cran.us.r-project.org")'
 
 # Download & Install R-package 'sybilSBML'
 wget https://cran.r-project.org/src/contrib/Archive/sybilSBML/sybilSBML_3.1.2.tar.gz
 R CMD INSTALL --configure-args=" \
 --with-sbml-include=$CONDA_PREFIX/include \
 --with-sbml-lib=$CONDA_PREFIX/lib" sybilSBML_3.1.2.tar.gz
+rm sybilSBML_3.1.2.tar.gz
 
+# Download reference sequence data
+bash ./src/update_sequences.sh
 ```
 
-**4. Clone latest version of gapseq and download reference sequence database**
+**3. Test the installation**
 
-First, use `cd` to go to the directory where you would like to install gapseq to. E.g. `cd ~/Software`. Next, use the following commands to fetch the latest version of gapseq from github:
-```sh
-# cloning gapseq
-git clone https://github.com/jotech/gapseq && cd gapseq
-# download ref.-sequence DB
-src/./update_sequences.sh
-```
-
-**5. Test the installation**
 ```sh
 ./gapseq test
 ```
@@ -92,7 +74,7 @@ There should be a ``libsbml`` package (version 5.18.0 or later) available for mo
 sudo apt install libsbml5-dev # debian/ubuntu
 sudo yum install libsbml-devel # fedora/centos
 ```
-For MacOS, libsbml is not part of homebrew but a installation file can be downloaded from [here](https://sourceforge.net/projects/sbml/files/libsbml/5.18.0/stable/Mac%20OS%20X/).
+For MacOS, libsbml is not part of homebrew but an installation file can be downloaded from [here](https://sourceforge.net/projects/sbml/files/libsbml/5.18.0/stable/Mac%20OS%20X/).
 
 Please make sure, that `libsbml` is installed together with its [fbc-extension](http://sbml.org/Main_Page).
 
