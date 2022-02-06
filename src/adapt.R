@@ -4,7 +4,6 @@ library(getopt)
 spec <- matrix(c(
   'model', 'm', 1, "character", "GapSeq model to be extended (RDS or SBML)",
   'help' , 'h', 0, "logical", "help",
-  'full.model', 'f', 2, "character", "(Deprecated) RDS file of the full model. Please do not use; Option has currently no effect.",
   'add' , 'a', 2, "character", "reactions or pathways that should be added to the model (comma-separated)",
   'remove' , 'r', 2, "character", "reactions or pathways that should be removed from the model (comma-separated)"
 ), ncol = 5, byrow = T)
@@ -51,17 +50,14 @@ if( "cplexAPI" %in% rownames(installed.packages()) ){
 }
 
 # Setting defaults if required
-if ( is.null(opt$full.model ) ) { opt$full.model = paste0(script.dir,"/../dat/full.model.RDS") }
 #if ( is.null(opt$output.dir) ) { opt$output.dir = "." }
 #if ( is.null(opt$sbml.output) ) { opt$sbml.output = F }
 if ( is.null(opt$model) ) { opt$model =  paste0(script.dir,"/../toy/myb71.RDS")}
 
 # overwrite -f Option with default (This option might be used in future for a different purpose)
-opt$full.model = paste0(script.dir,"/../dat/full.model.RDS")
 
 # Arguments:
 mod.file            <- opt$model
-fullmod.file        <- opt$full.model
 ids.add             <- opt$add
 ids.remove          <- opt$remove
 
@@ -72,6 +68,7 @@ sbml.export  <- FALSE
 source(paste0(script.dir,"/add_missing_exRxns.R"))
 source(paste0(script.dir,"/addMetAttr.R"))
 source(paste0(script.dir,"/addReactAttr.R"))
+source(paste0(script.dir,"/construct_full_model.R"))
 
 # database files
 meta.pwy <- fread(paste0(script.dir, "/../dat/meta_pwy.tbl"))
@@ -81,7 +78,7 @@ meta.rxn <- fread(paste0(script.dir, "/../dat/meta_rea.tbl"))
 seed_x_mets   <- fread(paste0(script.dir,"/../dat/seed_metabolites_edited.tsv"), header=T, stringsAsFactors = F, na.strings = c("null","","NA"))
 
 cat("Loading model files", mod.file, "\n")
-mod        <- readRDS(fullmod.file)
+mod        <- construct_full_model(script.dir)
 if ( toupper(file_ext(mod.file)) == "RDS" ){
   mod.orig <- readRDS(mod.file)
 }else{ 

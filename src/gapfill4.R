@@ -1,11 +1,13 @@
 gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
                      dummy.weight = 100, script.dir, core.only = FALSE, verbose=verbose, gs.origin = NA, rXg.tab) {
+
   source(paste0(script.dir, "/sysBiolAlg_mtfClass2.R"))
   # backup model
   mod.orig.bak <- mod.orig
   
   # Load dummy model
   mod <- mod.full
+  
   mod <- sync_full_mod(mod.orig, mod)
   
   # get currently present reactions
@@ -80,7 +82,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
   c.coef.dt <- merge(c.coef.dt, mseed[,.(id, weight, core.rxn)], by.x="id", by.y="id", all.x = T, sort = F)
   c.coef.dt[is.na(weight), weight := 0.00001]
   c.coef.dt[id %in% pres.rxns, weight := 0.00001]
-
+  
   if(gs.origin==1) {
     sol.tmp   <- 0
     max.iter  <- 100

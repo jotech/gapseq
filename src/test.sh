@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo $1
+
 curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
@@ -64,6 +66,13 @@ if  grep -q "OK" opt.log; then
     i=$((i+1))
 fi
 
+# Construct full model
+Rscript -e 'args = commandArgs(trailingOnly=TRUE); source(paste0(args[1],"/construct_full_model.R")); fmod = construct_full_model(args[1]); cat("Building full model:",ifelse(class(fmod) == "modelorg", "OK", "FAILED"), "\n"); ' $dir > opt.log
+cat opt.log
+if  grep -q "OK" opt.log; then
+    i=$((i+1))
+fi
+
 # blast
 fasta=$dir/../dat/seq/Bacteria/user/1.2.1.87.fasta
 tmp_file=$(mktemp)
@@ -77,4 +86,4 @@ else
     echo "Blast test: FAILED"
 fi
 
-echo -e "\nPassed tests: $i/2\n"
+echo -e "\nPassed tests: $i/3\n"

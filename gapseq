@@ -38,7 +38,7 @@ usage()
     echo "  gapseq draft -r toy/ecoli-all-Reactions.tbl -t toy/ecoli-Transporter.tbl -c toy/ecoli.fna.gz -p toy/ecoli-all-Pathways.tbl"
     echo "  gapseq medium -m toy/ecoli-draft.RDS -p toy/ecoli-all-Pathways.tbl"
     echo "  gapseq fill -m toy/ecoli-draft.RDS -n dat/media/ALLmed.csv -c toy/ecoli-rxnWeights.RDS -g toy/ecoli-rxnXgenes.RDS"
-    echo "  gapseq adapt add 14DICHLORBENZDEG-PWY toy/myb71.RDS"
+    echo "  gapseq adapt -a 14DICHLORBENZDEG-PWY -m toy/myb71.RDS"
     echo -e "\nOptions:"
     echo "  test            Testing dependencies and basic functionality of gapseq."
     echo "  find            Pathway analysis, try to find enzymes based on homology."
