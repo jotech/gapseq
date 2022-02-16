@@ -34,3 +34,4 @@ dependencies:
   - r-jsonlite
   - r-renv
   - r-glpkapi
+  - r-rcurl
