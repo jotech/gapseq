@@ -20,7 +20,7 @@ write_gapseq_sbml <- function(mod, out.id) {
                                                      ncol = 1,
                                                      nrow = nrow(mod@subSys),
                                                      sparse = T))
-    colnames(mod@subSys)[ncol(mod@subSys)] <- "Dummy subsystem"
+    colnames(mod@subSys)[ncol(mod@subSys)] <- "Dummy_subsystem"
     
     # gpr terms
     mod@gpr <- gsub("\\&", "and", mod@gpr)
