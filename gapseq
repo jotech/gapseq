@@ -54,6 +54,16 @@ usage()
     exit 1
 }
 
+for arg in $@
+do
+    if [ -f $arg ]; then
+        if [ ! -r $arg ]; then
+            echo "No read access to file:" $arg
+            exit 1
+        fi
+    fi
+done
+
 OPTIND=1
 while getopts ":h?vm:n" opt; do
     case "$opt" in
