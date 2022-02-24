@@ -3,9 +3,11 @@
 # . dat/corrections_seed_reactionDB.tsv (database of corrections to the original seed database)
 # . dat/importantCIreactions.lst (list of charge-unbalanced reactions that are anyway accepted for the (full)-model)
 correct_seed_rxnDB <- function(script.path) {
-  require(data.table)
-  require(stringr)
-  #require(sybil)
+  suppressMessages(require(data.table))
+  suppressMessages(require(stringr))
+  
+  cat("Correcting reaction table... ")
+  
   source(paste0(script.dir, "/generate_rxn_stoich_hash.R"))
   
   mseed <- fread(paste0(script.dir,"/../dat/seed_reactions.tsv"), header=T, stringsAsFactors = F, 
@@ -127,6 +129,33 @@ correct_seed_rxnDB <- function(script.path) {
   # re-generate definition and equation string for corrected reactions
   mseed[gapseq.status=="corrected",equation := getRxnEquaFromStoich(stoichiometry, reversibility, str.type = "equation")]
   mseed[gapseq.status=="corrected",definition := getRxnEquaFromStoich(stoichiometry, reversibility, str.type = "definition")]
+  
+  cat("done\n")
+  
+  # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ #
+  # Identification of potential nutrients #
+  # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ #
+  cat("Identifying potential nutrients... ")
+  source(paste0(script.path,"/construct_full_model.R"))
+  fmod <- construct_full_model(script.path)
+  fmod@lowbnd[grep("^EX_cpd", fmod@react_id)] <- -1000
+  ex_mets <- fmod@met_id[grep("\\[e0\\]", fmod@met_id)]
+  
+  de_mets <- deadEndMetabolites(fmod)
+  de_mets <- de_mets$dem
+  
+  ex_mets_in <- ex_mets[!(ex_mets %in% de_mets)] # removing dead end metabolites
+  ex_mets_in <- gsub("\\[e0\\]","",ex_mets_in)
+  
+  all_mets <- fread(paste0(script.dir, "/../dat/seed_metabolites_edited.tsv"))
+  
+  nutr_dt <- all_mets[id %in% ex_mets_in, .(id, name, formula, charge, MNX_ID)]
+  nutr_dt <- nutr_dt[formula != "null"]
+  fwrite(nutr_dt,
+         paste0(script.dir, "/../dat/nutrients.tsv"),
+         sep = "\t")
+  
+  cat("done\n")
   
   # Export of corrected database
   mseed <- mseed[,-"gs.hash"]

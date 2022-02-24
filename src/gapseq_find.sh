@@ -30,16 +30,17 @@ use_gene_seq=true
 stop_on_files_exist=false
 update_manually=false
 user_temp=false
+force_offline=false
 
 usage()
 {
     echo "Usage"
-    echo "$0 -p keyword / -e ec [-d database] [-t taxonomy] file.fasta."
+    echo "$0 -p <keyword> / -e <EC> [-d <database>] [-t <taxonomy>] file.fasta"
     echo "  -p keywords such as pathways or subsystems (for example amino,nucl,cofactor,carbo,polyamine)"
     echo "  -e Search by ec numbers (comma separated)"
     echo "  -r Search by enzyme name (colon separated)"
     echo "  -d Database: vmh or seed (default: $database)"
-    echo "  -t Taxonomic range for sequences to be downloaded (default: $taxonomy)"
+    echo "  -t Taxonomic range for reference sequences to be used. (Bacteria, Archaea, auto; default: $taxonomy). See Details."
     echo "  -b Bit score cutoff for local alignment (default: $bitcutoff)"
     echo "  -i Identity cutoff for local alignment (default: $identcutoff)"
     echo "  -c Coverage cutoff for local alignment (default: $covcutoff)"
@@ -61,6 +62,10 @@ usage()
     echo "  -j Quit if output files already exist (default: $stop_on_files_exist)"
     echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default: $update_manually)"
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
+    echo "  -O For offline mode (default: $force_offline)"
+    echo ""
+    echo "Details:"
+    echo "\"-t\": if 'auto', gapseq tries to predict if the organism is Bacteria or Archaea based on the provided genome sequence. The prediction is based on the 16S rRNA gene sequence using a classifier that was trained on 16S rRNA genes from organisms with known Gram-staining phenotype. In case no 16S rRNA gene was found, a k-mer based classifier is used instead."
 
 exit 1
 }
@@ -94,7 +99,7 @@ function join_by { local IFS="$1"; shift; echo "$*"; }
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjUT:" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjUT:O" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -179,6 +184,10 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjUT:" opt; do
     T)
         user_temp=true
         user_temp_folder=$OPTARG
+        ;;
+    O)
+        force_offline=true
+        ;;
     esac
 done
 shift $((OPTIND-1))
@@ -286,13 +295,15 @@ seqpath_user=$dir/../dat/seq/$taxonomy/user
 mkdir -p $seqpath/rev $seqpath/unrev $seqpath_user
 
 #check for updates if internet connection is available
-is_online=$(wget -q --spider http://rz.uni-kiel.de)
-is_running=$(pidof -x "$script_name" -o $$) # do not check for updates if running in parallel mode
-if [[ $is_online -eq 0 && -z "$is_running" ]]; then
-    $dir/update_sequences.sh $taxonomy
-fi
-if [[ ! -f $seqpath/rev/sequences.tar.gz  ]] || [[ ! -f $seqpath/unrev/sequences.tar.gz ]] || [[ ! -f $seqpath/rxn/sequences.tar.gz ]]; then
-    echo ATTENTION: gapseq sequence archives are missing! Sequences will be needed to be downloaded from uniprot directly which is rather slow.
+if [[ "$force_offline" = false ]]; then
+    is_online=$(wget -q --spider http://rz.uni-kiel.de)
+    is_running=$(pidof -x "$script_name" -o $$) # do not check for updates if running in parallel mode
+    if [[ $is_online -eq 0 && -z "$is_running" ]]; then
+        $dir/update_sequences.sh $taxonomy
+    fi
+    if [[ ! -f $seqpath/rev/sequences.tar.gz  ]] || [[ ! -f $seqpath/unrev/sequences.tar.gz ]] || [[ ! -f $seqpath/rxn/sequences.tar.gz ]]; then
+        echo ATTENTION: gapseq sequence archives are missing! Sequences will be needed to be downloaded from uniprot directly which is rather slow.
+    fi
 fi
 download_log=$(mktemp) # remember downloaded files
 function already_downloaded(){ 
@@ -443,6 +454,7 @@ echo -e "ID\tName\tPrediction\tCompleteness\tVagueReactions\tKeyReactions\tKeyRe
 #taxRange=Proteobacteria
 if [ -n "$taxRange" ]; then
     validTax=$(grep -i $taxRange $dir/../dat/taxonomy.tbl | cut -f1 | tr '\n' '|' | sed 's/.$//')
+    [[ -z "$validTax" ]] && { echo "Taxonomic range not found: $taxRange (available ranges: $dir/../dat/taxonomy.tbl)"; exit 0; }
     pwyDB_new=$(echo "$pwyDB" | grep -wE `echo "TAX-($validTax)"`)
     pwyDB_old=$(echo "$pwyDB" | awk -F '\t' 'BEGIN {OFS=FS="\t"} $5=="" {print $0}')
     pwyDB=$(echo "$pwyDB_new""$pwyDB_old")

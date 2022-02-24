@@ -2244,7 +2244,6 @@ rxn15961	>			[JZ] direction changed according to MetaCyc + Thauer2008	https://me
 rxn90060	>		-1:cpd28763:1:0:"(2,1-beta-D-fructan)";-9:cpd00001:1:0:"H2O";9:cpd00082:1:0:"D-Fructose";1:cpd02298:1:0:"1F-beta-D-Fructosylsucrose"	[SW] New reaction for inulin/fructan degradation step 1	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.2.1.153-RXN		inulinase	fructan beta-(2,1)-fructosidase (extracellular)	
 rxn23749	>		-1:cpd00001:0:0:"H2O";-1:cpd02298:0:0:"1F-beta-D-Fructosylsucrose";1:cpd00076:0:0:"Sucrose";1:cpd00082:0:0:"D-Fructose"	[SW] Reaction needed for 1-Kestotriose degradation	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-1841				
 rxn29739				[SW] Needed for 1-Kestotriose uptake					TRUE
-rxn90061	>		-1:cpd00001:1:0:"H2O";-1:cpd12085:1:0:"1,4-beta-D-Xylan";1:cpd00154:1:0:"Xylose"	[SW] New reaction for extracellular xylan degradation			beta-xylosidase	xylan 1,4-beta-xylosidase (extracellular)	
 rxn23769	>		-3:cpd00001:0:0:"H2O";-1:cpd27519:0:0:"Methylesterified-homogalacturonan";3:cpd00116:0:0:"Methanol";1:cpd21755:0:0:"1-4-alpha-D-galacturonosyl";3:cpd00067:0:0:"H+"	[SW] Reaction for first step pectin degradation	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7248				
 rxn90062	>		-1:cpd21755:0:0:"1-4-alpha-D-galacturonosyl";-2:cpd00001:0:0:"H2O";3:cpd00280:0:0:"D-Galacturonate"	[SW] Reaction for pectin degradation	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7248		exopolygalacturonase	galacturonan 1,4-alpha-galacturonidase	
 rxn90063	=		-1:cpd00437:0:0:"D-Tagaturonate";1:cpd00672:0:0:"D-Fructuronate"	[SW] Reaction for pectin degradation	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7248		tagaturonate epimerase	tagaturonate epimerase	
@@ -2580,4 +2579,10 @@ rxn33315		TRUE		[SW] duplicate reaction to rxn00467
 									
 rxn00247	=			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=PEPCARBOXYKIN-RXN				
 									
-rxn90112	>		-499:cpd00001:1:0:"H2O";-1:cpd90020:1:0:"Cellulose";500:cpd00027:1:0:"D-Glucose">	[JZ] Added from vmh with units per chain n=500 (fibers from cellulose contain 250–500 repeating units per chain cf. 10.1002/anie.200460587)	https://www.vmh.life/#metabolite/cellul		CELLUL_DEGe	Extracellular cellulose degradation	
+rxn90112	>		-499:cpd00001:1:0:"H2O";-1:cpd90020:1:0:"Cellulose";500:cpd00027:1:0:"D-Glucose"	[JZ] Added from vmh with units per chain n=500 (fibers from cellulose contain 250–500 repeating units per chain cf. 10.1002/anie.200460587)	https://www.vmh.life/#metabolite/cellul		CELLUL_DEGe	Extracellular cellulose degradation	
+rxn90113	>		-49:cpd00001:1:0:"H2O";-1:cpd90021:1:0:"Xylan-b-1-4";50:cpd90022:1:0:"Xylooligo-b-1-4"	[SW] Added to have a xylan degradation without ambiguous metabolites	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6717		xylanase	Extracellular xylan degradation	
+rxn90114	>		-9:cpd00001:1:0:"H2O";-1:cpd90022:1:0:"Xylan-b-1-4";10:cpd00154:1:0:"Xylose"	[SW] Added to have a xylan degradation without ambiguous metabolites	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6717		xylosidase	Extracellular xylooligosaccharide degradation	
+rxn09995		TRUE		[SW] Reaction used ambiguous metabolite definition					
+rxn15600		TRUE		[SW] Reaction used ambiguous metabolite definition					
+rxn15601		TRUE		[SW] Reaction used ambiguous metabolite definition					
+rxn15581		TRUE		[SW] Reaction used ambiguous metabolite definition					
