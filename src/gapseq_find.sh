@@ -30,6 +30,7 @@ use_gene_seq=true
 stop_on_files_exist=false
 update_manually=false
 user_temp=false
+force_offline=false
 
 usage()
 {
@@ -61,6 +62,7 @@ usage()
     echo "  -j Quit if output files already exist (default: $stop_on_files_exist)"
     echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default: $update_manually)"
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
+    echo "  -O For offline mode (default: $force_offline)"
     echo ""
     echo "Details:"
     echo "\"-t\": if 'auto', gapseq tries to predict if the organism is Bacteria or Archaea based on the provided genome sequence. The prediction is based on the 16S rRNA gene sequence using a classifier that was trained on 16S rRNA genes from organisms with known Gram-staining phenotype. In case no 16S rRNA gene was found, a k-mer based classifier is used instead."
@@ -97,7 +99,7 @@ function join_by { local IFS="$1"; shift; echo "$*"; }
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjUT:" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjUT:O" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -182,6 +184,10 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjUT:" opt; do
     T)
         user_temp=true
         user_temp_folder=$OPTARG
+        ;;
+    O)
+        force_offline=true
+        ;;
     esac
 done
 shift $((OPTIND-1))
@@ -289,13 +295,15 @@ seqpath_user=$dir/../dat/seq/$taxonomy/user
 mkdir -p $seqpath/rev $seqpath/unrev $seqpath_user
 
 #check for updates if internet connection is available
-is_online=$(wget -q --spider http://rz.uni-kiel.de)
-is_running=$(pidof -x "$script_name" -o $$) # do not check for updates if running in parallel mode
-if [[ $is_online -eq 0 && -z "$is_running" ]]; then
-    $dir/update_sequences.sh $taxonomy
-fi
-if [[ ! -f $seqpath/rev/sequences.tar.gz  ]] || [[ ! -f $seqpath/unrev/sequences.tar.gz ]] || [[ ! -f $seqpath/rxn/sequences.tar.gz ]]; then
-    echo ATTENTION: gapseq sequence archives are missing! Sequences will be needed to be downloaded from uniprot directly which is rather slow.
+if [[ "$force_offline" = false ]]; then
+    is_online=$(wget -q --spider http://rz.uni-kiel.de)
+    is_running=$(pidof -x "$script_name" -o $$) # do not check for updates if running in parallel mode
+    if [[ $is_online -eq 0 && -z "$is_running" ]]; then
+        $dir/update_sequences.sh $taxonomy
+    fi
+    if [[ ! -f $seqpath/rev/sequences.tar.gz  ]] || [[ ! -f $seqpath/unrev/sequences.tar.gz ]] || [[ ! -f $seqpath/rxn/sequences.tar.gz ]]; then
+        echo ATTENTION: gapseq sequence archives are missing! Sequences will be needed to be downloaded from uniprot directly which is rather slow.
+    fi
 fi
 download_log=$(mktemp) # remember downloaded files
 function already_downloaded(){ 
