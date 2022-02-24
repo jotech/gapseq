@@ -17,7 +17,8 @@ spec <- matrix(c(
   'no.core', 'x', 2, "logical", "Use always all reactions instead of core reactions, which have sequence evidence. Default: FALSE",
   'verbose', 'v', 2, "logical", "Verbose output and printing of debug messages. Default: FALSE",
   'relaxed.constraints', 'r', 2, "logical", "Save final model as unconstraint network (i.e. all exchange reactions are open). Default: FALSE",
-  'environment', 'e', 2, "character", "Adjusting reaction directions according to specific environmental conditions. See documentation for details. CAUTION: experimental option!"
+  'environment', 'e', 2, "character", "Adjusting reaction directions according to specific environmental conditions. See documentation for details. CAUTION: experimental option!",
+  'write.cs.ferm', 'w', 2, "logical", "Write a list with found carbon sources and fermentation products"
 ), ncol = 5, byrow = T)
 
 opt <- getopt(spec)
@@ -69,6 +70,7 @@ if ( is.null(opt$bcore) ) { opt$bcore = 50 }
 if ( is.null(opt$no.core) ) { opt$no.core = F }
 if ( is.null(opt$relaxed.constraints) ) { opt$relaxed.constraints = F }
 if ( is.null(opt$environment) ) { opt$environment = "" }
+if ( is.null(opt$write.cs.ferm) ) { opt$write.cs.ferm = F }
 
 # overwrite -f Option with default (This option might be used in future for a different purpose)
 opt$full.model = paste0(script.dir,"/../dat/full.model.RDS")
@@ -88,6 +90,7 @@ met.limit           <- opt$limit
 no.core             <- opt$no.core
 relaxed.constraints <- opt$relaxed.constraints
 env                 <- opt$environment
+write.cs.ferm       <- opt$write.cs.ferm
 
 
 # Parameters:
@@ -495,6 +498,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     mod.fill3.names <- c()
     
     if( !verbose ) options(warn=-1)
+    cs.dt <- data.table()
     for( i in seq_along(ex.met) ){
       cat("\r",i,"/",length(ex.met))
       if( ex.id[i] %in% ignore ) 
@@ -515,6 +519,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
       
       if(sol$stat == ok & sol$obj >= 1e-7){
         #mod.fill3@obj_coef <- rep(0,mod.fill3@react_num)
+        src.status <- TRUE
       }else{
         if( verbose ) cat("\nTry to gapfill", src.met.name, ex.id[i], "\n")
         invisible(capture.output( mod.fill3.lst <- gapfill4(mod.orig = mod.fill3, 
@@ -528,6 +533,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
                                                             verbose=verbose,
                                                             gs.origin = 3,
                                                             rXg.tab = rXg.tab) ))
+        src.status <- mod.fill3.lst$growth.rate >= 1e-7
         new.reactions <- mod.fill3.lst$rxns.added
         if( length(new.reactions) > 0 ){
           if( verbose ) cat("Added reactions:", new.reactions, "\n")
@@ -538,6 +544,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
             exchanges.new.used[match(ex.id[i], exchanges.new.ids)] <- TRUE
         }
       }
+      cs.dt <- rbind(cs.dt, data.table(id=str_extract(src.met,"cpd[0-9]+"), name=src.met.name, status=src.status))
     }
     options(warn=0)
     
@@ -579,6 +586,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     mod.fill4.counter <- 0
     mod.fill4.names <- c()
     
+    ferm.dt <- data.table()
     if( !verbose ) options(warn=-1)
     for( i in seq_along(ex.met) ){
       cat("\r",i,"/",length(ex.met))
@@ -597,6 +605,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
       
       if(sol$stat == ok & sol$obj >= 1e-7){
         #mod.fill4@obj_coef <- rep(0,mod.fill4@react_num)
+        src.status <- TRUE
       }else{
         if( verbose ) cat("\nTry to gapfill", src.met.name, src.id, "\n")
         invisible(capture.output( mod.fill4.lst <- gapfill4(mod.orig = mod.fill4, 
@@ -610,6 +619,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
                                                             verbose=verbose,
                                                             gs.origin = 4,
                                                             rXg.tab = rXg.tab) ))
+        src.status <- mod.fill4.lst$growth.rate >= 1e-7
         new.reactions <- mod.fill4.lst$rxns.added
         if( length(new.reactions) > 0 ){
           if( verbose ) cat("Added reactions:", new.reactions, "\n")
@@ -620,6 +630,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
             exchanges.new.used[match(ex@react_id[i], exchanges.new.ids)] <- TRUE
         }
       }
+      ferm.dt <- rbind(ferm.dt, data.table(id=str_extract(src.met,"cpd[0-9]+"), name=src.met.name, status=src.status))
     }
     options(warn=0)
     
@@ -698,6 +709,12 @@ if(!opt$sbml.no.output){
 if(relaxed.constraints) {
   mod.out@lowbnd[grep("^EX_",mod.out@react_id)] <- -sybil::SYBIL_SETTINGS("MAXIMUM")
   saveRDS(mod.out, file = paste0(output.dir,"/",out.id,"-unconstrained.RDS"))
+}
+
+# Save found carbon sources and fermentation products
+if(write.cs.ferm){
+  fwrite(ferm.dt, paste0(output.dir,"/",out.id, "-ferm.tbl"), sep="\t")
+  fwrite(cs.dt,   paste0(output.dir,"/",out.id, "-cs.tbl"),   sep="\t")
 }
 
 q(status=0)
