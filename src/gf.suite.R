@@ -227,9 +227,10 @@ mod.fill.lst <- gapfill4(mod.orig = mod.orig,
                          bcore = bcore,
                          dummy.weight = dummy.weight,
                          script.dir = script.dir,
-                         verbose=verbose,
+                         verbose = verbose,
                          gs.origin = 1,
-                         rXg.tab = rXg.tab)
+                         rXg.tab = rXg.tab,
+                         env = env)
 
 mod.fill1 <- constrain.model(mod.fill.lst$model, media.file = media.file, scaling.fac = 1)
 mod.out <- mod.fill1
@@ -323,7 +324,8 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
                                   core.only = use.core,
                                   verbose=verbose,
                                   gs.origin = 2,
-                                  rXg.tab = rXg.tab) ))
+                                  rXg.tab = rXg.tab,
+                                  env = env) ))
       new.reactions <- mod.fill2.lst$rxns.added
       if( length(new.reactions) > 0 ){
         if( verbose ) cat("Added reactions:", new.reactions, "\n")
@@ -415,7 +417,8 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
                                   core.only = use.core,
                                   verbose=verbose,
                                   gs.origin = 2,
-                                  rXg.tab = rXg.tab) ))
+                                  rXg.tab = rXg.tab,
+                                  env = env) ))
       new.reactions <- mod.fill2.lst$rxns.added
       if( length(new.reactions) > 0 ){
         if( verbose ) cat("Added reactions:", new.reactions, "\n")
@@ -529,7 +532,8 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
                                                             core.only = use.core,
                                                             verbose=verbose,
                                                             gs.origin = 3,
-                                                            rXg.tab = rXg.tab) ))
+                                                            rXg.tab = rXg.tab,
+                                                            env = env) ))
         src.status <- mod.fill3.lst$growth.rate >= 1e-7
         new.reactions <- mod.fill3.lst$rxns.added
         if( length(new.reactions) > 0 ){
@@ -615,7 +619,8 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
                                                             core.only = use.core,
                                                             verbose=verbose,
                                                             gs.origin = 4,
-                                                            rXg.tab = rXg.tab) ))
+                                                            rXg.tab = rXg.tab,
+                                                            env = env) ))
         src.status <- mod.fill4.lst$growth.rate >= 1e-7
         new.reactions <- mod.fill4.lst$rxns.added
         if( length(new.reactions) > 0 ){

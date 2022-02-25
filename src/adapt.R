@@ -228,7 +228,7 @@ if( !is.null(sub.growth) ){
         growth <- growth.dt[i, growth]
         if(growth){
             if( !ex.id %in% mod.out@react_id) mod.out <- addReact(mod.out, id=ex.id, met=paste0(sub.id,"[e0]"),Scoef=-1,lb=0,ub=1000)
-            mod.out <- add_growth(mod.out, add.met.id=sub.id, weights=rxn.weights.file, genes=rxnXgene.table)
+            mod.out <- add_growth(mod.out, add.met.id=sub.id, weights=rxn.weights.file, genes=rxnXgene.table, fullmod=fullmod)
         }else{
             if( !ex.id %in% mod.out@react_id){
                 print(paste("Model is already not growing with", sub.id))
@@ -239,6 +239,16 @@ if( !is.null(sub.growth) ){
         #print(paste(sub.id, growth))
     }
 }
+
+if(all(mod.out@react_id == mod.orig@react_id)){
+    warning("No changes made")
+    quit()
+}
+
+# add metabolite-, reaction-, and model attributes
+mod.out <- addMetAttr(mod.out, seed_x_mets = seed_x_mets)
+mod.out <- addReactAttr(mod.out)
+#mod.out@mod_attr <- bu_mod_attr
 
 out.id <- gsub(".xml|.RDS|.rds","",gsub("-draft","",basename(mod.file)))
 out.rds <- paste0("./",out.id,"-adapt",".RDS")

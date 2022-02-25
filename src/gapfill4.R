@@ -1,5 +1,5 @@
 gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
-                     dummy.weight = 100, script.dir, core.only = FALSE, verbose=verbose, gs.origin = NA, rXg.tab) {
+                     dummy.weight = 100, script.dir, core.only = FALSE, verbose=verbose, gs.origin = NA, rXg.tab, env = "") {
 
   source(paste0(script.dir, "/sysBiolAlg_mtfClass2.R"))
   # backup model
