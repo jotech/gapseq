@@ -27,6 +27,7 @@ Installation
    /usage/parameters
    /usage/medium
    /usage/output
+   /usage/adapt
 
 
 .. Database
