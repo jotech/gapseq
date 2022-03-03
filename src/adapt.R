@@ -240,7 +240,7 @@ if( !is.null(sub.growth) ){
     }
 }
 
-if(all(mod.out@react_id == mod.orig@react_id)){
+if(mod.out@react_num == mod.orig@react_num && all(mod.out@react_id == mod.orig@react_id)){
     warning("No changes made")
     quit()
 }
