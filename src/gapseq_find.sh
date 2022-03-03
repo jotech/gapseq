@@ -287,6 +287,8 @@ if [ "$taxonomy" == "auto" ]; then
     fi
     echo Predicted taxonomy: $taxonomy
 fi
+[[ "$taxonomy" == "bacteria" ]] && taxonomy=Bacteria
+[[ "$taxonomy" == "archaea" ]] &&  taxonomy=Archaea
 
 # squence directory
 export LC_NUMERIC="en_US.UTF-8"
