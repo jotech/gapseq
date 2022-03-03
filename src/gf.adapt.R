@@ -12,8 +12,6 @@ if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
   script.dir  <- dirname(script.name)
 }
 
-script.dir <- "~/uni/gapseq/src"
-
 # select solver
 if( "cplexAPI" %in% rownames(installed.packages()) ){
   sybil::SYBIL_SETTINGS("SOLVER","cplexAPI"); ok <- 1
@@ -59,8 +57,8 @@ rm.na <- function(vec){
 # database files
 carbon.source <- fread(paste0(script.dir, "/../dat/subex.tbl"))
 meta.db       <- fread(paste0(script.dir, "/../dat/meta_pwy.tbl"))
-seed.db       <- fread("~/uni/gapseq/dat/seed_reactions_corrected.tsv")
-seed.db.met   <- fread("~/uni/gapseq/dat/seed_metabolites_edited.tsv")
+seed.db       <- fread(paste0(script.dir, "/../dat/seed_reactions_corrected.tsv"))
+seed.db.met   <- fread(paste0(script.dir, "/../dat/seed_metabolites_edited.tsv"))
 
 
 check_lethal <- function(model, rxn_list, med.file=NA, med=NA){
