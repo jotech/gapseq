@@ -42,7 +42,7 @@ coverage <- function(genome.filestr, anno.filestr, anno.filestr2=NA){
     feat.start <- anno.red[i,start]
     feat.end   <- anno.red[i,end]
     contig     <- anno.red[i,stitle]
-    contig.idx <- match(contig, names(genome.hit))
+    contig.idx <- match(contig, trimws(names(genome.hit)))
     
     if( !is.na(feat.start) & !is.na(feat.end) ){
       genome.hit[[contig.idx]][feat.start:feat.end] <- 1  
