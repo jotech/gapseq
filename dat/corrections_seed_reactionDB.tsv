@@ -2586,3 +2586,6 @@ rxn09995		TRUE		[SW] Reaction used ambiguous metabolite definition
 rxn15600		TRUE		[SW] Reaction used ambiguous metabolite definition					
 rxn15601		TRUE		[SW] Reaction used ambiguous metabolite definition					
 rxn15581		TRUE		[SW] Reaction used ambiguous metabolite definition					
+									
+rxn11158				[JZ] updated reaction name			NH4t	ammonia transporter	
+rxn08854							TRANS-RXN-58	Lysine transporter	

@@ -94,6 +94,11 @@ correct_seed_rxnDB <- function(script.path) {
       mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id], 
             abbreviation := mseed.corr[i, abbreviation]]
     }
+    # new name?
+    if(mseed.corr[i, name]!="" & !is.na(mseed.corr[i, name])) {
+      mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id], 
+            name := mseed.corr[i, name]]
+    }
     # New reaction?
     if(!(mseed.corr[i, rnx.id] %in% mseed$id) & mseed.corr[i, rnx.id] != "" & !is.na(mseed.corr[i, rnx.id])) {
       dt.n <- data.table(id            = mseed.corr[i, rnx.id],
