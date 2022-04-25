@@ -1678,7 +1678,7 @@ rxn22472	>			[SW] Phosphates are usually irreversible, as they would build a hig
 rxn23467	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
 rxn24404	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
 rxn24520	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
-rxn25123	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
+rxn25123	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.				alkaline phosphatase	
 rxn25963	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
 rxn26129	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
 rxn26130	>			[SW] Phosphates are usually irreversible, as they would build a high energy phosphate bond without energy source.					
@@ -1836,7 +1836,7 @@ rxn08722	>			H+-coupled transport w/o chemical transformation of transported mol
 rxn13245	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.					
 rxn09308	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn05553	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
-rxn11158	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
+rxn11158	>			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported. + [JZ] updated reaction name		transport		ammonia transporter	
 rxn13415	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.					
 									
 									
@@ -2587,5 +2587,4 @@ rxn15600		TRUE		[SW] Reaction used ambiguous metabolite definition
 rxn15601		TRUE		[SW] Reaction used ambiguous metabolite definition					
 rxn15581		TRUE		[SW] Reaction used ambiguous metabolite definition					
 									
-rxn11158				[JZ] updated reaction name			NH4t	ammonia transporter	
-rxn08854							TRANS-RXN-58	Lysine transporter	
+rxn08854				[JZ] updated reaction name			TRANS-RXN-58	Lysine transporter	
