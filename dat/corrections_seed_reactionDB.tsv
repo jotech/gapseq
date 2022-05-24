@@ -2589,3 +2589,6 @@ rxn15581		TRUE		[SW] Reaction used ambiguous metabolite definition
 									
 rxn08854				[JZ] updated reaction name			TRANS-RXN-58	Lysine transporter	
 rxn05303								Arginine symporter	
+									
+rxn24606				[JZ] needed for methanogensis from methanol	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=CO2FORM-PWY				TRUE
+rxn24607				[JZ] needed for methanogensis from methanol	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=CO2FORM-PWY				TRUE
