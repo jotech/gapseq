@@ -21,7 +21,8 @@ O2	cpd00007	"PWY-3781" | "PWY1YI0-3" | "PWY-7279" | "PWY1YI0-6"	12.5	FALSE	aerob
 O2	cpd00007	"PWY0-1565" | "PWY0-1561" | "PWY0-1544" | "PWY-7545" | "PWY-7544" | "PWY0-1353" | "PWY0-1329"	12.5	FALSE	1 - D-Lactate to Cytochrome bo; 2 - glyc3p to cytochrome bo; 3 - Pro to Cytochom bo; 4 - Pyr to cytochrome bd; 5  - Pyr to cytochrome bo; 6 - Succ to cytochrome bd; 7  - Succ to cytochrome bo	Inorganics
 O2	cpd00007	"PWY0-1334" | "PWY0-1568" | "PWY0-1335" | "PWY0-1567"	12.5	FALSE	NADH to cytochrome	Inorganics
 CO2	cpd00011	"CALVIN-PWY" | "METHANOGENESIS-PWY" | "CODH-PWY" | "PWY-5789" | "PWY-7784" | "LWP-GS"	25	FALSE	CO2 fixation	Inorganics
-H2	cpd11640	"METHANOGENESIS-PWY" | "CODH-PWY" | "LWP-GS"	50	FALSE	Ljungdahl-Wood pathway	Inorganics
+H2	cpd11640	"CODH-PWY" | "LWP-GS"	50	FALSE	Ljungdahl-Wood pathway	Inorganics
+H2	cpd11640	"METHANOGENESIS-PWY" | "PWY-7867"	50	FALSE	Methanogenesis	Inorganics
 Photons	cpd11632	"PWY-101"	50	FALSE	photosynthesis light reactions	Inorganics
 						
 D-Glucose	cpd00027	rxn05226 | rxn08612	5	TRUE	D-glucose transport via PEP:Pyr PTS	Saccharides
@@ -68,7 +69,8 @@ Acetate	cpd00029	rxn00875 & rxn00225 & rxn00173 & rxn90001	20	TRUE	EC 2.8.3.8, E
 Acetate	cpd00029	"METH-ACETATE-PWY"	25	TRUE	Methanogenisis from acetate	Organic acids
 Succinate	cpd00036	"PWY-5677"	10	TRUE	Succinate fermentation to butyrate	Organic acids
 Succinate	cpd00036	(rxn00602 | rxn01996) & rxn90096 & rxn09174	10	TRUE	Succinate transformation to propionate (Na+ exporting). Part of PWY-8086	Organic acids
-Methanol	cpd00116	"CO2FORM-PWY"	10	TRUE		Other
+Methanol	cpd00116	"CO2FORM-PWY"	20	TRUE		Alcohols
+Formate	cpd00047	"PWY-7868"	20	TRUE	coenzyme B/coenzyme M regeneration V (formate-dependent) involved in methanogenesis	Organic acids
 						
 sulfoquinovose	cpd22614	"PWY-7446" | "PWY-7722"	10	TRUE		Secondary plant metabolites
 Gallate	cpd01020	"GALLATE-DEGRADATION-II-PWY" | "GALLATE-DEGRADATION-I-PWY" | "P3-PWY"	10	TRUE		Secondary plant metabolites
