@@ -439,7 +439,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   
   cat("\rGapfill summary:\n")
   cat("Filled components:    ",mod.fill2.counter, "(",paste(mod.fill2.names, collapse = ","),")\n")
-  cat("Added reactions:      ",length(mod.fill2@react_id)-length(mod.fill1@react_id),"\n")
+  cat("Added reactions:      ",length(mod.fill2@react_id)-length(mod.orig2@react_id),"\n")
   cat("Final growth rate:    ",optimizeProb(mod.fill2, retOptSol=F)$obj,"\n")
   
   
