@@ -72,6 +72,7 @@ predict_medium <- function(mod, pathway.pred, manual.flux = NULL) {
   
   medium_rules <- medium_rules[rule_res == T]
   medium_rules[, maxFlux_comb := mean(maxFlux), by = cpd.id]
+  medium_rules[is.na(maxFlux_comb), maxFlux_comb:=0]
   medium_rules <- medium_rules[!duplicated(cpd.id), .(Nutrient, cpd.id, maxFlux = maxFlux_comb, Category, proton.balance)]
   
   # apply manual concentrations
