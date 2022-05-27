@@ -368,3 +368,4 @@ Deoxycholate;Deoxycholic acid		EX_dchac(e)	EX_cpd02733_e0	Bile acids
 sulfoquinovose;sulfoquinovose			EX_cpd22614_e0	
 (S)-2,3-Dihydroxypropane-1-sulfonate;2,3-dihydroxypropane-1-sulfonate			EX_cpd31356_e0	
 Agmatine		EX_agm(e)	EX_cpd00152_e0	Amines
+Starch		EX_strch1(e)	EX_cpd90003	Carbohydrates
