@@ -156,7 +156,7 @@ futile_cycle_test <- function(script.dir, env = "") {
   }
   
   meta.seed@obj_coef[which(meta.seed@react_id=="rxn00062_c0")] <- 1
-  meta.seed <- changeBounds(meta.seed, "rxn05759", lb = -1000) #  Uncomment to ad-hoc include a futile cycle 
+  # meta.seed <- changeBounds(meta.seed, "rxn05759", lb = -1000) #  Uncomment to ad-hoc include a futile cycle 
   sol <- optimizeProb(meta.seed, algorithm="mtf")
   
   n <- meta.seed@react_num
@@ -168,7 +168,7 @@ futile_cycle_test <- function(script.dir, env = "") {
   )
   dt <- dt[abs(flux) > 0.001]
   if(nrow(dt) == 0) {
-    return("furile cycle free - Hooray!")
+    return("futile cycle free - Hooray!")
   }
   
   dt[, id.backup := id]
