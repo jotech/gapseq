@@ -2592,3 +2592,9 @@ rxn05303								Arginine symporter
 									
 rxn24606				[JZ] needed for methanogensis from methanol	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=CO2FORM-PWY				TRUE
 rxn24607				[JZ] needed for methanogensis from methanol	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=CO2FORM-PWY				TRUE
+									
+rxn00453	>			[SW] Corrected according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=O-ACETYLHOMOSERINE-THIOL-LYASE-RXN				
+rxn32480		TRUE		[SW] duplicate reaction to rxn10470					
+rxn32345		TRUE		[SW] duplicate reaction to rxn00453					
+rxn09948	>			[SW] highly exergonic according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-18602				
+rxn12780		TRUE		[SW] Reaction not found in MetaCyc nor RHEA, BIGG, etc.					
