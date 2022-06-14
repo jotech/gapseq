@@ -510,8 +510,8 @@ do
         done
         rea=$(echo $reaids | awk -v j=$j -F ',' '{print $j}')
         reaName=$(echo $reaNames | awk -v j=$j -F ';' '{print $j}' | tr -d '|')
-        geneName=$(cat $metaGenes | awk -v rea=$rea -F ',' '$1~rea {print $2}')
-        geneRef=$(cat $metaGenes | awk -v rea=$rea -F ',' '$1~rea  {print $5}')
+        geneName=$(cat $metaGenes | awk -v rea="|$rea|" -F ',' '$1==rea {print $2}')
+        geneRef=$(cat $metaGenes | awk -v rea="|$rea|" -F ',' '$1==rea  {print $5}')
         [[ verbose -ge 1 ]] && echo -e "\t$j) $rea $reaName $ec" $geneName
         [[ -z "$rea" ]] && { continue; }
         [[ -n "$ec" ]] && [[ -n "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw -e "$ec" -e "$reaName" $dir/../dat/exception.tbl | wc -l); }
