@@ -25,10 +25,10 @@ if( "cplexAPI" %in% rownames(installed.packages()) ){
 # Arguments:
 media.file       <- "../dat/media/TSBmed.csv"
 media.org <- fread(paste0(script.dir,"/../dat/media/MM_glu.csv")) # use minimal medium
+#media.org <- fread(paste0(script.dir,"/../dat/media/MM_anaerobic_CO2_H2.csv")) # use minimal medium
 #media.org <- fread(paste0(script.dir,"/../dat/media/Mineral_salt.csv")) # use minimal medium
 #fullmod.file     <- paste0(script.dir, "/../dat/full.model.RDS")
 target.met       <- "cpd11416"
-verbose          <- F
 bcore            <- 50
 
 # Parameters:
