@@ -657,7 +657,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     cat("Uptake at limit:\n")
     cat(paste0(paste(dt.sol.u$met.name, round(-dt.sol.u$flux, digits = 3), sep = ":"), collapse = ", "),"\n\n")
     
-    cat("Top 10 produced metabolites:\n")
+    cat("Top 10 produced metabolites [mmol / (gDW * hr)]:\n")
     cat(paste0(paste(dt.sol.p$met.name, round(dt.sol.p$flux, digits = 3), sep = ":"), collapse = ", "),"\n")
   }
   
