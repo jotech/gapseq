@@ -57,7 +57,7 @@ usage()
 
 for arg in $@
 do
-    if [ -f $arg ]; then
+    if [[ -f $arg && "$arg" != "test" ]]; then
         if [ ! -r $arg ]; then
             echo "No read access to file:" $arg
             exit 1
