@@ -370,7 +370,7 @@ fi
 
 # function to get database hits for ec number
 getDBhit(){
-    kegg=$(grep -wF "$rea" $metaRea | awk -F "\t" {'print $5'})
+    kegg=$(grep -wFe "$rea" $metaRea | awk -F "\t" {'print $5'})
     altec=""
 
     for i in "${!ec[@]}"; do
@@ -510,8 +510,8 @@ do
         done
         rea=$(echo $reaids | awk -v j=$j -F ',' '{print $j}')
         reaName=$(echo $reaNames | awk -v j=$j -F ';' '{print $j}' | tr -d '|')
-        geneName=$(grep -wF $rea $metaGenes | awk -F , {'print $2'})
-        geneRef=$(grep -wF $rea $metaGenes | awk -F , {'print $5'})
+        geneName=$(grep -wFe $rea $metaGenes | awk -F , {'print $2'})
+        geneRef=$(grep -wFe $rea $metaGenes | awk -F , {'print $5'})
         [[ verbose -ge 1 ]] && echo -e "\t$j) $rea $reaName $ec" $geneName
         [[ -z "$rea" ]] && { continue; }
         [[ -n "$ec" ]] && [[ -n "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw -e "$ec" -e "$reaName" $dir/../dat/exception.tbl | wc -l); }
