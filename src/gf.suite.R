@@ -157,7 +157,7 @@ if(env[1] != "")
   mod <- adjust_model_env(mod, env, script.dir)
 
 # block reactions in domain, which do not have these reactions
-if(any(grepl("tax_domain:", mod.orig@mod_attr[,"annotation"], fixed = T))) {
+if(any(grepl("tax_domain:", mod.orig@mod_attr, fixed = T))) {
   domain.rxn.exclusions <- fread(paste0(script.dir, "/../dat/biomass/excluded_reactions.tsv"), header=T, stringsAsFactors = F)
   
   anno_ind   <- which(grepl("tax_domain:", mod.orig@mod_attr[,"annotation"], fixed = T))
@@ -674,7 +674,7 @@ mod.out <- rm_unused_exchanges(mod.out)
 
 # add metabolite-, reaction-, and model attributes
 mod.out <- addMetAttr(mod.out, seed_x_mets = seed_x_mets)
-mod.out <- addReactAttr(mod.out)
+if("ec" %in% colnames(mod.out@react_attr)) mod.out <- addReactAttr(mod.out)
 mod.out@mod_attr <- bu_mod_attr
 
 if(!dir.exists(output.dir))
