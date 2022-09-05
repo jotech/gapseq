@@ -152,12 +152,25 @@ if ( toupper(file_ext(mod.file)) == "RDS" ){
 
 bu_mod_attr <- mod.orig@mod_attr
 
+# Add annotation column to model attributes if not already there
+if(!("annotation" %in% colnames(mod.orig@mod_attr))) {
+  bm_ind <- which(mod.orig@react_id == "bio1")
+  annostr <- ""
+  if(grepl("Bacteria",mod.orig@react_name[bm_ind]))
+    annostr <- "tax_domain:Bacteria"
+  if(grepl("Archaea",mod.orig@react_name[bm_ind]))
+    annostr <- "tax_domain:Archaea"
+  
+  mod.orig@mod_attr <- cbind(mod.orig@mod_attr,
+                             data.frame(annotation = annostr))
+}
+
 # adjust environment if needed
 if(env[1] != "")
   mod <- adjust_model_env(mod, env, script.dir)
 
 # block reactions in domain, which do not have these reactions
-if(any(grepl("tax_domain:", mod.orig@mod_attr, fixed = T))) {
+if(any(grepl("tax_domain:", mod.orig@mod_attr[,"annotation"], fixed = T))) {
   domain.rxn.exclusions <- fread(paste0(script.dir, "/../dat/biomass/excluded_reactions.tsv"), header=T, stringsAsFactors = F)
   
   anno_ind   <- which(grepl("tax_domain:", mod.orig@mod_attr[,"annotation"], fixed = T))
