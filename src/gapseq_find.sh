@@ -31,6 +31,7 @@ stop_on_files_exist=false
 update_manually=false
 user_temp=false
 force_offline=false
+input_mode="nucl"
 
 usage()
 {
@@ -63,6 +64,7 @@ usage()
     echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default: $update_manually)"
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
     echo "  -O For offline mode (default: $force_offline)"
+    echo "  -M Input genome mode. Either 'nucl' or 'prot' (default $input_mode)"
     echo ""
     echo "Details:"
     echo "\"-t\": if 'auto', gapseq tries to predict if the organism is Bacteria or Archaea based on the provided genome sequence. The prediction is based on the 16S rRNA gene sequence using a classifier that was trained on 16S rRNA genes from organisms with known Gram-staining phenotype. In case no 16S rRNA gene was found, a k-mer based classifier is used instead."
@@ -99,7 +101,7 @@ function join_by { local IFS="$1"; shift; echo "$*"; }
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjUT:O" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjUT:OM:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -188,10 +190,15 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjUT:O" opt; do
     O)
         force_offline=true
         ;;
+    M)
+        input_mode=$OPTARG
+        ;;
     esac
 done
 shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
+
+echo $input_mode
 
 # after parsing arguments, only fasta file shoud be there
 [ "$#" -ne 1 ] && { usage; }
@@ -443,10 +450,13 @@ getDBhit(){
 
 
 
-
-
 # create blast database
-makeblastdb -in "$fasta" -dbtype nucl -out orgdb >/dev/null
+if [ "$input_mode" == "nucl" ]; then
+    makeblastdb -in "$fasta" -dbtype nucl -out orgdb >/dev/null
+fi
+if [ "$input_mode" == "prot" ]; then
+    makeblastdb -in "$fasta" -dbtype prot -out orgdb >/dev/null
+fi
 
 
 cand=""     #list of candidate reactions to be added
@@ -717,9 +727,20 @@ do
                     for q in `ls query_subunit.part-*.fasta`
                     do
                         if ! [ -x "$(command -v parallel)" ] || [ "$use_parallel" = false ]; then # try to use parallelized version
-                            tblastn -db orgdb -query $q -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" > query.blast
+                            if [ "$input_mode" == "nucl" ]; then
+                                tblastn -db orgdb -query $q -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" > query.blast
+                            fi
+                            if [ "$input_mode" == "prot" ]; then
+                                echo "Hello. We are proteins here!"
+                                blastp -db orgdb -query $q -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" > query.blast
+                            fi
                         else
-                            cat $q | parallel --gnu --will-cite --block 50k --recstart '>' --pipe tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt \'"6 $blast_format"\' -query - > query.blast
+                            if [ "$input_mode" == "nucl" ]; then
+                                cat $q | parallel --gnu --will-cite --block 50k --recstart '>' --pipe tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt \'"6 $blast_format"\' -num_threads 12 -query - > query.blast
+                            fi
+                            if [ "$input_mode" == "prot" ]; then
+                                cat $q | parallel --gnu --will-cite --block 50k --recstart '>' --pipe blastp -db orgdb -qcov_hsp_perc $covcutoff -outfmt \'"6 $blast_format"\' -num_threads 12 -query - > query.blast
+                            fi
                         fi
                         cat query.blast >> $out
                         bhit=$(cat query.blast | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
