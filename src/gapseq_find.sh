@@ -65,7 +65,7 @@ usage()
     echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default: $update_manually)"
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
     echo "  -O For offline mode (default: $force_offline)"
-    echo "  -M Input genome mode. Either 'nucl', 'prot', or 'auto' (default $input_mode)"
+    echo "  -M Input genome mode. Either 'nucl', 'prot', or 'auto' (default '$input_mode')"
     echo "  -K Number of threads for sequence alignments. If option is not provided, number of available CPUs will be automatically determined."
     echo ""
     echo "Details:"
@@ -244,7 +244,7 @@ fastaID="${tmpvar%.*}"
 # Determine if fasta is nucl or prot
 if [ $input_mode == "auto" ]; then
     n_char=`cat $fasta | grep -v "^>" | awk '{for(i=1;i<=NF;i++)if(!a[$i]++)print $i}' FS="" | wc -l`
-    if [ $n_char -ge "15" ]; then
+    if [ $n_char -ge 15 ]; then
         echo "Protein fasta detected."
         input_mode="prot"
     else
@@ -748,13 +748,11 @@ do
                     subunits_found_old=$subunits_found
                     for q in `ls query_subunit.part-*.fasta`
                     do
-                        if { { ! [ -x "$(command -v parallel)" ]; } && [ "$input_mode" == "nucl" ]; } || [ "$use_parallel" = false ]; then # try to use parallelized version # TODO CORRECT THIS!
+                        if { { ! [ -x "$(command -v parallel)" ]; } && [ "$input_mode" == "nucl" ]; } || [ "$use_parallel" = false ]; then # try to use parallelized version. TODO: Make
                             if [ "$input_mode" == "nucl" ]; then
-                                #echo "Hello. We are nucl here! (ncpu=1)"
                                 tblastn -db orgdb -query $q -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" > query.blast
                             fi
                             if [ "$input_mode" == "prot" ]; then
-                                #echo "Hello. We are proteins here!"
                                 blastp -db orgdb -query $q -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" > query.blast
                             fi
                         else
