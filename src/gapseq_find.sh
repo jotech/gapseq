@@ -307,7 +307,7 @@ if [[ "$force_offline" = false ]]; then
         echo ATTENTION: gapseq sequence archives are missing! Sequences will be needed to be downloaded from uniprot directly which is rather slow.
     fi
 fi
-download_log=$(mktemp) # remember downloaded files
+download_log=$(mktemp -p $tmpdir) # remember downloaded files
 function already_downloaded(){ 
     if grep -q $1 $download_log; then
         return 0
@@ -536,8 +536,8 @@ do
             continue
         fi
         ((count++))
-        query=$(mktemp)
-        query_all=$(mktemp)
+        query=$(mktemp -p $tmpdir)
+        query_all=$(mktemp -p $tmpdir)
         for i in "${!ec[@]}"; do
             #echo test: ${ec[i]} ${EC_test[i]}
             if [[ -n "${EC_test[i]}" ]]; then
@@ -564,7 +564,7 @@ do
                     query_tmp=$seqpath/rev/${ec[i]}.fasta
                     [[ ! -s $query_tmp ]] && query_tmp=$seqpath/unrev/${ec[i]}.fasta
                 elif [ $seqSrc -eq 3 ]; then
-                    query_tmp=$(mktemp)
+                    query_tmp=$(mktemp -p $tmpdir)
                     cat $seqpath/rev/${ec[i]}.fasta $seqpath/unrev/${ec[i]}.fasta | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query_tmp # use awk to remove duplicates
                 elif [ $seqSrc -eq 4 ]; then
                     query_tmp=$seqpath/unrev/${ec[i]}.fasta
@@ -610,7 +610,7 @@ do
                 query=$seqpath/rev/$reaNameHash.fasta
                 [[ ! -s $query ]] && query=$seqpath/unrev/$reaNameHash.fasta
             elif [ $seqSrc -eq 3 ]; then
-                query=$(mktemp)
+                query=$(mktemp -p $tmpdir)
                 cat $seqpath/rev/$reaNameHash.fasta $seqpath/unrev/$reaNameHash.fasta | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query
             elif [ $seqSrc -eq 4 ]; then
                 query=$seqpath/unrev/$reaNameHash.fasta
@@ -627,7 +627,7 @@ do
         # sequence by gene name
         if [[ -n "$geneName" ]] && [[ -n "$geneRef" ]] && [[ "$use_gene_seq" = true ]]; then
 	    if [[ (! -f $seqpath/rxn/$rea.fasta || "$update_manually" = true) && "$force_offline" = false ]]; then
-                reaSeqTmp=$(mktemp)
+                reaSeqTmp=$(mktemp -p $tmpdir)
                 for gr in $geneRef
                 do
                     if ! already_downloaded "$seqpath/rxn/$gr.fasta"; then
@@ -659,7 +659,7 @@ do
                 else
                     [[ verbose -ge 1 ]] && echo -e "\t\t--> Found sequences: $query_gene (`cat $query_gene | grep ">" | wc -l` sequences)"
                 fi
-                query_merge2=$(mktemp)
+                query_merge2=$(mktemp -p $tmpdir)
                 cat $query $query_gene | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query_merge2 # no duplicates
                 query=$query_merge2
             fi
