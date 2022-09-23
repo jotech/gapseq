@@ -31,7 +31,7 @@ stop_on_files_exist=false
 update_manually=false
 user_temp=false
 force_offline=false
-input_mode="nucl"
+input_mode="auto"
 n_threads=`grep -c ^processor /proc/cpuinfo`
 
 usage()
@@ -65,7 +65,7 @@ usage()
     echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default: $update_manually)"
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
     echo "  -O For offline mode (default: $force_offline)"
-    echo "  -M Input genome mode. Either 'nucl' or 'prot' (default $input_mode)"
+    echo "  -M Input genome mode. Either 'nucl', 'prot', or 'auto' (default $input_mode)"
     echo "  -K Number of threads for sequence alignments. If option is not provided, number of available CPUs will be automatically determined."
     echo ""
     echo "Details:"
@@ -199,12 +199,14 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjUT:OM:K:" opt; do
         ;;
     K)
         n_threads=$OPTARG
+        if [ $n_threads -eq 1 ]; then
+            use_parallel=false
+        fi
+        ;;
     esac
 done
 shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
-
-echo $input_mode
 
 # after parsing arguments, only fasta file shoud be there
 [ "$#" -ne 1 ] && { usage; }
@@ -238,6 +240,18 @@ fi
 [[ ! -s "$fasta" ]] && { echo Invalid file: $1; exit 0; }
 tmpvar=$(basename "$fasta")
 fastaID="${tmpvar%.*}"
+
+# Determine if fasta is nucl or prot
+if [ $input_mode == "auto" ]; then
+    n_char=`cat $fasta | grep -v "^>" | awk '{for(i=1;i<=NF;i++)if(!a[$i]++)print $i}' FS="" | wc -l`
+    if [ $n_char -ge "15" ]; then
+        echo "Protein fasta detected."
+        input_mode="prot"
+    else
+        echo "Nucleotide fasta detected."
+        input_mode="nucl"
+    fi
+fi
 
 # pathways or ec number as well as fasta file have to be provided
 ( [ -z "$pathways" ] && [ -z "$ecnumber" ] && [ -z "$reaname" ] ) || [ -z "$fasta" ]  && { usage; }
@@ -734,13 +748,13 @@ do
                     subunits_found_old=$subunits_found
                     for q in `ls query_subunit.part-*.fasta`
                     do
-                        if [ ! [ -x "$(command -v parallel)" ] & [ "$input_mode" == "nucl" ] || [ "$use_parallel" = false ]; then # try to use parallelized version # TODO CORRECT THIS!
+                        if { { ! [ -x "$(command -v parallel)" ]; } && [ "$input_mode" == "nucl" ]; } || [ "$use_parallel" = false ]; then # try to use parallelized version # TODO CORRECT THIS!
                             if [ "$input_mode" == "nucl" ]; then
-                                echo "Hello. We are nucl here! (ncpu=1)"
+                                #echo "Hello. We are nucl here! (ncpu=1)"
                                 tblastn -db orgdb -query $q -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" > query.blast
                             fi
                             if [ "$input_mode" == "prot" ]; then
-                                echo "Hello. We are proteins here!"
+                                #echo "Hello. We are proteins here!"
                                 blastp -db orgdb -query $q -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" > query.blast
                             fi
                         else
