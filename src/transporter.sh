@@ -9,6 +9,7 @@ includeSeq=false
 use_parallel=true
 only_met=""
 verbose=1
+input_mode="nucl"
 
 usage()
 {
@@ -21,11 +22,13 @@ usage()
     echo "  -k do not use parallel"
     echo "  -m only check for this keyword/metabolite (default: all)"
     echo "  -v Verbose level, 0 for nothing, 1 for full (default $verbose)"
+    echo "  -M Input genome mode. Either 'nucl' or 'prot' (default $input_mode)"
+    echo ""
 exit 1
 }
 
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
-while getopts "h?i:b:c:qkm:v:" opt; do
+while getopts "h?i:b:c:qkm:v:M:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -51,6 +54,9 @@ while getopts "h?i:b:c:qkm:v:" opt; do
         ;;
     v)  
         verbose=$OPTARG
+        ;;
+    M)
+        input_mode=$OPTARG
         ;;
     esac
 done

@@ -32,6 +32,7 @@ update_manually=false
 user_temp=false
 force_offline=false
 input_mode="nucl"
+n_threads=`grep -c ^processor /proc/cpuinfo`
 
 usage()
 {
@@ -54,7 +55,7 @@ usage()
     echo "  -x Do not blast only list pathways, reactions and check for available sequences (default: $skipBlast)"
     echo "  -q Include sequences of hits in log files (default: $includeSeq)"
     echo "  -v Verbose level, 0 for nothing, 1 for pathway infos, 2 for full (default: $verbose)"
-    echo "  -k Do not use parallel"
+    echo "  -k Do not use parallel (Deprecated: use '-K 1' instead to disable multi-threading.)"
     echo "  -g Exhaustive search, continue blast even when cutoff is reached (default: $exhaustive)"
     echo "  -z Quality of sequences for homology search: 1:only reviewed (swissprot), 2:unreviewed only if reviewed not available, 3:reviewed+unreviewed, 4:only unreviewed (default: $seqSrc)"
     echo "  -m Limit pathways to taxonomic range (default: $taxRange)"
@@ -65,6 +66,7 @@ usage()
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
     echo "  -O For offline mode (default: $force_offline)"
     echo "  -M Input genome mode. Either 'nucl' or 'prot' (default $input_mode)"
+    echo "  -K Number of threads for sequence alignments. If option is not provided, number of available CPUs will be automatically determined."
     echo ""
     echo "Details:"
     echo "\"-t\": if 'auto', gapseq tries to predict if the organism is Bacteria or Archaea based on the provided genome sequence. The prediction is based on the 16S rRNA gene sequence using a classifier that was trained on 16S rRNA genes from organisms with known Gram-staining phenotype. In case no 16S rRNA gene was found, a k-mer based classifier is used instead."
@@ -101,7 +103,7 @@ function join_by { local IFS="$1"; shift; echo "$*"; }
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjUT:OM:" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjUT:OM:K:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -161,6 +163,8 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjUT:OM:" opt; do
         ;;
     k)
         use_parallel=false
+        n_threads=1
+        echo "DEPRECATION NOTICE: Option '-k' is deprecated. To disable multi-threading use '-K 1' instead."
         ;;
     g)
         exhaustive=true
@@ -193,6 +197,8 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjUT:OM:" opt; do
     M)
         input_mode=$OPTARG
         ;;
+    K)
+        n_threads=$OPTARG
     esac
 done
 shift $((OPTIND-1))
@@ -208,6 +214,7 @@ if [ "$includeSeq" = true ]; then
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
 else
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send"
+    #blast_format="qseqid pident evalue bitscore qcovhsp stitle sstart send"
 fi
 
 # tmp working directory
@@ -456,6 +463,7 @@ if [ "$input_mode" == "nucl" ]; then
 fi
 if [ "$input_mode" == "prot" ]; then
     makeblastdb -in "$fasta" -dbtype prot -out orgdb >/dev/null
+    #diamond makedb -p 16 --in "$fasta" --quiet -d orgdb >/dev/null
 fi
 
 
@@ -726,8 +734,9 @@ do
                     subunits_found_old=$subunits_found
                     for q in `ls query_subunit.part-*.fasta`
                     do
-                        if ! [ -x "$(command -v parallel)" ] || [ "$use_parallel" = false ]; then # try to use parallelized version
+                        if [ ! [ -x "$(command -v parallel)" ] & [ "$input_mode" == "nucl" ] || [ "$use_parallel" = false ]; then # try to use parallelized version # TODO CORRECT THIS!
                             if [ "$input_mode" == "nucl" ]; then
+                                echo "Hello. We are nucl here! (ncpu=1)"
                                 tblastn -db orgdb -query $q -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" > query.blast
                             fi
                             if [ "$input_mode" == "prot" ]; then
@@ -736,10 +745,13 @@ do
                             fi
                         else
                             if [ "$input_mode" == "nucl" ]; then
-                                cat $q | parallel --gnu --will-cite --block 50k --recstart '>' --pipe tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt \'"6 $blast_format"\' -num_threads 12 -query - > query.blast
+                                cat $q | parallel --gnu --will-cite --block 50k -j $n_threads --recstart '>' --pipe tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt \'"6 $blast_format"\' -query - > query.blast
+                                #tblastn -db orgdb -query $q -qcov_hsp_perc $covcutoff -num_threads $n_threads -outfmt "6 $blast_format" > query.blast
                             fi
                             if [ "$input_mode" == "prot" ]; then
-                                cat $q | parallel --gnu --will-cite --block 50k --recstart '>' --pipe blastp -db orgdb -qcov_hsp_perc $covcutoff -outfmt \'"6 $blast_format"\' -num_threads 12 -query - > query.blast
+                                #cat $q | parallel --gnu --will-cite --block 50k --recstart '>' --pipe blastp -db orgdb -qcov_hsp_perc $covcutoff -num_threads 16 -outfmt \'"6 $blast_format"\' -query - > query.blast
+                                blastp -db orgdb -query $q -qcov_hsp_perc $covcutoff -num_threads $n_threads -outfmt "6 $blast_format" > query.blast
+                                #diamond blastp -d orgdb -q $q -b6 --query-cover $covcutoff --outfmt 6 $blast_format -p $n_threads > query.blast
                             fi
                         fi
                         cat query.blast >> $out
