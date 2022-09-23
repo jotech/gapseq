@@ -9,7 +9,8 @@ includeSeq=false
 use_parallel=true
 only_met=""
 verbose=1
-input_mode="nucl"
+input_mode="auto"
+n_threads=`grep -c ^processor /proc/cpuinfo`
 
 usage()
 {
@@ -22,13 +23,14 @@ usage()
     echo "  -k do not use parallel"
     echo "  -m only check for this keyword/metabolite (default: all)"
     echo "  -v Verbose level, 0 for nothing, 1 for full (default $verbose)"
-    echo "  -M Input genome mode. Either 'nucl' or 'prot' (default $input_mode)"
+    echo "  -M Input genome mode. Either 'nucl' or 'prot' (default '$input_mode')"
+    echo "  -K Number of threads for sequence alignments. If option is not provided, number of available CPUs will be automatically determined."
     echo ""
 exit 1
 }
 
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
-while getopts "h?i:b:c:qkm:v:M:" opt; do
+while getopts "h?i:b:c:qkm:v:M:K:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -57,6 +59,9 @@ while getopts "h?i:b:c:qkm:v:M:" opt; do
         ;;
     M)
         input_mode=$OPTARG
+        ;;
+    K)
+        n_threads=$OPTARG
         ;;
     esac
 done
@@ -90,6 +95,18 @@ if [[ $fasta == *.gz ]]; then # in case fasta is in a archive
 fi
 [[ ! -s $fasta ]] && { echo Invalid file: $1; exit 0; }
 
+# Determine if fasta is nucl or prot
+if [ $input_mode == "auto" ]; then
+    n_char=`cat $fasta | grep -v "^>" | awk '{for(i=1;i<=NF;i++)if(!a[$i]++)print $i}' FS="" | wc -l`
+    if [ $n_char -ge 15 ]; then
+        echo "Protein fasta detected."
+        input_mode="prot"
+    else
+        echo "Nucleotide fasta detected."
+        input_mode="nucl"
+    fi
+fi
+
 tmpvar=$(basename $fasta)
 fastaid=${tmpvar%.*}
 
@@ -122,8 +139,16 @@ grep -Fivf SUBkey fasta_header.noTCkey > fasta_header.noKey
 comm -23 fasta_header fasta_header.noKey > fasta_header.small
 awk 'BEGIN{while((getline<"fasta_header.small")>0)l[$1]=1}/^>/{f=l[$1]}f' all.fasta > small.fasta 
 
-makeblastdb -in $fasta -dbtype nucl -out orgdb >/dev/null
-tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" -query small.fasta > out
+
+makeblastdb -in $fasta -dbtype $input_mode -out orgdb >/dev/null
+if [ "$input_mode" == "nucl" ]; then
+    tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" -query small.fasta > out
+fi
+if [ "$input_mode" == "prot" ]; then
+    blastp -db orgdb -qcov_hsp_perc $covcutoff -num_threads $n_threads -outfmt "6 $blast_format" -query small.fasta > out
+fi
+
+
 
 cat out | awk -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $5>=covcutoff) print $0}'> blasthits
 TC_blasthits=$(grep -Pwo "([1-4]\\.[A-z]\\.[0-9]+\\.[0-9]+\\.[0-9]+)" blasthits | sort | uniq)

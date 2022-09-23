@@ -748,7 +748,7 @@ do
                     subunits_found_old=$subunits_found
                     for q in `ls query_subunit.part-*.fasta`
                     do
-                        if { { ! [ -x "$(command -v parallel)" ]; } && [ "$input_mode" == "nucl" ]; } || [ "$use_parallel" = false ]; then # try to use parallelized version. TODO: Make
+                        if { { ! [ -x "$(command -v parallel)" ]; } && [ "$input_mode" == "nucl" ]; } || [ "$use_parallel" = false ]; then # try to use parallelized version. TODO: Beautify this term...
                             if [ "$input_mode" == "nucl" ]; then
                                 tblastn -db orgdb -query $q -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" > query.blast
                             fi
