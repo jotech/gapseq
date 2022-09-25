@@ -227,7 +227,7 @@ if [[ "$user_temp" = true ]]; then
     tmpdir=$(mktemp -d $user_temp_folder/"$tmp_fasta"_XXXXXX)
 else
     tmpdir=$(mktemp -d)
-    trap 'rm -rf "$tmpdir"' EXIT
+    #trap 'rm -rf "$tmpdir"' EXIT
 fi
 echo $tmpdir
 cd $tmpdir
@@ -702,11 +702,14 @@ do
 
         if [ -s $query ]; then
             [[ verbose -ge 1 ]] && echo -e "\t\tFinal file: $query (`cat $query | grep ">" | wc -l` sequences)"
-            query_id=$(basename $query)
-            out="${query_id%.fasta}".blast
+            #query_id=$(basename $query)
+            #out="${query_id%.fasta}".blast
+            out=$(basename `md5sum $query`)
+            out="$out".blast
             subunits_found=0
             subunits_undefined_found=0
             subunit_prescan=0
+            subunits_blastlines=0
             iteractions=0
             subunits_former_run=false
             if [ ! -f $out ]; then # check if there is a former hit
@@ -770,6 +773,9 @@ do
                         bhit=$(cat query.blast | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
                         if [ -n "$bhit" ]; then
                             bestsubunithit=$(echo "$bhit" | sort -rgk 4,4)
+                            tmplines=`echo "$bestsubunithit" | wc -l`
+                            subunits_blastlines=`echo "$subunits_blastlines + $tmplines" | bc`
+                            #echo "$subunits_blastlines"
                             [[ verbose -ge 1 ]] && [[ $iterations -gt 1 ]] && echo "$bestsubunithit" | head -1 | cut -f1 | grep -f - $query | sed "s/^/\t\t\t$subunit_id hit: /" 
                             ((subunits_found++))
                             [[ "$subunit_id" == "Subunit undefined" ]] && ((subunits_undefined_found++))
@@ -779,6 +785,8 @@ do
                         rm query.blast
                     done
                     if [[ $subunits_found -eq $subunits_found_old ]] && [[ $iterations -gt 1 ]]; then
+                        ((subunits_blastlines++))
+                        #echo "$subunits_blastlines"
                         if [ "$includeSeq" = true ]; then
                             echo -e "$rea\t$reaName\t$ec_avail\tNA\t\t\t\t\t\t\t\t\t\t$pwy\tno_blast\tNA\t$dbhit\t$subunit_id\t$is_exception\tNA" >> reactions.tbl # subunit not found 
                         else
@@ -790,6 +798,7 @@ do
                 [[ $iterations -gt 1 ]] && [[ verbose -ge 1 ]] &&  echo -e '\t\t'total subunits found: `echo $subunits_found - $subunits_undefined_found | bc` / $subunits_count
                 #[[ $iterations -gt 1 ]] && [[ verbose -ge 1 ]] && [[ $subunits_undefined_found -eq 1 ]] && echo -e '\t\tUndefined subunit found' 
                 echo -e $out'\t'$subunits_found'\t'$iterations'\t'$subunits_count'\t'$subunits_undefined_found >> subunits.log # save subunits found
+                [[ $iterations -gt 1 ]] && tail -n $subunits_blastlines reactions.tbl > "${out%.blast}".subunithits
             else
                 # get subunit fraction from former run
                 subunits_former_run=true
@@ -817,6 +826,11 @@ do
                         keyReaFound="$keyReaFound $rea"
                     fi
                     [[ $iterations -le 1 ]] && echo "$besthit_all" | awk -v exception="$is_exception" -v rea="$rea" -v reaName="$reaName" -v ec=$ec_avail -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"NA"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t""NA""\t"exception"\t""NA"}' >> reactions.tbl # only for non-subunit hits
+                    
+                    if [ "$subunits_former_run" = true ] && [ $iterations -gt 1 ];then # log also subunit hits from former run
+                        cat "${out%.blast}".subunithits | awk -v exception="$is_exception" -v rea="$rea" -v reaName="$reaName" -v ec=$ec_avail -v dbhit="$dbhit" -v pwy="$pwy" 'BEGIN {OFS=FS="\t"} {$1=rea; $2=reaName; $3=ec; $13=pwy; $16=dbhit; $18=exception} 1' >> reactions.tbl
+                    fi
+                    
                     awk -v rea="$rea" -v status="1" 'BEGIN {OFS=FS="\t"} $1==rea {$19=status} 1' reactions.tbl > reactions.tmp.tbl && mv reactions.tmp.tbl reactions.tbl # change protein complex status for all subunits found
                     
 #blast hit back to uniprot enzyme database
