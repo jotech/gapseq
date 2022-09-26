@@ -807,6 +807,10 @@ do
                 subunits_count=$(cat subunits.log | awk -F "\t" -v out=$out '$1==out { print $4 }')
                 subunits_undefined_found=$(cat subunits.log | awk -F "\t" -v out=$out '$1==out { print $5 }')
                 #echo test:$subunits_found $iterations
+                
+                if [ $iterations -gt 1 ];then # log also subunit hits from former run
+                    cat "${out%.blast}".subunithits | awk -v exception="$is_exception" -v rea="$rea" -v reaName="$reaName" -v ec=$ec_avail -v dbhit="$dbhit" -v pwy="$pwy" 'BEGIN {OFS=FS="\t"} {$1=rea; $2=reaName; $3=ec; $13=pwy; $16=dbhit; $18=exception} 1' >> reactions.tbl
+                fi
             fi
             if [ -s $out ]; then
                 bhit=$(cat $out | awk -v bitcutoff=$bitcutoff -v identcutoff=$identcutoff_tmp -v covcutoff=$covcutoff '{if ($2>=identcutoff && $4>=bitcutoff && $5>=covcutoff) print $0}')
@@ -827,9 +831,9 @@ do
                     fi
                     [[ $iterations -le 1 ]] && echo "$besthit_all" | awk -v exception="$is_exception" -v rea="$rea" -v reaName="$reaName" -v ec=$ec_avail -v dbhit="$dbhit" -v pwy="$pwy" '{print rea"\t"reaName"\t"ec"\t"NA"\t"$0"\t"pwy"\t""good_blast""\t""NA""\t"dbhit"\t""NA""\t"exception"\t""NA"}' >> reactions.tbl # only for non-subunit hits
                     
-                    if [ "$subunits_former_run" = true ] && [ $iterations -gt 1 ];then # log also subunit hits from former run
-                        cat "${out%.blast}".subunithits | awk -v exception="$is_exception" -v rea="$rea" -v reaName="$reaName" -v ec=$ec_avail -v dbhit="$dbhit" -v pwy="$pwy" 'BEGIN {OFS=FS="\t"} {$1=rea; $2=reaName; $3=ec; $13=pwy; $16=dbhit; $18=exception} 1' >> reactions.tbl
-                    fi
+                    # if [ "$subunits_former_run" = true ] && [ $iterations -gt 1 ];then # log also subunit hits from former run
+                    #     cat "${out%.blast}".subunithits | awk -v exception="$is_exception" -v rea="$rea" -v reaName="$reaName" -v ec=$ec_avail -v dbhit="$dbhit" -v pwy="$pwy" 'BEGIN {OFS=FS="\t"} {$1=rea; $2=reaName; $3=ec; $13=pwy; $16=dbhit; $18=exception} 1' >> reactions.tbl
+                    # fi
                     
                     awk -v rea="$rea" -v status="1" 'BEGIN {OFS=FS="\t"} $1==rea {$19=status} 1' reactions.tbl > reactions.tmp.tbl && mv reactions.tmp.tbl reactions.tbl # change protein complex status for all subunits found
                     
