@@ -799,6 +799,7 @@ do
                 #[[ $iterations -gt 1 ]] && [[ verbose -ge 1 ]] && [[ $subunits_undefined_found -eq 1 ]] && echo -e '\t\tUndefined subunit found' 
                 echo -e $out'\t'$subunits_found'\t'$iterations'\t'$subunits_count'\t'$subunits_undefined_found >> subunits.log # save subunits found
                 [[ $iterations -gt 1 ]] && tail -n $subunits_blastlines reactions.tbl > "${out%.blast}".subunithits
+                [[ $iterations -gt 1 ]] && awk -v nastr="NA" 'BEGIN {OFS=FS="\t"} {$1=nastr; $2=nastr; $3=nastr; $13=nastr; $15=nastr; $16=nastr} 1' "${out%.blast}".subunithits > "${out%.blast}".tmp.subunithits && mv "${out%.blast}".tmp.subunithits "${out%.blast}".subunithits
             else
                 # get subunit fraction from former run
                 subunits_former_run=true
@@ -899,7 +900,7 @@ do
                     else
                         [[ verbose -ge 1 ]] && echo -e '\t\t'NO hit because of missing subunits
                         if [[ "$subunits_former_run" = true ]];then # log also subunits from former run
-                            tmp_log=$(cat reactions.tbl | awk -F '\t' -v rea="$rea" -v reaName="$reaName" -v ec="$ec_avail" -v pwy="$pwy" '{OFS=FS} $1==rea && $2==reaName && $3==ec {$13=pwy; print}')
+                            tmp_log=$(cat reactions.tbl | awk -F '\t' -v rea="$rea" -v reaName="$reaName" -v ec="$ec_avail" -v pwy="$pwy" '{OFS=FS} $1==rea && $2==reaName && $3==ec {$13=pwy; $15="NA"; print}')
                             echo "$tmp_log" >> reactions.tbl
                         fi
                     fi 
