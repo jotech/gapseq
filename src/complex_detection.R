@@ -7,37 +7,21 @@ args = commandArgs(trailingOnly=TRUE)
 if (length(args)!=2) {
   stop("First argument should be an input file and the second one the output file.")
 }
-#print(args[1])
 
-list.of.packages <- c("stringr") # cran
-list.of.packages.ext <- c("Biostrings") # bioconductor
-new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages)) install.packages(new.packages, repos = "https://cloud.r-project.org/")
-new.packages.ext <- list.of.packages[!(list.of.packages.ext %in% installed.packages()[,"Package"])]
-if(length(new.packages.ext)){
-	if (!requireNamespace("BiocManager", quietly = TRUE))
-	    install.packages("BiocManager", repos = "https://cloud.r-project.org/")
-
-	BiocManager::install("Biostrings")
-}
-
-
-
-suppressMessages(library(Biostrings))
 suppressMessages(library(stringr))
-suppressMessages(library(methods))
 
-#seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.6.5.3.fasta") # complex1
-#seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.9.3.1.fasta") # complex4
-#seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.2.4.1.fasta") # PDH
-#seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/4.1.1.39.fasta") # rubisco
-#seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.2.7.1.fasta") # PFOR
-#seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/6.6.1.2.fasta") # b12
+#seq <- readLines("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.6.5.3.fasta") # complex1
+#seq <- readLines("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.9.3.1.fasta") # complex4
+#seq <- readLines("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.2.4.1.fasta") # PDH
+#seq <- readLines("~/uni/gapseq/dat/seq/Bacteria/unipac90/4.1.1.39.fasta") # rubisco
+#seq <- readLines("~/uni/gapseq/dat/seq/Bacteria/unipac90/1.2.7.1.fasta") # PFOR
+#seq <- readLines("~/uni/gapseq/dat/seq/Bacteria/unipac90/6.6.1.2.fasta") # b12
 
-#seq <- readAAStringSet("~/uni/gapseq/dat/seq/Bacteria/unipac90/2.2.1.6.fasta") # 
+#seq <- readLines("~/uni/gapseq/dat/seq/Bacteria/unipac90/2.2.1.6.fasta") # 
 
-seq <- readAAStringSet(args[1])
-seq.id <- names(seq)
+seq <- readLines(args[1])
+names_ind <- grep("^>",seq)
+seq.id <- gsub("^>","",seq[names_ind])
 
 # duplicated hits in seq.id (247,249,300) with str_extract_all
 #hits <- str_extract(seq.id, "chain [1-9]+([A-Z])?|subunit [1-9]+([A-Z])?\\b|subunit [A-Z]+\\b|\\b[A-Z]+ subunit|chain [A-Z]+\\b|(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma) subunit")
@@ -123,6 +107,5 @@ if( hits.sel.quali >= 0.66 ){
 
 #print(table(hits))
 
-names(seq) <- paste(seq.id, hits)
-#writeXStringSet(seq, "~/uni/gapseq/dat/seq/Bacteria/unipac90/1.6.5.3.fasta")
-writeXStringSet(seq, args[2])
+seq[names_ind] <- paste0(">",seq.id," ",hits)
+writeLines(seq, args[2])

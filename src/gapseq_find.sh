@@ -327,7 +327,7 @@ mkdir -p $seqpath/rev $seqpath/unrev $seqpath_user
 #check for updates if internet connection is available
 if [[ "$force_offline" = false ]]; then
     is_online=$(wget -q --spider http://rz.uni-kiel.de)
-    is_running=$(pidof -x "$script_name" -o $$) # do not check for updates if running in parallel mode
+    is_running=$(pidof -x "$script_name" -o $$) # do not check for updates if running in parallel mode (several gapseq processes at once)
     if [[ $is_online -eq 0 && -z "$is_running" ]]; then
         $dir/update_sequences.sh $taxonomy
     fi
