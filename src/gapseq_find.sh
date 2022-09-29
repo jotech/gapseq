@@ -227,7 +227,7 @@ if [[ "$user_temp" = true ]]; then
     tmpdir=$(mktemp -d $user_temp_folder/"$tmp_fasta"_XXXXXX)
 else
     tmpdir=$(mktemp -d)
-    #trap 'rm -rf "$tmpdir"' EXIT
+    trap 'rm -rf "$tmpdir"' EXIT
 fi
 echo $tmpdir
 cd $tmpdir
@@ -301,6 +301,12 @@ case $pathways in
         pwyKey=$pathways
         ;;
 esac
+
+# Taxonomy prediction does currently work only with nuceotide fasta input
+if [ $input_mode == "prot" ] && [ $taxonomy == "auto" ]; then
+    echo "WARNING: Automated taxonomy prediction is not yet implemented for protein fasta input. Assuming Bacteria..."
+    taxonomy="Bacteria"
+fi
 
 # determine taxonomy
 if [ "$taxonomy" == "auto" ]; then
