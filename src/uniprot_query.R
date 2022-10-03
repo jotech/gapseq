@@ -11,7 +11,7 @@ library(stringr)
 # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~#
 
 # query_type <- "ec" # (either "ec", "protein_name", "gene_exact" or "id").
-# query_term <- "1.2.1.3"
+# query_term <- "2.7.1.90"
 batch_size_query_results <- 500
 batch_size_clusters <- 200 # 200 should work: https://github.com/ebi-uniprot/uniprot-rest-api/issues/275#issuecomment-1173888616
 max_attempts <- 10 # Maximum number of attempts per query to receive a status==200 response from uniprot website.
@@ -30,8 +30,8 @@ GET_retries <- function(url) {
   
   return(res)
 }
-# rev_status <- "true"
-# uniref_id <- "0.9"
+# rev_status <- "false"
+# uniref_id <- "0.5"
 # output_fasta_file <- "test.fasta"
 # taxonomy <- "Bacteria"
 
@@ -63,13 +63,12 @@ if (query_type=="id" & length(args)!=4) {
   stop("")
 }
 
+# parse taxonomy term
+taxonomy <- unlist(strsplit(taxonomy, ","))
+taxonomy <- paste0("(taxonomy_name:",taxonomy,")", collapse = "%20OR%20")
+taxonomy <- paste0("(",taxonomy,")")
 
 if(query_type != "id") {
-  # parse taxonomy term
-  taxonomy <- unlist(strsplit(taxonomy, ","))
-  taxonomy <- paste0("(taxonomy_name:",taxonomy,")", collapse = "%20OR%20")
-  taxonomy <- paste0("(",taxonomy,")")
-  
   # (0) - Build uniprot entry URL 
   urli <- paste0("https://rest.uniprot.org/uniprotkb/search?format=list&query=(",
                  query_type,":",query_term,
