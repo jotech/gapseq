@@ -26,7 +26,7 @@ R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "doParallel
 R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Biostrings")'
 git clone https://github.com/jotech/gapseq && cd gapseq
 ```
-Some additional discussion and and trouble shooting can be found here: [1](https://apple.stackexchange.com/a/69332), [2](https://github.com/jotech/gapseq/issues/28).
+Some additional discussion and and trouble shooting can be found here: [1](https://apple.stackexchange.com/a/69332), [2](https://github.com/jotech/gapseq/issues/28), [3](https://github.com/jotech/gapseq/issues/143#issuecomment-1263349021).
 
 ## conda
 There is no conda gapseq package available yet but all dependencies can be installed from conda channels without super user rights using the following steps:
@@ -74,9 +74,9 @@ There should be a ``libsbml`` package (version 5.18.0 or later) available for mo
 sudo apt install libsbml5-dev # debian/ubuntu
 sudo yum install libsbml-devel # fedora/centos
 ```
-For MacOS, libsbml is not part of homebrew but an installation file can be downloaded from [here](https://sourceforge.net/projects/sbml/files/libsbml/5.18.0/stable/Mac%20OS%20X/).
+For MacOS, libsbml is not part of homebrew but an installation file can be downloaded from [here](https://sourceforge.net/projects/sbml/files/libsbml/5.18.0/stable/Mac%20OS%20X/). An instruction to install libSBML on an M1 Mac system has been suggested by a gapseq user [here](https://github.com/jotech/gapseq/issues/143#issuecomment-1263349021).
 
-Please make sure, that `libsbml` is installed together with its [fbc-extension](http://sbml.org/Main_Page).
+Please make sure, that `libsbml` is installed together with its [extensions "fbc" and "groups"](https://sbml.org/software/libsbml/).
 
 Next, we need to install the R-package `sybilSBML`, version 3.1.2. Unfortunately, the package is currently not available anymore from the CRAN repository. However, the latest version can still be downloaded and installed from CRAN's archives:
 
