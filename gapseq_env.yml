@@ -35,3 +35,4 @@ dependencies:
   - r-renv
   - r-glpkapi
   - r-rcurl
+  - r-httr

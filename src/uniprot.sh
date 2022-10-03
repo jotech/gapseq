@@ -74,7 +74,7 @@ shift $((OPTIND-1))
 # consider special case of eg. prokaryotes which are not supported by uniprot taxonomy
 if [ "$taxonomy" = "Prokaryota" ]; then
     folder=Prokaryota
-    taxonomy="(bacteria%20OR%20archaea)"
+    taxonomy="Bacteria,Archaea"
 else
     folder=$taxonomy
 fi
@@ -127,12 +127,11 @@ if [ -n "$ecnumber" ]; then
             echo -en " ... Downloading $ec \t\t"
             if [ "$get_unrev" = false ]; then
                 #swissprot
-                url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+                Rscript $dir/uniprot_query.R ec $ec $ec.fasta $taxonomy true 0.9 && stat=ok || stat=err
             else
                 # unreviewed
-                url="https://www.uniprot.org/uniref/?query=uniprot%3A(ec%3A$ec%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ano)%20identity%3A$identity_unrev&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+                Rscript $dir/uniprot_query.R ec $ec $ec.fasta $taxonomy false 0.5 && stat=ok || stat=err
             fi
-            wget -q $url -O $ec.fasta && stat=ok || stat=err # download only if file not exists
             newmd5=$(md5sum $ec.fasta | cut -d " " -f1)
             newcount=$(cat $ec.fasta | grep ">" | wc -l)
             [[ "$oldmd5" != "$newmd5" ]] && echo "`date +"%d/%m/%Y"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$ec.fasta $stat" >> ../updating.log
@@ -157,11 +156,10 @@ if [ -n "$reaNames" ]; then
         rm -f $reaNameHash.fasta
         echo -en " ... Downloading $rea\t\t"
         if [ "$get_unrev" = false ]; then 
-            url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+            Rscript $dir/uniprot_query.R protein_name "$rea" $reaNameHash.fasta $taxonomy true 0.9 && stat=ok || stat=err
         else 
-            url="https://www.uniprot.org/uniref/?query=uniprot%3A(name%3A\"$rea\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ano)%20identity%3A$identity_unrev&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+            Rscript $dir/uniprot_query.R protein_name "$rea" $reaNameHash.fasta $taxonomy false 0.5 && stat=ok || stat=err
         fi
-        wget -q "$url" -O "$reaNameHash.fasta" && stat=ok || stat=err
         newmd5=$(md5sum $reaNameHash.fasta | cut -d " " -f1)
         newcount=$(cat $reaNameHash.fasta | grep ">" | wc -l)
         [[ "$oldmd5" != "$newmd5" ]] && echo "`date +"%d/%m/%Y"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$reaNameHash.fasta $stat" >> ../updating.log
@@ -177,11 +175,10 @@ if [ -n "$geneName" ]; then
         rm -f $geneName.fasta
         echo -en " ... Downloading $geneName\t\t"
         if [ "$get_unrev" = false ]; then 
-            url="https://www.uniprot.org/uniref/?query=uniprot%3A(gene_exact%3A\"$geneName\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ayes)%20identity%3A$identity&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+            Rscript $dir/uniprot_query.R gene "$geneName" $reaNameHash.fasta $taxonomy true 0.9 && stat=ok || stat=err
         else 
-            url="https://www.uniprot.org/uniref/?query=uniprot%3A(gene_exact%3A\"$geneName\"%20taxonomy%3A$taxonomy%20AND%20reviewed%3Ano)%20identity%3A$identity_unrev&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
+            Rscript $dir/uniprot_query.R gene "$geneName" $reaNameHash.fasta $taxonomy false 0.5 && stat=ok || stat=err
         fi
-        wget -q "$url" -O "$geneName.fasta" && stat=ok || stat=err
         newmd5=$(md5sum $geneName.fasta | cut -d " " -f1)
         newcount=$(cat $geneName.fasta | grep ">" | wc -l)
         [[ "$oldmd5" != "$newmd5" ]] && echo "`date +"%d/%m/%Y"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$geneName.fasta $stat" >> ../updating.log
@@ -198,8 +195,7 @@ if [ -n "$dbref" ]; then
         oldcount=$(cat $dbref.fasta | grep ">" | wc -l)
         rm -f $dbref.fasta
         echo -en " ... Downloading $dbref\t\t"
-        url="https://www.uniprot.org/uniprot/?query=uniprot%3A(id%3A\"$dbref\"%20taxonomy%3A$taxonomy)&columns=id%2Creviewed%2Cname%2Ccount%2Cmembers%2Corganisms%2Clength%2Cidentity&format=fasta"
-        wget -q "$url" -O "$dbref.fasta" && stat=ok || stat=err
+        Rscript $dir/uniprot_query.R id $dbref $dbref.fasta $taxonomy && stat=ok || stat=err
         newmd5=$(md5sum $dbref.fasta | cut -d " " -f1)
         newcount=$(cat $dbref.fasta | grep ">" | wc -l)
         [[ "$oldmd5" != "$newmd5" ]] && echo "`date +"%d/%m/%Y"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$dbref.fasta $stat" >> ../updating.log
