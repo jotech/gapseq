@@ -32,7 +32,12 @@ update_manually=false
 user_temp=false
 force_offline=false
 input_mode="auto"
-n_threads=`grep -c ^processor /proc/cpuinfo`
+OS=$(uname -s)
+if [ "$OS" = "Darwin" -o "$OS" = "FreeBSD" ]; then
+	n_threads=$(sysctl hw.ncpu|cut -f2 -d' ')
+else
+	n_threads=`grep -c ^processor /proc/cpuinfo`
+fi
 
 usage()
 {
