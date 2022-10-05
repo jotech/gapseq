@@ -47,7 +47,7 @@ args = commandArgs(trailingOnly=TRUE)
 
 # parse positional arguments
 query_type <- args[1]
-query_term <- args[2]
+query_term <- utils::URLencode(args[2])
 output_fasta_file <- args[3]
 taxonomy <- args[4]
 if(length(args)==6) {

@@ -32,7 +32,12 @@ update_manually=false
 user_temp=false
 force_offline=false
 input_mode="auto"
-n_threads=`grep -c ^processor /proc/cpuinfo`
+OS=$(uname -s)
+if [ "$OS" = "Darwin" -o "$OS" = "FreeBSD" ]; then
+	n_threads=$(sysctl hw.ncpu|cut -f2 -d' ')
+else
+	n_threads=`grep -c ^processor /proc/cpuinfo`
+fi
 
 usage()
 {
@@ -333,7 +338,7 @@ mkdir -p $seqpath/rev $seqpath/unrev $seqpath_user
 #check for updates if internet connection is available
 if [[ "$force_offline" = false ]]; then
     is_online=$(wget -q --spider http://rz.uni-kiel.de)
-    is_running=$(pidof -x "$script_name" -o $$) # do not check for updates if running in parallel mode (several gapseq processes at once)
+    is_running=$(pgrep -f "bash.*$script_name" | grep -v "^$$") # do not check for updates if running in parallel mode (several gapseq processes at once)
     if [[ $is_online -eq 0 && -z "$is_running" ]]; then
         $dir/update_sequences.sh $taxonomy
     fi
@@ -1046,6 +1051,6 @@ sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $
 [[ -s "$tmp_fasta" ]] && rm "$tmp_fasta"
 
 
-ps -p $$ -o %cpu,%mem,cmd
+ps -p $$ -o %cpu,%mem,args
 end_time=`date +%s`
 echo Running time: `expr $end_time - $start_time` s.
