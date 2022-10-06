@@ -147,10 +147,10 @@ awk 'BEGIN{while((getline<"fasta_header.small")>0)l[$1]=1}/^>/{f=l[$1]}f' all.fa
 
 makeblastdb -in $fasta -dbtype $input_mode -out orgdb >/dev/null
 if [ "$input_mode" == "nucl" ]; then
-    tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" -query small.fasta > out
+    tblastn -db orgdb -qcov_hsp_perc $covcutoff -num_threads $n_threads -mt_mode 1 -outfmt "6 $blast_format" -query small.fasta > out
 fi
 if [ "$input_mode" == "prot" ]; then
-    blastp -db orgdb -qcov_hsp_perc $covcutoff -num_threads $n_threads -outfmt "6 $blast_format" -query small.fasta > out
+    blastp -db orgdb -qcov_hsp_perc $covcutoff -num_threads $n_threads -mt_mode 1 -outfmt "6 $blast_format" -query small.fasta > out
 fi
 
 
