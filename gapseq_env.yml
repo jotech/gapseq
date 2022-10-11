@@ -14,6 +14,7 @@ dependencies:
   - git
   - coreutils
   - wget
+  - openssl
   - barrnap
   - bedtools
   - exonerate
