@@ -7,18 +7,18 @@ suppressMessages(library(IRanges))
 options(error=traceback)
 
 # test data
-#blast.res <- "../gapseq.publication/gene.essent/GCF_000005845.2_ASM584v2_genomic-all-Reactions.tbl"
-#gram <- "auto"
-#genome.seq <- "../gapseq.publication/gene.essent/GCF_000005845.2_ASM584v2_genomic.fna.gz"
-#high.evi.rxn.BS <- 200
-#transporter.res <- "../gapseq.publication/gene.essent/GCF_000005845.2_ASM584v2_genomic-Transporter.tbl"
+blast.res <- "~/test/MAG5-files/MAG5_protein-all-Reactions.tbl"
+gram <- "pos"
+biomass <- "pos"
+genome.seq <- NA
+high.evi.rxn.BS <- 200
+transporter.res <- "~/test/MAG5-files/MAG5_protein-Transporter.tbl"
 
 build_draft_model_from_blast_results <- function(blast.res, transporter.res, biomass = "auto", model.name = NA, genome.seq = NA, 
                                                  script.dir, high.evi.rxn.BS = 200, pathway.pred = NA, min.bs.for.core = 50) {
   suppressMessages(require(data.table))
   setDTthreads(1)
   suppressMessages(require(stringr))
-  #suppressMessages(require(sybil))
 
   source(paste0(script.dir,"/gram_by_network.R"))
   
@@ -76,42 +76,51 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   dt_seed_single_and_there <- dt_seed_single_and_there[order(seed,-bitscore)]
   dt_seed_single_and_there <- dt_seed_single_and_there[!duplicated(seed)]
   
-  # check if contig names match conventions and are unique. if not, assign new ones.
-  #dt <- fread("Clostridium_difficile_NAP07-all-Reactions.tbl", fill = T, skip = "rxn	")
-  contig.names.full  <- unique(dt$stitle)
+  # check if sequence names match conventions and are unique. if not, assign new ones.
+  contig.names.full  <- unique(c(dt$stitle,dt.cand$stitle))
   contig.names.full  <- contig.names.full[contig.names.full != ""]
   n.contigs          <- length(contig.names.full)
-  contig.names.short <- gsub(" .*$","", contig.names.full)
-  if(length(unique(contig.names.short)) != n.contigs) {
-    warning("Sequence identifiers do not match NCBI standard. Trying to find unique parts in sequence id strings...")
-    # try to find a unique parts in contig identifiers
-    contig.names.full.tmp <- gsub(":","",contig.names.full, fixed = T)
-    id.splits <- str_split(contig.names.full.tmp, pattern = " ")
-    nr.splits <- min(unlist(lapply(id.splits, length))) # how many times can we split the identifier string at space (minimum)
-    new.id <- c()
-    if(nr.splits > 1) {
-      for(i in 2:nr.splits) {
-        tmp.id <- unlist(lapply(id.splits, function(x) x[i]))
-        if(length(unique(tmp.id)) == n.contigs){
-          new.id <- tmp.id
-          break;
-        }
-      }
-    }
-    if(length(new.id) == 0 ) {
-      warning("No unique parts in sequence id strings found. Assigning new contig names: \"contig_[i]\"")
-      new.id <- paste0("contig_",1:n.contigs)
-    }
-    dt.new.ids <- data.table(old.contig = contig.names.full, new.contig = new.id)
-    for(i in 1:nrow(dt)) {
-      cur.stitles <- dt[i,stitle]
-      if(cur.stitles != "" & !is.na(cur.stitles)) {
-        new.stitle <- dt.new.ids[old.contig == cur.stitles, new.contig]
-        dt[i, stitle := new.stitle]
-      }
+  
+  # Sequence title "corrections"
+  # (1) cut everything after the first "space" occurrence, incl. the space
+  # (2) Replace special characters
+  # (3) Truncate sequence ID length if necessary
+  # (4) Check if IDs are still unique, if not assign new unique sequence names
+  # (5) Change sequence titles in for gene names in model object
+  
+  new.stitle <- gsub(" .*$","", contig.names.full) # (1)
+  new.stitle <- gsub("\\(|\\)|\\+|,|/|\\:|\\||\\&|\\[|\\]|\\{|\\}|'|\"","_", new.stitle) # (2)
+  # (3)
+  ind.toolong <- which(str_length(new.stitle) > 40)
+  if(length(ind.toolong) > 0) {
+    warning(paste0(length(ind.toolong)," genome contig/gene/protein sequence titles are very long. E.g.:\n\"",
+                   contig.names.full[ind.toolong[1]], "\"\n",
+                   "These titles are truncated to a maximum length of 40 characters. ",
+                   "Please consider to adjust sequence titles to shorter identifiers before running gapseq.\n"))
+    for(itl in ind.toolong)
+      new.stitle[itl] <- substr(new.stitle[itl],1,40)
+  }
+  # (4)
+  if(length(unique(new.stitle)) != n.contigs) {
+    warning("Sequence identifiers do not match NCBI standard:\nhttps://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=BlastHelp\nAssigning new sequence names (\"sequence_[i]\").")
+    new.stitle <- paste0("sequence_",1:n.contigs)
+  }
+  # (5)
+  dt.new.ids <- data.table(old.contig = contig.names.full, new.contig = new.stitle) # dictionary
+  for(i in 1:nrow(dt)) {
+    cur.stitles <- dt[i,stitle]
+    if(cur.stitles != "" & !is.na(cur.stitles)) {
+      tmptitle <- dt.new.ids[old.contig == cur.stitles, new.contig]
+      dt[i, stitle := tmptitle]
     }
   }
-  
+  for(i in 1:nrow(dt.cand)) {
+    cur.stitles <- dt.cand[i,stitle]
+    if(cur.stitles != "" & !is.na(cur.stitles)) {
+      tmptitle <- dt.new.ids[old.contig == cur.stitles, new.contig]
+      dt.cand[i, stitle := tmptitle]
+    }
+  }
   
   # create gene list and attribute table
   cat("Creating Gene-Reaction list... ")
