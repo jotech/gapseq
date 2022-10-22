@@ -7,12 +7,12 @@ suppressMessages(library(IRanges))
 options(error=traceback)
 
 # test data
-blast.res <- "~/test/MAG5-files/MAG5_protein-all-Reactions.tbl"
-gram <- "pos"
-biomass <- "pos"
-genome.seq <- NA
-high.evi.rxn.BS <- 200
-transporter.res <- "~/test/MAG5-files/MAG5_protein-Transporter.tbl"
+#blast.res <- "~/test/MAG5-files/MAG5_protein-all-Reactions.tbl"
+#gram <- "pos"
+#biomass <- "pos"
+#genome.seq <- NA
+#high.evi.rxn.BS <- 200
+#transporter.res <- "~/test/MAG5-files/MAG5_protein-Transporter.tbl"
 
 build_draft_model_from_blast_results <- function(blast.res, transporter.res, biomass = "auto", model.name = NA, genome.seq = NA, 
                                                  script.dir, high.evi.rxn.BS = 200, pathway.pred = NA, min.bs.for.core = 50) {
