@@ -1041,8 +1041,10 @@ seqdb_date=$(stat -c %y $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1
 
 sed -i "1s/^/# $gapseq_version\n/" $curdir/${fastaID}-$output_suffix-Reactions.tbl
 sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $curdir/${fastaID}-$output_suffix-Reactions.tbl
+sed -i "3s/^/# Genome format: $input_mode\n/" $curdir/${fastaID}-$output_suffix-Reactions.tbl
 sed -i "1s/^/# $gapseq_version\n/" $curdir/${fastaID}-$output_suffix-Pathways.tbl
 sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $curdir/${fastaID}-$output_suffix-Pathways.tbl
+sed -i "3s/^/# Genome format: $input_mode\n/" $curdir/${fastaID}-$output_suffix-Pathways.tbl
 
 # print annotation genome coverage
 [[ verbose -ge 1 ]] && [[ "$anno_genome_cov" = true ]] && Rscript $dir/coverage.R "$fasta" $curdir/${fastaID}-$output_suffix-Reactions.tbl 

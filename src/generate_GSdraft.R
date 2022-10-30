@@ -19,6 +19,17 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   suppressMessages(require(data.table))
   setDTthreads(1)
   suppressMessages(require(stringr))
+  
+  # get input genome fasta format (nucl/prot)
+  input_mode <- readLines(blast.res)
+  input_mode <- input_mode[grep("^# Genome format\\:", input_mode)]
+  if(length(input_mode) == 0) {
+    input_mode <- "nucl" # to ensure this scripts works also on older find-output tables
+  } else {
+    input_mode <- gsub("^# Genome format\\: ","",input_mode)
+    if(!(input_mode %in% c("prot","nucl")))
+      stop(paste0("Unrecognized genome format in header of "), blast.res)
+  }
 
   source(paste0(script.dir,"/gram_by_network.R"))
   
@@ -86,7 +97,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   # (2) Replace special characters
   # (3) Truncate sequence ID length if necessary
   # (4) Check if IDs are still unique, if not assign new unique sequence names
-  # (5) Change sequence titles in for gene names in model object
+  # (5) Change sequence titles for gene names in model object
   
   new.stitle <- gsub(" .*$","", contig.names.full) # (1)
   new.stitle <- gsub("\\(|\\)|\\+|,|/|\\:|\\||\\&|\\[|\\]|\\{|\\}|'|\"","_", new.stitle) # (2)
@@ -126,67 +137,89 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   cat("Creating Gene-Reaction list... ")
 
   dt_genes <- copy(dt[!is.na(bitscore)])
-  dt_genes[, gene := paste0(gsub(" .*","",stitle),"_",paste(sstart,send, sep = ":"))]
-
-  all_cont <- unique(dt_genes$stitle) # Contigs
-  all_cont <- all_cont[all_cont != ""]
-
-  dt_genes[sstart > send, istart := send]
-  dt_genes[sstart > send, iend   := sstart]
-  dt_genes[sstart < send, istart := sstart]
-  dt_genes[sstart < send, iend   := send]
   
-  #setkey(dt_genes, stitle, seed)
-  
-  for(i_cont in all_cont) {
-    setkey(dt_genes, stitle, seed)
-    dt_genes_cont <- dt_genes[.(i_cont),]
+  if(input_mode == "prot") {
+    dt_genes[, gene := gsub(" .*","",stitle)]
+    dt_genes <- dt_genes[!duplicated(paste0(stitle, gene, seed, complex, sep = "$"))]
     
-    dt_ttt <- dt_genes_cont[,.(gene, istart, iend, bitscore)]
-    dt_ttt <- dt_ttt[!duplicated(gene)]
-    dt_ttt <- dt_ttt[order(-bitscore)]
+    dt_genes[grepl("Subunit undefined", complex), complex := "ZSubunit undefined"]
+    dt_genes <- dt_genes[order(stitle,seed,complex,-bitscore)]
+    dt_genes <- dt_genes[!duplicated(paste(stitle,seed,gene,sep = "$"))]
+    dt_genes[grepl("ZSubunit undefined", complex), complex := "Subunit undefined"]
     
-    ira <- IRanges(start = dt_ttt$istart, end = dt_ttt$iend, names = dt_ttt$gene)
-    group <- findOverlaps(ira, ira, type = "within", select = "first")
-    dt_ttt$gene2 <- dt_ttt$gene[group]
-    
-    dt_genes <- merge(dt_genes, dt_ttt[,.(gene, gene2)], by = "gene", all.x = T, 
-                      sort = F) 
-    dt_genes[!is.na(gene2) & stitle == i_cont, gene := gene2]
-    dt_genes[, gene2 := NULL]
+    dt_genes[, rm := FALSE]
   }
-  
-  dt_genes[, istart := NULL]
-  dt_genes[, iend   := NULL]
-  
-  dt_genes <- dt_genes[!duplicated(paste0(stitle, gene, seed, complex, sep = "$"))]
-  
-  
-  dt_genes[grepl("Subunit undefined", complex), complex := "ZSubunit undefined"]
-  dt_genes <- dt_genes[order(stitle,seed,complex,-bitscore)]
-  dt_genes <- dt_genes[!duplicated(paste(stitle,seed,gene,sep = "$"))]
-  dt_genes[grepl("ZSubunit undefined", complex), complex := "Subunit undefined"]
-  
-  dt_genes[, rm := F]
-  dt_genes$itmp <- 1:nrow(dt_genes)
-  setkey(dt_genes, stitle, seed)
-  
-  for(i_cont in all_cont) {
-    all_seed <- unique(dt_genes[.(i_cont), seed]) # Individual reactions on contig
-    all_seed <- intersect(mseed$id, all_seed)
-    for(i_seed in all_seed) {
-      dt_g_tmp <- dt_genes[.(i_cont,i_seed)]
-      if(nrow(dt_g_tmp)>1) {
-        for(i in 1:(nrow(dt_g_tmp)-1)) {
-          astart <- dt_g_tmp[i, sstart]
-          aend   <- dt_g_tmp[i, send]
-          ind.rm <- dt_g_tmp[(i+1):nrow(dt_g_tmp)][calc_seq_overlap(astart, aend, sstart, send) > 0.5, itmp]
-          dt_genes[ind.rm, rm := T]
+  if(input_mode == "nucl") {
+    dt_genes[, gene := paste0(gsub(" .*","",stitle),"_",paste(sstart,send, sep = ":"))]
+    
+    all_cont <- unique(dt_genes$stitle) # Contigs
+    all_cont <- all_cont[all_cont != ""]
+    
+    dt_genes[sstart > send, istart := send]
+    dt_genes[sstart > send, iend   := sstart]
+    dt_genes[sstart < send, istart := sstart]
+    dt_genes[sstart < send, iend   := send]
+    
+    #setkey(dt_genes, stitle, seed)
+    
+    for(i_cont in all_cont) {
+      setkey(dt_genes, stitle, seed)
+      dt_genes_cont <- dt_genes[.(i_cont),]
+      
+      dt_ttt <- dt_genes_cont[,.(gene, istart, iend, bitscore)]
+      dt_ttt <- dt_ttt[!duplicated(gene)]
+      dt_ttt <- dt_ttt[order(-bitscore)]
+      
+      ira <- IRanges(start = dt_ttt$istart, end = dt_ttt$iend, names = dt_ttt$gene)
+      group <- findOverlaps(ira, ira, type = "within", select = "first")
+      dt_ttt$gene2 <- dt_ttt$gene[group]
+      
+      dt_genes <- merge(dt_genes, dt_ttt[,.(gene, gene2)], by = "gene", all.x = T, 
+                        sort = F) 
+      dt_genes[!is.na(gene2) & stitle == i_cont, gene := gene2]
+      dt_genes[, gene2 := NULL]
+    }
+    
+    dt_genes[, istart := NULL]
+    dt_genes[, iend   := NULL]
+    
+    dt_genes <- dt_genes[!duplicated(paste0(stitle, gene, seed, complex, sep = "$"))]
+    
+    
+    dt_genes[grepl("Subunit undefined", complex), complex := "ZSubunit undefined"]
+    dt_genes <- dt_genes[order(stitle,seed,complex,-bitscore)]
+    dt_genes <- dt_genes[!duplicated(paste(stitle,seed,gene,sep = "$"))]
+    dt_genes[grepl("ZSubunit undefined", complex), complex := "Subunit undefined"]
+    
+    dt_genes[, rm := F]
+    dt_genes$itmp <- 1:nrow(dt_genes)
+    setkey(dt_genes, stitle, seed)
+    
+    for(i_cont in all_cont) {
+      all_seed <- unique(dt_genes[.(i_cont), seed]) # Individual reactions on contig
+      all_seed <- intersect(mseed$id, all_seed)
+      for(i_seed in all_seed) {
+        dt_g_tmp <- dt_genes[.(i_cont,i_seed)]
+        if(nrow(dt_g_tmp)>1) {
+          for(i in 1:(nrow(dt_g_tmp)-1)) {
+            astart <- dt_g_tmp[i, sstart]
+            aend   <- dt_g_tmp[i, send]
+            ind.rm <- dt_g_tmp[(i+1):nrow(dt_g_tmp)][calc_seq_overlap(astart, aend, sstart, send) > 0.5, itmp]
+            dt_genes[ind.rm, rm := T]
+          }
         }
       }
     }
   }
-  cat(length(unique(dt_genes[rm == F & seed %in% mseed$id, paste(gene, sep="$")])),"unique genes on",length(unique(dt_genes[rm == F, stitle])),"genetic element(s)\n")
+  if(input_mode == "nucl") {
+    cat(length(unique(dt_genes[rm == F & seed %in% mseed$id, paste(gene, sep="$")])),
+        "unique genes on",length(unique(dt_genes[rm == F, stitle])),
+        "genetic element(s)\n")
+  }
+  if(input_mode == "prot") {
+    cat(length(unique(dt_genes[rm == F & seed %in% mseed$id, paste(gene, sep="$")])),
+        "unique genes\n")
+  }
   
   # create subsys list and attribute table
   dt_subsys <- copy(dt[!is.na(pathway)])
