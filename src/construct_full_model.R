@@ -204,5 +204,5 @@ futile_cycle_test <- function(script.dir, env = "") {
   
   fwrite(dt, paste0(script.dir,"/../Futile_cycle.csv"))
   
-  return(paste0("At least one futile cycles found. See file: Futile_cycle.csv"))
+  return(paste0("At least one futile cycle found. See file: Futile_cycle.csv"))
 }
