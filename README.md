@@ -56,18 +56,18 @@ GNU General Public License version 3.0 ([GPLv3](https://www.gnu.org/licenses/gpl
 - **MetaCyc**: Copyright © SRI International 1999-2020, Marine Biological Laboratory  1998-2001, DoubleTwist Inc 1998-1999.  
   Link to license: https://metacyc.org/ptools-academic-license.shtml .
   Website: https://metacyc.org/
-- **MODELSEED**: Copyright 2015 ModelSEED
+- **MODELSEED**: Copyright 2015 ModelSEED.
   Licensed under Creative Commons  Attribution 4.0 International License.
   Link to license: https://creativecommons.org/licenses/by/4.0/ 
   Website: https://modelseed.org/
-- **KEGG**: [Copyright](https://www.kegg.jp/kegg/legal.html) 1995-2020 [Kanehisa Laboratories](https://www.kanehisa.jp/)
+- **KEGG**: [Copyright](https://www.kegg.jp/kegg/legal.html) 1995-2020 [Kanehisa Laboratories](https://www.kanehisa.jp/).
   For license terms see file `dat/licenses/LICENSE.kegg` .
   Website: http://www.kegg.jp
 - **BRENDA**: Copyright 2020 Prof. Dr. D. Schomburg, Technische Universität Braunschweig,  BRICS, Department of Bioinformatics and Biochemistry, Rebenring 56, 38106 Braunschweig, Germany.
   Licensed under the Creative Commons Attribution License [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) is applied to all[ copyrightable parts](https://wiki.creativecommons.org/wiki/Data#Can_databases_be_released_under_CC_licenses.3F) of BRENDA.
   Link to license: https://creativecommons.org/licenses/by/4.0/
   Website: https://www.brenda-enzymes.org/
-- **UNIPROT**: Copyright 2002 –2020 [UniProt Consortium](https://www.uniprot.org/help/about)
+- **UNIPROT**: Copyright 2002 –2020 [UniProt Consortium](https://www.uniprot.org/help/about).
   Licensed under the Creative Commons Attribution License [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) is applied to all[ copyrightable parts](https://wiki.creativecommons.org/wiki/Data#Can_databases_be_released_under_CC_licenses.3F) of UNIPROT.
   Link to license: https://creativecommons.org/licenses/by/4.0/
   Website: https://www.uniprot.org/
@@ -75,6 +75,10 @@ GNU General Public License version 3.0 ([GPLv3](https://www.gnu.org/licenses/gpl
   The text of the TCDB website (TCDB.ORG) is available for modification and reuse under  the terms of the Creative Commons Attribution-Sharealike 3.0 Unported  License and the GNU Free Documentation License.
   Link to license: https://creativecommons.org/licenses/by-sa/3.0/de/
   Website: http://www.tcdb.org/
-- **BIGG**: Copyright © 2019 The Regents of the University of California 
+- **BIGG**: Copyright © 2019 The Regents of the University of California. 
   All Rights Reserved by the licenser. For license terms and conditions see file `dat/licenses/LICENSE.bigg` .
   Website: http://bigg.ucsd.edu/
+- **GTDBtk**: Copyright 2017 Pierre-Alain Chaumeil.
+  Licensed under the [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.en.html) license.
+  Link to license: https://github.com/Ecogenomics/GTDBTk/blob/master/LICENSE
+  Website: https://ecogenomics.github.io/GTDBTk/

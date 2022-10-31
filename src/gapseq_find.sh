@@ -7,7 +7,7 @@ database="seed"
 pwyDatabase="metacyc,custom"
 verbose=1
 taxonomy="Bacteria"
-taxRange="" # taxonomic range for pawthways
+taxRange="" # taxonomic range for pathways
 bitcutoff=200 # cutoff blast: min bit score
 identcutoff=0   # cutoff blast: min identity
 identcutoff_exception=70  # min identity for enzymes marked as false friends (hight seq similarity but different function)
@@ -307,14 +307,18 @@ case $pathways in
         ;;
 esac
 
-# Taxonomy prediction does currently work only with nuceotide fasta input
-if [ $input_mode == "prot" ] && [ $taxonomy == "auto" ]; then
-    echo "WARNING: Automated taxonomy prediction is not yet implemented for protein fasta input. Assuming Bacteria..."
-    taxonomy="Bacteria"
-fi
-
 # determine taxonomy
-if [ "$taxonomy" == "auto" ]; then
+if [ $input_mode == "prot" ] && [ $taxonomy == "auto" ]; then
+    cp $dir/../dat/seq/hmm/domain.hmm.gz .
+    gunzip domain.hmm.gz
+    hmmsearch --tblout $fastaID.tblout --cpu $n_threads domain.hmm $fasta > /dev/null
+    taxonomy=`Rscript $dir/predict_domain.R "$dir" "$fastaID.tblout"`
+    rm domain.hmm
+    rm $fastaID.tblout
+    
+    echo Predicted taxonomy: $taxonomy
+fi
+if [ $input_mode == "nucl" ] && [ "$taxonomy" == "auto" ]; then
     pred_biom=$($dir/predict_biomass_from16S.sh "$fasta")
     if [ "$pred_biom" == "Gram_neg" ] || [ "$pred_biom" == "Gram_pos" ]; then
         taxonomy=Bacteria
@@ -328,6 +332,12 @@ if [ "$taxonomy" == "auto" ]; then
 fi
 [[ "$taxonomy" == "bacteria" ]] && taxonomy=Bacteria
 [[ "$taxonomy" == "archaea" ]] &&  taxonomy=Archaea
+
+# Follow taxonomy preiction for pathway tax range if set to "auto"
+if [ $taxRange == "auto" ]; then
+    taxRange=$taxonomy
+fi
+
 
 # squence directory
 export LC_NUMERIC="en_US.UTF-8"
