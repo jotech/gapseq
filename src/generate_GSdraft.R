@@ -43,23 +43,52 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     } 
     
     forced_bacterial <- biomass %in% c("Bacteria", "bacteria")
-
-    biomass <- system(paste0(script.dir,"/./predict_biomass_from16S.sh ",genome.seq), intern = T)
     
-    # If user specified Bacteria but sequence-based prediction tool says archaeal
-    if(biomass == "Archaea" & forced_bacterial)
-      biomass <- "ambiguous"
-    
-    cat("\nPredicted biomass: ",biomass,"\n")
-    if(biomass == "ambiguous" & !is.na(pathway.pred)) {
-      cat("Trying to predict biomass by metabolic network similarity\n")
-      biomass <- find_gram_by_network(pathway.pred, script.dir)
-      cat("New predicted biomass: ",biomass,"\n")
+    if(input_mode == "nucl") {
+      biomass <- system(paste0(script.dir,"/./predict_biomass_from16S.sh ",genome.seq), intern = T)
+      
+      # If user specified Bacteria but sequence-based prediction tool says archaeal
+      if(biomass == "Archaea" & forced_bacterial)
+        biomass <- "ambiguous"
+      
+      cat("\nPredicted biomass: ",biomass,"\n")
+      if(biomass == "ambiguous" & !is.na(pathway.pred)) {
+        cat("Trying to predict biomass by metabolic network similarity\n")
+        biomass <- find_gram_by_network(pathway.pred, script.dir)
+        cat("New predicted biomass: ",biomass,"\n")
+      }
+      
+      if(!biomass %in% c("pos","neg", "archaea", "Archaea", "Gram_pos", "Gram_neg")) {
+        stop("ERROR: Gram-staining prediction failed or ambiguous result. Please check whether genome sequence contains 16S rRNA gene(s).")
+        
+      }
     }
     
-    if(!biomass %in% c("pos","neg", "archaea", "Archaea", "Gram_pos", "Gram_neg")) {
-      stop("ERROR: Gram-staining prediction failed or ambiguous result. Please check whether genome sequence contains 16S rRNA gene(s).")
-
+    if(input_mode == "prot") {
+      # first predict domain if needed
+      if(biomass %in% c("Auto","auto")) {
+        hmmres <- tempfile()
+        hmmprofiles <- R.utils::gunzip(paste0(script.dir,"/../dat/seq/hmm/domain.hmm.gz"),
+                                       temporary = TRUE, overwrite = TRUE, remove = FALSE)
+        system(paste0("hmmsearch --tblout ",hmmres," ",hmmprofiles," ",
+                      genome.seq," > /dev/null"))
+        biomass <- system(paste0("Rscript ",script.dir,"/predict_domain.R ",script.dir," ", hmmres), intern = TRUE)
+        cat("Predicted domain:", biomass, "\n")
+        tmp <- file.remove(c(hmmres, hmmprofiles))
+        rm(tmp)
+      }
+      
+      # second predict gram staining
+      if(biomass %in% c("Bacteria", "bacteria")) {
+        hmmres <- tempfile()
+        hmmprofiles <- R.utils::gunzip(paste0(script.dir,"/../dat/seq/hmm/gram.hmm.gz"),
+                                       temporary = TRUE, overwrite = TRUE, remove = FALSE)
+        system(paste0("hmmsearch --tblout ",hmmres," ",hmmprofiles," ",
+                      genome.seq," > /dev/null"))
+        biomass <- system(paste0("Rscript ",script.dir,"/predict_gramstaining.R ",script.dir," ", hmmres), intern = TRUE)
+        cat("Predicted Gram-staining:", biomass, "\n")
+      }
+      
     }
     
   }
