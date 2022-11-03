@@ -1,8 +1,8 @@
 # Lactic acid bacteria in yogurt production
 
-*Lactobacillus delbrueckii* subsp. *bulgaricus* and *Streptococcus thermophilus* are both lactic acid bacteria, which are frequently used for the production of yogurt. The organisms differ in their lactose degradation and their fermentation end products. In this tutorial, genome-scale metabolic models will be reconstructed using **gapseq**.
+*Lactobacillus delbrueckii* subsp. *bulgaricus* and *Streptococcus thermophilus* are both lactic acid bacteria, which are frequently used for the production of yogurt. The organisms differ in their lactose degradation and their fermentation end products. In this tutorial, genome-scale metabolic models will be reconstructed using **gapseq** starting from the organisms' genomes in multi-protein sequences fasta file (translated sequences of protein-coding genes).
 
-
+Required gapseq version: 1.2 0d0123e (or later) 
 
 ##### Input files
 
@@ -12,7 +12,7 @@
 - Growth media (milk) file: `milk.csv` 
   This growth media is based on the main ingredients described for whole milk (without fatty acids), as listed [here](https://frida.fooddata.dk/food/1265?lang=en).
 
-*NOTE: All intermediate files produced by the commands below are stored at the github repository [gapseq.tutorial.data](https://github.com/Waschina/gapseq.tutorial.data), which you could  download/clone if you wish to start not at the beginning but at a later  step of this tutorial.*
+>  NOTE: All intermediate files produced by the commands below are stored at the github repository [gapseq.tutorial.data](https://github.com/Waschina/gapseq.tutorial.data), which you can download/clone if you wish to start not at the beginning but at a later step of this tutorial or want to cross-check your results.
 
 
 
@@ -24,16 +24,16 @@ Download required files and rename assembly filed for the ease of this tutorial.
 mkdir yoghurt
 cd yoghurt
 
-# Download genome assemblies from NCBI (RefSeq)
-wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/056/065/GCF_000056065.1_ASM5606v1/GCF_000056065.1_ASM5606v1_genomic.fna.gz
-wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/120/595/GCF_010120595.1_ASM1012059v1/GCF_010120595.1_ASM1012059v1_genomic.fna.gz
+# Download genome assemblies from NCBI (RefSeq) in protein sequences
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/056/065/GCF_000056065.1_ASM5606v1/GCF_000056065.1_ASM5606v1_protein.faa.gz
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/120/595/GCF_010120595.1_ASM1012059v1/GCF_010120595.1_ASM1012059v1_protein.faa.gz
 
 # Download gapfill-medium file from github
 wget https://github.com/Waschina/gapseq.tutorial.data/raw/master/yogurt/milk.csv
 
 # Rename genomes
-mv GCF_000056065.1_ASM5606v1_genomic.fna.gz ldel.fna.gz
-mv GCF_010120595.1_ASM1012059v1_genomic.fna.gz sthe.fna.gz
+mv GCF_000056065.1_ASM5606v1_protein.faa.gz ldel.fna.gz
+mv GCF_010120595.1_ASM1012059v1_protein.faa.gz sthe.fna.gz
 ```
 
 
@@ -50,16 +50,16 @@ modelA="ldel"
 modelB="sthe"
 
 # (1) Reaction & Pathway prediction
-gapseq find -p all -b 200 -m Bacteria $modelA.fna.gz
-gapseq find -p all -b 200 -m Bacteria $modelB.fna.gz
+gapseq find -p all -b 200 -m auto -t auto $modelA.faa.gz
+gapseq find -p all -b 200 -m auto -t auto $modelB.faa.gz
 
 # (2) Transporter prediction
-gapseq find-transport -b 200 $modelA.fna.gz 
-gapseq find-transport -b 200 $modelB.fna.gz
+gapseq find-transport -b 200 $modelA.faa.gz 
+gapseq find-transport -b 200 $modelB.faa.gz
 
 # (3) Building Draft Model - based on Reaction-, Pathway-, and Transporter prediction
-gapseq draft -r $modelA-all-Reactions.tbl -t $modelA-Transporter.tbl -p $modelA-all-Pathways.tbl -c $modelA.fna.gz -u 200 -l 100
-gapseq draft -r $modelB-all-Reactions.tbl -t $modelB-Transporter.tbl -p $modelB-all-Pathways.tbl -c $modelB.fna.gz -u 200 -l 100
+gapseq draft -r $modelA-all-Reactions.tbl -t $modelA-Transporter.tbl -p $modelA-all-Pathways.tbl -u 200 -l 100 -c $modelA.faa.gz
+gapseq draft -r $modelB-all-Reactions.tbl -t $modelB-Transporter.tbl -p $modelB-all-Pathways.tbl -u 200 -l 100 -c $modelB.faa.gz
 
 # (4) Gapfilling
 gapseq fill -m $modelA-draft.RDS -n milk.csv -c $modelA-rxnWeights.RDS -g $modelA-rxnXgenes.RDS -b 100
@@ -68,7 +68,7 @@ gapseq fill -m $modelB-draft.RDS -n milk.csv -c $modelB-rxnWeights.RDS -g $model
 
 
 
-##### FBA and FVA prediction of metabolic by products
+##### FBA and FVA prediction of metabolic by-products
 
 Here, we will use the R-Package `sybil` ([Gelius-Dietrich *et al.* (2013) BMC Syst Biol](https://doi.org/10.1186/1752-0509-7-125)) to perform Flux-Balance-Analysis (FBA) and Flux-Variability-Analysis (FVA) with the two reconstructed network models.
 
@@ -117,33 +117,33 @@ getMetaboliteProduction(st)[1:10]
 Output for *L. delbrueckii* (`ld`):
 
 ```
-                ex                   rxn.name           l           u    mtf.flux
- 1: EX_cpd00159_e0      L-Lactate-e0 Exchange 0.000000000 4.590532201 4.534222474
- 2: EX_cpd00067_e0             H+-e0 Exchange 4.367216531 4.449087650 4.423526022
- 3: EX_cpd00108_e0      Galactose-e0 Exchange 2.499998627 2.500000000 2.500000000
- 4: EX_cpd00011_e0            CO2-e0 Exchange 0.244403823 0.326272196 0.244409448
- 5: EX_cpd00371_e0       Propanal-e0 Exchange 0.072654477 0.072661894 0.072658583
- 6: EX_cpd00130_e0       L-Malate-e0 Exchange 0.000000000 0.056304091 0.056301321
- 7: EX_cpd00024_e0 2-Oxoglutarate-e0 Exchange 0.000000000 0.025561534 0.025545066
- 8: EX_cpd00239_e0            H2S-e0 Exchange 0.010040013 0.035604294 0.010042926
- 9: EX_cpd00100_e0       Glycerol-e0 Exchange 0.002313069 0.002314900 0.002313070
-10: EX_cpd00036_e0      Succinate-e0 Exchange 0.001375019 0.001380513 0.001375019
+                ex              rxn.name          l          u   mtf.flux
+ 1: EX_cpd00221_e0 D-Lactate-e0 Exchange 0.00000000 4.66688283 4.57527357
+ 2: EX_cpd00067_e0        H+-e0 Exchange 4.41375845 4.56576030 4.53889042
+ 3: EX_cpd00108_e0 Galactose-e0 Exchange 2.49998944 2.50000000 2.50000000
+ 4: EX_cpd00011_e0       CO2-e0 Exchange 0.32602433 0.47806843 0.35293482
+ 5: EX_cpd00371_e0  Propanal-e0 Exchange 0.16765414 0.16773865 0.16769626
+ 6: EX_cpd00047_e0   Formate-e0 Exchange 0.09438168 0.16513265 0.16509025
+ 7: EX_cpd00013_e0       NH3-e0 Exchange 0.13880177 0.26199257 0.16445716
+ 8: EX_cpd00239_e0       H2S-e0 Exchange 0.09297787 0.09302013 0.09302010
+ 9: EX_cpd00324_e0      MTTL-e0 Exchange 0.08651320 0.08655546 0.08655540
+10: EX_cpd00029_e0   Acetate-e0 Exchange 0.07586589 0.17284734 0.07654518
 ```
 
 Output for S. thermophilus (`st`):
 
 ```
                 ex                          rxn.name            l            u     mtf.flux
- 1: EX_cpd00221_e0          D-Lactate-e0-e0 Exchange 0.0000000000 9.491132e+00 7.8019798365
- 2: EX_cpd00047_e0            Formate-e0-e0 Exchange 0.0000000000 8.351311e+00 0.8016333022
- 3: EX_cpd00029_e0               Acetate-e0 Exchange 0.0000000000 1.000469e+01 0.5878410530
- 4: EX_cpd00239_e0                   H2S-e0 Exchange 0.0866659611 8.825721e-02 0.0882571474
- 5: EX_cpd00363_e0               Ethanol-e0 Exchange 0.0000000000 9.491132e+00 0.0666843262
- 6: EX_cpd00011_e0                   CO2-e0 Exchange 0.0000000000 9.919249e+00 0.0440374731
- 7: EX_cpd00036_e0             Succinate-e0 Exchange 0.0023811124 3.649335e+00 0.0190511474
- 8: EX_cpd00100_e0              Glycerol-e0 Exchange 0.0000000000 4.005551e-03 0.0040055505
- 9: EX_cpd03091_e0     5'-Deoxyadenosine-e0 Exchange 0.0023811124 2.381661e-03 0.0023811254
-10: EX_cpd01981_e0 5-Methylthio-D-ribose-e0 Exchange 0.0007937041 7.937085e-04 0.0007937085
+ 1: EX_cpd00221_e0             D-Lactate-e0 Exchange 0.0000000000 9.2094468818 8.6588710458
+ 2: EX_cpd00011_e0                   CO2-e0 Exchange 0.2558426738 9.9070817239 0.5225485126
+ 3: EX_cpd00239_e0                   H2S-e0 Exchange 0.0868496916 0.0884168597 0.0868510077
+ 4: EX_cpd00281_e0                  GABA-e0 Exchange 0.0644172061 0.0644198887 0.0644184793
+ 5: EX_cpd00092_e0                Uracil-e0 Exchange 0.0469340783 0.0469354195 0.0469353179
+ 6: EX_cpd00036_e0             Succinate-e0 Exchange 0.0023487402 0.3596882237 0.0454283729
+ 7: EX_cpd00029_e0               Acetate-e0 Exchange 0.0000000000 0.2101233068 0.0268075147
+ 8: EX_cpd00100_e0              Glycerol-e0 Exchange 0.0000000000 0.0039510794 0.0039510794
+ 9: EX_cpd00363_e0               Ethanol-e0 Exchange 0.0000000000 9.2094468818 0.0023487447
+10: EX_cpd01981_e0 5-Methylthio-D-ribose-e0 Exchange 0.0007829134 0.0007829149 0.0007829149
 ```
 
 As expected, both organisms produce Lactate in the FBA+MTF solution. The FVA further predicted a lower bound for L-Lactate or D-Lactate production of zero. This is due to the fact, that the models harbour also the capability to produce the respective other Lactate enantiomer. In contrast to *S. thermophilus*, the FBA simulation predicted a release of Galactose by *L. debrueckii*. In fact, *L. debrueckii* is usually reported to be Galactose negative; i.e. does not produce acid from this hexose ([https://bacdive.dsmz.de/strain/6449](https://bacdive.dsmz.de/strain/6449)) and utilized only the glucose part of lactose, while *S. thermophilus* has been reported to be Galactose positive ([https://bacdive.dsmz.de/strain/14786](https://bacdive.dsmz.de/strain/14786)).
