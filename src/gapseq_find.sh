@@ -334,7 +334,7 @@ fi
 [[ "$taxonomy" == "archaea" ]] &&  taxonomy=Archaea
 
 # Follow taxonomy preiction for pathway tax range if set to "auto"
-if [ $taxRange == "auto" ]; then
+if [ "$taxRange" == "auto" ]; then
     taxRange=$taxonomy
 fi
 
