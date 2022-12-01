@@ -125,7 +125,7 @@ elif [ "$1" == "doall" ]; then
     taxonomy=auto
     [[ ("$3" == "Bacteria" || "$4" == "Bacteria") ]] && taxonomy=Bacteria
     [[ ("$3" == "Archaea" || "$4" == "Archaea") ]] && taxonomy=Archaea
-    $dir/src/gapseq_find.sh -v $verbose -b 200 -p all -t $taxonomy -k "$file"
+    $dir/src/gapseq_find.sh -v $verbose -b 200 -p all -t $taxonomy "$file"
     $dir/src/transporter.sh -b 200 "$file"
     Rscript $dir/src/generate_GSdraft.R -r "$id-all-Reactions.tbl" -t "$id-Transporter.tbl" -c "$file" -u 200 -l 100 -p "$id-all-Pathways.tbl" -b $taxonomy
     [[ ! -s "$3" ]] && Rscript $dir/src/predict_medium.R -m "./${id}-draft.RDS" -p "$id-all-Pathways.tbl"
