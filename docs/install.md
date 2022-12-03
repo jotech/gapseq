@@ -2,30 +2,85 @@
 
 ## Ubuntu/Debian/Mint
 ```
-sudo apt install ncbi-blast+ git libglpk-dev r-base-core exonerate bedtools barrnap bc parallel libcurl4-openssl-dev libssl-dev
-R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite", "httr"))'
+# Installation of main system dependencies
+sudo apt install ncbi-blast+ git libglpk-dev r-base-core exonerate bedtools barrnap bc parallel curl libcurl4-openssl-dev libssl-dev libsbml5-dev
+
+# installation of required R-packages
+R -e 'install.packages(c("data.table", "stringr", "getopt", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite", "httr"))'
 R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Biostrings")'
+wget https://cran.r-project.org/src/contrib/Archive/sybil/sybil_2.2.0.tar.gz
+wget https://cran.r-project.org/src/contrib/Archive/sybilSBML/sybilSBML_3.1.2.tar.gz
+R CMD INSTALL sybil_2.2.0.tar.gz
+R CMD INSTALL sybilSBML_3.1.2.tar.gz
+rm sybil_2.2.0.tar.gz
+rm sybilSBML_3.1.2.tar.gz
+
+# Download latest gapseq version from github
 git clone https://github.com/jotech/gapseq && cd gapseq
+
+# Download latest reference sequence database
+bash ./src/update_sequences.sh
+```
+
+Test your installation with:
+```sh
+./gapseq test
 ```
 
 ## Centos/Fedora/RHEL
 ```
-sudo yum install ncbi-blast+ git glpk-devel BEDTools exonerate hmmer bc parallel libcurl-devel openssl-devel
+# Installation of main system dependencies
+sudo yum install ncbi-blast+ git glpk-devel BEDTools exonerate hmmer bc parallel libcurl-devel curl openssl-devel libsbml-devel
 git clone https://github.com/tseemann/barrnap.git
 export PATH=$PATH:barrnap/bin/barrnap # needs to be permanent => .bashrc ?
-R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite", "httr"))'
+
+# installation of required R-packages
+R -e 'install.packages(c("data.table", "stringr", "getopt", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite", "httr"))'
 R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Biostrings")'
+wget https://cran.r-project.org/src/contrib/Archive/sybil/sybil_2.2.0.tar.gz
+wget https://cran.r-project.org/src/contrib/Archive/sybilSBML/sybilSBML_3.1.2.tar.gz
+R CMD INSTALL sybil_2.2.0.tar.gz
+R CMD INSTALL sybilSBML_3.1.2.tar.gz
+rm sybil_2.2.0.tar.gz
+rm sybilSBML_3.1.2.tar.gz
+
+# Download latest gapseq version from github
 git clone https://github.com/jotech/gapseq && cd gapseq
+
+# Download latest reference sequence database
+bash ./src/update_sequences.sh
+```
+
+Test your installation with:
+```sh
+./gapseq test
 ```
 
 ## MacOS
 Using [homebrew](https://brew.sh). Please note: Some Mac-Users reported difficulties to install gapseq on MacOS using the following commands. The issues are mainly due to some Mac-specific functioning of central programs such as sed, awk, and grep. If you are experiencing issues, we recommend to try to install gapseq in an own conda environment using the steps described [below](#conda).
 ```
+# Installation of main system dependencies
 brew install coreutils binutils git glpk blast bedtools r brewsci/bio/barrnap grep bc gzip parallel curl
-R -e 'install.packages(c("data.table", "stringr", "sybil", "getopt", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite", "httr"))'
+
+# installation of required R-packages
+R -e 'install.packages(c("data.table", "stringr", "getopt", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite", "httr"))'
 R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Biostrings")'
+curl -O https://cran.r-project.org/src/contrib/Archive/sybil/sybil_2.2.0.tar.gz
+R CMD INSTALL sybil_2.2.0.tar.gz
+rm sybil_2.2.0.tar.gz
+
+# Download latest gapseq version from github
 git clone https://github.com/jotech/gapseq && cd gapseq
+
+# Download latest reference sequence database
+bash ./src/update_sequences.sh
 ```
+
+Test your installation with:
+```sh
+./gapseq test
+```
+
 Some additional discussion and and trouble shooting can be found here: [1](https://apple.stackexchange.com/a/69332), [2](https://github.com/jotech/gapseq/issues/28), [3](https://github.com/jotech/gapseq/issues/143#issuecomment-1263349021).
 
 ## conda
@@ -68,6 +123,9 @@ bash ./src/update_sequences.sh
 
 ## SBML support
 The Systems Biology markup Language (SBML) can be used to exchange model files between gapseq and other programs.
+
+The above installationn instructions for linux systems and using conda should already include the SBML support. If there were no errors during the installation, you are all set using gapseq with SBML format exports.
+
 Occasionally, the installation can cause some issues that is why SBML is listed as optional dependency.
 There should be a ``libsbml`` package (version 5.18.0 or later) available for most linux distributions:
 ```
