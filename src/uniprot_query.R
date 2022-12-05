@@ -1,5 +1,6 @@
 library(httr)
 library(stringr)
+library(parallel)
 
 # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~#
 # Programmatic download of protein cluster sequences from EC / Protein name /  #
@@ -13,10 +14,11 @@ library(stringr)
 # query_type <- "ec" # (either "ec", "protein_name", "gene_exact" or "id").
 # query_term <- "2.7.1.90"
 batch_size_query_results <- 500
-batch_size_clusters <- 200 # 200 should work: https://github.com/ebi-uniprot/uniprot-rest-api/issues/275#issuecomment-1173888616
+batch_size_clusters <- 100 # 200 should work: https://github.com/ebi-uniprot/uniprot-rest-api/issues/275#issuecomment-1173888616
 max_attempts <- 10 # Maximum number of attempts per query to receive a status==200 response from uniprot website.
 
 GET_retries <- function(url) {
+  require(httr)
   attempts <- 1
   get_success <- FALSE
   while(get_success == FALSE && attempts <= max_attempts) {
@@ -75,27 +77,16 @@ if(query_type != "id") {
                  ")%20AND%20",taxonomy,"%20AND%20(reviewed:",
                  rev_status,")&size=",
                  batch_size_query_results)
+  urli <- "https://rest.uniprot.org/uniprotkb/stream?compressed=false&fields=accession&format=tsv&query=%28%28ec%3A2.7.1.90%29%20AND%20%28taxonomy_id%3A2%29%20AND%20%28reviewed%3Afalse%29%29"
+  urli <- paste0("https://rest.uniprot.org/uniprotkb/stream?compressed=false&fields=accession&format=tsv&query=%28%28",
+                 query_type,"%3A",query_term,"%29%20AND%20",taxonomy,"%20AND%20%28reviewed%3A",rev_status,"%29%29")
   
-  # (1) - Find uniprot accession numbers of matching entries
-  accessions <- c()
-  total <- NA_integer_
-  # cat("Retrieving sequence accession IDs ...\n")
-  while(length(urli)==1) {
-    ri <- GET_retries(urli)
-    ri_header <- headers(ri)
-    
-    # get metrics and accessions
-    total <- as.numeric(ri_header$`x-total-results`)
-    accessions <- c(accessions, unlist(strsplit(httr::content(ri, as = "text", encoding = "UTF-8"),"\n")))
-    cat("\r\t\t\t",length(accessions), "/", total)
-    
-    ind_next <- grep("\"next\"$",ri_header$link)
-    
-    next_url <-  str_match(ri_header$link[ind_next], "<\\s*(.*?)\\s*>")[,2]
-    
-    urli <- next_url
-  }
-  cat("\n")
+  # (1) - Find uniprot accession numbers of matching entries (Note: This will break if there are more than 10 million accessions. Unlikely!?)
+  ri <- GET_retries(urli)
+  accessions <- content(ri, as = "text", encoding = "UTF-8")
+  accessions <- unlist(str_split(accessions, "\n"))[-1]
+  accessions <- accessions[accessions != ""]
+  total <- length(accessions)
   if(length(accessions) == 0) {
     cat(NULL, file = output_fasta_file)
     quit(save = "no", status = 0)
@@ -103,56 +94,50 @@ if(query_type != "id") {
   
   
   # (2) retrieve corresponding uniref90 cluster IDs (not sequences)
-  batch_ids <- floor(1:length(accessions)/batch_size_clusters)
-  cluster_ids <- c()
-  k <- 0
-  
-  for(batchi in unique(batch_ids)) {
-    k <- k + sum(batch_ids == batchi)
-    cat("\r\t\t\t",k,"/",total)
-    acc_concat <- paste0("%28uniprot_id%3A",accessions[batch_ids == batchi],"%29",
+  acc_batches <- split(accessions, ceiling(seq_along(accessions)/batch_size_clusters))
+  cl <- makeCluster(min(length(acc_batches),15))
+  clusterExport(cl, c("GET_retries","uniref_id","max_attempts"))
+  map_worker <- function(accvec) {
+    require(stringr)
+    acc_concat <- paste0("%28uniprot_id%3A",accvec,"%29",
                          collapse = "%20OR%20")
-    urlc <- paste0("https://rest.uniprot.org/uniref/search?format=list&query=%28%28",
-                   acc_concat,"%29%20AND%20%28identity%3A",uniref_id,"%29%29",
-                   "&size=", batch_size_query_results)
-    
+    urlc <- paste0("https://rest.uniprot.org/uniref/stream?compressed=false&fields=id&format=tsv&query=%28%28",
+                   acc_concat,"%29%20AND%20%28identity%3A",uniref_id,"%29%29")
     ri <- GET_retries(urlc)
-    cluster_ids <- c(cluster_ids,
-                     unlist(strsplit(httr::content(ri, as = "text",
-                                                   encoding = "UTF-8"),"\n")))
+    uniref_acc <- content(ri, as = "text", encoding = "UTF-8")
+    uniref_acc <- unlist(str_split(uniref_acc, "\n"))[-1]
+    uniref_acc <- uniref_acc[uniref_acc != ""]
   }
-  cluster_ids <- unique(cluster_ids)
+  cluster_ids <- parLapply(cl, acc_batches, map_worker)
+  
+  
+  cluster_ids <- unique(unlist(cluster_ids))
   if(length(cluster_ids)==0)
     quit(save = "no", status = 1)
-  cat(" (",length(cluster_ids),"cluster sequences found)\n")
+  cat(" (",length(cluster_ids),"cluster sequences found )\n")
   total_uniref <- length(cluster_ids)
   
   # (3) retrieve Uniref sequences
-  batch_ids <- floor(1:length(cluster_ids)/batch_size_clusters)
-  seqs <- c()
-  k <- 0
+  uniref_batches <- split(cluster_ids, ceiling(seq_along(cluster_ids)/batch_size_clusters))
   
-  for(batchi in unique(batch_ids)) {
-    k <- k + sum(batch_ids == batchi)
-    cat("\r\t\t\t",k,"/",total_uniref)
-    uniref_acc_concat <- paste0("id%3A",cluster_ids[batch_ids == batchi],
-                                collapse = "%20OR%20")
-    
-    urls <- paste0("https://rest.uniprot.org/uniref/search?compressed=false&format=fasta&query=",
-                   uniref_acc_concat,"&size=", batch_size_query_results)
-    
-    ri <- GET_retries(urls)
-    
-    seqs <- c(seqs, httr::content(ri, as = "text", encoding = "UTF-8"))
+  clust_worker <- function(clustvec) {
+    require(stringr)
+    acc_concat <- paste0("%28id%3A",clustvec,"%29",
+                         collapse = "%20OR%20")
+    urlc <- paste0("https://rest.uniprot.org/uniref/stream?format=fasta&query=%28",
+                   acc_concat,"%29")
+    ri <- GET_retries(urlc)
+    seqs <- content(ri, as = "text", encoding = "UTF-8")
   }
-  cat("\n")
-  if(length(seqs)==0)
-    quit(save = "no", status = 1)
+  cluster_seqs <- parLapply(cl, uniref_batches, clust_worker)
+  stopCluster(cl)
   
-  cat(seqs, sep = "", file = output_fasta_file)
+  cluster_seqs <- unlist(cluster_seqs)
+  if(length(cluster_seqs)==0)
+    quit(save = "no", status = 1)
+  cat(cluster_seqs, sep = "", file = output_fasta_file)
   quit(save = "no", status = 0)
 }
-
 
 if(query_type == "id") {
   # (0) - Build uniprot entry URL 
@@ -161,8 +146,7 @@ if(query_type == "id") {
   
   ri <- GET_retries(urli)
   
-  seqi <- httr::content(ri, as = "text", encoding = "UTF-8")
+  seqi <- content(ri, as = "text", encoding = "UTF-8")
   cat(seqi, sep = "", file = output_fasta_file)
   quit(save = "no", status = 0)
 }
-
