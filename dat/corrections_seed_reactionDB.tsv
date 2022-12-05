@@ -2607,3 +2607,18 @@ rxn41954	=		-1:cpd00003:0:0:"NAD";-1:cpd17773:0:0:"Isolithocholate";1:cpd00004:0
 rxn42927	=		-1:cpd00003:0:0:"NAD";-1:cpd34659:0:0:"3beta,12alpha-dihydroxy-5beta-cholan-24-oate";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd35799:0:0:"12alpha-hydroxy-3-oxo-5beta-cholan-24-oate"	[SW] Required for iso-DCA biosynthesis (NADH-dependent)	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7755		3beta-HSDH-DCA-NADH	3beta-hydroxycholanate 3-dehydrogenase (NAD+) forming isoDCA	
 rxn42689	=		-1:cpd00006:0:0:"NADP";-1:cpd17773:0:0:"Isolithocholate";1:cpd00005:0:0:"NADPH";1:cpd00067:0:0:"H+";1:cpd01967:0:0:"3-Oxo-5beta-cholanate"	[SW] Required for iso-LCA biosynthesis (NADPH-dependent)	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7756		3beta-HSDH-LCA-NADPH	3beta-hydroxycholanate 3-dehydrogenase (NADP+) forming isoLCA	
 rxn48035	=		-1:cpd00006:0:0:"NADP";-1:cpd34659:0:0:"3beta,12alpha-dihydroxy-5beta-cholan-24-oate";1:cpd00005:0:0:"NADPH";1:cpd00067:0:0:"H+";1:cpd35799:0:0:"12alpha-hydroxy-3-oxo-5beta-cholan-24-oate"	[SW] Required for iso-DCA biosynthesis (NADPH-dependent)	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-7756		3beta-HSDH-DCA-NADPH	3beta-hydroxycholanate 3-dehydrogenase (NADP+) forming isoDCA	
+									
+rxn33225		TRUE		[SW] duplicate reaction to rxn11689					
+rxn33311		TRUE		[SW] duplicate reaction to rxn11689					
+rxn32096	=		-1:cpd03778:1:0:"Terephthalate";-2:cpd00067:1:0:"H+";1:cpd03778:0:0:"Terephthalate";2:cpd00067:0:0:"H+"	[SW] Charge-neutral transport of Terephthalate					
+rxn32101		TRUE		[SW] duplicate reaction to rxn32096					
+rxn23791				[SW] Required for Terephthalate degradation	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=P184-PWY				TRUE
+rxn16552				[SW] Required for Terephthalate degradation	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=P184-PWY				TRUE
+rxn02143	=		-1:cpd00078:0:0:"Succinyl-CoA";-1:cpd00630:0:0:"3-Oxoadipate";1:cpd00036:0:0:"Succinate";1:cpd01507:0:0:"3-Oxoadipyl-CoA"	[SW] Corrected stoichiometry	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=3-OXOADIPATE-COA-TRANSFERASE-RXN&detail-level=3				
+rxn00598	<		-1:cpd00022:0:0:"Acetyl-CoA";-1:cpd00078:0:0:"Succinyl-CoA";1:cpd00010:0:0:"CoA";1:cpd01507:0:0:"3-Oxoadipyl-CoA"	[SW] Corrected stoichiometry	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-3641&detail-level=3				
+rxn03078	>			[SW] corrected direction	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=1.2.1.45-RXN				
+rxn21189				[SW] Required for Terephthalate degradation	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6336				TRUE
+rxn21190				[SW] Required for Terephthalate degradation	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6336				TRUE
+rxn24985	<			[SW] Required for Terephthalate degradation	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-8529				
+rxn18926				[SW] Required for Terephthalate degradation	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6336				TRUE
+rxn17400	>			[SW] Required for aromatic compound degradation	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-5162				

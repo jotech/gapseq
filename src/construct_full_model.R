@@ -120,6 +120,7 @@ construct_full_model <- function(script.dir) {
 futile_cycle_test <- function(script.dir, env = "") {
   require(sybil)
   require(data.table)
+  require(stringr)
   source(paste0(script.dir, "/print_reaction.R"))
   if("cplexAPI" %in% installed.packages()) {
     sybil::SYBIL_SETTINGS("SOLVER","cplexAPI")
