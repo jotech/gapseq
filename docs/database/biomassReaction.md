@@ -1,6 +1,6 @@
 # Biomass Reactions
 
-The biomass reaction is an essential part in Flux Balance Analysis of microbial growth. The composition of the biomass reaction (i.e. stoichiometry of  molecular cell constituents) should ideally reflect the molecular makeup of the organism of interest.
+The biomass reaction is an essential part in Flux Balance Analysis of microbial growth. The composition of the biomass reaction (i.e. stoichiometry of molecular cell constituents) should ideally reflect the molecular makeup of the organism of interest.
 
 ## Biomass reaction presets
 
@@ -609,7 +609,7 @@ The JSON-file for the biomass formulation needs to follow a specific format. An 
 
 *Explaination:* 
 
-The basis fields for a biomass are:
+The basic fields for a biomass definition are:
 
 - `id` - A a short ID for the biomass reaction
 - `name` - Can be a longer name for the biomass reactions, that includes a brief description of the idea for the specific biomass.
@@ -618,13 +618,11 @@ The basis fields for a biomass are:
 - `Domain` - Provide the domain for the organism type. (Bacteria/Archaea/Eukarya)
 - `met_groups` - See below.
 
-Biomass components should assigned to the different  groups (`met_groups`). Usually these groups are DNA, RNA, Protein, Others (e.g. inorganic components, lipids, cell wall components, etc...). The total sum of each group shout be stated in the group parameters (`mass`)and in the unit gram. The sum of all groups should be 1 g.
+Biomass components should be assigned to groups (`met_groups`). Usually these groups are DNA, RNA, Protein, Others (e.g. inorganic components, lipids, cell wall components, etc...). The total mass of each group should be stated in the group parameter (`mass`) in the unit *gram*. The sum of all group masses should be 1 g.
 
-The field `unit_components` can be "MOLFRACTION" and "MOLSPLIT". Both would result in the same effect. Basically, the molar coefficients for the group component are  scaled to result in the exact mass in gram that is specified for the  group. The only difference between "MOLFRACTION" and "MOLSPLIT" is that  "MOLFRACTION" throws a warning if the summed coefficients of the group's components do not add up to the value of 1 (= 100%).
+The field `unit_components` can be "MOLFRACTION" or "MOLSPLIT". Both would result in the same effect: The molar coefficients for the group components are scaled to result in the exact mass in gram that is specified for the  corresponding group. The only difference between "MOLFRACTION" and "MOLSPLIT" is that  "MOLFRACTION" throws a warning if the summed coefficients of the group's components do not add up to the value of 1 (= 100%).
 
-Then we have component entries:
-
-The format for each component is for instance:
+Then there are component entries. The format for each component is for instance:
 
 ```
         {
@@ -642,4 +640,4 @@ The format for each component is for instance:
 - `coef` - molar coefficient of the metabolite relative to all components within the same group
 - `link` - When this metabolite is flowing into the biomass, should also other metabolites be consumed/produced with it?
 
-The `link` is optional. For instance, if amino acids are elongated to peptides a water molecule is  produced with each amino acid added. The format in this case is `<compound_id>:<stoichiometry>`. In the above example: For every threonine incorporated into the biomass a water molecule (cpd00001) is released. In contrast, for Nukleotides  that flow into DNA or RNA, pyrophospate (cpd00012) is produced with each nucleotide. Thus the link here is `"link" : "cpd00012:-1"`.
+The `link` is optional. For instance, if amino acids are elongated to peptides a water molecule is  produced with each amino acid added. The format in this case is `<compound_id>:<stoichiometry>`. In the above example: For every threonine incorporated into the biomass a water molecule (cpd00001) is released. In contrast, for nucleotides  that flow into DNA or RNA, pyrophospate (cpd00012) is produced with each nucleotide. Thus, the link here is `"link" : "cpd00012:-1"`.
