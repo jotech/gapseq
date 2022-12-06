@@ -50,6 +50,8 @@ args = commandArgs(trailingOnly=TRUE)
 # parse positional arguments
 query_type <- args[1]
 query_term <- utils::URLencode(args[2])
+if(query_type == "protein_name")
+  query_term <- paste0("%22",query_term,"%22")
 output_fasta_file <- args[3]
 taxonomy <- args[4]
 if(length(args)==6) {
