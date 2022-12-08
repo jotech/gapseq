@@ -27,6 +27,7 @@ GET_retries <- function(url) {
     get_success <- res$status_code
   }
   if(get_success == FALSE) {
+    cat(NULL, file = output_fasta_file)
     quit(save = "no", status = 1)
   }
   
@@ -114,8 +115,11 @@ if(query_type != "id") {
   
   
   cluster_ids <- unique(unlist(cluster_ids))
-  if(length(cluster_ids)==0)
+  if(length(cluster_ids)==0) {
+    cat(NULL, file = output_fasta_file)
     quit(save = "no", status = 1)
+  }
+    
   cat(" (",length(cluster_ids),"cluster sequences found )\n")
   total_uniref <- length(cluster_ids)
   
@@ -135,8 +139,10 @@ if(query_type != "id") {
   stopCluster(cl)
   
   cluster_seqs <- unlist(cluster_seqs)
-  if(length(cluster_seqs)==0)
+  if(length(cluster_seqs)==0) {
+    cat(NULL, file = output_fasta_file)
     quit(save = "no", status = 1)
+  }
   cat(cluster_seqs, sep = "", file = output_fasta_file)
   quit(save = "no", status = 0)
 }

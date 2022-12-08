@@ -563,8 +563,8 @@ do
         done
         rea=$(echo $reaids | awk -v j=$j -F ',' '{print $j}')
         reaName=$(echo $reaNames | awk -v j=$j -F ';' '{print $j}' | tr -d '|')
-        geneName=$(grep -wFe $rea $metaGenes | awk -F , {'print $2'})
-        geneRef=$(grep -wFe $rea $metaGenes | awk -F , {'print $5'})
+        geneName=$(grep -wFe $rea $metaGenes | awk -vFPAT='([^,]*)|("[^"]+")' -vOFS=, {'print $2'})
+        geneRef=$(grep -wFe $rea $metaGenes | awk -vFPAT='([^,]*)|("[^"]+")' -vOFS=, {'print $5'})
         [[ verbose -ge 1 ]] && echo -e "\t$j) $rea $reaName $ec" $geneName
         [[ -z "$rea" ]] && { continue; }
         [[ -n "$ec" ]] && [[ -n "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw -e "$ec" -e "$reaName" $dir/../dat/exception.tbl | wc -l); }
