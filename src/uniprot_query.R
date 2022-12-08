@@ -105,7 +105,7 @@ if(query_type != "id") {
     acc_concat <- paste0("%28uniprot_id%3A",accvec,"%29",
                          collapse = "%20OR%20")
     urlc <- paste0("https://rest.uniprot.org/uniref/search?compressed=false&fields=id&format=tsv&query=%28%28",
-                   acc_concat,"%29%20AND%20%28identity%3A",uniref_id,"%29%29")
+                   acc_concat,"%29%20AND%20%28identity%3A",uniref_id,"%29%29&size=500")
     ri <- GET_retries(urlc)
     uniref_acc <- content(ri, as = "text", encoding = "UTF-8")
     uniref_acc <- unlist(str_split(uniref_acc, "\n"))[-1]
@@ -131,7 +131,7 @@ if(query_type != "id") {
     acc_concat <- paste0("%28id%3A",clustvec,"%29",
                          collapse = "%20OR%20")
     urlc <- paste0("https://rest.uniprot.org/uniref/search?format=fasta&query=%28",
-                   acc_concat,"%29")
+                   acc_concat,"%29&size=500")
     ri <- GET_retries(urlc)
     seqs <- content(ri, as = "text", encoding = "UTF-8")
   }
