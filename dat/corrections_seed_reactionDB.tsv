@@ -2622,3 +2622,7 @@ rxn21190				[SW] Required for Terephthalate degradation	https://metacyc.org/META
 rxn24985	<			[SW] Required for Terephthalate degradation	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-8529				
 rxn18926				[SW] Required for Terephthalate degradation	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-6336				TRUE
 rxn17400	>			[SW] Required for aromatic compound degradation	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-5162				
+									
+rxn30161		TRUE		[SW] duplicate to rxn06936					
+rxn06433	>		-1:cpd00002:0:0:"ATP";-1:cpd00041:0:0:"L-Aspartate";-1:cpd11908:0:0:"tRNA(Asn)";1:cpd00012:0:0:"PPi";1:cpd00018:0:0:"AMP";1:cpd12829:0:0:"Asp-tRNA(Asn)";1:cpd00067:0:0:"H+"	[SW] Central reaction in tRNA-dependent Asn biosynthesis	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY490-4			L-Aspartate:tRNAAsn ligase (AMP-forming)	
+rxn90115	>		-1:cpd12829:0:0:"Asp-tRNA(Asn)";-1:cpd00053:0:0:"L-Glutamine";-1:cpd00002:0:0:"ATP";-2:cpd00001:0:0:"H2O";1:cpd11908:0:0:"tRNA(Asn)";1:cpd00023:0:0:"L-Glutamate";1:cpd00132:0:0:"L-Asparagine";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";2:cpd00067:0:0:"H+"	[SW] Central reaction in tRNA-dependent Asn biosynthesis: Note: not 100 percent correct, as no free asn is produced. However the biomass reactions cannot handle asn-tRNA(asn) as its ASN component…	https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY490-4		Asp-AdT	asparaginyl-tRNA synthase (glutamine-hydrolysing)	
