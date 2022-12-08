@@ -607,7 +607,7 @@ The JSON-file for the biomass formulation needs to follow a specific format. An 
 }
 ```
 
-*Explaination:* 
+*Explanation:* 
 
 The basic fields for a biomass definition are:
 
