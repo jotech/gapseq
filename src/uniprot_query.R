@@ -148,13 +148,24 @@ if(query_type != "id") {
 }
 
 if(query_type == "id") {
-  # (0) - Build uniprot entry URL 
-  urli <- paste0("https://rest.uniprot.org/uniprotkb/search?compressed=false&format=fasta&query=%28%28accession%3A",
-                 query_term,"%29%20AND%20",taxonomy,"%29")
+  query_term <- unique(unlist(str_split(query_term,";")))
   
-  ri <- GET_retries(urli)
+  seqi <- c()
+  for(qti in query_term) {
+    # (0) - Build uniprot entry URL 
+    urli <- paste0("https://rest.uniprot.org/uniprotkb/search?compressed=false&format=fasta&query=%28%28accession%3A",
+                   qti,"%29%20AND%20",taxonomy,"%29")
+
+    ri <- GET_retries(urli)
+    
+    seqi <- c(seqi, content(ri, as = "text", encoding = "UTF-8"))
+  }
   
-  seqi <- content(ri, as = "text", encoding = "UTF-8")
+  if(any(grepl("^Error", seqi))) {
+    cat(NULL, file = output_fasta_file)
+    quit(save = "no", status = 1)
+  }
+  
   cat(seqi, sep = "", file = output_fasta_file)
   quit(save = "no", status = 0)
 }
