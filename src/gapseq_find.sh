@@ -1063,6 +1063,6 @@ sed -i "3s/^/# Genome format: $input_mode\n/" $curdir/${fastaID}-$output_suffix-
 [[ -s "$tmp_fasta" ]] && rm "$tmp_fasta"
 
 
-ps -p $$ -o %cpu,%mem,args
+ps -q $$ -o %cpu,%mem,args
 end_time=`date +%s`
 echo Running time: `expr $end_time - $start_time` s.
