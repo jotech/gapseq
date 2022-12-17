@@ -10,18 +10,15 @@ args <- commandArgs(trailingOnly=TRUE)
 
 hmm.markers <- fread(paste0(args[1], "/../dat/seq/hmm/domain_markers.tsv"))
 hmmwhy <- readLines(args[2]) # why this table format, hmmer?
+hmmwhy <- hmmwhy[!grepl("^#", hmmwhy)]# removing header and footer lines
+hmmwhy.l <- unlist(lapply(str_split(hmmwhy," +", n = 8),
+                          function(x) paste(x[1:7], collapse = "\t")))
 
-# first discard everything after the "--- full sequence ----" columns
-strend <- str_locate(hmmwhy[1],"--- full sequence ----")[,2]
-hmmwhy <- str_sub(hmmwhy, 1, strend)
-
-# remove header/comment lines
-hmmwhy <- hmmwhy[!grepl("^#", hmmwhy)]
 
 # make table parsable for fread
 tmpf <- tempfile()
-cat(paste(gsub(" +","\t",hmmwhy),collapse = "\n"), file = tmpf)
-dt <- fread(tmpf, header = FALSE)
+cat(hmmwhy.l, sep = "\n", file = tmpf)
+dt <- fread(tmpf, header = FALSE, fill = TRUE)
 frm <- file.remove(tmpf)
 setnames(dt, c("target.name","target.acc","query.name","query.acc","eval",
                "bitscore","bias"))
