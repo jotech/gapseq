@@ -502,7 +502,9 @@ curve.alpha       <- opt$curve.alpha
 sbml.no.output    <- opt$sbml.no.output
 
 if(is.na(model.name)){
-  model.name <- gsub("-all-Reactions.tbl","",basename(blast.res), fixed = T)
+  model.name <- gsub("-all-Reactions\\.tbl$|-all-Reactions\\.tbl\\.gz$","",
+                     basename(blast.res),
+                     fixed = FALSE)
 }
 
 if(!(biomass %in% c("auto","Auto","pos","neg","archaea","Archaea","bacteria",

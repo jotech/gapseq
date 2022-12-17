@@ -693,7 +693,7 @@ mod.out@mod_attr <- bu_mod_attr
 if(!dir.exists(output.dir))
   dir.create(output.dir)
 
-out.id <- gsub("\\.xml$|\\.RDS$|\\.rds$","",gsub("-draft","",basename(mod.file)))
+out.id <- gsub("\\.xml$|\\.RDS$|\\.rds$|\\.xml\\.gz$","",gsub("-draft","",basename(mod.file)))
 
 if( verbose ){
   mod.out.rxns.added <- setdiff(mod.out@react_id, mod.orig@react_id)
