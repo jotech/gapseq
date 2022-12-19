@@ -58,4 +58,5 @@ Addition to code `5`: For instance, if an organism harbors the genes for the [de
 
 - Indole-3-propionate (cpd27289) transport if [PWY-8017](https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-8017) is present
 - Phenypropanoate (cpd03343) transport if [PWY-8014](https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-8014) is present
+- Phloretate transport if [PWY-8016](https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-8016) is present
 - Butyrate transport if Butyryl-CoA dehydrogenase (Etf complex)) is present (rxn90001)
