@@ -8,10 +8,15 @@ The overall goal is to provide a harmonized and completely futile cycle free dat
 
 ###### Miscellaneous
 
-- Ferredoxin and rubredoxin transfer each 1e-
 - Hydrogen sulfite (H2S, neutral charge) cpd000239 is actually HS- (-1 charge)
 - Sulfite (SO3, -2 charge) cpd00081 is actually: HSO3 (-1 charge)
 - Ammonia: cpd00013 (labeled NH3 in seed with formula NH4...) do not use cpd19013
+
+###### Electron transferring compounds
+
+- Ferredoxin transfers each 1e- (oxidized: cpd11621, reduced: cpd11620)
+- Rubredoxin transfers each 1e- (oxidized: cpd11681, reduced: cpd11651)
+- Electron-Transferring-Flavoprotein (ETF) transfers 2e- (oxidized: cpd27005, reduced: cpd27006)
 
 ###### Polymers
 

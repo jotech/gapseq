@@ -354,10 +354,20 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   #mod <- add_reaction_from_db(mod, react = c("rxn13782","rxn13783","rxn13784"), gs.origin = 6) # Adding pseudo-reactions for Protein biosynthesis, DNA replication and RNA transcription
   mod <- add_missing_diffusion(mod)
   
+  #––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––#
+  # Adding transporters if pertinent pathway/reaction is present #
+  # GS origin code: 5                                            #
+  #––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––#
+  
   # in case of electron bifurcatingbutanoyl-CoA dehydrogenase (NAD+, ferredoxin) presense:
   # add butyrate transporter as well
   if(any(grepl("rxn90001", mod@react_id)) & all(!grepl("rxn05683", mod@react_id))) {
-    mod <- add_reaction_from_db(mod, react = "rxn05683", gs.origin = 1)
+    mod <- add_reaction_from_db(mod, react = "rxn05683", gs.origin = 5)
+  }
+  
+  # in case of tryptophan degradation to IPA (indole-3-propionate) att IPA transport
+  if(any(grepl("rxn43343", mod@react_id)) & any(grepl("rxn45361", mod@react_id)) & any(grepl("rxn00483", mod@react_id)) & any(grepl("rxn01447", mod@react_id)) & all(!grepl("rxn90116", mod@react_id))) {
+    mod <- add_reaction_from_db(mod, react = "rxn90116", gs.origin = 5)
   }
   
   cat("\n")

@@ -38,7 +38,7 @@ write.csv(mod@react_attr[,c("seed", "name", "ec", "gs.origin")],
 
 `4`. Gapfilling Step 4 – Potential metabolic products
 
-`5`. (*code currently not used*)
+`5`. Added transport reaction due to present pertinent pathway/reaction. See below for details.
 
 `6`. Biomass reaction
 
@@ -53,3 +53,5 @@ write.csv(mod@react_attr[,c("seed", "name", "ec", "gs.origin")],
 
 
 Please note: The reaction tracing information is currently not included in the output SBML-files of the models. This will be included in a future update of *gapseq*.
+
+Addition to code `5`: For instance, if an organism harbors the genes for the [degradation of Tryptophan to Indole-3-Propionic Acid (IPA)](https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-8017), the transport reaction for IPA is automatically added to the model. This automatism is meant to allow the production of metabolites, where the producing-pathways and the cellular export is known from experiments, but where the transport mechanism (i.e. transporter protein) remains unknown. Currently only implemented to the Trp->IPA pathway and for butyrate (in case of the enzyme-presence: Butyryl-CoA dehydrogenase (Etf complex)).
