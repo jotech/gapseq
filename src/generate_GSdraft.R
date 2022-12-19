@@ -365,9 +365,14 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     mod <- add_reaction_from_db(mod, react = "rxn05683", gs.origin = 5)
   }
   
-  # in case of tryptophan degradation to IPA (indole-3-propionate) att IPA transport
+  # in case of tryptophan degradation to IPA (indole-3-propionate) add IPA transport
   if(any(grepl("rxn43343", mod@react_id)) & any(grepl("rxn45361", mod@react_id)) & any(grepl("rxn00483", mod@react_id)) & any(grepl("rxn01447", mod@react_id)) & all(!grepl("rxn90116", mod@react_id))) {
     mod <- add_reaction_from_db(mod, react = "rxn90116", gs.origin = 5)
+  }
+  
+  # in case of phenylalanine degradation to IPA (phenylpropanoate) add PPA transport
+  if(any(grepl("rxn00493", mod@react_id)) & any(grepl("rxn00997", mod@react_id)) & any(grepl("rxn07603", mod@react_id)) & any(grepl("rxn40746", mod@react_id)) & all(!grepl("rxn09182", mod@react_id))) {
+    mod <- add_reaction_from_db(mod, react = "rxn09182", gs.origin = 5)
   }
   
   cat("\n")

@@ -54,4 +54,8 @@ write.csv(mod@react_attr[,c("seed", "name", "ec", "gs.origin")],
 
 Please note: The reaction tracing information is currently not included in the output SBML-files of the models. This will be included in a future update of *gapseq*.
 
-Addition to code `5`: For instance, if an organism harbors the genes for the [degradation of Tryptophan to Indole-3-Propionic Acid (IPA)](https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-8017), the transport reaction for IPA is automatically added to the model. This automatism is meant to allow the production of metabolites, where the producing-pathways and the cellular export is known from experiments, but where the transport mechanism (i.e. transporter protein) remains unknown. Currently only implemented to the Trp->IPA pathway and for butyrate (in case of the enzyme-presence: Butyryl-CoA dehydrogenase (Etf complex)).
+Addition to code `5`: For instance, if an organism harbors the genes for the [degradation of Tryptophan to Indole-3-Propionic Acid (IPA)](https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-8017), the transport reaction for IPA is automatically added to the model. This automatism is meant to allow the production of metabolites, where the producing-pathways and the cellular export is known from experiments, but where the transport mechanism (i.e. transporter protein) remains unknown. Currently only a few transporters are added based on this rule:
+
+- Indole-3-propionate (cpd27289) transport if [PWY-8017](https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-8017) is present
+- Phenypropanoate (cpd03343) transport if [PWY-8014](https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-8014) is present
+- Butyrate transport if Butyryl-CoA dehydrogenase (Etf complex)) is present (rxn90001)
