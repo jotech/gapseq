@@ -12,6 +12,7 @@ spec <- matrix(c(
   'output.file', 'o', 2, "character", "(optional, character). File name for medium
   \t\t\t table in csv format. Default: Replacement of 'model' file extension 
   \t\t\t (eg. '.RDS' or '-draft.RDS') with '-medium.csv.",
+  'output.dir', '-f', 2, "character", "Path to directory, where output files will be saved (default: current directory)",
   'help' , 'h', 0, "logical", "help"
 ), ncol = 5, byrow = T)
 
@@ -26,6 +27,14 @@ if ( !is.null(opt$help) | is.null(opt$model) | is.null(opt$pathway.pred)) {
 # Setting defaults if required
 if ( is.null(opt$manual.flux) ) { opt$manual.flux = NULL }
 if ( is.null(opt$output.file) ) { opt$output.file = NULL }
+if ( is.null(opt$output.dir) ) { opt$output.dir = "." }
+
+output.dir <- opt$output.dir
+
+# create output directory if not already there
+dir.create(output.dir, recursive = TRUE, showWarnings = FALSE)
+if (!dir.exists(output.dir) || file.access(output.dir, mode = 2) == -1)
+  stop(paste("Output directory",output.dir,"cannot be created or is not writable."))
 
 #' Example for manual.flux: "cpd00007:18.5;cpd00011:0" for a medium with allowed
 #' oxygen (cpd00007) uptake (18.5) but without CO2 (cpd00011)
@@ -145,4 +154,4 @@ if(is.null(output.file))
   output.file <- gsub("\\.RDS$|-draft\\.RDS$|\\.xml$|-draft\\.xml$",
                                "-medium.csv", basename(opt$model))
 
-fwrite(dt_medium[, 1:3], output.file)
+fwrite(dt_medium[, 1:3], paste0(output.dir,"/",output.file))

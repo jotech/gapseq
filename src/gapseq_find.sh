@@ -32,6 +32,7 @@ update_manually=false
 user_temp=false
 force_offline=false
 input_mode="auto"
+output_dir=.
 OS=$(uname -s)
 if [ "$OS" = "Darwin" -o "$OS" = "FreeBSD" ]; then
 	n_threads=$(sysctl hw.ncpu|cut -f2 -d' ')
@@ -67,6 +68,7 @@ usage()
     echo "  -w Use additional sequences derived from gene names (default: $use_gene_seq)"
     echo "  -y Print annotation genome coverage (default: $anno_genome_cov)"
     echo "  -j Quit if output files already exist (default: $stop_on_files_exist)"
+    echo "  -f Path to directory, where output files will be saved (default: current directory)"
     echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default: $update_manually)"
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
     echo "  -O For offline mode (default: $force_offline)"
@@ -108,7 +110,7 @@ function join_by { local IFS="$1"; shift; echo "$*"; }
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjUT:OM:K:" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -189,6 +191,9 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjUT:OM:K:" opt; do
     j)
         stop_on_files_exist=true
         ;;
+    f)
+        output_dir=$OPTARG
+        ;;
     U)
         update_manually=true
         ;;
@@ -213,7 +218,7 @@ done
 shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
 
-# after parsing arguments, only fasta file shoud be there
+# after parsing arguments, only fasta file should be there
 [ "$#" -ne 1 ] && { usage; }
 
 # blast format
@@ -223,6 +228,25 @@ else
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send"
     #blast_format="qseqid pident evalue bitscore qcovhsp stitle sstart send"
 fi
+
+# set output directory
+case $output_dir in
+    /*)
+        # absolute path
+        output_dir=$output_dir
+        ;;
+    ~*)
+        # relative to $HOME directory
+        output_dir="${output_dir/#\~/$HOME}"
+        ;;
+    *)
+        # relative path to current directory
+        output_dir=$curdir/$output_dir
+        ;;
+esac
+
+# create path if it does not yet exist
+mkdir -p $output_dir || { echo "$output_dir not writable. Aborting..."; exit 1; }
 
 # tmp working directory
 fasta=$(readlink -f "$1") # save input file before changing to temporary directory
@@ -411,7 +435,7 @@ fi
 
 
 # check to quit if output files already exist
-if [[ "$stop_on_files_exist" = true ]] && [[ -f $curdir/${fastaID}-$output_suffix-Pathways.tbl ]] && [[ -f $curdir/${fastaID}-$output_suffix-Reactions.tbl ]]; then
+if [[ "$stop_on_files_exist" = true ]] && [[ -f $output_dir/${fastaID}-$output_suffix-Pathways.tbl ]] && [[ -f $output_dir/${fastaID}-$output_suffix-Reactions.tbl ]]; then
     echo Pathway and reaction output files already exist, exiting...
     exit 0
 fi
@@ -1040,24 +1064,23 @@ fi
 # export found reactions 
 [[ verbose -ge 1 ]] && echo -e Candidate reactions found: $(echo "$cand" | wc -w) '\n'
 echo $cand > newReactions.lst
-#cp newReactions.lst $curdir/${fastaID}-$output_suffix-Reactions.lst # not needed anymore
-cp output.tbl $curdir/${fastaID}-$output_suffix-Pathways.tbl
-[[ -s reactions.tbl ]] && echo "rxn name ec bihit $blast_format pathway status pathway.status dbhit complex exception complex.status" | tr ' ' '\t' | cat - reactions.tbl | awk '!a[$0]++' > $curdir/${fastaID}-$output_suffix-Reactions.tbl # add header and remove duplicates
+cp output.tbl $output_dir/${fastaID}-$output_suffix-Pathways.tbl
+[[ -s reactions.tbl ]] && echo "rxn name ec bihit $blast_format pathway status pathway.status dbhit complex exception complex.status" | tr ' ' '\t' | cat - reactions.tbl | awk '!a[$0]++' > $output_dir/${fastaID}-$output_suffix-Reactions.tbl # add header and remove duplicates
 
 # add gapseq version and sequence database status to table comments head
 gapseq_version=`$dir/.././gapseq -v`
 seqdb_version=`md5sum $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1-7`
 seqdb_date=$(stat -c %y $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1-10)
 
-sed -i "1s/^/# $gapseq_version\n/" $curdir/${fastaID}-$output_suffix-Reactions.tbl
-sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $curdir/${fastaID}-$output_suffix-Reactions.tbl
-sed -i "3s/^/# Genome format: $input_mode\n/" $curdir/${fastaID}-$output_suffix-Reactions.tbl
-sed -i "1s/^/# $gapseq_version\n/" $curdir/${fastaID}-$output_suffix-Pathways.tbl
-sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $curdir/${fastaID}-$output_suffix-Pathways.tbl
-sed -i "3s/^/# Genome format: $input_mode\n/" $curdir/${fastaID}-$output_suffix-Pathways.tbl
+sed -i "1s/^/# $gapseq_version\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
+sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
+sed -i "3s/^/# Genome format: $input_mode\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
+sed -i "1s/^/# $gapseq_version\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
+sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
+sed -i "3s/^/# Genome format: $input_mode\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
 
 # print annotation genome coverage
-[[ verbose -ge 1 ]] && [[ "$anno_genome_cov" = true ]] && Rscript $dir/coverage.R "$fasta" $curdir/${fastaID}-$output_suffix-Reactions.tbl 
+[[ verbose -ge 1 ]] && [[ "$anno_genome_cov" = true ]] && Rscript $dir/coverage.R "$fasta" $output_dir/${fastaID}-$output_suffix-Reactions.tbl 
 
 # cleaning
 [[ -s "$tmp_fasta" ]] && rm "$tmp_fasta"

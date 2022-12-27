@@ -10,6 +10,7 @@ use_parallel=true
 only_met=""
 verbose=1
 input_mode="auto"
+output_dir=.
 OS=$(uname -s)
 if [ "$OS" = "Darwin" -o "$OS" = "FreeBSD" ]; then
 	n_threads=$(sysctl hw.ncpu|cut -f2 -d' ')
@@ -27,6 +28,7 @@ usage()
     echo "  -q Include sequences of hits in log files; default $includeSeq"
     echo "  -k do not use parallel"
     echo "  -m only check for this keyword/metabolite (default: all)"
+    echo "  -f Path to directory, where output files will be saved (default: current directory)"
     echo "  -v Verbose level, 0 for nothing, 1 for full (default $verbose)"
     echo "  -M Input genome mode. Either 'nucl' or 'prot' (default '$input_mode')"
     echo "  -K Number of threads for sequence alignments. If option is not provided, number of available CPUs will be automatically determined."
@@ -35,7 +37,7 @@ exit 1
 }
 
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
-while getopts "h?i:b:c:qkm:v:M:K:" opt; do
+while getopts "h?i:b:c:qkmf::v:M:K:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -58,6 +60,9 @@ while getopts "h?i:b:c:qkm:v:M:K:" opt; do
         ;;
     m)
         only_met=$OPTARG
+        ;;
+    f)
+        output_dir=$OPTARG
         ;;
     v)  
         verbose=$OPTARG
@@ -85,6 +90,25 @@ seedDB=$dir/../dat/seed_transporter.tbl
 customDB=$dir/../dat/seed_transporter_custom.tbl
 tcdb_sub=$dir/../dat/tcdb_substrates.tbl
 tcdb_custom=$dir/../dat/tcdb_custom.tbl
+
+# set output directory
+case $output_dir in
+    /*)
+        # echo "absolute path"
+        output_dir=$output_dir
+        ;;
+    ~*)
+        # echo "relative to $HOME directory"
+        output_dir="${output_dir/#\~/$HOME}"
+        ;;
+    *)
+        # echo "relative path to current directory"
+        output_dir=$curdir/$output_dir
+        ;;
+esac
+
+# create path if it does not yet exist
+mkdir -p $output_dir || { echo "$output_dir not writable. Aborting..."; exit 1; }
 
 # tmp working directory
 fasta=$(readlink -f "$1") # save input file before changing to temporary directory
@@ -237,15 +261,15 @@ fi
 unset IFS
 echo Total number of found substance transporter for $fastaid: `cat transporter_bitscore.tbl | cut -f4 | sort | uniq | wc -l`
 
-cp transporter.tbl $curdir/${fastaid}-Transporter.tbl
-[[ -s transporter.tbl ]] && echo "id tc sub exid rea $blast_format comment" | tr ' ' '\t' | cat - transporter.tbl | awk '!a[$0]++' > $curdir/${fastaid}-Transporter.tbl # add header and remove duplicates
+cp transporter.tbl $output_dir/${fastaid}-Transporter.tbl
+[[ -s transporter.tbl ]] && echo "id tc sub exid rea $blast_format comment" | tr ' ' '\t' | cat - transporter.tbl | awk '!a[$0]++' > $output_dir/${fastaid}-Transporter.tbl # add header and remove duplicates
 
 # add gapseq vesion and sequence database status to table comments head
 gapseq_version=$($dir/.././gapseq -v)
 seqdb_version=$(md5sum $dir/../dat/seq/transporter.fasta | cut -c1-7)
 seqdb_date=$(stat -c %y $dir/../dat/seq/transporter.fasta | cut -c1-10)
-sed -i "1s/^/# $gapseq_version\n/" $curdir/${fastaid}-Transporter.tbl
-sed -i "2s/^/# Transporter sequence DB md5sum: $seqdb_version ($seqdb_date)\n/" $curdir/${fastaid}-Transporter.tbl
+sed -i "1s/^/# $gapseq_version\n/" $output_dir/${fastaid}-Transporter.tbl
+sed -i "2s/^/# Transporter sequence DB md5sum: $seqdb_version ($seqdb_date)\n/" $output_dir/${fastaid}-Transporter.tbl
 
 # finishing
 end_time=`date +%s`
