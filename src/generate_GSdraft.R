@@ -337,6 +337,19 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
                            subSys = dts.tmp)
     if(mseed[i,id] %in% dt_seed_single_and_there[,seed])
       mod@react_attr[which(mod@react_id == paste0(mseed[i,id],"_c0")),] <- as.data.frame(dt_seed_single_and_there[seed == mseed[i,id]])
+    
+    # In case no genes are associated to the first reaction added to the model,
+    # no 'genes' 'grp' and 'gprRules' object are initiated by sybil, causing a
+    # mismatch between length of the number of reactions and those three objects
+    # in the final modelorg model. This mismatch causes libSBML to stop on a
+    # segmentation error. Solution: "Manually" initiate the three objects in those
+    # cases
+    if(i == 1 && gpr.tmp == "") {
+      mod@genes[[1]] <- ""
+      mod@gpr <- ""
+      mod@gprRules <- ""
+    }
+      
   }
   
   # In case no genes have been associated with any reactions, the slots
@@ -359,7 +372,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   # GS origin code: 5                                            #
   #––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––#
   
-  # in case of electron bifurcatingbutanoyl-CoA dehydrogenase (NAD+, ferredoxin) presense:
+  # in case of electron bifurcatingbutanoyl-CoA dehydrogenase (NAD+, ferredoxin) presence:
   # add butyrate transporter as well
   if(any(grepl("rxn90001", mod@react_id)) & all(!grepl("rxn05683", mod@react_id))) {
     mod <- add_reaction_from_db(mod, react = "rxn05683", gs.origin = 5)
@@ -432,7 +445,9 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   mod@react_attr[which(mod@react_id == "bio1"),c("gs.origin","seed")] <- data.frame(gs.origin = 6, seed = "bio1", stringsAsFactors = F)
 
   # add p-cresol sink reaction (further metabolism unclear especially relevant for anaerobic conditions)
-  mod <- sybil::addReact(mod, id="DM_cpd01042_c0", reactName="Sink needed for p-cresol", met="cpd01042[c0]", Scoef=-1, lb=0, ub=sybil::SYBIL_SETTINGS("MAXIMUM"), metComp = 1)
+  mod <- sybil::addReact(mod, id="DM_cpd01042_c0", reactName="Sink needed for p-cresol",
+                         met="cpd01042[c0]", metName="p-Cresol", Scoef=-1, lb=0,
+                         ub=sybil::SYBIL_SETTINGS("MAXIMUM"), metComp = 1)
   mod@react_attr[which(mod@react_id == "DM_cpd01042_c0"),c("gs.origin","seed")] <- data.frame(gs.origin = 7, seed = "DM_cpd01042_c0", stringsAsFactors = F)
 
   
