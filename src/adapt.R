@@ -97,7 +97,7 @@ if (!dir.exists(output.dir) || file.access(output.dir, mode = 2) == -1)
 # database files
 meta.pwy <- fread(paste0(script.dir, "/../dat/meta_pwy.tbl"))
 custom.pwy <- fread(paste0(script.dir, "/../dat/custom_pwy.tbl"))
-all.pwy <- rbind(meta.pwy[,1:9],custom.pwy)
+all.pwy <- rbind(meta.pwy,custom.pwy)
 meta.rxn <- fread(paste0(script.dir, "/../dat/meta_rea.tbl"))
 seed_x_mets   <- fread(paste0(script.dir,"/../dat/seed_metabolites_edited.tsv"), header=T, stringsAsFactors = F, na.strings = c("null","","NA"))
 
