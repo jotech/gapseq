@@ -3,7 +3,7 @@
 ## Ubuntu/Debian/Mint
 ```
 # Installation of main system dependencies
-sudo apt install ncbi-blast+ git libglpk-dev r-base-core exonerate bedtools barrnap bc parallel curl libcurl4-openssl-dev libssl-dev libsbml5-dev
+sudo apt install ncbi-blast+ git libglpk-dev r-base-core exonerate bedtools barrnap bc parallel curl libcurl4-openssl-dev libssl-dev libsbml5-dev bc
 
 # installation of required R-packages
 R -e 'install.packages(c("data.table", "stringr", "getopt", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite", "httr"))'
@@ -30,7 +30,7 @@ Test your installation with:
 ## Centos/Fedora/RHEL
 ```
 # Installation of main system dependencies
-sudo yum install ncbi-blast+ git glpk-devel BEDTools exonerate hmmer bc parallel libcurl-devel curl openssl-devel libsbml-devel
+sudo yum install ncbi-blast+ git glpk-devel BEDTools exonerate hmmer bc parallel libcurl-devel curl openssl-devel libsbml-devel bc
 git clone https://github.com/tseemann/barrnap.git
 export PATH=$PATH:barrnap/bin/barrnap # needs to be permanent => .bashrc ?
 
@@ -60,7 +60,7 @@ Test your installation with:
 Using [homebrew](https://brew.sh). Please note: Some Mac-Users reported difficulties to install gapseq on MacOS using the following commands. The issues are mainly due to some Mac-specific functioning of central programs such as sed, awk, and grep. If you are experiencing issues, we recommend to try to install gapseq in an own conda environment using the steps described [below](#conda).
 ```
 # Installation of main system dependencies
-brew install coreutils binutils git glpk blast bedtools r brewsci/bio/barrnap grep bc gzip parallel curl
+brew install coreutils binutils git glpk blast bedtools r brewsci/bio/barrnap grep bc gzip parallel curl bc
 
 # installation of required R-packages
 R -e 'install.packages(c("data.table", "stringr", "getopt", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite", "httr"))'
