@@ -592,9 +592,9 @@ do
         geneRef=$(grep -wFe $rea $metaGenes | awk -vFPAT='([^,]*)|("[^"]+")' -vOFS=, {'print $5'})
         [[ verbose -ge 1 ]] && echo -e "\t$j) $rea $reaName $ec" $geneName
         [[ -z "$rea" ]] && { continue; }
-        [[ -n "$ec" ]] && [[ -n "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw -e "$ec" -e "$reaName" $dir/../dat/exception.tbl | wc -l); }
-        ( [[ -z "$ec" ]] || [[ -z "$EC_test" ]] ) && [[ -n "$reaName" ]] && { is_exception=$(grep -Fw "$reaName" $dir/../dat/exception.tbl | wc -l); }
-        [[ -n "$ec" ]] && [[ -z "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(grep -Fw "$ec" $dir/../dat/exception.tbl | wc -l); }
+        [[ -n "$ec" ]] && [[ -n "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(cat $dir/../dat/exception.tbl | cut -f 1 | grep -Fw -e "$ec" -e "$reaName" | wc -l); }
+        ( [[ -z "$ec" ]] || [[ -z "$EC_test" ]] ) && [[ -n "$reaName" ]] && { is_exception=$(cat $dir/../dat/exception.tbl | cut -f 1 | grep -Fw "$reaName" | wc -l); }
+        [[ -n "$ec" ]] && [[ -z "$reaName" ]] && [[ -n "$EC_test" ]] && { is_exception=$(cat $dir/../dat/exception.tbl | cut -f 1 | grep -Fw "$ec" | wc -l); }
         if [[ $is_exception -gt 0 ]] && [[ $identcutoff -lt $identcutoff_exception ]];then # take care of similair enzymes with different function
             identcutoff_tmp=$identcutoff_exception
             [[ verbose -ge 1 ]] && echo -e "\t\tUsing higher identity cutoff for $rea"

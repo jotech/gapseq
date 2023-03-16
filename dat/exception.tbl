@@ -1,16 +1,16 @@
 # file with enzymes having a high similar sequence identity to differently working enzymes (false friends) => need more strict blast search
-enzyme/reaction comment
-1.9.3.1 cytochrome-c oxidase
-4.1.1.39 RuBisCo
-D-ribulose-1,5-bisphosphate cleaving dioxygenase    RuBisCo
-1.9.6.1 nitrate reductase nap
-1.7.2.5 nitric oxide reductase
-4.1.2.22 fructose-6-phosphate phosphoketolase
-2.6.1.96 gamma aminobutyrate transaminase
-2.8.3.5 succinyl-CoA:acetoacetate CoA-transferase
-2.3.1.31 homoserine O-acetyltransferaseInferred from experiment
-3.2.1.51 alpha-L-fucosidase
-4.1.1.17 ornithine decarboxylase (high similarity with other protein: 10.1074/jbc.R500031200)
-1.1.1.244 methanol dehydrogenase (high similarity to EC 1.1.1.1)
-1.1.1.26 glycolate dehydrogenase
-2.6.1.19 4-aminobutyrate aminotransferase
+enzyme/reaction	comment
+1.9.3.1	cytochrome-c oxidase
+4.1.1.39	RuBisCo
+D-ribulose-1,5-bisphosphate cleaving dioxygenase	RuBisCo
+1.9.6.1	nitrate reductase nap
+1.7.2.5	nitric oxide reductase
+4.1.2.22	fructose-6-phosphate phosphoketolase
+2.6.1.96	gamma aminobutyrate transaminase
+2.8.3.5	succinyl-CoA:acetoacetate CoA-transferase
+2.3.1.31	homoserine O-acetyltransferaseInferred from experiment
+3.2.1.51	alpha-L-fucosidase
+4.1.1.17	ornithine decarboxylase (high similarity with other protein: 10.1074/jbc.R500031200)
+1.1.1.244	methanol dehydrogenase (high similarity to EC 1.1.1.1)
+1.1.1.26	glycolate dehydrogenase
+2.6.1.19	4-aminobutyrate aminotransferase
