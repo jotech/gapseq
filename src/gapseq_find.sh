@@ -428,7 +428,11 @@ else
         mv allPwy.tmp allPwy
         #cat allPwy | grep -wE "$dupli_search"
     fi
-    pwyDB=$(cat allPwy | grep -wEi $pwyKey)
+    cat allPwy | grep -wEi $pwyKey | wc -l
+    pwyDB=$(cat allPwy | grep -wEi $pwyKey | awk -F "\t" '{if ($6) print $0;}')
+    NApwy=$(cat allPwy | grep -wEi $pwyKey | awk -F "\t" '{if (!$6) print $1, $2;}')
+    [[ -n "$NApwy" ]] && echo Pathways ignored because no reactions found: $(echo "$NApwy" | wc -l)
+    [[ -n "$NApwy" ]] && [[ verbose -ge 2 ]] && echo "$NApwy"
     [[ "$noSuperpathways" = true ]] && pwyDB=$(echo "$pwyDB" | grep -v 'Super-Pathways')
     [ -z "$ecnumber" ] && [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
 fi
