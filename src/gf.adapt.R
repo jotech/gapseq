@@ -175,7 +175,7 @@ add_growth <- function(model.orig, add.met.id=NA, weights=NA, genes=NA, verbose=
                               script.dir = script.dir,
                               core.only = only.core,
                               verbose=verbose,
-                              gs.origin = 3,
+                              gs.origin = 10,
                               rXg.tab = rXg.tab) 
     #))
     new.reactions <- mod.adapt.lst$rxns.added
@@ -347,4 +347,47 @@ addReactSrc <- function(mod, src, rxn.id){
                        Scoef=met.scoef, reversible=rxn.rev,
                        lb=rxn.lb, ub=rxn.ub, obj=rxn.obj)
   return(model.new)
+}
+
+
+increase_growth <- function(model.orig, min.obj.val, weights=NA, genes=NA, verbose=F, only.core=F, fullmod){
+  # This here is needed if another draft than GapSeq's own draft networks are gapfilled
+  if((!"gs.origin" %in% colnames(model.orig@react_attr))) {
+    model.orig@react_attr <- data.frame(seed      = gsub("_.0","",model.orig@react_id),
+                                        gs.origin = 0,
+                                        stringsAsFactors = F)
+  }
+  if( !is.na(weights) ) rxn.weights <- readRDS(weights)
+  if( !is.na(genes) )   rXg.tab     <- readRDS(genes)
+  
+  sol <- optimizeProb(model.orig, retOptSol=F)
+  cat("Old growth rate:", round(sol$obj,6), "\n")
+  if(sol$stat == ok & sol$obj >= min.obj.val){
+    warning(paste("Model already has growth rate >=",min.obj.val))
+    return(invisible(model.orig))
+  }else{
+    cat("\nTry to increase growth", "\n")
+    mod.adapt.lst <- gapfill4(mod.orig = model.orig, 
+                              mod.full = fullmod, 
+                              rxn.weights = copy(rxn.weights),  
+                              min.gr = min.obj.val,
+                              bcore = bcore,
+                              dummy.weight = dummy.weight,
+                              script.dir = script.dir,
+                              core.only = only.core,
+                              verbose=verbose,
+                              gs.origin = 10,
+                              rXg.tab = rXg.tab) 
+  
+    new.reactions <- mod.adapt.lst$rxns.added
+    if( length(new.reactions) > 0 ){
+      #if( verbose ) cat("Added reactions:", new.reactions, "\n")
+      mod.adapt <- mod.adapt.lst$model
+    }
+  }
+  sol <- optimizeProb(mod.adapt, retOptSol=F)
+  cat("New growth rate:", round(sol$obj,6), "\n")
+  rxn.added <- setdiff(mod.adapt@react_id, model.orig@react_id)
+  printReaction(mod.adapt, react=rxn.added)
+  return(invisible( mod.adapt ))
 }
