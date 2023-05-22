@@ -288,7 +288,7 @@ fi
 # select pathway keys to be used in database search
 case $pathways in
     all)
-        pwyKey="Pathways|seed|kegg"
+        pwyKey="Pathways|Enzyme-Test|seed|kegg"
         ;;
     amino)
         pwyKey=Amino-Acid-Biosynthesis
