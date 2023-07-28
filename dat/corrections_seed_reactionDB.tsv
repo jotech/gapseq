@@ -2655,5 +2655,20 @@ rxn31860		TRUE		[SW] duplicate reaction to rxn14082
 rxn31864		TRUE		[SW] duplicate reaction to rxn14082					
 									
 rxn90118	=		-1:cpd00067:1:0:"H+";-1:cpd00318:0:0:"Tryptamine";1:cpd00318:1:0:"Tryptamine";1:cpd00067:0:0:"H+"	[SW] Tryptamine-proton Antiport to ensure charge-neutral transport		transport	tryptamine-proton-antiporter	Tryptamine transport via proton antiport	
-rxn05686		TRUE		[SW] Reaction is not charge neutral (tranport of net-charge 2)					
+rxn05686		TRUE		[SW] Reaction is not charge neutral (transport of net-charge 2)					
 rxn90119	=		-1:cpd00067:1:0:"H+";-1:cpd00374:0:0:"Tyramine";1:cpd00374:1:0:"Tyramine";1:cpd00067:0:0:"H+"	[SW] Tyramine-proton Antiport to ensure charge-neutral transport		transport	Tyramine-proton-antiporter	Tyramine transport via proton antiport	
+rxn28979		TRUE		[SW] duplicate reaction to rxn00126					
+rxn19827		TRUE		[SW] duplicate reaction to rxn00182					
+rxn19316		TRUE		[SW] duplicate reaction to rxn00256					
+rxn15055		TRUE		[SW] duplicate reaction to rxn00468					
+rxn37807		TRUE		[SW] duplicate reaction to rxn00502					
+rxn19041		TRUE		[SW] duplicate reaction to rxn00649					
+rxn19042		TRUE		[SW] duplicate reaction to rxn00649					
+rxn32343		TRUE		[SW] duplicate reaction to rxn00649					
+rxn33233		TRUE		[SW] duplicate reaction to rxn00649					
+rxn33240		TRUE		[SW] duplicate reaction to rxn05733					
+rxn33241		TRUE		[SW] duplicate reaction to rxn05733					
+rxn23817		TRUE		[SW] duplicate reaction to rxn05733					
+rxn10448		TRUE		[SW] duplicate reaction to rxn08188					
+rxn09688		TRUE		[SW] duplicate reaction to rxn08323					
+rxn12416		TRUE		[SW] duplicate reaction to rxn08323					
