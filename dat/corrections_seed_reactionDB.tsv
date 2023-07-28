@@ -1215,7 +1215,6 @@ rxn05687	>			[SW] ptrc:H+ symport only described for import	https://metacyc.org/
 rxn10560	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn12526	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn12527	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
-rxn12533	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn12567	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn12586	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn12597	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
@@ -2646,3 +2645,15 @@ rxn46031	<		-1:cpd00067:0:0:"H+";-1:cpd01202:0:0:"Phloretate";-1:cpd27005:0:0:"E
 rxn90117	=		-1:cpd01202:0:0:"Phloretate";-1:cpd00067:0:0:"H+";1:cpd01202:1:0:"Phloretate";1:cpd00067:1:0:"H+"	[SW] Transport reaction for Phloretate			Phloretate-transport	Phloretate-transport	
 									
 rxn41427	>		-3:cpd00067:0:0:"H+";-1:cpd00239:0:0:"H2S";-1:cpd00346:0:0:"L-Aspartate4-semialdehyde";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00001:0:0:"H2O";1:cpd00135:0:0:"Homocysteine";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Key-reaction in a methionine bionsynthetic pathway. MetaCyc ID PWY-7977	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=RXN-19380		asd-S-transferase	L-aspartate semialdehyde sulfurtransferase	
+rxn32690		TRUE		[SW] duplicate reaction to rxn00484					
+rxn09326		TRUE		[SW] duplicate reaction to rxn05663					
+rxn09709		TRUE		[SW] duplicate reaction to rxn05663					
+rxn34411		TRUE		[SW] duplicate reaction to rxn05663					
+rxn32036		TRUE		[SW] duplicate reaction to rxn32033					
+rxn32039		TRUE		[SW] duplicate reaction to rxn32033					
+rxn31860		TRUE		[SW] duplicate reaction to rxn14082					
+rxn31864		TRUE		[SW] duplicate reaction to rxn14082					
+									
+rxn90118	=		-1:cpd00067:1:0:"H+";-1:cpd00318:0:0:"Tryptamine";1:cpd00318:1:0:"Tryptamine";1:cpd00067:0:0:"H+"	[SW] Tryptamine-proton Antiport to ensure charge-neutral transport		transport	tryptamine-proton-antiporter	Tryptamine transport via proton antiport	
+rxn05686		TRUE		[SW] Reaction is not charge neutral (tranport of net-charge 2)					
+rxn90119	=		-1:cpd00067:1:0:"H+";-1:cpd00374:0:0:"Tyramine";1:cpd00374:1:0:"Tyramine";1:cpd00067:0:0:"H+"	[SW] Tyramine-proton Antiport to ensure charge-neutral transport		transport	Tyramine-proton-antiporter	Tyramine transport via proton antiport	
