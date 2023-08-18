@@ -6,6 +6,9 @@ curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
 
+# get path to ldconfig (missing in e.g. debian)
+ldconfig2=$(whereis -b ldconfig | cut -f2 -d " ")
+
 # temporary working directory
 cd $(mktemp -d)
 
@@ -25,16 +28,26 @@ check_cmd(){
     cmd=$1
     arg=$2
     print=$3
+    altname=$4
+    [[ -n "$altname" ]] && name=$altname || name=$cmd
     if command -v $cmd &> /dev/null
     then
         version=$(eval $cmd "$arg")
-    [[ ! "$print" = false ]] && echo $version
+        if [[ -n "$version" ]]; then
+            [[ ! "$print" = false ]] && echo $version
+        else
+            echo $name NOT FOUND
+            i=$((i+1))
+        fi
     else
-        echo $cmd NOT FOUND
+        echo $name NOT FOUND
         i=$((i+1))
     fi
 }
 
+check_cmd $ldconfig2 "-V | head -n 1"
+check_cmd $ldconfig2 "-N -v $(sed 's/:/ /g' <<< $LD_LIBRARY_PATH) 2>/dev/null | grep sbml.so" true libsbml
+check_cmd $ldconfig2 "-N -v $(sed 's/:/ /g' <<< $LD_LIBRARY_PATH) 2>/dev/null | grep glpk.so" true libglpk
 check_cmd awk "--version | head -n 1"
 check_cmd sed "--version | head -n 1"
 check_cmd grep "-V | head -n 1"
