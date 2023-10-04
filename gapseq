@@ -8,6 +8,7 @@ dir=$(dirname "$path")
 
 medium=$dir/dat/media/ALLmed.csv
 verbose=0
+n_threads=1
 
 usage()
 {
@@ -52,7 +53,9 @@ usage()
     echo "  -v              Show version."
     echo "  -h              Show this screen."
     echo "  -n              Enable noisy verbose mode."
-    exit 1
+    echo "  -K Number of threads for sequence alignments. If option is not provided, number of available CPUs will be automatically determined."
+
+exit 1
 }
 
 for arg in $@
@@ -65,8 +68,18 @@ do
     fi
 done
 
-OPTIND=1
-while getopts ":h?vm:n" opt; do
+# Check if there is a subcommand.
+if [[ "$1" =~ ^(test|find|find-transport|draft|adapt|medium|fill|doall)$ ]]; then
+    # If yes set OPTFIND 2 to detect the option.
+    subcommand=$1
+    OPTIND=2
+else
+    # If not stay at 1.
+    subcommand=false
+    OPTIND=1
+fi
+
+while getopts "hvnK:" opt; do
     case "$opt" in
         h|\?)
             usage
@@ -80,40 +93,51 @@ while getopts ":h?vm:n" opt; do
             ;;
         n)
             verbose=1
+            ;;
+        K)
+            n_threads=$OPTARG
+            ;;
         esac
 done
-shift $((OPTIND-1))
-[ "$1" = "--" ] && shift
+
+# Shift according to the options.
+if [[ "$subcommand" =~ ^(test|find|find-transport|draft|adapt|medium|fill|doall)$ ]]; then
+    shift $((OPTIND-2))
+else
+    shift $((OPTIND-1))
+fi
+
+[ "$subcommand" = "--" ] && shift
 [ "$#" -eq 0 ]  && usage
 
-if   [ "$1" == "test" ]; then
+if   [ "$subcommand" == "test" ]; then
     $dir/src/test.sh
 
-elif   [ "$1" == "find" ]; then
+elif   [ "$subcommand" == "find" ]; then
     shift
     $dir/src/gapseq_find.sh "$@"
 
-elif [ "$1" == "find-transport" ]; then
+elif [ "$subcommand" == "find-transport" ]; then
     shift
     $dir/src/transporter.sh "$@"
     
-elif [ "$1" == "draft" ]; then
+elif [ "$subcommand" == "draft" ]; then
     shift
     Rscript $dir/src/generate_GSdraft.R "$@"
 
-elif [ "$1" == "adapt" ]; then
+elif [ "$subcommand" == "adapt" ]; then
     shift
     Rscript $dir/src/adapt.R "$@"
     
-elif [ "$1" == "medium" ]; then
+elif [ "$subcommand" == "medium" ]; then
     shift
     Rscript $dir/src/predict_medium.R "$@"
 
-elif [ "$1" == "fill" ]; then
+elif [ "$subcommand" == "fill" ]; then
     shift
     Rscript $dir/src/gf.suite.R "$@"
 
-elif [ "$1" == "doall" ]; then
+elif [ "$subcommand" == "doall" ]; then
     parm=$(echo $@ | sed 's/doall//')
     file=$(readlink -f $2)
     base=$(basename "$file")
@@ -125,13 +149,14 @@ elif [ "$1" == "doall" ]; then
     taxonomy=auto
     [[ ("$3" == "Bacteria" || "$4" == "Bacteria") ]] && taxonomy=Bacteria
     [[ ("$3" == "Archaea" || "$4" == "Archaea") ]] && taxonomy=Archaea
-    $dir/src/gapseq_find.sh -v $verbose -b 200 -p all -t $taxonomy "$file"
+    $dir/src/gapseq_find.sh -v $verbose -b 200 -p all -t $taxonomy -K $n_threads "$file"
     $dir/src/transporter.sh -b 200 "$file"
     Rscript $dir/src/generate_GSdraft.R -r "$id-all-Reactions.tbl" -t "$id-Transporter.tbl" -c "$file" -u 200 -l 100 -p "$id-all-Pathways.tbl" -b $taxonomy
     [[ ! -s "$3" ]] && Rscript $dir/src/predict_medium.R -m "./${id}-draft.RDS" -p "$id-all-Pathways.tbl"
     Rscript $dir/src/gf.suite.R -m "./${id}-draft.RDS" -n "$medium" -c "./${id}-rxnWeights.RDS" -b 100 -g "./${id}-rxnXgenes.RDS"
 
-elif [ "$1" == "adapt" ]; then
+
+elif [ "$subcommand" == "adapt" ]; then
     if [ "$2" == "add" ]; then
         Rscript $dir/src/adapt.R -a $3 -m $4
     elif [ "$2" == "remove" ]; then
