@@ -72,7 +72,7 @@ done
 parse_options=true
 
 if [[ "$1" == "doall" ]]; then
-    # If yes set OPTIND 2 to avoid reading "gapseq doall" and to parse all the optins in the following while.
+    # If yes set OPTIND 2 to avoid reading "gapseq doall" and to parse all the options in the following while.
     subcommand=$1
     OPTIND=2
 elif [[ "$1" =~ ^(test|find|find-transport|draft|adapt|medium|fill)$ ]]; then
@@ -82,7 +82,7 @@ elif [[ "$1" =~ ^(test|find|find-transport|draft|adapt|medium|fill)$ ]]; then
     OPTIND=1
 else
     # Parse the options given without only avoiding "gapseq".
-    subcommand=$1
+    subcommand=false
     OPTIND=1
 fi
 
