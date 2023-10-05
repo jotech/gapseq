@@ -165,16 +165,6 @@ elif [ "$subcommand" == "doall" ]; then
     [[ ! -s "$3" ]] && Rscript $dir/src/predict_medium.R -m "./${id}-draft.RDS" -p "$id-all-Pathways.tbl"
     Rscript $dir/src/gf.suite.R -m "./${id}-draft.RDS" -n "$medium" -c "./${id}-rxnWeights.RDS" -b 100 -g "./${id}-rxnXgenes.RDS"
 
-
-elif [ "$subcommand" == "adapt" ]; then
-    if [ "$2" == "add" ]; then
-        Rscript $dir/src/adapt.R -a $3 -m $4
-    elif [ "$2" == "remove" ]; then
-        Rscript $dir/src/adapt.R -r $3 -m $4
-    else
-        usage
-    fi
-
 else
     usage
 fi
