@@ -7,7 +7,7 @@ database="seed"
 pwyDatabase="metacyc,custom"
 verbose=1
 taxonomy="Bacteria"
-taxRange="" # taxonomic range for pathways
+taxRange="all" # taxonomic range for pathways
 bitcutoff=200 # cutoff blast: min bit score
 identcutoff=0   # cutoff blast: min identity
 identcutoff_exception=70  # min identity for enzymes marked as false friends (hight seq similarity but different function)
@@ -536,7 +536,7 @@ bestPwy=""  # list of found pathways
 echo -e "ID\tName\tPrediction\tCompleteness\tVagueReactions\tKeyReactions\tKeyReactionsFound\tReactionsFound" > output.tbl # pahtway statistics file
 
 #taxRange=Proteobacteria
-if [ -n "$taxRange" ]; then
+if [ -n "$taxRange" ] && [ "$taxRange" != "all" ]; then
     validTax=$(grep -i $taxRange $dir/../dat/taxonomy.tbl | cut -f1 | tr '\n' '|' | sed 's/.$//')
     [[ -z "$validTax" ]] && { echo "Taxonomic range not found: $taxRange (available ranges: $dir/../dat/taxonomy.tbl)"; exit 0; }
     pwyDB_new=$(echo "$pwyDB" | grep -wE `echo "TAX-($validTax)"`)
