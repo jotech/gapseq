@@ -371,7 +371,7 @@ mkdir -p $seqpath/rev $seqpath/unrev $seqpath_user
 
 #check for updates if internet connection is available
 if [[ "$force_offline" = false ]]; then
-    wget -q --spider http://rz.uni-kiel.de
+    wget -q --spider https://zenodo.org
     is_online=$?
     [[ `pgrep -f $0` != "$$" ]] && is_running=yes
     if [[ $is_online -eq 0 && -z "$is_running" ]]; then

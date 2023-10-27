@@ -1,4 +1,5 @@
 #!/bin/bash
+zenodoID=10047604
 
 # taxonomy
 if [[ -z "$1" ]]; then
@@ -17,15 +18,10 @@ mkdir -p $seqpath/rev $seqpath/unrev $seqpath_user $seqpath/rxn
 
 echo Checking updates for $taxonomy $seqpath
 
-url_rev=ftp://ftp.rz.uni-kiel.de/pub/medsystbio/$taxonomy/rev/sequences.tar.gz
-url_unrev=ftp://ftp.rz.uni-kiel.de/pub/medsystbio/$taxonomy/unrev/sequences.tar.gz
-url_rxn=ftp://ftp.rz.uni-kiel.de/pub/medsystbio/$taxonomy/rxn/sequences.tar.gz
+url_zenodoseqs=https://zenodo.org/records/$zenodoID/files/md5sums.txt
+status_zenodo=$(curl -s --head -w %{http_code} $url_zenodoseqs -o /dev/null)
 
-status_rev=$(curl -s --head -w %{http_code} $url_rev -o /dev/null)
-status_unrev=$(curl -s --head -w %{http_code} $url_unrev -o /dev/null)
-status_rxn=$(curl -s --head -w %{http_code} $url_rxn -o /dev/null)
-
-if [[ $status_rev -eq 550 ]] && [[ $status_unrev -eq 550 ]] && [[ $status_rxn -eq 550 ]]; then
+if [[ $status_zenodo -eq 550 ]]; then
     echo "No sequence archive found, manual download needed."
     exit 1
 fi
@@ -34,48 +30,52 @@ dir_rev=$seqpath/rev
 dir_unrev=$seqpath/unrev
 dir_rxn=$seqpath/rxn
 
-# check modification time
-if [[ -s $dir_rev/sequences.tar.gz ]]; then
-    mod_rev=$(stat -c %Y $dir_rev/sequences.tar.gz)
-else
-    mod_rev=0
-fi
-if [[ -s $dir_unrev/sequences.tar.gz ]]; then
-    mod_unrev=$(stat -c %Y $dir_unrev/sequences.tar.gz)
-else
-    mod_unrev=0
-fi
-if [[ -s $dir_rxn/sequences.tar.gz ]]; then
-    mod_rxn=$(stat -c %Y $dir_rxn/sequences.tar.gz)
-else
-    mod_rxn=0
+# get md5 checksums from the online data version
+zen_sums=$(mktemp)
+wget -q -O $zen_sums $url_zenodoseqs
+cat $zen_sums | grep /$taxonomy/ > $zen_sums.$taxonomy
+rm $zen_sums
+
+# check for mismatches of local md5sums and online version
+update_req=0
+while read -r md5sum filepath; do
+  if [ ! -f "$dir/../dat/seq/$filepath" ]; then
+    update_req=1
+    break
+  fi
+
+  # Calculate the MD5 sum of local file
+  calculated_md5=$(md5sum "$dir/../dat/seq/$filepath" | cut -d ' ' -f 1)
+  
+  # Compare the calculated MD5 sum with the one from the file
+  if [ "$md5sum" != "$calculated_md5" ]; then
+    update_req=1
+    break
+  fi
+done < $zen_sums.$taxonomy
+
+if [[ $update_req -eq 0 ]]; then
+  echo "Reference sequences are up-to-date."
+  exit 0
 fi
 
-# download if newer
-cd $dir_rev && wget -nv -N $url_rev
-cd $dir_unrev && wget -nv -N $url_unrev
-cd $dir_rxn && wget -nv -N $url_rxn
+# Download and extract new sequences 
+if [[ $update_req -eq 1 ]]; then
+  echo "Updating reference sequences to latest version..."
+  
+  # download+extract taxonomy-specific archive
+  allseqs=$(mktemp)
+  wget -q -O "$dir/../dat/seq/$taxonomy.tar.gz" https://zenodo.org/records/$zenodoID/files/$taxonomy.tar.gz
+  tar xzf $dir/../dat/seq/$taxonomy.tar.gz -C $dir/../dat/seq/
+  rm $dir/../dat/seq/$taxonomy.tar.gz
+  
+  # extract rev/unrev/rxn archives
+  tar xzf $seqpath/rev/sequences.tar.gz -C $seqpath/rev/
+  tar xzf $seqpath/unrev/sequences.tar.gz -C $seqpath/unrev/
+  tar xzf $seqpath/rxn/sequences.tar.gz -C $seqpath/rxn/
+  
+  echo "Reference sequences updated."
+fi
 
-# extract if new files were downloaded
-modnew_rev=$(stat -c %Y $dir_rev/sequences.tar.gz)
-modnew_unrev=$(stat -c %Y $dir_unrev/sequences.tar.gz)
-modnew_rxn=$(stat -c %Y $dir_rxn/sequences.tar.gz)
+rm $zen_sums.$taxonomy
 
-if [[ $modnew_rev -gt $mod_rev ]]; then
-    tar xzf $seqpath/rev/sequences.tar.gz -C $seqpath/rev/
-    echo "Updated $taxonomy reviewed sequences"
-else
-    echo "$taxonomy reviewed sequences already up-to-date"
-fi
-if [[ $modnew_unrev -gt $mod_unrev ]]; then
-    tar xzf $seqpath/unrev/sequences.tar.gz -C $seqpath/unrev/
-    echo "Updated $taxonomy unreviewed sequences"
-else
-    echo "$taxonomy unreviewed sequences already up-to-date"
-fi
-if [[ $modnew_rxn -gt $mod_rxn ]]; then
-    tar xzf $seqpath/rxn/sequences.tar.gz -C $seqpath/rxn/
-    echo "Updated $taxonomy additional reaction sequences"
-else
-    echo "$taxonomy additional reaction sequences already up-to-date"
-fi
