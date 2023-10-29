@@ -154,6 +154,7 @@ if [ -n "$reaNames" ]; then
         oldmd5=$(md5sum $reaNameHash.fasta | cut -d " " -f1)
         oldcount=$(cat $reaNameHash.fasta | grep ">" | wc -l)
         rm -f $reaNameHash.fasta
+        rea="${rea//\"/}"
         echo -en " ... Downloading $rea\t\t"
         if [ "$get_unrev" = false ]; then 
             Rscript $dir/uniprot_query.R protein_name "$rea" $reaNameHash.fasta $taxonomy true 0.9 && stat=ok || stat=err
