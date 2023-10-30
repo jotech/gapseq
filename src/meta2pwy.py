@@ -90,6 +90,7 @@ def getReaInfos(pwy):
         # substitute html chars in name
         sub_dic = { "&mdash;":"-",
                      "&ndash;":"-",
+                     "&rarr;":",",
                      "&prime;":"'",
                      "&alpha;":"alpha",
                      "&beta;":"beta",
@@ -104,6 +105,7 @@ def getReaInfos(pwy):
                      "&zeta;":"zeta",
                      "&omega;":"omega",
                      "&kappa;":"kappa",
+                     "&psi;":"psi",
                      "3,7,4;-methylquercetin":"3,7,4-methylquercetin", # unique problem of RXN-13838
                    }
         for sub in sub_dic:
