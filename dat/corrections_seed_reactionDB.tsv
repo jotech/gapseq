@@ -2680,3 +2680,5 @@ rxn90122	>		-1:cpd25730:0:0:"6,6-kestotetraose";-1:cpd00001:0:0:"H2O";1:cpd21648
 rxn17933		TRUE		[SW] highly unbalanced					
 rxn17983		TRUE		[SW] highly unbalanced					
 rxn90123	>		-1:cpd00155:1:0:"glycogen";-1:cpd00001:1:0:"H2O";1:cpd01262:1:0:"Amylotriose";1:cpd00179:1:0:"Maltose"	[SW] A glycogen hydrolase that hydrolyses (1->6)-α-D-glucosidic branch linkages and releases shorter maltodextrins. Extracellular	https://doi.org/10.1038/s41564-023-01447-2		isoamylase	debranching enzyme, glycogen α-1,6-glucanohydrolase	
+									
+rxn20665									TRUE
