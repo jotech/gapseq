@@ -46,8 +46,8 @@ check_cmd(){
 }
 
 check_cmd $ldconfig2 "-V | head -n 1"
-check_cmd $ldconfig2 "-N -v $(sed 's/:/ /g' <<< $LD_LIBRARY_PATH) 2>/dev/null | grep sbml.so" true libsbml
-check_cmd $ldconfig2 "-N -v $(sed 's/:/ /g' <<< $LD_LIBRARY_PATH) 2>/dev/null | grep glpk.so" true libglpk
+check_cmd $ldconfig2 "-N -v $(sed 's/:/ /g' <<< $LD_LIBRARY_PATH:$CONDA_PREFIX/lib) 2>/dev/null | grep sbml.so" true libsbml
+check_cmd $ldconfig2 "-N -v $(sed 's/:/ /g' <<< $LD_LIBRARY_PATH:$CONDA_PREFIX/lib) 2>/dev/null | grep glpk.so" true libglpk
 check_cmd awk "--version | head -n 1"
 check_cmd sed "--version | head -n 1"
 check_cmd grep "-V | head -n 1"
