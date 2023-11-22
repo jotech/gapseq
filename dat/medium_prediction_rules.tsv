@@ -41,7 +41,10 @@ Inulin	cpd28763	"INULIN-DEGRADATION-EXO"	0.42	TRUE		Saccharides
 N-acetylneuraminate	cpd00232	"PWY0-1324" & "GLUAMCAT-PWY"	5	TRUE		Saccharides
 N-Acetyl-D-glucosamine	cpd00122	"GLUAMCAT-PWY" & (rxn05485 | rxn08041)	5	TRUE	Including PTS for uptake	Saccharides
 Xylan-b-1-4	cpd90021	"PWY-6717"	0.01	TRUE	1,4-D-beta-Xylan (n=500) degradation, extracellular	Saccharides
-Trehalose	cpd00794	“PWY0-1182” | “PWY0-1466” | “PWY-2721” | “PWY-2722” | “PWY-2723” | “TREDEGLOW-PWY”	2.5	TRUE		Saccharides
+Trehalose	cpd00794	"PWY0-1182" | "PWY0-1466" | "PWY-2721" | "PWY-2722" | "PWY-2723" | "TREDEGLOW-PWY"	2.5	TRUE		Saccharides
+Xylose	cpd00154	"XYLCAT-PWY" | "PWY-5516" | "PWY-6760" | "PWY-7294" | "PWY-7178" | "PWY-8020" | "PWY-8330"	5	TRUE		Saccharides
+Fucose	cpd00751	"FUCCAT-PWY" | "PWY-8444" | "PWY-8318"	5	TRUE		Saccharides
+Rhamnose	cpd00396	"RHAMCAT-PWY" | "PWY-6713" | "PWY-6714"	5	TRUE		Saccharides
 						
 L-Tryptophan	cpd00065	!("TRPSYN-PWY2" | "TRPSYN-PWY")	0.1	TRUE		Amino acids
 L-Histidine	cpd00119	!"HISTSYN-PWY"	0.1	TRUE		Amino acids
