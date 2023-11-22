@@ -123,7 +123,7 @@ add_growth <- function(model.orig, add.met.id=NA, weights=NA, genes=NA, verbose=
   if( !is.na(weights) ) rxn.weights <- readRDS(weights)
   if( !is.na(genes) )   rXg.tab     <- readRDS(genes)
   
-  if( nrow(seed.db.met[id==add.met.id]) == 0 ) stop("Metabolite not found in database")
+  if( nrow(seed.db.met[id==add.met.id]) == 0 ) stop(paste("Metabolite not found in database "),add.met.id)
   add.met.name <- seed.db.met[id==add.met.id, name]
   add.met.ex   <- paste0("EX_",add.met.id, "_e0")
   print(add.met.ex)
@@ -216,7 +216,7 @@ rm_growth <- function(model.orig, del.met.id, use.media=NA, rxn.blast.file, verb
                                       stringsAsFactors = F)
   }
   
-  if( nrow(seed.db.met[id==del.met.id]) == 0 ) stop("Metabolite not found in database")
+  if( nrow(seed.db.met[id==del.met.id]) == 0 ) stop(paste("Metabolite not found in database "),del.met.id)
   del.met.name <- seed.db.met[id==del.met.id, name]
   del.met.ex   <- paste0("EX_",del.met.id, "_e0")
   
@@ -311,7 +311,7 @@ rm_growth <- function(model.orig, del.met.id, use.media=NA, rxn.blast.file, verb
 }
 
 check_theo_growth <- function(check.met.id, fullmod){
-  if( nrow(seed.db.met[id==check.met.id]) == 0 ) stop("Metabolite not found in database")
+  if( nrow(seed.db.met[id==check.met.id]) == 0 ) stop(paste("Metabolite not found in database "),check.met.id)
   check.met.name <- seed.db.met[id==check.met.id, name]
   check.met.ex   <- paste0("EX_",check.met.id, "_e0")
   

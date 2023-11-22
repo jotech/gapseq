@@ -725,8 +725,8 @@ if(file.exists(out.rds)) warning("Model file already exists and will be overwrit
 saveRDS(mod.out, file = out.rds)
 # Write SBML
 if(!opt$sbml.no.output){
-    source(paste0(script.dir,"/sbml_write.R"))
-    write_gapseq_sbml(mod.out, paste0(output.dir,"/",out.id))
+  source(paste0(script.dir,"/sbml_write.R"))
+  write_gapseq_sbml(mod.out, paste0(output.dir,"/",out.id))
 }
 
 # Save additionally an unconstrained version of the model if desired
