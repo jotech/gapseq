@@ -624,14 +624,14 @@ do
             #echo test: ${ec[i]} ${EC_test[i]}
             if [[ -n "${EC_test[i]}" ]]; then
                 # check if sequence is not available => try to download
-		if [[ (! -f $seqpath/rev/${ec[i]}.fasta || "$update_manually" = true) && "$force_offline" = false ]]; then
+		            if [[ (! -f $seqpath/rev/${ec[i]}.fasta || "$update_manually" = true) && "$force_offline" = false ]]; then
                     if ! already_downloaded "$seqpath/rev/${ec[i]}.fasta"; then
                         [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: ${ec[i]}
                         $dir/uniprot.sh -e "${ec[i]}" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
                         echo $seqpath/rev/${ec[i]}.fasta >> $download_log
                     fi
                 fi
-		if [[ ((! -f $seqpath/unrev/${ec[i]}.fasta && $seqSrc -gt 1) || "$update_manually" = true) && "$force_offline" = false ]]; then 
+		            if [[ ((! -f $seqpath/unrev/${ec[i]}.fasta && $seqSrc -gt 1) || "$update_manually" = true) && "$force_offline" = false ]]; then 
                     if ! already_downloaded "$seqpath/unrev/${ec[i]}.fasta"; then
                         [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unreviewed sequences for: ${ec[i]}
                          $dir/uniprot.sh -u -e "${ec[i]}" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
@@ -670,14 +670,14 @@ do
         if [[ -n "$reaName" ]] && ( [[ "$EC_test_bool" = false ]] || [[ ! -s "$query" ]] );then
             reaNameHash=$(echo -n "$reaName" | md5sum | awk '{print $1}')
             # check if sequence is not available => try to download
-	    if [[ (! -f $seqpath/rev/$reaNameHash.fasta  || "$update_manually" = true) && "$force_offline" = false ]]; then
+	          if [[ (! -f $seqpath/rev/$reaNameHash.fasta  || "$update_manually" = true) && "$force_offline" = false ]]; then
                 if ! already_downloaded "$seqpath/rev/$reaNameHash.fasta"; then
                     [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading reviewed sequences for: $reaName "\n\t\t(hash: $reaNameHash)" 
                     $dir/uniprot.sh -r "$reaName" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
                     echo $seqpath/rev/$reaNameHash.fasta >> $download_log
                 fi
             fi
-	    if [[ ((! -f $seqpath/unrev/$reaNameHash.fasta && $seqSrc -gt 1) || "$update_manually" = true) && "$force_offline" = false ]]; then 
+	          if [[ ((! -f $seqpath/unrev/$reaNameHash.fasta && $seqSrc -gt 1) || "$update_manually" = true) && "$force_offline" = false ]]; then 
                 if ! already_downloaded "$seqpath/unrev/$reaNameHash.fasta"; then
                     [[ verbose -ge 1 ]] && echo -e '\t\t'Downloading unreviewed sequences for: $reaName "\n\t\t(hash: $reaNameHash)" 
                     $dir/uniprot.sh -u -r "$reaName" -t "$taxonomy" -i $uniprotIdentity -o >/dev/null
@@ -708,7 +708,7 @@ do
 
         # sequence by gene name
         if [[ -n "$geneName" ]] && [[ -n "$geneRef" ]] && [[ "$use_gene_seq" = true ]]; then
-	    if [[ (! -f $seqpath/rxn/$rea.fasta || "$update_manually" = true) && "$force_offline" = false ]]; then
+	        if [[ (! -f $seqpath/rxn/$rea.fasta || "$update_manually" = true) && "$force_offline" = false ]]; then
                 reaSeqTmp=$(mktemp -p $tmpdir)
                 for gr in $geneRef
                 do
@@ -728,24 +728,23 @@ do
                     touch $seqpath/rxn/$rea.fasta # create empty file if no gene seq data is found to avoid reoccuring download attempt
                 fi
             fi
-            
-            if [ -s "$seqpath_user/$rea.fasta" ]; then
-                query_gene=$seqpath_user/$rea.fasta
+        fi
+        # use sequences from reaction names if available
+        if [ -s "$seqpath_user/$rea.fasta" ]; then
+            query_gene=$seqpath_user/$rea.fasta
+        else
+            query_gene=$seqpath/rxn/$rea.fasta
+        fi
+        #merge sequence data
+        if [[ -s $query_gene ]]; then
+            if [[ "$query_gene" == "$seqpath_user"* ]]; then
+                [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences: $query_gene (`cat $query_gene | grep ">" | wc -l` sequences)"
             else
-                query_gene=$seqpath/rxn/$rea.fasta
+                [[ verbose -ge 1 ]] && echo -e "\t\t--> Found sequences: $query_gene (`cat $query_gene | grep ">" | wc -l` sequences)"
             fi
-            #merge sequence data
-            if [[ -s $query_gene ]]; then
-                if [[ "$query_gene" == "$seqpath_user"* ]]; then
-                    [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences: $query_gene (`cat $query_gene | grep ">" | wc -l` sequences)"
-                else
-                    [[ verbose -ge 1 ]] && echo -e "\t\t--> Found sequences: $query_gene (`cat $query_gene | grep ">" | wc -l` sequences)"
-                fi
-                query_merge2=$(mktemp -p $tmpdir)
-                cat $query $query_gene | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query_merge2 # no duplicates
-                query=$query_merge2
-            fi
-        
+            query_merge2=$(mktemp -p $tmpdir)
+            cat $query $query_gene | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query_merge2 # no duplicates
+            query=$query_merge2
         fi
         
         [[ "$skipBlast" = true ]] && { continue; }
