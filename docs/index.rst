@@ -28,6 +28,7 @@ Installation
    /usage/medium
    /usage/output
    /usage/adapt
+   /usage/panDraft
 
 
 .. Database
