@@ -37,7 +37,7 @@ Maltose	cpd00179	"MALTOSECAT-PWY"	2.5	TRUE		Saccharides
 Pectin	cpd27519	"PWY-7246" | "PWY-7248"	1.67	TRUE		Saccharides
 Melitose/Raffinose	cpd00382	rxn05643 & (rxn00818 | rxn34781)	1.67	TRUE	Raffinose transporter AND galactohydrolase	Saccharides
 Sucrose	cpd00076	"SUCUTIL-PWY" | "PWY-621" | "PWY-5384" | "SUCROSEUTIL2-PWY"	2.5	TRUE		Saccharides
-Inulin	cpd28763	"INULIN-DEGRADATION-EXO"	0.42	TRUE		Saccharides
+Inulin	cpd28763	"INULIN-DEGRADATION-EXO" | "INULIN-DEGRADATION"	0.42	TRUE		Saccharides
 N-acetylneuraminate	cpd00232	"PWY0-1324" & "GLUAMCAT-PWY"	5	TRUE		Saccharides
 N-Acetyl-D-glucosamine	cpd00122	"GLUAMCAT-PWY" & (rxn05485 | rxn08041)	5	TRUE	Including PTS for uptake	Saccharides
 Xylan-b-1-4	cpd90021	"PWY-6717"	0.01	TRUE	1,4-D-beta-Xylan (n=500) degradation, extracellular	Saccharides
