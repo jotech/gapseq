@@ -25,3 +25,4 @@ The overall goal is to provide a harmonized and completely futile cycle free dat
 - Cellulose: cpd90020 (500 x glucose)
 - D-Xylan (beta-1,4): cpd90021 (500 x D-Xylose)
 - 2'-Fucosyllactose: cpd90001
+- Inulin: cpd28763 (11 x D-fructose + 1 x D-glucose)
