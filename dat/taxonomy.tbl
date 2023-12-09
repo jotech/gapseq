@@ -1,16 +1,16 @@
 tax	superkingdom	group
 2	Bacteria	Bacteria
-1224	Bacteria	Proteobacteria
+1224	Bacteria	Pseudomonadota
 4751	Eukaryota	Fungi
 33208	Eukaryota	Metazoa
 2157	Archaea	Archaea
 40674	Eukaryota	Mammalia
 33090	Eukaryota	Viridiplantae
-1239	Bacteria	Firmicutes
+1239	Bacteria	Bacillota
 2759	Eukaryota	Eukaryota
 3193	Eukaryota	Embryophyta
-201174	Bacteria	Actinobacteria
-1117	Bacteria	Cyanobacteria
+201174	Bacteria	Actinomycetota
+1117	Bacteria	Cyanobacteriota
 33682	Eukaryota	Euglenozoa
 3041	Eukaryota	Chlorophyta
 2763	Eukaryota	Rhodophyta
@@ -34,56 +34,68 @@ tax	superkingdom	group
 2825	Eukaryota	Chrysophyceae
 3699	Eukaryota	Brassicales
 28890	Archaea	Euryarchaeota
+543	Bacteria	Enterobacteriaceae
 33084	Eukaryota	Entamoebidae
 33154	Eukaryota	Opisthokonta
 7742	Eukaryota	Vertebrata
 33630	Eukaryota	Alveolata
-200918	Bacteria	Thermotogae
-200940	Bacteria	Thermodesulfobacteria
-544448	Bacteria	Tenericutes
-508458	Bacteria	Synergistetes
-203691	Bacteria	Spirochaetes
-40117	Bacteria	Nitrospirae
-142182	Bacteria	Gemmatimonadetes
-32066	Bacteria	Fusobacteria
+200918	Bacteria	Thermotogota
+200940	Bacteria	Thermodesulfobacteriota
+544448	Bacteria	Mycoplasmatota
+508458	Bacteria	Synergistota
+203691	Bacteria	Spirochaetota
+40117	Bacteria	Nitrospirota
+142182	Bacteria	Gemmatimonadota
+32066	Bacteria	Fusobacteriota
 1783270	Bacteria	FCB group
-74152	Bacteria	Elusimicrobia
-68297	Bacteria	Dictyoglomi
-1297	Bacteria	Deinococcus-Thermus
-200930	Bacteria	Deferribacteres
-200938	Bacteria	Chrysiogenetes
-200795	Bacteria	Chloroflexi
+74152	Bacteria	Elusimicrobiota
+68297	Bacteria	Dictyoglomota
+1297	Bacteria	Deinococcota
+200930	Bacteria	Deferribacterota
+200938	Bacteria	Chrysiogenota
+200795	Bacteria	Chloroflexota
 1783257	Bacteria	PVC group
-67814	Bacteria	Caldiserica
-68336	Bacteria	Bacteroidetes/Chlorobi group
-200783	Bacteria	Aquificae
+67814	Bacteria	Caldisericota
+68336	Bacteria	Bacteroidota/Chlorobiota group
+200783	Bacteria	Aquificota
+91347	Bacteria	Enterobacterales
+204428	Bacteria	Chlamydiota
 183924	Archaea	Thermoprotei
 183967	Archaea	Thermoplasmata
-203682	Bacteria	Planctomycetes
+203682	Bacteria	Planctomycetota
 3035	Eukaryota	Euglenida
-2093	Bacteria	Mycoplasma
 3052	Eukaryota	Chlamydomonas
 183988	Archaea	Methanopyri
 224756	Archaea	Methanomicrobia
 183939	Archaea	Methanococci
 183925	Archaea	Methanobacteria
-1293497	Bacteria	Nitrospinae
+1293497	Bacteria	Nitrospinota
 543769	Eukaryota	Rhizaria
 33634	Eukaryota	Stramenopiles
 6656	Eukaryota	Arthropoda
 2182	Archaea	Methanococcales
-651137	Archaea	Thaumarchaeota
+651137	Archaea	Nitrososphaerota
 451864	Eukaryota	Dikarya
 3195	Eukaryota	Marchantiophyta
 58023	Eukaryota	Tracheophyta
 58024	Eukaryota	Spermatophyta
 3398	Eukaryota	Magnoliopsida
+85007	Bacteria	Mycobacteriales
 4070	Eukaryota	Solanaceae
 71274	Eukaryota	asterids
 3803	Eukaryota	Fabaceae
+590	Bacteria	Salmonella
+35493	Eukaryota	Streptophyta
 91827	Eukaryota	Gunneridae
 183963	Archaea	Halobacteria
 4479	Eukaryota	Poaceae
+118882	Bacteria	Brucellaceae
+356	Bacteria	Hyphomicrobiales
+234	Bacteria	Brucella
+2826938	Bacteria	Brucella/Ochrobactrum group
+210	Bacteria	Helicobacter pylori
+666	Bacteria	Vibrio cholerae
+662	Bacteria	Vibrio
 4004	Eukaryota	Linaceae
 3977	Eukaryota	Euphorbiaceae
 4210	Eukaryota	Asteraceae
@@ -119,8 +131,7 @@ tax	superkingdom	group
 2232	Archaea	Archaeoglobaceae
 2159	Archaea	Methanobacteriaceae
 146	Bacteria	Spirochaeta
-204428	Bacteria	Chlamydiae
-976	Bacteria	Bacteroidetes
+976	Bacteria	Bacteroidota
 69541	Bacteria	Desulfuromonadales
 72025	Eukaryota	Fabales
 3481	Eukaryota	Cannabaceae
@@ -149,7 +160,6 @@ tax	superkingdom	group
 93681	Bacteria	Roseateles
 204457	Bacteria	Sphingomonadales
 204455	Bacteria	Rhodobacterales
-356	Bacteria	Rhizobiales
 191412	Bacteria	Chlorobiaceae
 1046	Bacteria	Chromatiaceae
 204441	Bacteria	Rhodospirillales
@@ -170,14 +180,13 @@ tax	superkingdom	group
 28216	Bacteria	Betaproteobacteria
 3633	Eukaryota	Gossypium
 629714	Eukaryota	Hypericaceae
-28889	Archaea	Crenarchaeota
+28889	Archaea	Thermoproteota
 4577	Eukaryota	Zea mays
 16714	Eukaryota	Juglandaceae
 55962	Eukaryota	Hypericum
 4143	Eukaryota	Lamiales
 171552	Bacteria	Prevotellaceae
 85023	Bacteria	Microbacteriaceae
-91347	Bacteria	Enterobacterales
 22118	Eukaryota	Erythroxylaceae
 13444	Eukaryota	Colchicum
 169619	Eukaryota	Cinchonoideae
@@ -190,11 +199,7 @@ tax	superkingdom	group
 6562	Eukaryota	Ostreida
 6341	Eukaryota	Polychaeta
 6231	Eukaryota	Nematoda
-33877	Bacteria	Agromyces
-33882	Bacteria	Microbacterium
-838	Bacteria	Prevotella
-85006	Bacteria	Micrococcales
-816	Bacteria	Bacteroides
+815	Bacteria	Bacteroidaceae
 91061	Bacteria	Bacilli
 1890424	Bacteria	Synechococcales
 1118	Bacteria	Chroococcales
@@ -213,14 +218,12 @@ tax	superkingdom	group
 721805	Eukaryota	Amygdaleae
 4071	Eukaryota	Capsicum
 4163	Eukaryota	Digitalis
-40222	Bacteria	Methylophaga
-81	Bacteria	Hyphomicrobium
-919	Bacteria	Thiobacillus
+6127	Eukaryota	Acropora
+28211	Bacteria	Alphaproteobacteria
 13819	Eukaryota	Pteridaceae
 38880	Eukaryota	Botryococcus
 40029	Eukaryota	Rhizophoraceae
 1762	Bacteria	Mycobacteriaceae
-28211	Bacteria	Alphaproteobacteria
 4895	Eukaryota	Schizosaccharomyces
 112	Bacteria	Planctomycetales
 119045	Bacteria	Methylobacteriaceae
@@ -233,7 +236,6 @@ tax	superkingdom	group
 4321	Eukaryota	Icacinaceae
 4289	Eukaryota	Nyssaceae
 33083	Eukaryota	Dictyostelia
-666	Bacteria	Vibrio cholerae
 22	Bacteria	Shewanella
 506	Bacteria	Alcaligenaceae
 8782	Eukaryota	Aves
@@ -250,7 +252,7 @@ tax	superkingdom	group
 4512	Eukaryota	Hordeum
 1279	Bacteria	Staphylococcus
 186826	Bacteria	Lactobacillales
-191410	Bacteria	Chlorobia
+191410	Bacteria	Chlorobiia
 451871	Eukaryota	Eurotiomycetidae
 34397	Eukaryota	Clavicipitaceae
 5782	Eukaryota	Dictyostelium
@@ -265,6 +267,7 @@ tax	superkingdom	group
 4610	Eukaryota	Cyperus
 186801	Bacteria	Clostridia
 4107	Eukaryota	Solanum
+5993	Eukaryota	Enchelys
 4058	Eukaryota	Catharanthus roseus
 3617	Eukaryota	Fagopyrum esculentum
 4097	Eukaryota	Nicotiana tabacum
@@ -274,10 +277,9 @@ tax	superkingdom	group
 69451	Eukaryota	Cistus
 7088	Eukaryota	Lepidoptera
 3214	Eukaryota	Bryopsida
-35493	Eukaryota	Streptophyta
 72276	Bacteria	Ectothiorhodospiraceae
 135617	Bacteria	Thiotrichaceae
-1090	Bacteria	Chlorobi
+1090	Bacteria	Chlorobiota
 40685	Eukaryota	Salix
 3689	Eukaryota	Populus
 3257	Eukaryota	Equisetum
@@ -298,16 +300,17 @@ tax	superkingdom	group
 3482	Eukaryota	Cannabis
 4930	Eukaryota	Saccharomyces
 91888	Eukaryota	lamiids
-1760	Bacteria	Actinobacteria
+1760	Bacteria	Actinomycetes
 241806	Eukaryota	Polypodiopsida
 33317	Eukaryota	Protostomia
 7735	Eukaryota	Cephalochordata
 7586	Eukaryota	Echinodermata
-543	Bacteria	Enterobacteriaceae
 32011	Bacteria	Methylophilaceae
+40222	Bacteria	Methylophaga
 429	Bacteria	Methylobacter
 39773	Bacteria	Methylomicrobium
 55158	Bacteria	Streptomyces peucetius subsp. caesius
+6433	Eukaryota	Sipuncula
 6340	Eukaryota	Annelida
 44249	Bacteria	Paenibacillus
 7215	Eukaryota	Drosophila
@@ -316,19 +319,19 @@ tax	superkingdom	group
 1131492	Eukaryota	Aspergillaceae
 810	Bacteria	Chlamydia
 5052	Eukaryota	Aspergillus
-196896	Viruses	unclassified Myoviridae
+2731619	Viruses	Caudoviricetes
+816	Bacteria	Bacteroides
 147538	Eukaryota	Pezizomycotina
 5654	Eukaryota	Trypanosomatidae
 1463139	Eukaryota	Adonideae
 31468	Eukaryota	Gracilariales
 267890	Bacteria	Shewanellaceae
-85011	Bacteria	Streptomycetales
+85011	Bacteria	Kitasatosporales
 85008	Bacteria	Micromonosporales
-85007	Bacteria	Corynebacteriales
 171637	Eukaryota	Amygdaloideae
 85025	Bacteria	Nocardiaceae
 4668	Eukaryota	Amaryllidaceae
-57723	Bacteria	Acidobacteria
+57723	Bacteria	Acidobacteriota
 183968	Archaea	Thermococci
 7049	Eukaryota	Lampyridae
 71950	Eukaryota	Psilocybe
@@ -343,17 +346,51 @@ tax	superkingdom	group
 135618	Bacteria	Methylococcales
 7705	Eukaryota	Holothuroidea
 5752	Eukaryota	Heterolobosea
-62100	Bacteria	Candidatus Endobugula
+62100	Bacteria	Endobugula
 39172	Eukaryota	Nepeta
 3853	Eukaryota	Lathyrus
+135621	Bacteria	Pseudomonadaceae
 41953	Eukaryota	Pseudo-nitzschia
 4346	Eukaryota	Rhododendron
 13215	Eukaryota	Piper
 562	Bacteria	Escherichia coli
 1218	Bacteria	Prochlorococcus
+68525	Bacteria	delta/epsilon subdivisions
+556282	Eukaryota	Jakobida
+26496	Eukaryota	Strychnos
+171549	Bacteria	Bacteroidales
+837	Bacteria	Porphyromonas gingivalis
+6605	Eukaryota	Cephalopoda
+2611341	Eukaryota	Metamonada
+1802340	Bacteria	Nitrospinae/Tectomicrobia group
+53433	Bacteria	Halanaerobiales
+909932	Bacteria	Negativicutes
+2698788	Bacteria	Candidatus Krumholzibacteriota
+2323	Bacteria	Bacteria incertae sedis
+2498710	Bacteria	Caldisericota/Cryosericota group
+1930617	Bacteria	Calditrichota
+2716431	Bacteria	Coleospermum
+2138240	Bacteria	Coprothermobacterota
+1798711	Bacteria	Cyanobacteriota/Melainabacteria group
+9443	Eukaryota	Primates
+1783272	Bacteria	Terrabacteria group
+147547	Eukaryota	Lecanoromycetes
+157822	Eukaryota	Lecanorineae
+8457	Eukaryota	Sauropsida
+84998	Bacteria	Coriobacteriia
+716545	Eukaryota	saccharomyceta
+5268	Eukaryota	Ustilaginaceae
+213115	Bacteria	Desulfovibrionales
+119060	Bacteria	Burkholderiaceae
+80864	Bacteria	Comamonadaceae
+544	Bacteria	Citrobacter
+90371	Bacteria	Salmonella enterica subsp. enterica serovar Typhimurium
+836	Bacteria	Porphyromonas
+187857	Bacteria	Aquificae
+163487	Eukaryota	Mimoseae
+31	Bacteria	Myxococcaceae
+1644061	Archaea	Natrialbaceae
+33381	Eukaryota	Coccoidea
+227290	Bacteria	Rhizobium/Agrobacterium group
 2281	Archaea	Sulfolobales
 5653	Eukaryota	Kinetoplastea
-ORG-5993	Eukaryota	Arabidopsis thaliana
-131567	Bacteria	Cellular Organisms
-131567	Archaea	Cellular Organisms
-131567	Eukaryota	Cellular Organisms
