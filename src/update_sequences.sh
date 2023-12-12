@@ -1,5 +1,5 @@
 #!/bin/bash
-zenodoID=10047604
+zenodoID=10047603
 
 # taxonomy
 if [[ -z "$1" ]]; then
@@ -18,10 +18,12 @@ mkdir -p $seqpath/rev $seqpath/unrev $seqpath_user $seqpath/rxn
 
 echo Checking updates for $taxonomy $seqpath
 
-url_zenodoseqs=https://zenodo.org/records/$zenodoID/files/md5sums.txt
+url_zenodorecord=https://zenodo.org/records/$zenodoID
+url_zenodocurrent=$(curl -Ls -o /dev/null -w %{url_effective} $url_zenodorecord)
+url_zenodoseqs=$url_zenodocurrent/files/md5sums.txt
 status_zenodo=$(curl -s --head -w %{http_code} $url_zenodoseqs -o /dev/null)
 
-if [[ $status_zenodo -eq 550 ]]; then
+if [[ $status_zenodo -ge 500 ]]; then
     echo "No sequence archive found, manual download needed."
     exit 1
 fi
@@ -33,7 +35,7 @@ dir_rxn=$seqpath/rxn
 # get md5 checksums from the online data version
 zen_sums=$(mktemp)
 wget -q -O $zen_sums $url_zenodoseqs
-cat $zen_sums | grep /$taxonomy/ > $zen_sums.$taxonomy
+cat $zen_sums | grep -w $taxonomy > $zen_sums.$taxonomy
 rm $zen_sums
 
 # check for mismatches of local md5sums and online version
@@ -65,7 +67,7 @@ if [[ $update_req -eq 1 ]]; then
   
   # download+extract taxonomy-specific archive
   allseqs=$(mktemp)
-  wget -q -O "$dir/../dat/seq/$taxonomy.tar.gz" https://zenodo.org/records/$zenodoID/files/$taxonomy.tar.gz
+  wget -q -O "$dir/../dat/seq/$taxonomy.tar.gz" $url_zenodocurrent/files/$taxonomy.tar.gz
   tar xzf $dir/../dat/seq/$taxonomy.tar.gz -C $dir/../dat/seq/
   rm $dir/../dat/seq/$taxonomy.tar.gz
   
