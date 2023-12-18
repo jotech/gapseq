@@ -323,11 +323,11 @@ ala-L-asp-L		EX_alaasp(e)	EX_cpd11593_e0
 chromate		EX_cro4(e)	EX_cpd11595_e0	
 butanesulfonate		EX_butso3(e)	EX_cpd11596_e0	
 ARSENOBETAINE		EX_arsenb(e)	EX_cpd11597_e0	
-Pectin		EX_pect(e)	EX_cpd11601_e0	
+Pectin		EX_pect(e)	EX_cpd27519_e0	
 Menaquinone 7		EX_mqn7(e)	EX_cpd11606_e0	
-Starch		EX_starch(e)	EX_cpd11657_e0	
+Starch		EX_starch(e)	EX_cpd90003_e0	
 beta-Glucan		EX_bglc(e)	EX_cpd11696_e0	
-Xylan		EX_xylan(e)	EX_cpd11732_e0	
+Xylan		EX_xylan(e)	EX_cpd90021_e0	
 Glucomannan		EX_glcmannan(e)	EX_cpd11955_e0	
 Arabinoxylan		EX_arabinoxyl(e)	EX_cpd11970_e0	
 Methylcobalamin		EX_Methylcobalamin(e)	EX_cpd12878_e0	
@@ -349,7 +349,6 @@ Adrenic acid		EX_adrn(e)	EX_cpd16342_e0
 methymenaquinol 7		EX_mmql7(e)	EX_cpd17026_e0	
 methylmenaquinone 7		EX_mmqn7(e)	EX_cpd17027_e0	
 2-fucosyllactose		EX_2fl(e)	EX_cpd90001_e0	
-Inulin		EX_inulin(e)	EX_cpd27312_e0	
 Maltodextrin			EX_cpd11976_e0	
 Phenyacetate		EX_pac(e)	EX_cpd19069_e0	
 3mop;(S)-3-Methyl-2-oxopentanoate		EX_3mop(e)	EX_cpd00508_e0	
@@ -369,3 +368,6 @@ sulfoquinovose;sulfoquinovose			EX_cpd22614_e0
 (S)-2,3-Dihydroxypropane-1-sulfonate;2,3-dihydroxypropane-1-sulfonate			EX_cpd31356_e0	
 Agmatine		EX_agm(e)	EX_cpd00152_e0	Amines
 Starch		EX_strch1(e)	EX_cpd90003_e0	Carbohydrates
+Inulin	EX_inulin(e)	EX_cpd28763_e0	Carbohydrates
+Cellulose	EX_cellul(e)	EX_cpd90020_e0	Carbohydrates
+2’-Fucosyllactose	EX_	EX_cpd90001_e0	Carbohydrates
