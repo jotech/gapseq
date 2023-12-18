@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'gapseq'
-copyright = '2020, Johannes Zimmermann and Silvio Waschina'
+copyright = '2023, Johannes Zimmermann and Silvio Waschina'
 author = 'Johannes Zimmermann and Silvio Waschina'
 
 
