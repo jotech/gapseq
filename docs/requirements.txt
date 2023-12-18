@@ -1,3 +1,4 @@
 sphinx-markdown-tables
 docutils
 sphinx_rtd_theme
+recommonmark
