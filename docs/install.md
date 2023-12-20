@@ -150,8 +150,8 @@ The sybilSBML archive is available at [gitlab](https://gitlab.cs.uni-duesseldorf
 
 ## cplex solver support
 
-We recommend using *cplex* als LP-solver as it is usually faster than *glpk*. The cplex solver is included in the *IBM ILOG CPLEX Optimization Studio*, which is free* for students and academics through the **IBM Academic Initiative** programm ([see here](https://developer.ibm.com/docloud/blog/2019/07/04/cplex-optimization-studio-for-students-and-academics/)). Please follow the installation instructions for *cplex* provided by IBM.
-The R-package for the interface between R and the cplex solver can be optained from CRAN ([cplexAPI on CRAN](https://cran.r-project.org/web/packages/cplexAPI/index.html)). For *cplexAPI* installation please refer to instructions [here](https://cran.r-project.org/web/packages/cplexAPI/INSTALL).
+We recommend using *cplex* as LP-solver as it is usually faster than *glpk*. The cplex solver is included in the *IBM ILOG CPLEX Optimization Studio*, which might be at no charge to students and academics through the **IBM Academic Initiative** programm ([see here](https://community.ibm.com/community/user/ai-datascience/blogs/xavier-nodet1/2020/07/09/cplex-free-for-students)). Please follow the installation instructions for *cplex* provided by IBM.
+The R-package for the interface between R and the cplex solver can be obtained from github ([SysBioChalmers/cplexAPI](https://github.com/SysBioChalmers/cplexAPI)). For *cplexAPI* installation please refer to instructions [here](https://github.com/SysBioChalmers/cplexAPI/blob/3070a6b60bb650919ee1b0db8b8223de99f88c3a/inst/INSTALL). Please note, that the R-package *cplexAPI* is not available from the CRAN repository anymore. We are currently working on a new CPLEX support solution that does not depend on *cplexAPI*.  
 
 
 ## Troubleshooting
