@@ -37,7 +37,7 @@ exit 1
 }
 
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
-while getopts "h?i:b:c:qkmf::v:M:K:" opt; do
+while getopts "h?i:b:c:qkm:f::v:M:K:" opt; do
     case "$opt" in
     h|\?)
         usage
