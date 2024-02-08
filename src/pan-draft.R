@@ -183,7 +183,6 @@ rm(list = c("model_list", "res")) # Remove some variables
 fwrite(rxn2mod_dt, file = file.path(output.dir,"rxnXmod.tsv"), sep = "\t", quote = FALSE)
 
 if ( !only.binary.rxn.table ){
-
   # Core reactome size 
   strict_core_rxn_df <- subset(rxn2mod_dt, rowSums(rxn2mod_dt[, ..mod_ids]) == num.mod) # STRICT CORE
   core_rxn_df <- subset(rxn2mod_dt, rowSums(rxn2mod_dt[, ..mod_ids]) >= round(num.mod*core.th)) # CORE
@@ -232,7 +231,7 @@ if ( !only.binary.rxn.table ){
     fwrite(stat_dt, file = file.path(output.dir,"pan-reactome_stat.tsv"), sep = "\t")
   }
 
-  ### Reconstruct pan-Draft 
+  ### Reconstruct pan-Draft
   # Extract RXN from model, extract for all rxn the info from the first model having that rxn 
   info_all_rxns_mods <- list()
   for (rxn_id in rxn2mod_dt$rxn) {
