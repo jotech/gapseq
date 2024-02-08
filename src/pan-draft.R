@@ -1,10 +1,10 @@
-#TO BE IMPLEMENTED
-# add gapseq version info to model object
-#gapseq_version <- system(paste0(script.dir,"/.././gapseq -v"), intern = T)
-#blast.header <- str_match(readLines(blast.res, n=2)," Sequence DB md5sum: .*")
-#if( any(!is.na(blast.header)) ){
-  #    mod@mod_desc <- paste0(gapseq_version,"; ", na.omit(gsub(" ","",blast.header)))
-#} else mod@mod_desc <- gapseq_version
+# TO BE IMPLEMENTED
+#   add gapseq version info to model object
+#   gapseq_version <- system(paste0(script.dir,"/.././gapseq -v"), intern = T)
+#   blast.header <- str_match(readLines(blast.res, n=2)," Sequence DB md5sum: .*")
+#   if( any(!is.na(blast.header)) ){
+#     mod@mod_desc <- paste0(gapseq_version,"; ", na.omit(gsub(" ","",blast.header)))
+#   } else mod@mod_desc <- gapseq_version
 
 library(getopt)
 
@@ -120,8 +120,9 @@ if ( !only.binary.rxn.table ){
   weights_dt[, num.pan := .N, by = .(seed)] # Add lines for seed in order to obtain corrected median  
   # Calculate custom median of "weight" by grouping "seed"
   # alternative: "median(weight)" do not consider missing RXN and compute only the once present
-  #              "custom_median(weight, num.pan, num.mod)" consider missing RXN and compute the median based on the total number input models
-  weights_dt[, weight.pan := custom_quartile_weight(weight, num.pan, num.mod, min.rxn.freq.in.mods), by = .(seed)]
+  #              "custom_quartile_weight(weight, num.pan, num.mod, min.rxn.freq.in.mods)" consider missing RXN and compute the updated weight based on the total number input models and the threshold passed (e.g. 0.07)
+  #                 has been tested the effect of changing th on gapfilling, it didn't showed considerable effects.  
+  weights_dt[, weight.pan := custom_median(weight, num.pan, num.mod), by = .(seed)]
   weights_dt[, num.pan := NULL] # drop the colum num.pan
   weights_dt <- weights_dt[order(seed, weight)] # alternative: "abs(weight - weigth.pan)" 
 
