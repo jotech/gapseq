@@ -71,7 +71,7 @@ usage()
     echo "  -f Path to directory, where output files will be saved (default: current directory)"
     echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default: $update_manually)"
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
-    echo "  -O For offline mode (default: $force_offline)"
+    echo "  -O Force offline mode (default: $force_offline)"
     echo "  -M Input genome mode. Either 'nucl', 'prot', or 'auto' (default '$input_mode')"
     echo "  -K Number of threads for sequence alignments. If option is not provided, number of available CPUs will be automatically determined."
     echo ""
