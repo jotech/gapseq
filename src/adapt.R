@@ -74,6 +74,7 @@ if( "cplexAPI" %in% rownames(installed.packages()) ){
 if ( is.null(opt$model) ) { opt$model =  paste0(script.dir,"/../toy/myb71.RDS")}
 if ( is.null(opt$verbose) ) { opt$verbose = F }
 if ( is.null(opt$output.dir) ) { opt$output.dir = "." }
+if ( is.null(opt$sbml.no.output) ) { opt$sbml.no.output = F }
 
 # overwrite -f Option with default (This option might be used in future for a different purpose)
 
@@ -89,9 +90,7 @@ output.dir          <- opt$output.dir
 verbose             <- opt$verbose
 min.growth          <- opt$min.growth
 mod.id              <- opt$id
-
-# Parameters:
-sbml.export  <- FALSE 
+sbml.no.output      <- opt$sbml.no.output
 
 # Little helpers
 source(paste0(script.dir,"/add_missing_exRxns.R"))
@@ -290,7 +289,7 @@ if(is.null(mod.id)){
 out.rds <- paste0(output.dir,"/",out.id,"-adapt",".RDS")
 saveRDS(mod.out, file = out.rds)
 # Write SBML
-if(!opt$sbml.no.output){
+if(!sbml.no.output){
   source(paste0(script.dir,"/sbml_write.R"))
   write_gapseq_sbml(mod.out, paste0(output.dir,"/",out.id, "-adapt"))
 }
