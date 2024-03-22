@@ -371,3 +371,4 @@ Starch		EX_strch1(e)	EX_cpd90003_e0	Carbohydrates
 Inulin	EX_inulin(e)		EX_cpd28763_e0	Carbohydrates
 Cellulose	EX_cellul(e)		EX_cpd90020_e0	Carbohydrates
 2’-Fucosyllactose			EX_cpd90001_e0	Carbohydrates
+Oxalic Acid;oxalate		EX_oxa(e)	EX_cpd00180_e0	Carboxylic acids
