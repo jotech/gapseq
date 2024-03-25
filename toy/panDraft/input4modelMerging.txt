@@ -1,4 +1,0 @@
-toy/panDraft/MGYG000008797-draft.RDS
-toy/panDraft/MGYG000009889-draft.RDS
-toy/panDraft/MGYG000167774-draft.RDS
-toy/panDraft/MGYG000173413-draft.RDS
