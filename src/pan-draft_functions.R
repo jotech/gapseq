@@ -134,7 +134,6 @@ build_panDraft <- function(subSet_rxn_df, info_all_rxns_mods, mod_desc) {
   cat("\nConstructing draft model... \n")
   pan.mod <- sybil::modelorg(name = "panDraf_model", id = "panDraf_model")
 
-  # TO BE IMPROVED
   pan.mod@mod_compart <- c("c0","e0","p0")
   mod_compart(pan.mod)
   # add metabolite compartment list
@@ -164,7 +163,7 @@ build_panDraft <- function(subSet_rxn_df, info_all_rxns_mods, mod_desc) {
   colnames(pan.mod@subSys) <- subsys_unique
   react_attr_df <- do.call(rbind, lapply(react_attr_list, data.frame, stringsAsFactors = FALSE)) # Convert list of lists to dataframe
 
-  # Add one reaction at the time
+  # add one reaction at the time
   for (i in 1:length(subset_info_rxns_mods)) {
     rxn <- subset_info_rxns_mods[[i]]
     rxn.id <- rxn@react_id
@@ -211,9 +210,9 @@ build_panDraft <- function(subSet_rxn_df, info_all_rxns_mods, mod_desc) {
       pan.mod@gprRules <- ""
     }
   }
-  # TO BE IMPROVED
+
   pan.mod@mod_desc <- mod_desc # mod description of first loaded model
-  # Add annotation column to model attributes if not already there
+  # add annotation column to model attributes if not already there
   if(!("annotation" %in% colnames(pan.mod@mod_attr))) {
     bm_ind <- which(pan.mod@react_id == "bio1")
     annostr <- ""
@@ -223,6 +222,11 @@ build_panDraft <- function(subSet_rxn_df, info_all_rxns_mods, mod_desc) {
       annostr <- "tax_domain:Archaea"
     pan.mod@mod_attr <- data.frame(annotation = annostr)
   }
+
+  # add gapseq version info to model object
+  gapseq_version <- system(paste0(script.dir,"/.././gapseq -v"), intern = T)
+  pan.mod@mod_desc <- gapseq_version
+  
   cat("\tcompleted\n")
   return(pan.mod)
 }

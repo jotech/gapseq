@@ -1,11 +1,3 @@
-# TO BE IMPLEMENTED
-#   add gapseq version info to model object
-#   gapseq_version <- system(paste0(script.dir,"/.././gapseq -v"), intern = T)
-#   blast.header <- str_match(readLines(blast.res, n=2)," Sequence DB md5sum: .*")
-#   if( any(!is.na(blast.header)) ){
-#     mod@mod_desc <- paste0(gapseq_version,"; ", na.omit(gsub(" ","",blast.header)))
-#   } else mod@mod_desc <- gapseq_version
-
 library(getopt)
 
 # get options first
