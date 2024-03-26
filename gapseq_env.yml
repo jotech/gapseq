@@ -37,4 +37,3 @@ dependencies:
   - r-glpkapi
   - r-rcurl
   - r-httr
-  - r-micropan
