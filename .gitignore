@@ -35,7 +35,7 @@ vignettes/*.pdf
 *.fai
 *.bak
 *.log
-# *.RDS
+*.RDS
 *.swp
 *.tbl
 *.csv
