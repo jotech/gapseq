@@ -1,8 +1,40 @@
+### parse the option and return a list
+parse_input_options <- function(opt, suffix) {
+  # Check if opt is a directory
+  if (dir.exists(opt)) {
+    # List files in the directory
+    files <- list.files(opt, full.names = TRUE, pattern = paste0(suffix, "$"))
+    cat("Reading input from directory:\t", opt, "\n") # print directory
+
+  } else {
+    # Treat opt as a comma-separated list of file names or a pattern with wildcard
+    if (grepl(",", opt)) {
+      cat("Reading input from specified filename pathway\n")
+      # Treat opt as a comma-separated list of file names
+      files <- unlist(strsplit(opt, ","))
+    } else {
+      stop("The input has not been interpreted properly\n")
+    }
+
+    # Get only files that have the specified suffix
+    files <- files[grepl(paste0(suffix, "$"), files)]
+
+    # If some of the files have a different suffix, return an error message
+    if (length(files) == 0) {
+      stop("No files with the specified suffix. Please check the file names.")
+    }
+    # Check if files exist
+    if (!all(file.exists(files))) {
+      stop("Some files do not exist. Please check the file names.")
+    }
+  }
+  cat(files, "\n")
+  return(files)
+}
+
 ### load files (.RDS) from paths  
 # specify suffix to save the prefix as id in a list
-load_files_from_paths_for_RDS <- function(list_fn, suf) {
-  cat("\tloading file from:", list_fn, "\n")
-  file_paths <- readLines(list_fn)
+load_files_from_paths_for_RDS <- function(file_paths, suf) {
   file_list <- list() # Create an empty list to store the loaded files
   # Iterate over the file paths and read the corresponding files
   for (path in file_paths) {
@@ -15,9 +47,7 @@ load_files_from_paths_for_RDS <- function(list_fn, suf) {
 }
 
 ### load files (.tbl) from paths  
-load_files_from_paths_for_tbl <- function(list_fn, suf) {
-  cat("\tloading file from:", list_fn, "\n")
-  file_paths <- readLines(list_fn)
+load_files_from_paths_for_tbl <- function(file_paths, suf) {
   file_list <- list() # Create an empty list to store the loaded files
   # Iterate over the file paths and read the corresponding files
   for (path in file_paths) {
