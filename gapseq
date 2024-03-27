@@ -42,7 +42,7 @@ usage()
     echo "  gapseq fill -m toy/ecoli-draft.RDS -n dat/media/ALLmed.csv -c toy/ecoli-rxnWeights.RDS -g toy/ecoli-rxnXgenes.RDS"
     echo "  gapseq adapt -a 14DICHLORBENZDEG-PWY -m toy/myb71.RDS"
     echo "  gapseq adapt -m toy/myb71.RDS -w cpd00089:TRUE -c toy/myb71-rxnWeights.RDS -g toy/myb71-rxnXgenes.RDS -b toy/myb71-all-Reactions.tbl"
-    echo "  gapseq pan -m toy/panDraft/input4modelMerging.txt -c toy/panDraft/input4WeightsMerging.txt -g toy/panDraft/input4XgenesMerging.txt -w toy/panDraft/input4Pathways.txt"
+    echo "  gapseq pan -m toy/MGYG000*-draft.RDS -c toy/MGYG000*-rxnWeights.RDS -g toy/MGYG000*-rxnXgenes.RDS -w toy/MGYG000*.tbl.gz"
     echo -e "\nOptions:"
     echo "  test            Testing dependencies and basic functionality of gapseq."
     echo "  find            Pathway analysis, try to find enzymes based on homology."

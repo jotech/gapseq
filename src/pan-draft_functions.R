@@ -8,7 +8,7 @@ parse_input_options <- function(opt, suffix) {
 
   } else {
     # Treat opt as a comma-separated list of file names or a pattern with wildcard
-    if (grepl(",", opt)) {
+    if (grepl(",", opt) | length(opt) == 1) {
       cat("Reading input from specified filename pathway\n")
       # Treat opt as a comma-separated list of file names
       files <- unlist(strsplit(opt, ","))

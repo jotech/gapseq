@@ -20,31 +20,25 @@ spec <- matrix(c(
 # all input files belonging to the same option will be paste together separated by a comma
 # if the parsed arguments strat with "-" are considered options, whereas everyting in between are input to the same option
 args <- commandArgs(trailingOnly = TRUE)
-expanded_files <- list()
-for (item in args) {
-  if (startsWith(item, "-")) {
-    if (length(expanded_files)>0) { 
-      expanded_files <- c(expanded_files, option_list)
-    }
-    expanded_files <- c(expanded_files, item)
-    flag <- 0
-  } else {
-    if (flag == 0) {
-      option_list <- item
-      flag <- 1
-    } else {
-      option_list <- paste(option_list, item, sep = ",")
-    }
+
+args_mod <- vector()
+parm_idx <- grep("^-[a-z]", args)
+for(i in parm_idx){
+  parm_nr <- which(i==parm_idx)
+  if(parm_nr < length(parm_idx)){
+    end <- parm_idx[parm_nr+1]-1
+  } else{ 
+    end <- length(args) 
+  }
+  parm_items <- args[i:end]
+  if(length(parm_items) == 1){
+    args_mod <- c(args_mod, parm_items)
+  }else{
+    args_mod <- c(args_mod, parm_items[1], paste0(parm_items[-1],collapse=","))
   }
 }
-# add the value of the last option
-if (flag == 1) {
-  expanded_files <- c(expanded_files, item)
-}
+opt <- getopt(spec, args_mod)
 
-# Flatten the list of filenames
-expanded_files <- unlist(expanded_files)
-opt <- getopt(spec, expanded_files)
 
 # Help Screen
 if ( !is.null(opt$help) | is.null(opt$models_path)){
