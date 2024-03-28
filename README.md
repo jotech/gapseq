@@ -82,3 +82,7 @@ GNU General Public License version 3.0 ([GPLv3](https://www.gnu.org/licenses/gpl
   Licensed under the [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.en.html) license.
   Link to license: https://github.com/Ecogenomics/GTDBTk/blob/master/LICENSE
   Website: https://ecogenomics.github.io/GTDBTk/
+
+## Citation
+- Zimmermann, J., Kaleta, C. & Waschina, S. gapseq: informed prediction of bacterial metabolic pathways and reconstruction of accurate metabolic models. Genome Biol 22, 81 (2021). https://doi.org/10.1186/s13059-021-02295-1
+- De Bernardini, N., Zampieri, G., Campanaro, S., Zimmermann, J., Waschina, S. & Treu, L. pan-Draft: Automated reconstruction of species-representative metabolic models from multiple genomes. *Currently under revision*

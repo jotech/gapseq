@@ -1,5 +1,7 @@
 # panDraft: species-level models
 
+*Details on performance of pan-Draft module are currently under evaluation for pubblication*
+
 When dealing with environmental samples, it's common for Metagenome-Assembled Genomes (MAGs) obtained from genome centric metagenomics to be incomplete and contaminated. Consequently, Genome-Scale Models (GEMs) derived from these incomplete MAGs lack a substantial portion of the metabolic potential of the corresponding species. In response, once a set of draft models is reconstructed, they can be conbined into a comprehensive model specific to the taxonomic group. This approach aims to fill the gaps present in individual models by combining homology-based searches and pan-reactome analysis.
 
 Using `gapseq pan`, draft species-level models can be generated to enhance the representativeness of the taxa (species) metabolism.
