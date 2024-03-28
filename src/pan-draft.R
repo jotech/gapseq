@@ -20,9 +20,8 @@ spec <- matrix(c(
 # all input files belonging to the same option will be paste together separated by a comma
 # if the parsed arguments strat with "-" are considered options, whereas everyting in between are input to the same option
 args <- commandArgs(trailingOnly = TRUE)
-
 args_mod <- vector()
-parm_idx <- grep("^-[a-z]", args)
+parm_idx <- grep("^-[a-z]|^--[a-z]", args)
 for(i in parm_idx){
   parm_nr <- which(i==parm_idx)
   if(parm_nr < length(parm_idx)){
@@ -116,9 +115,6 @@ if ( !only.binary.rxn.tbl ){
   pathways_opt <- parse_input_options(pathways.table.path, "-all-Pathways.tbl.gz")
   pathways_list <- load_files_from_paths_for_tbl(pathways_opt, "-all-Pathways.tbl.gz")
 }
-
-print(length(mod.path_opt))
-
 cat("loading completed \n\n")
 
 # check input size
