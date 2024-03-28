@@ -26,9 +26,10 @@ usage()
     echo "  gapseq find (-p pathways | -e enzymes) [-b bitscore] (genome)"
     echo "  gapseq find-transport [-b bitscore] (genome)"
     echo "  gapseq draft (-r reactions | -t transporter -c genome -p pathways) [-b pos|neg|archaea|auto]"
-    echo "  gapseq medium (-m draft -p pathways) [-c manual_fluxes - o output_file]"
+    echo "  gapseq medium (-m draft -p pathways) [-c manual_fluxes -o output_file]"
     echo "  gapseq fill (-m draft -n medium -c rxn_weights -g rxn_genes)"
     echo "  gapseq adapt (-a reactions/pathways | -r reactions/pathways| -w growh_compounds) -m model (-g rxn_genes, -c rxn_weights, -b reaction_blast_file)"
+    echo "  gapseq pan (-m draft_list -c rxn_weights_list -g rxn_genes_list -w pathways_list)"
     echo -e "\nExamples:"
     echo "  gapseq test"
     echo "  gapseq doall toy/ecoli.fna.gz"
@@ -41,6 +42,7 @@ usage()
     echo "  gapseq fill -m toy/ecoli-draft.RDS -n dat/media/ALLmed.csv -c toy/ecoli-rxnWeights.RDS -g toy/ecoli-rxnXgenes.RDS"
     echo "  gapseq adapt -a 14DICHLORBENZDEG-PWY -m toy/myb71.RDS"
     echo "  gapseq adapt -m toy/myb71.RDS -w cpd00089:TRUE -c toy/myb71-rxnWeights.RDS -g toy/myb71-rxnXgenes.RDS -b toy/myb71-all-Reactions.tbl"
+    echo "  gapseq pan -m toy/MGYG000*-draft.RDS -c toy/MGYG000*-rxnWeights.RDS -g toy/MGYG000*-rxnXgenes.RDS -w toy/MGYG000*.tbl.gz"
     echo -e "\nOptions:"
     echo "  test            Testing dependencies and basic functionality of gapseq."
     echo "  find            Pathway analysis, try to find enzymes based on homology."
@@ -50,6 +52,7 @@ usage()
     echo "  fill            Gap filling of a model."
     echo "  doall           Combine find, find-transport, draft, (medium,) and fill."
     echo "  adapt           Add or remove reactions or pathways."
+    echo "  pan             Reconstruct a pan-Draft from a list of models."
     echo "  -v              Show version."
     echo "  -h              Show this screen."
     echo "  -n              Enable noisy verbose mode."
@@ -75,7 +78,7 @@ if [[ "$1" == "doall" ]]; then
     # If yes set OPTIND 2 to avoid reading "gapseq doall" and to parse all the options in the following while.
     subcommand=$1
     OPTIND=2
-elif [[ "$1" =~ ^(test|find|find-transport|draft|adapt|medium|fill)$ ]]; then
+elif [[ "$1" =~ ^(test|find|find-transport|draft|adapt|medium|fill|pan)$ ]]; then
     # If another command line (like find), the options are not parsed with getopts (as they will be parsed in their own script).
     subcommand=$1
     parse_options=false
@@ -146,6 +149,10 @@ elif [ "$subcommand" == "medium" ]; then
 elif [ "$subcommand" == "fill" ]; then
     shift
     Rscript $dir/src/gf.suite.R "$@"
+
+elif [ "$subcommand" == "pan" ]; then
+    shift
+    Rscript $dir/src/pan-draft.R "$@"
 
 elif [ "$subcommand" == "doall" ]; then
     parm=$(echo $@ | sed 's/doall//')
