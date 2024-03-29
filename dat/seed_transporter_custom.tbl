@@ -9,3 +9,5 @@ rxn47305	cholate symporter	2.Electrochemical potential-driven transporters	cpd00
 rxn40935	chenodeoxycholate symporter	2.Electrochemical potential-driven transporters	cpd01663[e0]	Chenodeoxycholate
 rxn90101	sulfoquinovose symporter	2.Electrochemical potential-driven transporters	cpd22614[e0]	sulfoquinovose
 rxn90102	DHPS transporter	2.Electrochemical potential-driven transporters	cpd31356[e0]	(S)-2,3-Dihydroxypropane-1-sulfonate
+rxn27362	formate-oxalate antiporter	2.Electrochemical potential-driven transporters	cpd00180[e0]	Oxalate
+rxn27362	formate-oxalate antiporter	2.Electrochemical potential-driven transporters	cpd00047[e0]	Formate
