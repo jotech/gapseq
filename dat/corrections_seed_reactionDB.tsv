@@ -2685,3 +2685,5 @@ rxn20665									TRUE
 									
 rxn29776	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd28763:1:0:"Inulin";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd00067:0:0:"H+";1:cpd28763:0:0:"Inulin"	[JZ] inulin abc transporter					TRUE
 rxn90124	>		-1:cpd28763:0:0:"Inulin";-11:cpd00001:0:0:"H2O";11:cpd00082:0:0:"D-Fructose";1:cpd00027:0:0:"D-Glucose"	[JZ] inulinase, intracellular	https://www.vmh.life/#reaction/INULINASE		inulinase	inulinase, intracellular	
+									
+rxn27362									TRUE
