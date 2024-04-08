@@ -38,7 +38,6 @@ for(i in parm_idx){
 }
 opt <- getopt(spec, args_mod)
 
-
 # Help Screen
 if ( !is.null(opt$help) | is.null(opt$models_path)){
   cat(getopt(spec, usage=TRUE))
@@ -171,7 +170,7 @@ for (mod_idx in names(model_list)) {
     mod_ids <- c(mod_ids, n_name)
     model_list[[mod_idx]] <- mod
   } else {
-    mod_ids <- c(mod_ids, mod@mod_id)    
+    mod_ids <- c(mod_ids, mod@mod_id)
   }
   # Add annotation column to model attributes if not already there
   mod <- add_annotation_column_to_attributes(mod) 
