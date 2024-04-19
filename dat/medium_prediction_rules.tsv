@@ -24,6 +24,7 @@ O2	cpd00007	rxn05747 | rxn09272 | rxn08288 | rxn00145	12.5	FALSE	Reactions from 
 CO2	cpd00011	"CALVIN-PWY" | "CODH-PWY" | "PWY-5789" | "PWY-7784" | "LWP-GS" | "METHANOGENESIS-PWY"	25	FALSE	CO2 fixation, methanogenesis	Inorganics
 H2	cpd11640	"CODH-PWY" | "LWP-GS" | "METHANOGENESIS-PWY" | "PWY-7867"	100	FALSE	Ljungdahl-Wood pathway, methanogenesis	Inorganics
 Photons	cpd11632	"PWY-101"	50	FALSE	photosynthesis light reactions	Inorganics
+PCE	cpd04166	"PCEDEG-PWY" | "PCEDEG-PWY2"	25	FALSE	Reductive dehalogenation	Inorganics
 						
 D-Glucose	cpd00027	rxn05226 | rxn08612	5	TRUE	D-glucose transport via PEP:Pyr PTS	Saccharides
 D-Glucose	cpd00027	rxn05573 | rxn08616	5	TRUE	D-glucose transport in via proton symport	Saccharides
