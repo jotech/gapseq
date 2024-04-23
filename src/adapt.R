@@ -111,7 +111,7 @@ meta.rxn <- fread(paste0(script.dir, "/../dat/meta_rea.tbl"))
 seed_x_mets   <- fread(paste0(script.dir,"/../dat/seed_metabolites_edited.tsv"), header=T, stringsAsFactors = F, na.strings = c("null","","NA"))
 
 cat("Loading model files", mod.file, "\n")
-fullmod        <- construct_full_model(script.dir)
+fullmod <- construct_full_model(script.dir)
 if ( toupper(file_ext(mod.file)) == "RDS" ){
   mod.orig <- readRDS(mod.file)
   if(is.list(mod.orig)){ # select model from list of models
@@ -121,8 +121,8 @@ if ( toupper(file_ext(mod.file)) == "RDS" ){
     mod.orig <- mod.orig[[mod.id]]
   }
 }else{ 
-  mod.orig <- readSBMLmod(mod.file)}
-
+  mod.orig <- readSBMLmod(mod.file)
+}
 
 #print(ids.add)
 #ids <- c("|RIBOSYN2-PWY|", "rxn00023", "14DICHLORBENZDEG-PWY", "rxn05683", "1.1.1.2", "purine hydroxylase", "PYRUVDEH-RXN", "Ammonia-oxidation")
@@ -192,7 +192,7 @@ if( !is.null(ids.add) ){
   if( length(rxn.new)==0 ) stop("No reactions can be added.")
   rxn.add <- rxn.new
   
-  # remove reacitons which are not in full model
+  # remove reactions which are not in full model
   rxn.avail <- intersect(rxn.add, str_remove(fullmod@react_id, "_[a-z]0$"))
   print(paste("Reactions not in gapseq reaction database: ", paste0(setdiff(rxn.add, rxn.avail), collapse = ",")))
   if( length(rxn.avail)==0 ) stop("No reactions can be added.")
@@ -204,6 +204,8 @@ if( !is.null(ids.add) ){
   mod.out <- addMetAttr(mod.out, seed_x_mets = seed_x_mets)
   mod.out <- addReactAttr(mod.out)
 
+  mod.out <- add_missing_exchanges(mod.out)
+  
   print(paste("Added reactions: ", paste0(rxn.add, collapse = ",")))
 }
 
@@ -268,6 +270,7 @@ if( !is.null(sub.growth) ){
 if( !is.null(min.growth) ){
     source(paste0(script.dir, "/gf.adapt.R"))
     mod.out <- increase_growth(mod.orig, min.obj.val=min.growth, weights=rxn.weights.file, genes=rxnXgene.table, fullmod=fullmod, verbose=verbose)
+    mod.out <- add_missing_exchanges(mod.out)
 }
 
 

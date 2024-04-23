@@ -91,7 +91,7 @@ check_lethal <- function(model, rxn_list, med.file=NA, med=NA){
   return(lethal.dt)
 }
 
-# prepare model for biolog like test
+# prepare model for biolog-like test
 esp.mode <- function(model, media){
   model <- constrain.model(model, media = media) # constrain model
   model@obj_coef <- rep(0,model@react_num)
