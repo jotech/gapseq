@@ -32,8 +32,8 @@ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/010/120/595/GCF_010120595.1_ASM1
 wget https://github.com/Waschina/gapseq.tutorial.data/raw/master/yogurt/milk.csv
 
 # Rename genomes
-mv GCF_000056065.1_ASM5606v1_protein.faa.gz ldel.fna.gz
-mv GCF_010120595.1_ASM1012059v1_protein.faa.gz sthe.fna.gz
+mv GCF_000056065.1_ASM5606v1_protein.faa.gz ldel.faa.gz
+mv GCF_010120595.1_ASM1012059v1_protein.faa.gz sthe.faa.gz
 ```
 
 
