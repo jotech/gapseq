@@ -27,6 +27,12 @@ git clone https://github.com/jotech/gapseq
 ```
 Detailed information on [installation and troubleshooting](https://github.com/jotech/gapseq/blob/master/docs/install.md).
 
+### Using Bioconda
+Gapseq has a [bioconda](https://anaconda.org/bioconda/gapseq) package. You must have conda/miniconda/[miniforge](https://github.com/conda-forge/miniforge#install) installed already.
+```bash
+conda create -c conda-forge -c bioconda -c r -n gapseq gapseq
+```
+
 
 ## Quickstart
 For detailed use cases and full tutorials, see the [documentation](https://gapseq.readthedocs.io/).
