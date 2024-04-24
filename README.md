@@ -1,7 +1,7 @@
 # gapseq
 _Informed prediction and analysis of bacterial metabolic pathways and genome-scale networks_  
 [![Documentation Status](https://readthedocs.org/projects/gapseq/badge/?version=latest)](https://gapseq.readthedocs.io/en/latest/?badge=latest)
-[![DOI:10.1186/s13059-021-02295-1](https://zenodo.org/badge/DOI/10.1186/s13059-021-02295-1.svg)](https://doi.org/10.1186/s13059-021-02295-1)  
+[![DOI:10.1186/s13059-021-02295-1](https://zenodo.org/badge/DOI/10.1186/s13059-021-02295-1.svg)](https://doi.org/10.1186/s13059-021-02295-1) [![conda build](https://img.shields.io/conda/v/bioconda/gapseq)]([#installation](https://bioconda.github.io/recipes/gapseq/README.html))
 
 
 _gapseq_ is designed to combine metabolic pathway analysis with metabolic network reconstruction and curation.
