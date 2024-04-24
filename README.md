@@ -33,6 +33,8 @@ Gapseq has a [bioconda](https://anaconda.org/bioconda/gapseq) package. You must 
 conda create -c conda-forge -c bioconda -c r -n gapseq gapseq
 ```
 
+Hint: _When installing with bioconda, the gapseq binary will reside in your PATH, so you will not have to prepend "./" in front of gapseq. (Use "gapseq" instead of "./gapseq")._
+
 
 ## Quickstart
 For detailed use cases and full tutorials, see the [documentation](https://gapseq.readthedocs.io/).
