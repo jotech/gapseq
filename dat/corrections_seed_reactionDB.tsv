@@ -2690,3 +2690,8 @@ rxn27362			-1:cpd00067:1:0:"H+";-1:cpd00047:0:0:"Formate";-1:cpd00180:1:0:"Oxala
 									
 rxn03790	>		-1:cpd04166:1:0:"PCE";-1:cpd15499:0:0:"Menaquinol 8";1:cpd00099:1:0:"Cl-";1:cpd04167:1:0:"TCE";1:cpd00067:1:0:"H+";1:cpd15500:0:0:"Menaquinone 8"	[JZ] corrected direction, added missing electron carrier and changed wrong protonation	https://biocyc.org/reaction?orgid=SMUL&id=1.97.1.8-RXN		pcerd	tetrachloroethene reductive dehalogenase	
 rxn03791	>		-1:cpd04167:1:0:"TCE";-1:cpd15499:0:0:"Menaquinol 8";1:cpd00099:1:0:"Cl-";1:cpd04168:1:0:"DCE";1:cpd00067:1:0:"H+";1:cpd15500:0:0:"Menaquinone 8"	[JZ] corrected direction, added missing electron carrier and changed wrong protonation	https://biocyc.org/reaction?orgid=SMUL&id=TCEREDCHLOR-RXN		tcerd	trichloroethene reductive dehalogenase	
+									
+rxn25906									TRUE
+rxn25907									TRUE
+rxn25893									TRUE
+rxn25894									TRUE
