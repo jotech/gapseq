@@ -117,33 +117,33 @@ getMetaboliteProduction(st)[1:10]
 Output for *L. delbrueckii* (`ld`):
 
 ```
-                ex              rxn.name          l          u   mtf.flux
- 1: EX_cpd00221_e0 D-Lactate-e0 Exchange 0.00000000 4.66688283 4.57527357
- 2: EX_cpd00067_e0        H+-e0 Exchange 4.41375845 4.56576030 4.53889042
- 3: EX_cpd00108_e0 Galactose-e0 Exchange 2.49998944 2.50000000 2.50000000
- 4: EX_cpd00011_e0       CO2-e0 Exchange 0.32602433 0.47806843 0.35293482
- 5: EX_cpd00371_e0  Propanal-e0 Exchange 0.16765414 0.16773865 0.16769626
- 6: EX_cpd00047_e0   Formate-e0 Exchange 0.09438168 0.16513265 0.16509025
- 7: EX_cpd00013_e0       NH3-e0 Exchange 0.13880177 0.26199257 0.16445716
- 8: EX_cpd00239_e0       H2S-e0 Exchange 0.09297787 0.09302013 0.09302010
- 9: EX_cpd00324_e0      MTTL-e0 Exchange 0.08651320 0.08655546 0.08655540
-10: EX_cpd00029_e0   Acetate-e0 Exchange 0.07586589 0.17284734 0.07654518
+                ex               rxn.name           l           u    mtf.flux
+ 1: EX_cpd00221_e0  D-Lactate-e0 Exchange 0.000000000 4.700648111 4.630126137
+ 2: EX_cpd00067_e0         H+-e0 Exchange 4.489895516 4.581828957 4.546847983
+ 3: EX_cpd00108_e0  Galactose-e0 Exchange 2.499994262 2.500000000 2.500000000
+ 4: EX_cpd00011_e0        CO2-e0 Exchange 0.245315421 0.337271815 0.280318515
+ 5: EX_cpd00239_e0        H2S-e0 Exchange 0.093096142 0.093119095 0.093119080
+ 6: EX_cpd00130_e0   L-Malate-e0 Exchange 0.017063114 0.044365180 0.026857932
+ 7: EX_cpd00029_e0    Acetate-e0 Exchange 0.004859881 0.035769093 0.022378268
+ 8: EX_cpd00141_e0 Propionate-e0 Exchange 0.007424155 0.007443787 0.007441387
+ 9: EX_cpd00036_e0  Succinate-e0 Exchange 0.005246866 0.005287035 0.005269831
+10: EX_cpd00047_e0    Formate-e0 Exchange 0.000000000 0.003589257 0.003586849
 ```
 
 Output for S. thermophilus (`st`):
 
 ```
-                ex                          rxn.name            l            u     mtf.flux
- 1: EX_cpd00221_e0             D-Lactate-e0 Exchange 0.0000000000 9.2094468818 8.6588710458
- 2: EX_cpd00011_e0                   CO2-e0 Exchange 0.2558426738 9.9070817239 0.5225485126
- 3: EX_cpd00239_e0                   H2S-e0 Exchange 0.0868496916 0.0884168597 0.0868510077
- 4: EX_cpd00281_e0                  GABA-e0 Exchange 0.0644172061 0.0644198887 0.0644184793
- 5: EX_cpd00092_e0                Uracil-e0 Exchange 0.0469340783 0.0469354195 0.0469353179
- 6: EX_cpd00036_e0             Succinate-e0 Exchange 0.0023487402 0.3596882237 0.0454283729
- 7: EX_cpd00029_e0               Acetate-e0 Exchange 0.0000000000 0.2101233068 0.0268075147
- 8: EX_cpd00100_e0              Glycerol-e0 Exchange 0.0000000000 0.0039510794 0.0039510794
- 9: EX_cpd00363_e0               Ethanol-e0 Exchange 0.0000000000 9.2094468818 0.0023487447
-10: EX_cpd01981_e0 5-Methylthio-D-ribose-e0 Exchange 0.0007829134 0.0007829149 0.0007829149
+                ex                          rxn.name           l            u     mtf.flux
+ 1: EX_cpd00221_e0             D-Lactate-e0 Exchange 0.000000000 9.405942e+00 7.2350156625
+ 2: EX_cpd00011_e0                   CO2-e0 Exchange 0.000000000 1.001951e+01 0.4805519366
+ 3: EX_cpd00029_e0               Acetate-e0 Exchange 0.000000000 8.060152e-01 0.1185652022
+ 4: EX_cpd00239_e0                   H2S-e0 Exchange 0.088819140 9.015105e-02 0.0888196466
+ 5: EX_cpd00036_e0             Succinate-e0 Exchange 0.011037101 8.630227e-01 0.0476673792
+ 6: EX_cpd00363_e0               Ethanol-e0 Exchange 0.000000000 9.405942e+00 0.0019970957
+ 7: EX_cpd01981_e0 5-Methylthio-D-ribose-e0 Exchange 0.000665698 6.656986e-04 0.0006656986
+ 8: EX_cpd00020_e0              Pyruvate-e0 Exchange 0.000000000 1.209023e+00 0.0000000000
+ 9: EX_cpd00071_e0          Acetaldehyde-e0 Exchange 0.000000000 1.209023e+00 0.0000000000
+10: EX_cpd00100_e0              Glycerol-e0 Exchange 0.000000000 3.359532e-03 0.0000000000
 ```
 
 As expected, both organisms produce Lactate in the FBA+MTF solution. The FVA further predicted a lower bound for L-Lactate or D-Lactate production of zero. This is due to the fact, that the models harbour also the capability to produce the respective other Lactate enantiomer. In contrast to *S. thermophilus*, the FBA simulation predicted a release of Galactose by *L. debrueckii*. In fact, *L. debrueckii* is usually reported to be Galactose negative; i.e. does not produce acid from this hexose ([https://bacdive.dsmz.de/strain/6449](https://bacdive.dsmz.de/strain/6449)) and utilized only the glucose part of lactose, while *S. thermophilus* has been reported to be Galactose positive ([https://bacdive.dsmz.de/strain/14786](https://bacdive.dsmz.de/strain/14786)).
