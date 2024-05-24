@@ -30,7 +30,7 @@ Detailed information on [installation and troubleshooting](https://github.com/jo
 ### Using Bioconda
 Gapseq has a [bioconda](https://anaconda.org/bioconda/gapseq) package. You must have conda/miniconda/[miniforge](https://github.com/conda-forge/miniforge#install) installed already.
 ```bash
-conda create -c conda-forge -c bioconda -c r -n gapseq gapseq
+conda create -c conda-forge -c bioconda -n gapseq gapseq
 ```
 
 Hint: _When installing with bioconda, the gapseq binary will reside in your PATH, so you will not have to prepend "./" in front of gapseq. (Use "gapseq" instead of "./gapseq")._
