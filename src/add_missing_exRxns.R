@@ -1,5 +1,4 @@
 add_missing_exchanges <- function(mod, ub = 1000) {
-  mod <- copy(mod)
   ex.mets.ind  <- which(mod@met_comp==2)
   ex.mets.ids  <- mod@met_id[ex.mets.ind]
   ex.mets.name <- mod@met_name[ex.mets.ind]
@@ -16,11 +15,10 @@ add_missing_exchanges <- function(mod, ub = 1000) {
   
   for(i in 1:length(ex.mets.ids)) {
     #cat("Adding new exchange reaction for: ",ex.mets.ids[i],"\n")
-    mod <- sybil::addReact(model = mod,
+    mod <- addReact(model = mod,
                     id = paste0("EX_",gsub("\\[.*\\]","",ex.mets.ids[i]),"_e0"), 
                     met = ex.mets.ids[i],
                     Scoef = -1,
-                    reversible = T, 
                     metComp = 2,
                     ub = ub,
                     lb = 0,
@@ -42,11 +40,10 @@ add_sinks <- function(mod, ub = 1000) {
   in.mets.name <- mod@met_name[in.mets.ind]
   
   for(i in 1:length(in.mets.ids)) {
-    mod <- sybil::addReact(model = mod,
+    mod <- addReact(model = mod,
                     id = paste0("SINK_",gsub("\\[.*\\]","",in.mets.ids[i]),"_c0"), 
                     met = in.mets.ids[i],
                     Scoef = -1,
-                    reversible = F, 
                     metComp = 1,
                     ub = ub,
                     lb = 0,
@@ -57,11 +54,10 @@ add_sinks <- function(mod, ub = 1000) {
 }
 
 add_met_sink <- function(mod, cpd, obj = 0) {
-  mod <- sybil::addReact(mod,
+  mod <- addReact(mod,
                   id = paste0("EX_",cpd,"_c0"),
                   met = paste0(cpd,"[c0]"),
                   Scoef = -1,
-                  reversible = F,
                   lb = 0,
                   ub = 1000,
                   reactName = paste0("EX ",cpd," c0"),
@@ -133,11 +129,10 @@ add_reaction_from_db <- function(mod, react, gs.origin = NA) {
     
     new.react <- !any(grepl(paste0(mseed[i,id],"_c0"),mod@react_id))
     
-    mod <- sybil::addReact(model = mod, 
+    mod <- addReact(model = mod, 
                     id = paste0(mseed[i,id],"_c0"), 
                     met = met.ids,
                     Scoef = met.scoef,
-                    reversible = is.rev, 
                     metComp = as.integer(met.comp)+1,
                     ub = ifelse(only.backwards, 0, 1000),
                     lb = ifelse(is.rev, -1000, 0),
@@ -167,11 +162,10 @@ add_exchanges <- function(mod, cpd, ub = 1000, metname=NA) {
       ex.mets.name <- mod@met_name[ex.mets.ind]
     else
       ex.mets.name <- metname[match(m, cpd)]
-    mod <- sybil::addReact(model = mod,
+    mod <- addReact(model = mod,
                     id = ex.id, 
                     met = ex.met.id,
                     Scoef = -1,
-                    reversible = T, 
                     metComp = 2,
                     ub = ub,
                     lb = 0,
