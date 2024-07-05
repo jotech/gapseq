@@ -6,6 +6,8 @@ addReactAttr <- function(mod) {
     
   reacttmp <- data.table(mod@react_attr)
   reacttmp[is.na(CVTerms), CVTerms := ""]
+  reacttmp$seed <- mod@react_id
+  reacttmp[grepl("^rxn",seed), seed := gsub("_.0$","",seed)]
   #print(reacttmp)
   
   
@@ -143,7 +145,7 @@ addReactAttr <- function(mod) {
   
   
   # Export
-  reacttmp[!is.na(CVTerms) & CVTerms != "", CVTerms := paste0("bqbiol_is;",CVTerms)]
+  reacttmp[!is.na(CVTerms) & CVTerms != "", CVTerms := paste0("bqbiol_is",CVTerms)]
   mod@react_attr <- as.data.frame(reacttmp)
   
   return(mod)

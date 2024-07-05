@@ -6,14 +6,8 @@
 sudo apt install ncbi-blast+ git libglpk-dev r-base-core exonerate bedtools barrnap bc parallel curl libcurl4-openssl-dev libssl-dev libsbml5-dev bc
 
 # installation of required R-packages
-R -e 'install.packages(c("data.table", "stringr", "getopt", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "CHNOSZ", "jsonlite", "httr"))'
+R -e 'install.packages(c("data.table", "stringr", "getopt", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "jsonlite", "httr"))'
 R -e 'if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager"); BiocManager::install("Biostrings")'
-wget https://cran.r-project.org/src/contrib/Archive/sybil/sybil_2.2.0.tar.gz
-wget https://cran.r-project.org/src/contrib/Archive/sybilSBML/sybilSBML_3.1.2.tar.gz
-R CMD INSTALL sybil_2.2.0.tar.gz
-R CMD INSTALL sybilSBML_3.1.2.tar.gz
-rm sybil_2.2.0.tar.gz
-rm sybilSBML_3.1.2.tar.gz
 
 # Download latest gapseq version from github
 git clone https://github.com/jotech/gapseq && cd gapseq

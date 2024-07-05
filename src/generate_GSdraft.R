@@ -280,12 +280,22 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
       mod@mod_desc <- paste0(gapseq_version,"; ", na.omit(gsub("# ","",blast.header)))
   }else mod@mod_desc <- gapseq_version
   
-  mod@react_attr <- data.frame(rxn = character(0), name = character(0), ec = character(0), tc = character(0), qseqid = character(0),
-                               pident = numeric(0), evalue = numeric(0), bitscore = numeric(0), qcovs = numeric(0),
-                               stitle = character(0), sstart = numeric(0), send = numeric(0), pathway = character(0),
-                               status = character(0), pathway.status = character(0), complex = character(0), exception = numeric(0),
-                               complex.status = numeric(0), seed = character(0),
-                               CVTerms = character(0), SBOTerm = character(0), stringsAsFactors = F)
+  # mod@react_attr <- data.frame(rxn = character(0), name = character(0), ec = character(0), tc = character(0), qseqid = character(0),
+  #                              pident = numeric(0), evalue = numeric(0), bitscore = numeric(0), qcovs = numeric(0),
+  #                              stitle = character(0), sstart = numeric(0), send = numeric(0), pathway = character(0),
+  #                              status = character(0), pathway.status = character(0), complex = character(0), exception = numeric(0),
+  #                              complex.status = numeric(0), seed = character(0),
+  #                              CVTerms = character(0), SBOTerm = character(0), stringsAsFactors = F)
+  mod@react_attr$gs.origin <- integer(0L)
+  mod@react_attr$name <- character(0L)
+  mod@react_attr$ec <- character(0L)
+  mod@react_attr$tc <- character(0L)
+  mod@react_attr$exception <- integer(0L)
+  mod@react_attr$complex.status <- integer(0L)
+  
+  reactAttrAdHocCols <- intersect(colnames(mod@react_attr),
+                                  colnames(dt_seed_single_and_there))
+  
   mod <- addSubsystem(mod, subsys_unique)
   for(i in (1:nrow(mseed))) {
     cat("\r",i,"/",nrow(mseed))
@@ -328,7 +338,6 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
                     id = paste0(mseed[i,id],"_c0"), 
                     met = met.ids,
                     Scoef = met.scoef,
-                    reversible = is.rev, 
                     metComp = as.integer(met.comp)+1,
                     ub = ifelse(only.backwards, 0, COBRAR_SETTINGS("MAXIMUM")),
                     lb = ifelse(is.rev, -COBRAR_SETTINGS("MAXIMUM"), 0),
@@ -336,8 +345,10 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
                     metName = met.name,
                     gprAssoc = gpr.tmp,
                     subsystem = dts.tmp)
-    if(mseed[i,id] %in% dt_seed_single_and_there[,seed])
-      mod@react_attr[which(mod@react_id == paste0(mseed[i,id],"_c0")),] <- as.data.frame(dt_seed_single_and_there[seed == mseed[i,id]])
+    if(mseed[i,id] %in% dt_seed_single_and_there[,seed]) {
+      mod@react_attr[which(mod@react_id == paste0(mseed[i,id],"_c0")),reactAttrAdHocCols] <- as.data.frame(dt_seed_single_and_there[seed == mseed[i,id]])[1,reactAttrAdHocCols]
+    }
+      
     
     # # In case no genes are associated to the first reaction added to the model,
     # # no 'genes' 'grp' and 'gprRules' object are initiated by sybil, causing a
@@ -353,16 +364,6 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
       
   }
   
-  # # In case no genes have been associated with any reactions, the slots
-  # # 'genes' 'grp' and 'gprRules' are of length zero, causing an error in SBML
-  # # export
-  # if(length(mod@genes) == 0) {
-  #   for(k in 1:mod@react_num)
-  #     mod@genes[[k]] <- ""
-  #   mod@gpr <- rep("", mod@react_num)
-  #   mod@gprRules <- rep("", mod@react_num)
-  # }
-
   mod@react_attr$gs.origin <- 0
   mod@react_attr$gs.origin[mod@react_attr$bitscore < high.evi.rxn.BS] <- 9 # Added due to Pathway Topology criteria
   #mod <- add_reaction_from_db(mod, react = c("rxn13782","rxn13783","rxn13784"), gs.origin = 6) # Adding pseudo-reactions for Protein biosynthesis, DNA replication and RNA transcription
@@ -437,8 +438,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   mod <- addReact(mod,id = "bio1", 
                   met = dt.bm$id, 
                   Scoef = dt.bm$Scoef, 
-                  reversible = F, 
-                  lb = 0, ub = sybil::SYBIL_SETTINGS("MAXIMUM"), 
+                  lb = 0, ub = COBRAR_SETTINGS("MAXIMUM"), 
                   obj = 1, 
                   reactName = ls.bm$name,
                   metName = dt.bm$name,
@@ -449,7 +449,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   # add p-cresol sink reaction (further metabolism unclear especially relevant for anaerobic conditions)
   mod <- addReact(mod, id="DM_cpd01042_c0", reactName="Sink needed for p-cresol",
                   met="cpd01042[c0]", metName="p-Cresol", Scoef=-1, lb=0,
-                  ub=sybil::SYBIL_SETTINGS("MAXIMUM"), metComp = 1)
+                  ub=COBRAR_SETTINGS("MAXIMUM"), metComp = 1)
   mod@react_attr[which(mod@react_id == "DM_cpd01042_c0"),c("gs.origin","seed")] <- data.frame(gs.origin = 7, seed = "DM_cpd01042_c0", stringsAsFactors = F)
 
   
@@ -462,9 +462,9 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   # add metabolite compartment list
   n.comp <- max(mod@met_comp, na.rm = T)
   if(n.comp == 2)
-    mod@mod_compart <- c("c0","e0")
+    mod <- addCompartment(mod, c("c0","e0"), c("Cytosol","Extracellular space"))
   if(n.comp == 3)
-    mod@mod_compart <- c("c0","e0","p0")
+    mod <- addCompartment(mod, c("c0","e0"), c("Cytosol","Extracellular space","Periplasm"))
   
   return(list(mod=mod, cand.rxns=dt.cand, rxn_x_genes=dt_genes))
 }

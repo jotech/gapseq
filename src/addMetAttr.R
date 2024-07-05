@@ -5,15 +5,13 @@ addMetAttr <- function(mod, seed_x_mets) {
   #seed_x_mets <- fread(paste0(script.dir,"/../dat/seed_metabolites_edited.tsv"), header=T, stringsAsFactors = F, na.strings = c("null","","NA"))
   
   # mettmp <- data.table(id = gsub("\\[.0\\]","", mod@met_id))
-  mettmp <- data.table(mod@met_attr)
+  mettmp <- data.table(mod@met_attr)[,.(CVTerms, SBOTerm)]
   mettmp$id <- gsub("\\[.0\\]","", mod@met_id)
   
-  mettmp <- merge(mettmp[,-charge], seed_x_mets, sort = F, by = "id", all.x = T)
-  
-  mettmp[, chemicalFormula := formula]
+  mettmp <- merge(mettmp, seed_x_mets, sort = F, by = "id", all.x = T)
+  setnames(mettmp,"formula","chemicalFormula")
   
   # adding attributes
-  # mettmp$annotation <- "bqbiol_is;http://identifiers.org/SBO:0000247"
   mettmp[is.na(CVTerms), CVTerms := ""]
   
   # METANETX
@@ -97,7 +95,7 @@ addMetAttr <- function(mod, seed_x_mets) {
   mettmp[!is.na(tmpids), CVTerms := paste0(CVTerms,tmpids)]
   mettmp[, tmpids := NULL]; rm(tmp_ids)
   
-  mettmp[!is.na(CVTerms) & CVTerms != "", CVTerms := paste0("bqbiol_is;",CVTerms)]
+  mettmp[!is.na(CVTerms) & CVTerms != "", CVTerms := paste0("bqbiol_is",CVTerms)]
   mod@met_attr <- as.data.frame(mettmp)
   
   return(mod)
