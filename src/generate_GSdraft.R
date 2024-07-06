@@ -148,20 +148,10 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   }
   # (5)
   dt.new.ids <- data.table(old.contig = contig.names.full, new.contig = new.stitle) # dictionary
-  for(i in 1:nrow(dt)) {
-    cur.stitles <- dt[i,stitle]
-    if(cur.stitles != "" & !is.na(cur.stitles)) {
-      tmptitle <- dt.new.ids[old.contig == cur.stitles, new.contig]
-      dt[i, stitle := tmptitle]
-    }
-  }
-  for(i in 1:nrow(dt.cand)) {
-    cur.stitles <- dt.cand[i,stitle]
-    if(cur.stitles != "" & !is.na(cur.stitles)) {
-      tmptitle <- dt.new.ids[old.contig == cur.stitles, new.contig]
-      dt.cand[i, stitle := tmptitle]
-    }
-  }
+  dt.new.ids <- dt.new.ids[!duplicated(old.contig)]
+  setkey(dt.new.ids, "old.contig")
+  dt[stitle != "" & !is.na(stitle), stitle := dt.new.ids[stitle,new.contig]]
+  dt.cand[stitle != "" & !is.na(stitle), stitle := dt.new.ids[stitle,new.contig]]
   
   # create gene list and attribute table
   cat("Creating Gene-Reaction list... ")
@@ -253,6 +243,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   
   # create subsys list and attribute table
   dt_subsys <- copy(dt[!is.na(pathway)])
+  dt_subsys[, pathway := gsub("^\\||\\|$","",pathway)]
   subsys_unique <- unique(dt_subsys$pathway)
   
   rxns <- unique(dt_seed_single_and_there[,seed])
@@ -272,6 +263,8 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   
   cat("Constructing draft model: \n")
   mod <- new("ModelOrg", mod_name = model.name, mod_id = model.name)
+  mod <- addCompartment(mod, c("c0","e0","p0"),
+                        c("Cytosol","Extracellular space","Periplasm"))
   
   # add gapseq version info to model object
   gapseq_version <- system(paste0(script.dir,"/.././gapseq -v"), intern = T)
@@ -280,12 +273,6 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
       mod@mod_desc <- paste0(gapseq_version,"; ", na.omit(gsub("# ","",blast.header)))
   }else mod@mod_desc <- gapseq_version
   
-  # mod@react_attr <- data.frame(rxn = character(0), name = character(0), ec = character(0), tc = character(0), qseqid = character(0),
-  #                              pident = numeric(0), evalue = numeric(0), bitscore = numeric(0), qcovs = numeric(0),
-  #                              stitle = character(0), sstart = numeric(0), send = numeric(0), pathway = character(0),
-  #                              status = character(0), pathway.status = character(0), complex = character(0), exception = numeric(0),
-  #                              complex.status = numeric(0), seed = character(0),
-  #                              CVTerms = character(0), SBOTerm = character(0), stringsAsFactors = F)
   mod@react_attr$gs.origin <- integer(0L)
   mod@react_attr$name <- character(0L)
   mod@react_attr$ec <- character(0L)
@@ -338,7 +325,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
                     id = paste0(mseed[i,id],"_c0"), 
                     met = met.ids,
                     Scoef = met.scoef,
-                    metComp = as.integer(met.comp)+1,
+                    metComp = mod@mod_compart[as.integer(met.comp)+1],
                     ub = ifelse(only.backwards, 0, COBRAR_SETTINGS("MAXIMUM")),
                     lb = ifelse(is.rev, -COBRAR_SETTINGS("MAXIMUM"), 0),
                     reactName = mseed[i, name], 
@@ -435,14 +422,14 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     }
   }
   
-  mod <- addReact(mod,id = "bio1", 
-                  met = dt.bm$id, 
-                  Scoef = dt.bm$Scoef, 
-                  lb = 0, ub = COBRAR_SETTINGS("MAXIMUM"), 
+  mod <- addReact(mod,id = "bio1",
+                  met = dt.bm$id,
+                  Scoef = dt.bm$Scoef,
+                  lb = 0, ub = COBRAR_SETTINGS("MAXIMUM"),
                   obj = 1, 
                   reactName = ls.bm$name,
                   metName = dt.bm$name,
-                  metComp = ifelse(dt.bm$comp=="c",1,ifelse(dt.bm$comp=="e",2,3)),
+                  metComp = mod@mod_compart[ifelse(dt.bm$comp=="c",1,ifelse(dt.bm$comp=="e",2,3))],
                   SBOTerm = "SBO:0000629")
   mod@react_attr[which(mod@react_id == "bio1"),c("gs.origin","seed")] <- data.frame(gs.origin = 6, seed = "bio1", stringsAsFactors = F)
 
@@ -458,13 +445,6 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   # add metabolite & reaction attributes
   mod <- addMetAttr(mod, seed_x_mets = seed_x_mets)
   mod <- addReactAttr(mod)
-  
-  # add metabolite compartment list
-  n.comp <- max(mod@met_comp, na.rm = T)
-  if(n.comp == 2)
-    mod <- addCompartment(mod, c("c0","e0"), c("Cytosol","Extracellular space"))
-  if(n.comp == 3)
-    mod <- addCompartment(mod, c("c0","e0"), c("Cytosol","Extracellular space","Periplasm"))
   
   return(list(mod=mod, cand.rxns=dt.cand, rxn_x_genes=dt_genes))
 }
@@ -500,7 +480,6 @@ spec <- matrix(c(
   'depr.output.dir', 'o', 2, "character", "deprecated. Use flag\"-f\" instead",
   'sbml.no.output', 's', 2, "logical", "Do not save draft model as sbml file. Default: Save as SBML",
   'pathway.pred', 'p', 2, "character", "Pathway-results table generated by gapseq find.",
-  'curve.alpha', 'a', 2, "numeric", "Deprecated. Flag will be removed in upcoming versions.",
   'help' , 'h', 0, "logical", "help"
 ), ncol = 5, byrow = T)
 
@@ -524,7 +503,6 @@ if ( is.null(opt$high.evi.rxn.BS) ) { opt$high.evi.rxn.BS = 200 }
 if ( is.null(opt$min.bs.for.core) ) { opt$min.bs.for.core = 50 }
 if ( is.null(opt$biomass) ) { opt$biomass = "auto" }
 if ( is.null(opt$pathway.pred) ) { opt$pathway.pred = NA }
-if ( is.null(opt$curve.alpha) ) { opt$curve.alpha = 1 }
 
 # deprecation notice for flag '-o'
 if(!is.null(opt$depr.output.dir)) {
@@ -543,7 +521,6 @@ genome.seq        <- opt$genome.seq
 high.evi.rxn.BS   <- opt$high.evi.rxn.BS
 min.bs.for.core   <- opt$min.bs.for.core
 pathway.pred      <- opt$pathway.pred
-curve.alpha       <- opt$curve.alpha
 sbml.no.output    <- opt$sbml.no.output
 
 # create output directory if not already there

@@ -17,6 +17,7 @@ addReactAttr <- function(mod) {
   # EC-code
   ec_id_mult <- function(ec) {
     ecs <- unique(unlist(strsplit(ec, "/", fixed = T)))
+    ecs <- ecs[ecs!=""]
     
     ecs_out <- paste0("http://identifiers.org/ec-code:",ecs, collapse = ";")
     
