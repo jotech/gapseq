@@ -157,7 +157,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   cat("Creating Gene-Reaction list... ")
 
   dt_genes <- copy(dt[!is.na(bitscore)])
-  
+  saveRDS(dt_genes, "~/dt_genes.RDS")
   if(input_mode == "prot") {
     dt_genes[, gene := gsub(" .*","",stitle)]
     dt_genes <- dt_genes[!duplicated(paste0(stitle, gene, seed, complex, sep = "$"))]
@@ -445,6 +445,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   # add metabolite & reaction attributes
   mod <- addMetAttr(mod, seed_x_mets = seed_x_mets)
   mod <- addReactAttr(mod)
+  mod <- addGeneAttr(mod, dt_genes)
   
   return(list(mod=mod, cand.rxns=dt.cand, rxn_x_genes=dt_genes))
 }
@@ -465,6 +466,7 @@ source(paste0(script.dir,"/prepare_candidate_reaction_tables.R"))
 source(paste0(script.dir,"/get_gene_logic_string.R"))
 source(paste0(script.dir,"/addMetAttr.R"))
 source(paste0(script.dir,"/addReactAttr.R"))
+source(paste0(script.dir,"/addGeneAttr.R"))
 source(paste0(script.dir,"/parse_BMjson.R"))
 
 # get options first

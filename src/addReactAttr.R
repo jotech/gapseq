@@ -151,6 +151,3 @@ addReactAttr <- function(mod) {
   
   return(mod)
 }
-
-
-

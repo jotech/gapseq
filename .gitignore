@@ -45,4 +45,10 @@ src/graveyard/*
 # R-Studio project files
 .Rproj.user
 gapseq.Rproj
-
+# Database files
+dat/seq/Bacteria/rev/*
+dat/seq/Bacteria/rxn/*
+dat/seq/Bacteria/unrev/*
+dat/seq/Archaea/rev/*
+dat/seq/Archaea/rxn/*
+dat/seq/Archaea/unrev/*
