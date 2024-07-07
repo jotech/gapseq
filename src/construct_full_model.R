@@ -1,11 +1,12 @@
 construct_full_model <- function(script.dir) {
   suppressMessages(require(data.table))
   suppressMessages(require(stringr))
-  suppressMessages(require(sybil))
+  suppressMessages(require(cobrar))
   options(warn=1)
   
-  # compartment ids
+  # compartment ids and names
   compIDs <- c("c0","e0","p0")
+  compNames <- c("Cytosol","Extracellular space","Periplasm")
   
   # Load database 
   db_rxns <- fread(paste0(script.dir, "/../dat/seed_reactions_corrected.tsv"),
@@ -72,28 +73,24 @@ construct_full_model <- function(script.dir) {
   exrxns[, exName := paste(cpd.name, "Exchange")]
   
   # construct modelorg object
-  mod <- modelorg(id = "dummy", name = "Full Dummy model with all approved/corrected ModelSEED reactions")
+  mod <- new("ModelOrg", mod_id = "dummy", mod_name = "Full Dummy model with all approved/corrected ModelSEED reactions")
   mod@mod_desc <- "Full Dummy model"
   mod@mod_compart <- compIDs
+  mod@mod_compart_name <- compNames
   
   # compounds
   mod@met_id   <- cpdinfos$cpd.id
   mod@met_name <- cpdinfos$cpd.name
-  mod@met_comp <- as.integer(cpdinfos$comp) + 1L
-  mod@met_num  <- length(mod@met_id)
+  mod@met_comp <- compIDs[as.integer(cpdinfos$comp) + 1L]
   mod@met_attr <- data.frame(charge = cpdinfos$charge,
-                             chemicalFormula = cpdinfos$chemical.formula)
-  mod@met_single <- rep(NA, mod@met_num)
-  mod@met_de <- rep(NA, mod@met_num)
+                             chemicalFormula = cpdinfos$chemical.formula,
+                             CVTerms = NA_character_, SBOTerm = NA_character_)
   
   # reactions
   mod@react_id   <- c(paste0(db_rxns$id, "_c0"), exrxns$exid)
   mod@react_name <- c(db_rxns$name, exrxns$exName)
-  mod@react_de   <- mod@react_single <- rep(NA, length(mod@react_id))
-  mod@react_num  <- length(mod@react_id)
-  mod@react_rev  <- rep(TRUE, length(mod@react_id))
-  mod@lowbnd     <- rep(-SYBIL_SETTINGS("MAXIMUM"), mod@react_num)
-  mod@uppbnd     <- rep(SYBIL_SETTINGS("MAXIMUM"), mod@react_num)
+  mod@lowbnd     <- rep(-COBRAR_SETTINGS("MAXIMUM"), react_num(mod))
+  mod@uppbnd     <- rep(COBRAR_SETTINGS("MAXIMUM"), react_num(mod))
   mod@obj_coef   <- rep(0, length(mod@react_id))
   mod@uppbnd[db_rxns[,which(reversibility == "<")]] <- 0
   mod@lowbnd[db_rxns[,which(reversibility == ">")]] <- 0
@@ -106,25 +103,32 @@ construct_full_model <- function(script.dir) {
   ind_mat <- rbind(ind_mat_rxns, ind_mat_exch)
   
   # S
-  mod@S <- Matrix(0, nrow = mod@met_num, ncol = mod@react_num)
+  mod@S <- Matrix(0, nrow = met_num(mod), ncol = react_num(mod), sparse = TRUE)
   mod@S[ind_mat[,1:2]] <- ind_mat[,3]
   
+  # user constraints
+  mod@constraints <- new("Constraints",
+                         coeff = as(Matrix(nrow = 0, ncol = ncol(mod@S), sparse = TRUE),
+                                    "dMatrix"),
+                         lb = numeric(0),
+                         ub = numeric(0),
+                         rtype = character(0))
+  
   # rxnGeneMat adn subsystem matrix
-  mod@rxnGeneMat <- Matrix(nrow=mod@react_num, ncol = 0)
-  mod@subSys     <- Matrix(nrow=mod@react_num, ncol = 0)
+  mod@subSys     <- Matrix(nrow=react_num(mod), ncol = 0, sparse = TRUE)
   
   return(mod)
 } 
 
 # TODO: Add ec info and mass balance of reactions in futile cycles
 futile_cycle_test <- function(script.dir, env = "") {
-  require(sybil)
+  require(cobrar)
   require(data.table)
   require(stringr)
   source(paste0(script.dir, "/print_reaction.R"))
-  if("cplexAPI" %in% installed.packages()) {
-    sybil::SYBIL_SETTINGS("SOLVER","cplexAPI")
-    #sybil::SYBIL_SETTINGS("METHOD", "hybbaropt")
+  if("cobrarCPLEX" %in% installed.packages()) {
+    library(cobrarCPLEX)
+    COBRAR_SETTINGS("SOLVER","cplex")
   }
   
   # parse environment string
@@ -144,28 +148,26 @@ futile_cycle_test <- function(script.dir, env = "") {
       if(env_dt[i, V2] == ">")
         meta.seed <- changeBounds(meta.seed, react = env_dt[i, V1],
                                   lb = 0,
-                                  ub = sybil::SYBIL_SETTINGS("MAXIMUM"))
+                                  ub = COBRAR_SETTINGS("MAXIMUM"))
       if(env_dt[i, V2] == "<")
         meta.seed <- changeBounds(meta.seed, react = env_dt[i, V1],
-                                  lb = -sybil::SYBIL_SETTINGS("MAXIMUM"),
+                                  lb = -COBRAR_SETTINGS("MAXIMUM"),
                                   ub = 0)
       if(env_dt[i, V2] == "=")
         meta.seed <- changeBounds(meta.seed, react = env_dt[i, V1],
-                                  lb = -sybil::SYBIL_SETTINGS("MAXIMUM"),
-                                  ub = sybil::SYBIL_SETTINGS("MAXIMUM"))
+                                  lb = -COBRAR_SETTINGS("MAXIMUM"),
+                                  ub = COBRAR_SETTINGS("MAXIMUM"))
     }
   }
   
   meta.seed@obj_coef[which(meta.seed@react_id=="rxn00062_c0")] <- 1
-  # meta.seed <- changeBounds(meta.seed, "rxn05759", lb = -1000) #  Uncomment to ad-hoc include a futile cycle 
-  sol <- optimizeProb(meta.seed, algorithm="mtf")
-  
-  n <- meta.seed@react_num
+  # meta.seed <- changeBounds(meta.seed, "rxn05759_c0", lb = -1000) #  Uncomment to ad-hoc include a futile cycle 
+  sol <- pfbaHeuristic(meta.seed)
   
   # save fluxes
   dt <- data.table(id   = meta.seed@react_id, 
                    name = meta.seed@react_name,
-                   flux = sol@fluxdist@fluxes[1:n]
+                   flux = sol@fluxes
   )
   dt <- dt[abs(flux) > 0.001]
   if(nrow(dt) == 0) {
@@ -185,10 +187,6 @@ futile_cycle_test <- function(script.dir, env = "") {
       ind.tmp  <- which(meta.seed@react_id == dt[i, id.backup])
       ind.mets <- which(abs(meta.seed@S[,ind.tmp]) > 0) 
       dt$CBal[i] <- sum(meta.seed@S[ind.mets,ind.tmp] * meta.seed@met_attr$charge[ind.mets])
-      #dt[i, MBal := getMassBalance(db, id.tmp)]
-      
-      #ec.tmp <- paste(db@rxn[[1]]@ec, collapse = ", ")
-      #dt[i, ec == ec.tmp]
     }
   }
   
@@ -196,6 +194,7 @@ futile_cycle_test <- function(script.dir, env = "") {
   gs.rxn <- fread(paste0(script.dir,"/../dat/seed_reactions_corrected.tsv"))
   
   dt <- merge(dt, gs.rxn[, .(id, gapseq.status)], by= "id")
+  
   dt$equation <- print_reaction(meta.seed, react = dt$id.backup)
   dt$definition <- print_reaction(meta.seed, react = dt$id.backup,
                                   use.ids = TRUE)

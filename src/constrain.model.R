@@ -24,11 +24,10 @@ constrain.model <- function(mod, media.file=NA, media=NA, scaling.fac = 1, ub = 
   if(nrow(media2)>0) {
     for(i in 1:nrow(media2)) {
       mod <- addReact(model = mod,
-                      id = media2[i,compounds], 
+                      id = media2[i,compounds],
                       met = paste0(media2[i,compounds2],"[e0]"),
                       Scoef = -1,
-                      reversible = T, 
-                      metComp = 2,
+                      metComp = mod@mod_compart[2],
                       ub = ub,
                       lb = -media2[i, maxFlux] * scaling.fac,
                       reactName = paste0(media2[i,name], " Exchange"), 

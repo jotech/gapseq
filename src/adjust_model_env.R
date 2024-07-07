@@ -6,11 +6,11 @@ adjust_model_env <- function(mod, env, script.dir) {
     if(nrow(env_dt) > 0) {
       for(i in 1:nrow(env_dt)) {
         if(env_dt[i, V2] == ">")
-          mod <- changeBounds(mod, react = env_dt[i, V1], lb = 0, ub = sybil::SYBIL_SETTINGS("MAXIMUM"))
+          mod <- changeBounds(mod, react = env_dt[i, V1], lb = 0, ub = COBRAR_SETTINGS("MAXIMUM"))
         if(env_dt[i, V2] == "<")
-          mod <- changeBounds(mod, react = env_dt[i, V1], lb = -sybil::SYBIL_SETTINGS("MAXIMUM"), ub = 0)
+          mod <- changeBounds(mod, react = env_dt[i, V1], lb = -COBRAR_SETTINGS("MAXIMUM"), ub = 0)
         if(env_dt[i, V2] == "=")
-          mod <- changeBounds(mod, react = env_dt[i, V1], lb = -sybil::SYBIL_SETTINGS("MAXIMUM"), ub = sybil::SYBIL_SETTINGS("MAXIMUM"))
+          mod <- changeBounds(mod, react = env_dt[i, V1], lb = -COBRAR_SETTINGS("MAXIMUM"), ub = COBRAR_SETTINGS("MAXIMUM"))
       }
     }
   }

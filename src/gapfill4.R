@@ -1,7 +1,6 @@
 gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
                      dummy.weight = 100, script.dir, core.only = FALSE, verbose=verbose, gs.origin = NA, rXg.tab, env = "") {
 
-  source(paste0(script.dir, "/sysBiolAlg_mtfClass2.R"))
   # backup model
   mod.orig.bak <- mod.orig
   
@@ -55,8 +54,8 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
   mod@uppbnd[red.inds] <- 0
   
   # get initial growth
-  sol <- optimizeProb(mod.orig)
-  gr.orig <- sol@lp_obj
+  sol <- fba(mod.orig)
+  gr.orig <- sol@obj
   if(gr.orig >= min.gr){
     warning("Original model is already able to produce the target compound. Nothing to do...")
     return(list(model = mod.orig.bak,
@@ -64,13 +63,13 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
                 rxn.weights = rxn.weights,
                 growth.rate = 0))
   }
-  if(sol@lp_stat != ok){
+  if(sol@ok != ok){
     warning("FBA on original model did not end successfully! Zero solution is feasibile! But gapfilling will start anyway.")
   }
   
-  sol <- optimizeProb(mod)
-  gr.dummy <- sol@lp_obj
-  if(sol@lp_stat!=ok){
+  sol <- fba(mod)
+  gr.dummy <- sol@obj
+  if(sol@ok!=ok){
     warning(paste0("Full model is already not able to form. There's no way to successful gap-filling."))
     return(list(model = mod.orig.bak,
                 rxns.added = c(),
@@ -89,29 +88,23 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
     n.iter    <- 1
     pFBAcoeff <- 1e-3
     while(sol.tmp <= 0 & n.iter <= max.iter) {
-      modj_warm <- sysBiolAlg(mod,
-                              algorithm = "mtf2",
-                              costcoeffw = c.coef.dt$weight,
-                              pFBAcoeff = pFBAcoeff)
-      sol.fba <- optimizeProb(modj_warm)
+      sol.fba <- pfbaHeuristic(mod, costcoeffw = c.coef.dt$weight,
+                               pFBAcoeff = pFBAcoeff)
 
       n.iter  <- n.iter + 1
-      if(sol.fba$stat==ok)
-        sol.tmp <- sol.fba$obj
-      if(sol.fba$obj <= 0.001)
+      if(sol.fba@ok==ok)
+        sol.tmp <- sol.fba@obj
+      if(sol.fba@obj <= 0.001)
         sol.tmp <- 0
       if(sol.tmp <= 0)
         pFBAcoeff <- pFBAcoeff / 2
     }
   } else {
-    modj_warm <- sysBiolAlg(mod,
-                            algorithm = "mtf2",
-                            costcoeffw = c.coef.dt$weight,
-                            pFBAcoeff = 1e-3)
-    sol.fba <- optimizeProb(modj_warm)
+    sol.fba <- pfbaHeuristic(mod, costcoeffw = c.coef.dt$weight,
+                             pFBAcoeff = 1e-3)
   }
 
-  if(sol.fba$stat!=ok){
+  if(sol.fba@ok!=ok){
     warning("pFBA did not end successfully.")
     return(list(model = mod.orig.bak,
                 rxns.added = c(),
@@ -124,7 +117,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
   ko.dt <- data.table(dummy.rxn = c.coef.dt[weight>0.00001,id],
                       d.rxn.ind = which(c.coef.dt$weight>0.00001),
                       dummy.weight = c.coef.dt[weight>0.00001,weight],
-                      flux = sol.fba$fluxes[which(c.coef.dt$weight>0.00001)])
+                      flux = sol.fba@fluxes[which(c.coef.dt$weight>0.00001)])
   
   
   ko.dt <- ko.dt[abs(flux) > 0]
@@ -179,8 +172,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
                          id = paste0(mseed[i,id],"_c0"),
                          met = met.ids,
                          Scoef = met.scoef,
-                         reversible = is.rev,
-                         metComp = as.integer(met.comp)+1,
+                         metComp = mod.orig@mod_compart[as.integer(met.comp)+1],
                          ub = ifelse(only.backwards, 0, 1000),
                          lb = ifelse(is.rev, -1000, 0),
                          reactName = mseed[i, name.x],
@@ -204,10 +196,9 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
   
   mod.orig <- add_missing_exchanges(mod.orig)
   
-  sol <- optimizeProb(mod.orig)
-  #if(sol@lp_stat!=ok | sol@lp_obj < min.obj.val){
-  if(sol@lp_stat!=ok | sol@lp_obj < 1e-7){
-    warning(paste0("Final model ", mod.orig@mod_name, " cannot produce enough target even when all candidate reactions are added! obj=", sol@lp_obj, " lp_stat=",sol@lp_stat))
+  sol <- fba(mod.orig)
+  if(sol@ok!=ok | sol@obj < 1e-7){
+    warning(paste0("Final model ", mod.orig@mod_name, " cannot produce enough target even when all candidate reactions are added! obj=", sol@obj, " ok=",sol@ok))
     return(list(model = mod.orig.bak,
                 rxns.added = c(),
                 rxn.weights = rxn.weights,
@@ -237,9 +228,9 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
     mod.orig@lowbnd[ko.dt[i,rxn.ind]] <- 0
     mod.orig@uppbnd[ko.dt[i,rxn.ind]] <- 0
     
-    sol <- optimizeProb(mod.orig) # feasibiliy already checked (zero solution is possible)
-    ko.dt[i, ko.obj := sol@lp_obj]
-    obj.val <- sol@lp_obj
+    sol <- fba(mod.orig) # feasibiliy already checked (zero solution is possible)
+    ko.dt[i, ko.obj := sol@obj]
+    obj.val <- sol@obj
     
     # restore bounds
     if(obj.val < min.gr) {
@@ -253,18 +244,18 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
   }
   # Remove reaction from mod.orig if reaction is not needed (obj.val > min.obj.val)
   if( length(dummy.rxn.rm)>0 )
-    mod.orig <- rmReact(mod.orig, react = dummy.rxn.rm)
+    mod.orig <- rmReact(mod.orig, react = paste0(dummy.rxn.rm,"_c0"))
   
   rxns.added <- gsub("_.0","",ko.dt[keep==T | core==T,dummy.rxn])
-  sol <- optimizeProb(mod.orig)
-  if(sol@lp_stat!=ok){
+  sol <- fba(mod.orig)
+  if(sol@ok!=ok){
     stop("Final model cannot grow. Something is terribly wrong!")
     return(list(model = mod.orig.bak,
                 rxns.added = c(),
                 rxn.weights = rxn.weights,
                 growth.rate = 0))
   }
-  obj.val <- sol@lp_obj
+  obj.val <- sol@obj
   
   # Generate output and summary info
   cat("\nGapfill summary:\n")
@@ -289,7 +280,6 @@ sync_full_mod <- function(draft.mod, full.mod) {
                          id = draft.mod@react_id[i],
                          met = draft.mod@met_id[metind],
                          Scoef = draft.mod@S[metind,i],
-                         reversible = draft.mod@react_rev[i],
                          lb = draft.mod@lowbnd[i],
                          ub = draft.mod@uppbnd[i],
                          obj = draft.mod@obj_coef[i],
@@ -311,7 +301,7 @@ sync_full_mod <- function(draft.mod, full.mod) {
   full.mod@uppbnd[ex.inds$id.f] <- ex.inds$ub
   
   # 3. Set same objective
-  full.mod@obj_coef <- rep(0, full.mod@react_num)
+  full.mod@obj_coef <- rep(0, react_num(full.mod))
   obj.d <- draft.mod@react_id[draft.mod@obj_coef == 1]
   if(length(obj.d) == 0)
     stop("ERR: No objective reaction defined in draft model.")

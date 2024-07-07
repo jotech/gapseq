@@ -1,8 +1,8 @@
 #' Print a reaction with additional options
 #'
-#' @description An extension of sybil's function \code{printReaction}.
+#' @description Print a reaction with additional options.
 #'
-#' @param mod Model of class `modelorg`
+#' @param mod Model of class `ModelOrg`
 #' @param react Vector of reaction IDs.
 #' @param use.ids Boolean. Indicating whether metabolite IDs should be printed
 #' instead of metabolite names.
@@ -12,8 +12,8 @@
 #' @export
 print_reaction <- function(mod, react, use.ids = FALSE) {
   check <- checkReactId(mod, react = react)
-  if (is(check, "reactId")) {
-    cind <- react_pos(check)
+  if (all(check)) {
+    cind <- react_pos(mod, react)
   }
   else {
     stop("check argument react")
@@ -26,9 +26,9 @@ print_reaction <- function(mod, react, use.ids = FALSE) {
   for (j in seq(along = cind)) {
     
     if(use.ids) {
-      met <- met_id(mod)[nnz[, j]]
+      met <- mod@met_id[nnz[, j]]
     } else {
-      met <- met_name(mod)[nnz[, j]]
+      met <- mod@met_name[nnz[, j]]
     }
     
     nzv <- mat[, j][nnz[, j]]

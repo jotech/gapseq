@@ -40,22 +40,20 @@ if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
     script.dir  <- dirname(script.name)
 }
 
-if( "cplexAPI" %in% installed.packages() )
-  suppressMessages(library(cplexAPI))
-if( "sybilSBML" %in% installed.packages() )
-  suppressMessages(library(sybilSBML))
-suppressMessages(library(sybil))
+if( "cobrarCPLEX" %in% installed.packages() )
+  suppressMessages(library(cobrarCPLEX))
+suppressMessages(library(cobrar))
 suppressMessages(library(data.table)); setDTthreads(1)
 suppressMessages(library(stringr))
 suppressMessages(library(methods))
 suppressMessages(library(tools))
 
 # select solver
-if( "cplexAPI" %in% rownames(installed.packages()) ){
-  sybil::SYBIL_SETTINGS("SOLVER","cplexAPI"); ok <- 1
+if( "cobrarCPLEX" %in% rownames(installed.packages()) ){
+  COBRAR_SETTINGS("SOLVER","cplex"); ok <- 1
 }else{
-  warning("glpkAPI is used but cplexAPI is recommended because it is much faster")
-  sybil::SYBIL_SETTINGS("SOLVER","glpkAPI"); ok <- 5
+  warning("glpk is used as LP solver but cplex is recommended because it is much faster")
+  COBRAR_SETTINGS("SOLVER","glpk"); ok <- 0
 }
 
 # Setting defaults if required
@@ -122,6 +120,7 @@ source(paste0(script.dir,"/generate_rxn_stoich_hash.R"))
 source(paste0(script.dir,"/get_gene_logic_string.R"))
 source(paste0(script.dir,"/addMetAttr.R"))
 source(paste0(script.dir,"/addReactAttr.R"))
+source(paste0(script.dir,"/addGeneAttr.R"))
 source(paste0(script.dir,"/media_check.R"))
 source(paste0(script.dir,"/adjust_model_env.R"))
 source(paste0(script.dir,"/construct_full_model.R"))
@@ -219,12 +218,11 @@ mod.orig   <- add_missing_exchanges(mod.orig)
 
 # add diffusion reactions
 mod.orig       <- add_missing_diffusion(mod.orig)
-#mod.orig       <- changeBounds(mod.orig, react="EX_cpd11640_e0", lb=0, ub=1) # TODO: Limit the hydrogen evolution rate. Check if it's necessary.
 
 # create complete medium
 cat("using media file", media.file, "\n")
 if( media.file == "complete" ){
-  met.pos <- findExchReact(mod.orig)@met_pos
+  met.pos <- apply(mod@S[,grep("^EX_",mod@react_id)],2,function(x) which(x != 0))
   met.id  <- gsub("\\[.0\\]","",mod.orig@met_id[met.pos])
   met.name<- mod.orig@met_name[met.pos]
   media <- data.frame(compounds=met.id, name=met.name, maxFlux=100)
@@ -238,7 +236,7 @@ if( media.file == "complete" ){
 
 # constrain model
 mod.orig <- constrain.model(mod.orig, media.file = media.file)
-mod.orig@obj_coef <- rep(0,mod.orig@react_num)
+mod.orig@obj_coef <- rep(0,react_num(mod.orig))
 
 # add metabolite objective + sink
 mod.orig <- add_met_sink(mod.orig, target.met, obj = 1) # TODO: add gs.origin
@@ -311,7 +309,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   
   # constrain model  
   mod.orig2 <- constrain.model(mod.orig2, media = media2)
-  mod.orig2@obj_coef <- rep(0,mod.orig2@react_num)
+  mod.orig2@obj_coef <- rep(0,react_num(mod.orig2))
   
   bm.ind      <- which(mod.orig2@react_id == "bio1")
   bm.met.inds <- which(mod.orig2@S[,bm.ind]<0)
@@ -328,14 +326,14 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     
     # add metabolite objective + sink
     rm.sink = TRUE
-    if( paste0("EX_",target.new,"_c0") %in% react_id(mod.fill2) )
+    if( paste0("EX_",target.new,"_c0") %in% mod.fill2@react_id)
       rm.sink = FALSE
     mod.fill2  <- add_met_sink(mod.fill2, target.new, obj = 1)
     
-    sol <- optimizeProb(mod.fill2, retOptSol=F)
+    sol <- fba(mod.fill2)
     
-    if(sol$stat == ok & sol$obj >= 1e-6){
-      mod.fill2@obj_coef <- rep(0,mod.fill2@react_num)
+    if(sol@ok == ok & sol@obj >= 1e-6){
+      mod.fill2@obj_coef <- rep(0,react_num(mod.fill2))
     }else{
       if( verbose ) cat("\nTry to gapfill", bm.met.name[i],"\n")
       invisible(capture.output( 
@@ -358,7 +356,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
         mod.fill2.counter <- mod.fill2.counter + 1
         mod.fill2.names <- c(mod.fill2.names, bm.met.name[i])
       }
-      mod.fill2@obj_coef <- rep(0,mod.fill2@react_num)
+      mod.fill2@obj_coef <- rep(0,react_num(mod.fill2))
     }
     if( rm.sink )
       mod.fill2 <- rmReact(mod.fill2, react=paste0("EX_",target.new,"_c0"))
@@ -372,7 +370,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   cat("\rGapfill summary:\n")
   cat("Filled components:    ",mod.fill2.counter, "(",paste(mod.fill2.names, collapse = ","),")\n")
   cat("Added reactions:      ",length(mod.fill2@react_id)-length(mod.fill1@react_id),"\n")
-  cat("Final growth rate:    ",optimizeProb(mod.fill2, retOptSol=F)$obj,"\n")
+  cat("Final growth rate:    ",fba(mod.fill2)@obj,"\n")
   
   
   
@@ -404,7 +402,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   
   # constrain model  
   mod.orig2 <- constrain.model(mod.orig2, media = media2)
-  mod.orig2@obj_coef <- rep(0,mod.orig2@react_num)
+  mod.orig2@obj_coef <- rep(0,react_num(mod.orig2))
   
   bm.ind      <- which(mod.orig2@react_id == "bio1")
   bm.met.inds <- which(mod.orig2@S[,bm.ind]<0)
@@ -421,14 +419,14 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     
     # add metabolite objective + sink
     rm.sink = TRUE
-    if( paste0("EX_",target.new,"_c0") %in% react_id(mod.fill2) )
+    if( paste0("EX_",target.new,"_c0") %in% mod.fill2@react_id)
       rm.sink = FALSE
     mod.fill2  <- add_met_sink(mod.fill2, target.new, obj = 1)
     
-    sol <- optimizeProb(mod.fill2, retOptSol=F)
+    sol <- fba(mod.fill2)
     
-    if(sol$stat == ok & sol$obj >= 1e-6){
-      mod.fill2@obj_coef <- rep(0,mod.fill2@react_num)
+    if(sol@ok == ok & sol@obj >= 1e-6){
+      mod.fill2@obj_coef <- rep(0,react_num(mod.fill2))
     }else{
       if( verbose ) cat("\nTry to gapfill", bm.met.name[i],"\n")
       invisible(capture.output( 
@@ -451,7 +449,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
         mod.fill2.counter <- mod.fill2.counter + 1
         mod.fill2.names <- c(mod.fill2.names, bm.met.name[i])
       }
-      mod.fill2@obj_coef <- rep(0,mod.fill2@react_num)
+      mod.fill2@obj_coef <- rep(0,react_num(mod.fill2))
     }
     if( rm.sink )
       mod.fill2 <- rmReact(mod.fill2, react=paste0("EX_",target.new,"_c0"))
@@ -465,7 +463,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   cat("\rGapfill summary:\n")
   cat("Filled components:    ",mod.fill2.counter, "(",paste(mod.fill2.names, collapse = ","),")\n")
   cat("Added reactions:      ",length(mod.fill2@react_id)-length(mod.orig2@react_id),"\n")
-  cat("Final growth rate:    ",optimizeProb(mod.fill2, retOptSol=F)$obj,"\n")
+  cat("Final growth rate:    ",fba(mod.fill2)@obj,"\n")
   
   
   
@@ -504,7 +502,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     
     # add metabolite objective + sink
     mod.fill3    <- mod.orig3
-    mod.fill3@obj_coef <- rep(0,mod.fill3@react_num)
+    mod.fill3@obj_coef <- rep(0,react_num(mod.fill3))
     
     # add biolog like test
     mql  <- "cpd15499[c0]"; mqn   <- "cpd15500[c0]" # menaquinone
@@ -540,10 +538,10 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
       # constrain model
       mod.fill3 <- constrain.model(mod.fill3, media = media)
       
-      sol <- optimizeProb(mod.fill3, retOptSol=F)
+      sol <- fba(mod.fill3)
       
-      if(sol$stat == ok & sol$obj >= 1e-7){
-        #mod.fill3@obj_coef <- rep(0,mod.fill3@react_num)
+      if(sol@ok == ok & sol@obj >= 1e-7){
+        #mod.fill3@obj_coef <- rep(0,react_nummod.fill3))
         src.status <- TRUE
       }else{
         if( verbose ) cat("\nTry to gapfill", src.met.name, ex.id[i], "\n")
@@ -581,7 +579,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     cat("\rGapfill summary:\n")
     cat("Filled components:    ",mod.fill3.counter, "(",paste(mod.fill3.names, collapse = ","),")\n")
     cat("Added reactions:      ",length(mod.fill3@react_id)-length(mod.fill2@react_id),"\n")
-    cat("Final growth rate:    ",optimizeProb(mod.fill3, retOptSol=F)$obj,"\n")
+    cat("Final growth rate:    ",fba(mod.fill3)@obj,"\n")
   }
   
   
@@ -624,13 +622,13 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
       src.met      <- ex.met[i]
       src.met.name <- ex.met.name[i]
       src.id       <- ex.id[i]
-      mod.fill4@obj_coef <- rep(0,mod.fill4@react_num)
+      mod.fill4@obj_coef <- rep(0,react_num(mod.fill4))
       mod.fill4 <- changeObjFunc(mod.fill4, react=src.id, obj_coef=1)
       
-      sol <- optimizeProb(mod.fill4, retOptSol=F)
+      sol <- fba(mod.fill4)
       
-      if(sol$stat == ok & sol$obj >= 1e-7){
-        #mod.fill4@obj_coef <- rep(0,mod.fill4@react_num)
+      if(sol@ok == ok & sol@obj >= 1e-7){
+        #mod.fill4@obj_coef <- rep(0,react_num(mod.fill4))
         src.status <- TRUE
       }else{
         if( verbose ) cat("\nTry to gapfill", src.met.name, src.id, "\n")
@@ -665,9 +663,9 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     mod.fill4 <- constrain.model(mod.fill4, media.file = media.file, scaling.fac = 1)
     mod.out <- mod.fill4
     
-    mod.fill4.sol <- optimizeProb(mod.fill4, retOptSol=F, algorithm = "mtf")
+    mod.fill4.sol <- pfbaHeuristic(mod.fill4)
     dt.sol        <- data.table(rxn = mod.fill4@react_id, 
-                                flux = mod.fill4.sol$fluxes[1:mod.fill4@react_num], 
+                                flux = mod.fill4.sol$fluxes[1:react_num(mod.fill4)], 
                                 lb = mod.fill4@lowbnd,
                                 met.name = gsub("-e0 Exchange","",mod.fill4@react_name))
     dt.sol[, met.name := gsub(" Exchange","", met.name)]
