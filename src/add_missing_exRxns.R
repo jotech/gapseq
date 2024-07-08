@@ -54,6 +54,10 @@ add_sinks <- function(mod, ub = 1000) {
 }
 
 add_met_sink <- function(mod, cpd, obj = 0) {
+  mname <- paste0(cpd,"_c0")
+  if(paste0(cpd,"[c0]") %in% mod@met_id)
+    mname <- NA_character_
+  
   mod <- addReact(mod,
                   id = paste0("EX_",cpd,"_c0"),
                   met = paste0(cpd,"[c0]"),
@@ -61,7 +65,7 @@ add_met_sink <- function(mod, cpd, obj = 0) {
                   lb = 0,
                   ub = 1000,
                   reactName = paste0("EX ",cpd," c0"),
-                  metName = paste0(cpd,"_c0"),
+                  metName = mname,
                   metComp = mod@mod_compart[1],
                   obj = obj)
   return(mod)
@@ -122,10 +126,14 @@ add_reaction_from_db <- function(mod, react, gs.origin = NA) {
     is.rev <- ifelse(mseed[i,reversibility] %in% c("<","="),T,F)
     only.backwards <- ifelse(mseed[i,reversibility]=="<",T,F)
     
-    ind.new.mets <- which(met.ids %in% mod@met_id)
-    ind.old.mets <- which(mod@met_id %in% met.ids[ind.new.mets])
+    # ind.new.mets <- which(met.ids %in% mod@met_id)
+    # ind.old.mets <- which(mod@met_id %in% met.ids[ind.new.mets])
+    # 
+    # met.name[ind.new.mets] <- mod@met_name[ind.old.mets]
     
-    met.name[ind.new.mets] <- mod@met_name[ind.old.mets]
+    ind.notnew.mets <- which(met.ids %in% mod@met_id)
+    if(length(ind.notnew.mets) > 0)
+      met.name[ind.notnew.mets] <- NA_character_
     
     new.react <- !any(grepl(paste0(mseed[i,id],"_c0"),mod@react_id))
     

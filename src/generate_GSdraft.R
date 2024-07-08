@@ -297,17 +297,16 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     met.name  <- str_replace_all(rxn.info[,5],"\\\"","")
     
     met.name  <- paste0(met.name,"-",met.comp.n)
-    
+      
     ind <- which(met.name=="" | is.na(met.name))
     met.name[ind] <- met.ids[ind]
     
     is.rev <- ifelse(mseed[i,reversibility] %in% c("<","="),T,F)
     only.backwards <- ifelse(mseed[i,reversibility]=="<",T,F)
     
-    ind.new.mets <- which(met.ids %in% mod@met_id)
-    ind.old.mets <- which(mod@met_id %in% met.ids[ind.new.mets])
-    
-    met.name[ind.new.mets] <- mod@met_name[ind.old.mets]
+    ind.notnew.mets <- which(met.ids %in% mod@met_id)
+    if(length(ind.notnew.mets) > 0)
+      met.name[ind.notnew.mets] <- NA_character_
     
     # get reaction-associated stretches of DNA 
     dtg.tmp <- dt_genes[seed == mseed[i,id] & bitscore >= high.evi.rxn.BS & rm == F, .(complex,gene)]
@@ -335,19 +334,6 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     if(mseed[i,id] %in% dt_seed_single_and_there[,seed]) {
       mod@react_attr[which(mod@react_id == paste0(mseed[i,id],"_c0")),reactAttrAdHocCols] <- as.data.frame(dt_seed_single_and_there[seed == mseed[i,id]])[1,reactAttrAdHocCols]
     }
-      
-    
-    # # In case no genes are associated to the first reaction added to the model,
-    # # no 'genes' 'grp' and 'gprRules' object are initiated by sybil, causing a
-    # # mismatch between length of the number of reactions and those three objects
-    # # in the final modelorg model. This mismatch causes libSBML to stop on a
-    # # segmentation error. Solution: "Manually" initiate the three objects in those
-    # # cases
-    # if(i == 1 && gpr.tmp == "") {
-    #   mod@genes[[1]] <- ""
-    #   mod@gpr <- ""
-    #   mod@gprRules <- ""
-    # }
       
   }
   
@@ -422,20 +408,23 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     }
   }
   
+  mnames <- paste0(dt.bm$name,"-",dt.bm$comp,"0")
+  mnames <- ifelse(dt.bm$id %in% mod@met_id, NA_character_, dt.bm$name)
+  
   mod <- addReact(mod,id = "bio1",
                   met = dt.bm$id,
                   Scoef = dt.bm$Scoef,
                   lb = 0, ub = COBRAR_SETTINGS("MAXIMUM"),
                   obj = 1, 
                   reactName = ls.bm$name,
-                  metName = dt.bm$name,
+                  metName = mnames,
                   metComp = mod@mod_compart[ifelse(dt.bm$comp=="c",1,ifelse(dt.bm$comp=="e",2,3))],
                   SBOTerm = "SBO:0000629")
   mod@react_attr[which(mod@react_id == "bio1"),c("gs.origin","seed")] <- data.frame(gs.origin = 6, seed = "bio1", stringsAsFactors = F)
 
   # add p-cresol sink reaction (further metabolism unclear especially relevant for anaerobic conditions)
   mod <- addReact(mod, id="DM_cpd01042_c0", reactName="Sink needed for p-cresol",
-                  met="cpd01042[c0]", metName="p-Cresol", Scoef=-1, lb=0,
+                  met="cpd01042[c0]", metName="p-Cresol-c0", Scoef=-1, lb=0,
                   ub=COBRAR_SETTINGS("MAXIMUM"), metComp = 1)
   mod@react_attr[which(mod@react_id == "DM_cpd01042_c0"),c("gs.origin","seed")] <- data.frame(gs.origin = 7, seed = "DM_cpd01042_c0", stringsAsFactors = F)
 

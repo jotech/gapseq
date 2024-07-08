@@ -137,7 +137,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
     i <- which(mseed$id==j)
     mets  <- unlist(str_split(string = mseed[i,compound_ids],pattern = ";"))
     rxn.info <- str_split(unlist(str_split(string = mseed[i,stoichiometry],pattern = ";")), pattern = ":", simplify = T)
-    
+
     met.comp   <- rxn.info[,3]
     met.comp.n <- ifelse(met.comp==0,"c0","e0")
     met.comp.n <- ifelse(met.comp>=2,"p0",met.comp.n)

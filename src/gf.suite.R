@@ -486,10 +486,10 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     #media.org <- fread(paste0(script.dir,"/../dat/media/Mineral_salt.csv")) # use minimal medium
     
     ex          <- findExchReact(mod.orig3)
-    ex.ind      <- ex@react_pos
-    ex.id       <- ex@react_id
-    ex.met      <- ex@met_id
-    ex.met.name <- mod.orig3@met_name[ex@met_pos]
+    ex.ind      <- ex$react_pos
+    ex.id       <- ex$react_id
+    ex.met      <- ex$met_id
+    ex.met.name <- ex$met_name
     if ( length(met.limit) > 0 ){ # # potentially limit carbon.source
       ex.idx <- match(intersect(ex.id, carbon.source$seed), ex.id)
       ex.ind      <- ex.ind[ex.idx]
@@ -589,10 +589,10 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     mod.orig4 <- mod.out
     
     ex          <- findExchReact(mod.orig4)
-    ex.ind      <- ex@react_pos
-    ex.id       <- ex@react_id
-    ex.met      <- ex@met_id
-    ex.met.name <- mod.orig4@met_name[ex@met_pos]
+    ex.ind      <- ex$react_pos
+    ex.id       <- ex$react_id
+    ex.met      <- ex$met_id
+    ex.met.name <- ex$met_name
     if ( length(met.limit) > 0 ){ # # potentially limit carbon.source
       ex.idx <- match(intersect(ex.id, carbon.source$seed), ex.id)
       ex.ind      <- ex.ind[ex.idx]
@@ -651,8 +651,8 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
           mod.fill4 <- mod.fill4.lst$model
           mod.fill4.counter <- mod.fill4.counter + 1
           mod.fill4.names <- c(mod.fill4.names, src.met.name)
-          if( ex@react_id[i] %in% exchanges.new.ids) # delete unused addionally added exchange reactions later
-            exchanges.new.used[match(ex@react_id[i], exchanges.new.ids)] <- TRUE
+          if( ex$react_id[i] %in% exchanges.new.ids) # delete unused addionally added exchange reactions later
+            exchanges.new.used[match(ex$react_id[i], exchanges.new.ids)] <- TRUE
         }
       }
       ferm.dt <- rbind(ferm.dt, data.table(id=str_extract(src.met,"cpd[0-9]+"), name=src.met.name, status=src.status))
@@ -665,7 +665,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     
     mod.fill4.sol <- pfbaHeuristic(mod.fill4)
     dt.sol        <- data.table(rxn = mod.fill4@react_id, 
-                                flux = mod.fill4.sol$fluxes[1:react_num(mod.fill4)], 
+                                flux = mod.fill4.sol@fluxes[1:react_num(mod.fill4)], 
                                 lb = mod.fill4@lowbnd,
                                 met.name = gsub("-e0 Exchange","",mod.fill4@react_name))
     dt.sol[, met.name := gsub(" Exchange","", met.name)]
@@ -675,7 +675,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     cat("\rGapfill summary:\n")
     cat("Filled components:    ",mod.fill4.counter, "(",paste(mod.fill4.names, collapse = ","),")\n")
     cat("Added reactions:      ",length(mod.fill4@react_id)-length(mod.fill3@react_id),"\n")
-    cat("Final growth rate:    ",mod.fill4.sol$fluxes[which(mod.fill4@obj_coef==1)],"\n\n")
+    cat("Final growth rate:    ",mod.fill4.sol@fluxes[which(mod.fill4@obj_coef==1)],"\n\n")
     
     cat("Uptake at limit:\n")
     cat(paste0(paste(dt.sol.u$met.name, round(-dt.sol.u$flux, digits = 3), sep = ":"), collapse = ", "),"\n\n")
@@ -729,7 +729,7 @@ if(!opt$sbml.no.output){
 
 # Save additionally an unconstrained version of the model if desired
 if(relaxed.constraints) {
-  mod.out@lowbnd[grep("^EX_",mod.out@react_id)] <- -sybil::SYBIL_SETTINGS("MAXIMUM")
+  mod.out@lowbnd[grep("^EX_",mod.out@react_id)] <- -COBRAR_SETTINGS("MAXIMUM")
   saveRDS(mod.out, file = paste0(output.dir,"/",out.id,"-unconstrained.RDS"))
   if(!opt$sbml.no.output){
     source(paste0(script.dir,"/sbml_write.R"))
