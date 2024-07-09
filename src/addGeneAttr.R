@@ -22,7 +22,7 @@ addGeneAttr <- function(mod, dtg) {
   
   inds <- match(mod@allGenes, dtg$stitle)
   
-  mod@genes_attr$CVTerms <- ifelse(!is.na(dtg$cvt[inds]),
+  mod@genes_attr$CVTerms <- ifelse(!is.na(dtg$cvt[inds]) & !grepl("bqbiol_isHomologTo",dtg$cvt[inds]),
                                    paste0("bqbiol_isHomologTo;http://identifiers.org/",dtg$cvt[inds]),
                                    NA_character_)
   

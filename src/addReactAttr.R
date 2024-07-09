@@ -146,7 +146,7 @@ addReactAttr <- function(mod) {
   
   
   # Export
-  reacttmp[!is.na(CVTerms) & CVTerms != "", CVTerms := paste0("bqbiol_is",CVTerms)]
+  reacttmp[!is.na(CVTerms) & CVTerms != "" & !grepl("^bqbiol_is", CVTerms), CVTerms := paste0("bqbiol_is",CVTerms)]
   mod@react_attr <- as.data.frame(reacttmp)
   
   return(mod)

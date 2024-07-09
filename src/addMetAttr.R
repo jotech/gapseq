@@ -95,11 +95,8 @@ addMetAttr <- function(mod, seed_x_mets) {
   mettmp[!is.na(tmpids), CVTerms := paste0(CVTerms,tmpids)]
   mettmp[, tmpids := NULL]; rm(tmp_ids)
   
-  mettmp[!is.na(CVTerms) & CVTerms != "", CVTerms := paste0("bqbiol_is",CVTerms)]
+  mettmp[!is.na(CVTerms) & CVTerms != "" & !grepl("^bqbiol_is", CVTerms), CVTerms := paste0("bqbiol_is",CVTerms)]
   mod@met_attr <- as.data.frame(mettmp)
   
   return(mod)
 }
-
-
-
