@@ -100,6 +100,16 @@ if [[ "$parse_options" == true ]]; then
                 cd $dir
                 git_rev=$(git rev-parse --short HEAD 2>/dev/null)
                 echo gapseq version: $version $git_rev
+                if [ -d "$dir/dat/seq/Bacteria" ]; then
+                    Bseqdb_version=`md5sum $dir/dat/seq/Bacteria/rev/sequences.tar.gz | cut -c1-7`
+                    Bseqdb_date=$(stat -c %y $dir/dat/seq/Bacteria/rev/sequences.tar.gz | cut -c1-10)
+                    echo "Sequence DB md5sum: $Bseqdb_version ($Bseqdb_date, Bacteria)"
+                fi
+                if [ -d "$dir/dat/seq/Archaea" ]; then
+                    Aseqdb_version=`md5sum $dir/dat/seq/Archaea/rev/sequences.tar.gz | cut -c1-7`
+                    Aseqdb_date=$(stat -c %y $dir/dat/seq/Archaea/rev/sequences.tar.gz | cut -c1-10)
+                    echo "Sequence DB md5sum: $Aseqdb_version ($Aseqdb_date, Archaea)"
+                fi
                 exit 0
                 ;;
             n)

@@ -1085,7 +1085,7 @@ cp output.tbl $output_dir/${fastaID}-$output_suffix-Pathways.tbl
 [[ -s reactions.tbl ]] && echo "rxn name ec bihit $blast_format pathway status pathway.status dbhit complex exception complex.status" | tr ' ' '\t' | cat - reactions.tbl | awk '!a[$0]++' > $output_dir/${fastaID}-$output_suffix-Reactions.tbl # add header and remove duplicates
 
 # add gapseq version and sequence database status to table comments head
-gapseq_version=`$dir/.././gapseq -v`
+gapseq_version=$($dir/.././gapseq -v | head -n 1)
 seqdb_version=`md5sum $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1-7`
 seqdb_date=$(stat -c %y $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1-10)
 
