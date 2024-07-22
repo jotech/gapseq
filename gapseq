@@ -106,9 +106,8 @@ if [[ "$parse_options" == true ]]; then
                     echo "Sequence DB md5sum: $Bseqdb_version ($Bseqdb_date, Bacteria)"
                 else
                     echo """
-    The Bacteria sequence database has never been updated (default verison).
-    You probably forgot to download the latest version during the initial installation.
-    Get the last release by running: 'bash ./src/update_sequences.sh'
+    The Bacteria Sequence Database has not yet been downloaded/updated (default version).
+    Get the latest version by running: 'bash ./src/update_sequences.sh' in your gapseq installation directory.
                         """
                 fi
                 if [ -d "$dir/dat/seq/Archaea/rev" ]; then
@@ -117,9 +116,8 @@ if [[ "$parse_options" == true ]]; then
                     echo "Sequence DB md5sum: $Aseqdb_version ($Aseqdb_date, Archaea)"
                 else
                     echo """
-    The Archaea sequence database has never been updated (default verison).
-    You probably forgot to download the latest version during the initial installation.
-    Get the last release by running: 'bash ./src/update_sequences.sh Archaea'
+    The Archaea Sequence Database has not yet been downloaded/updated (default version).
+    Get the latest version by running: 'bash ./src/update_sequences.sh Archaea' in your gapseq installation directory.
                         """
                 fi
                 exit 0
