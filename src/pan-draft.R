@@ -111,8 +111,8 @@ if ( !only.binary.rxn.tbl ){
   weights_list <- load_files_from_paths_for_RDS(weights_opt, "-rxnWeights.RDS")
   xgenes_opt <- parse_input_options(rxnXgene.table.path, "-rxnXgenes.RDS")
   xgenes_list <- load_files_from_paths_for_RDS(xgenes_opt, "-rxnXgenes.RDS")
-  pathways_opt <- parse_input_options(pathways.table.path, "-all-Pathways.tbl.gz")
-  pathways_list <- load_files_from_paths_for_tbl(pathways_opt, "-all-Pathways.tbl.gz")
+  pathways_opt <- parse_input_options(pathways.table.path, "-all-Pathways.tbl")
+  pathways_list <- load_files_from_paths_for_tbl(pathways_opt, "-all-Pathways.tbl")
 }
 cat("loading completed \n\n")
 
@@ -203,7 +203,7 @@ if ( !only.binary.rxn.tbl ){
   # write statistics on pan-reactome 
   stat <- c(dim(rxn2mod_dt)[2]-1, dim(rxn2mod_dt)[1], strict_core_rxn_num, core_rxn_num, shell_rxn_num, cloud_rxn_num)
   stat_dt <- data.table(t(stat))
-  colnames(stat_dt) <- c("nGenome", "total_RXN", "strict_core", "core", "shell", "cloud")
+  colnames(stat_dt) <- c("nGenome", "total_RXN", "strict_core (rxn freq. 100%)", "core (rxn freq. >95%)", "shell (rxn freq. 5-95%)", "cloud (rxn freq. <5%)")
   fwrite(stat_dt, file = file.path(output.dir,"pan-reactome_stat.tsv"), sep = "\t")
 
   ### Reconstruct pan-Draft
