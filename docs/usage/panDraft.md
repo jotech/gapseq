@@ -16,10 +16,10 @@ Input can be provided as:
 3) path to folders containing the desired files 
 ```
 # Option 1:
-./gapseq pan -m toy/MGYG000008797-draft.RDS,toy/MGYG000009889-draft.RDS,toy/MGYG000167774-draft.RDS,toy/MGYG000173413-draft.RDS -c toy/MGYG000008797-rxnWeights.RDS,toy/MGYG000009889-rxnWeights.RDS,toy/MGYG000167774-rxnWeights.RDS,toy/MGYG000173413-rxnWeights.RDS -g toy/MGYG000008797-rxnXgenes.RDS,toy/MGYG000009889-rxnXgenes.RDS,toy/MGYG000167774-rxnXgenes.RDS,toy/MGYG000173413-rxnXgenes.RDS -w toy/MGYG000008797-all-Pathways.tbl.gz,toy/MGYG000009889-all-Pathways.tbl.gz,toy/MGYG000167774-all-Pathways.tbl.gz,toy/MGYG000173413-all-Pathways.tbl.gz
+./gapseq pan -m toy/MGYG000008797-draft.RDS,toy/MGYG000009889-draft.RDS,toy/MGYG000167774-draft.RDS,toy/MGYG000173413-draft.RDS -c toy/MGYG000008797-rxnWeights.RDS,toy/MGYG000009889-rxnWeights.RDS,toy/MGYG000167774-rxnWeights.RDS,toy/MGYG000173413-rxnWeights.RDS -g toy/MGYG000008797-rxnXgenes.RDS,toy/MGYG000009889-rxnXgenes.RDS,toy/MGYG000167774-rxnXgenes.RDS,toy/MGYG000173413-rxnXgenes.RDS -w toy/MGYG000008797-all-Pathways.tbl,toy/MGYG000009889-all-Pathways.tbl,toy/MGYG000167774-all-Pathways.tbl,toy/MGYG000173413-all-Pathways.tbl
 
 # Option 2:
-./gapseq pan -m toy/M*-draft.RDS -c toy/M*-rxnWeights.RDS -g toy/M*-rxnXgenes.RDS -w toy/M*-all-Pathways.tbl.gz
+./gapseq pan -m toy/M*-draft.RDS -c toy/M*-rxnWeights.RDS -g toy/M*-rxnXgenes.RDS -w toy/M*-all-Pathways.tbl
 
 # Option 3:
 mkdir toy/panDraft
@@ -35,11 +35,11 @@ Additionally, you can opt to perform a simple reactome comparison using the opti
 ### Suggested number MAGs and mrf threshold value
 
 We recommend utilizing a minimum of 30 MAGs for the reconstruction of a panDraft draft. However, there is no specified lower limit to this number.
-Clearly, the minimum reaction frequency threshold (mrf), which determines whether a reaction should be included in the species-level model, is meaningful only when the number of MAGs used is above a certain minimum number. The parameter (mrf) can take values between 0 and 1 (default 0.07). A value of 0 means that all reactions present in any of the input models will be included in the draft model, while a value of 1 means that only reactions present in all input models will be included.
+Clearly, the minimum reaction frequency threshold (mrf), which determines whether a reaction should be included in the species-level model, is meaningful only when the number of MAGs used is above a certain minimum number. The parameter (mrf) can take values between 0 and 1 (default 0.06). A value of 0 means that all reactions present in any of the input models will be included in the draft model, while a value of 1 means that only reactions present in all input models will be included.
 
 The mrf threshold can be modified using the option `--min.rxn.freq.in.mods`. 
 ```
-./gapseq pan -m toy/M*-draft.RDS -c toy/M*-rxnWeights.RDS -g toy/M*-rxnXgenes.RDS -w toy/M*-all-Pathways.tbl.gz --min.rxn.freq.in.mods 0.15
+./gapseq pan -m toy/M*-draft.RDS -c toy/M*-rxnWeights.RDS -g toy/M*-rxnXgenes.RDS -w toy/M*-all-Pathways.tbl --min.rxn.freq.in.mods 0.15
 ```
 
 ## Integration with further features of gapseq
