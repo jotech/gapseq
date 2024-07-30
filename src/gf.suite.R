@@ -713,7 +713,7 @@ if( verbose ){
 }
 
 # add gapseq version info to model object
-gapseq_version <- system(paste0(script.dir,"/.././gapseq -v"), intern = T)
+gapseq_version <- system(paste0(script.dir,"/.././gapseq -v"), intern = T)[1]
 seqdb_version  <- str_match(mod.orig@mod_desc, "Sequence DB md5sum: .*")
 if( !is.na(seqdb_version) ){
     mod.out@mod_desc <- paste0(gapseq_version, "; ", seqdb_version)
