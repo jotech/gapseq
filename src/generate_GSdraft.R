@@ -34,7 +34,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   source(paste0(script.dir,"/gram_by_network.R"))
   
   if(is.na(model.name))
-    model.name <- gsub("-all-Reactions.tbl","",basename(blast.res), fixed = T)
+    model.name <- gsub("-[a-z]+-Reactions.tbl","",basename(blast.res))
   
   if(biomass %in% c("auto","Bacteria","bacteria")) {
     if(grepl("\\.gz$", genome.seq)) {
@@ -548,7 +548,7 @@ sbml.no.output    <- opt$sbml.no.output
 dir.create(output.dir, recursive = TRUE, showWarnings = FALSE)
 
 if(is.na(model.name)){
-  model.name <- gsub("-all-Reactions\\.tbl$|-all-Reactions\\.tbl\\.gz$","",
+  model.name <- gsub("-[a-z]+-Reactions\\.tbl$|-[a-z]+-Reactions\\.tbl\\.gz$","",
                      basename(blast.res),
                      fixed = FALSE)
 }
