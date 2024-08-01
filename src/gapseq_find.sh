@@ -323,10 +323,10 @@ case $pathways in
     core)
         pwyKey="Amino-Acid-Biosynthesis|Nucleotide-Biosynthesis|Cofactor-Biosynthesis|Carbohydrates-Degradation|CARBO-BIOSYNTHESIS|Polyamine-Biosynthesis|Fatty-acid-biosynthesis|Energy-Metabolism|Terpenoid-Biosynthesis|Chorismate-Biosynthesis"
         ;;
-    small)
-        pwyKey="Amino-Acid-Biosynthesis|Nucleotide-Biosynthesis|Cofactor-Biosynthesis|Energy-Metabolism|Sugars-And-Polysaccharides-Degradation"
-        ;;
     min)
+        pwyKey="\\|ETOH-ACETYLCOA-ANA-PWY\\||\\|GLNSYN-PWY\\||\\|GLUCONEO-PWY\\||\\|GLUGLNSYN-PWY\\||\\|GLUTAMATE-DEG1-PWY\\||\\|GLUTAMATE-SYN2-PWY\\||\\|GLUTAMINEFUM-PWY\\||\\|GLUTSYNIII-PWY\\||\\|GLYCOLYSIS\\||\\|GLYOXYLATE-BYPASS\\||\\|NONOXIPENT-PWY\\||\\|OXIDATIVEPENT-PWY\\||\\|P185-PWY\\||\\|P21-PWY\\||\\|PWY0-1312\\||\\|PWY0-1315\\||\\|PWY0-1329\\||\\|PWY0-1334\\||\\|PWY0-1335\\||\\|PWY0-1353\\||\\|PWY0-1517\\||\\|PWY0-1565\\||\\|PWY0-1567\\||\\|PWY0-1568\\||\\|PWY-4341\\||\\|PWY-5084\\||\\|PWY-5480\\||\\|PWY-5482\\||\\|PWY-5484\\||\\|PWY-5690\\||\\|PWY-5766\\||\\|PWY-5913\\||\\|PWY-6028\\||\\|PWY-6333\\||\\|PWY-6543\\||\\|PWY-6549\\||\\|PWY66-21\\||\\|PWY66-398\\||\\|PWY-6697\\||\\|PWY-6964\\||\\|PWY-7167\\||\\|PWY-7685\\||\\|PWY-7686\\||\\|PWY-7980\\||\\|PWY-8178\\||\\|PWY-8215\\||\\|PWY-8274\\||\\|PWY-8404\\||\\|PYRUVDEHYD-PWY\\||\\|TCA-1\\||\\|TCA\\|"
+        ;;
+    small)
         tca="\\|TCA\\||P105-PWY"
         resp="PWY-7544|PWY0-1334"
         ferm="PYR-TO-BUT-NADPH|2FLHYD|PWY-7385|PWY-6344|PWY-5938|PWY-5494|PWY-5497|P164-PWY|PWY-8086|PWY-5677|PWY-8014|P162-PWY|CENTFERM-PWY|P122-PWY|PWY-6130|P108-PWY|PYR-ACCOA-FROX|BIFIDOSHUNT2|LNT-DEGRADATION|PWY-6583|PWY-5437|FERMENTATION-PWY"
