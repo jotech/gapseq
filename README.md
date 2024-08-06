@@ -1,7 +1,7 @@
 # gapseq
 _Informed prediction and analysis of bacterial metabolic pathways and genome-scale networks_  
 [![Documentation Status](https://readthedocs.org/projects/gapseq/badge/?version=latest)](https://gapseq.readthedocs.io/en/latest/?badge=latest)
-[![DOI:10.1186/s13059-021-02295-1](https://zenodo.org/badge/DOI/10.1186/s13059-021-02295-1.svg)](https://doi.org/10.1186/s13059-021-02295-1)  
+[![DOI:10.1186/s13059-021-02295-1](https://zenodo.org/badge/DOI/10.1186/s13059-021-02295-1.svg)](https://doi.org/10.1186/s13059-021-02295-1) [![conda build](https://img.shields.io/conda/v/bioconda/gapseq)](https://anaconda.org/bioconda/gapseq)
 
 
 _gapseq_ is designed to combine metabolic pathway analysis with metabolic network reconstruction and curation.
@@ -26,6 +26,14 @@ Besides this, the current development version can be accessed via:
 git clone https://github.com/jotech/gapseq
 ```
 Detailed information on [installation and troubleshooting](https://github.com/jotech/gapseq/blob/master/docs/install.md).
+
+### Using Bioconda
+Gapseq has a [bioconda](https://anaconda.org/bioconda/gapseq) package. You must have conda/miniconda/[miniforge](https://github.com/conda-forge/miniforge#install) installed already.
+```bash
+conda create -c conda-forge -c bioconda -n gapseq gapseq
+```
+
+Hint: _When installing with bioconda, the gapseq binary will reside in your PATH, so you will not have to prepend "./" in front of gapseq. (Use "gapseq" instead of "./gapseq")._
 
 
 ## Quickstart
