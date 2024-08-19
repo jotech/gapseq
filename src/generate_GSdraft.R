@@ -35,7 +35,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   source(paste0(script.dir,"/gram_by_network.R"))
   
   if(is.na(model.name))
-    model.name <- gsub("-all-Reactions.tbl","",basename(blast.res), fixed = T)
+    model.name <- gsub("-[a-z]+-Reactions.tbl","",basename(blast.res))
   
   if(biomass %in% c("auto","Bacteria","bacteria")) {
     if(grepl("\\.gz$", genome.seq)) {
@@ -267,7 +267,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
                         c("Cytosol","Extracellular space","Periplasm"))
   
   # add gapseq version info to model object
-  gapseq_version <- system(paste0(script.dir,"/.././gapseq -v"), intern = T)
+  gapseq_version <- system(paste0(script.dir,"/.././gapseq -v"), intern = T)[1]
   blast.header <- str_match(readLines(blast.res, n=2),"# Sequence DB md5sum: .*")
   if( any(!is.na(blast.header)) ){
       mod@mod_desc <- paste0(gapseq_version,"; ", na.omit(gsub("# ","",blast.header)))
@@ -518,7 +518,7 @@ sbml.no.output    <- opt$sbml.no.output
 dir.create(output.dir, recursive = TRUE, showWarnings = FALSE)
 
 if(is.na(model.name)){
-  model.name <- gsub("-all-Reactions\\.tbl$|-all-Reactions\\.tbl\\.gz$","",
+  model.name <- gsub("-[a-z]+-Reactions\\.tbl$|-[a-z]+-Reactions\\.tbl\\.gz$","",
                      basename(blast.res),
                      fixed = FALSE)
 }

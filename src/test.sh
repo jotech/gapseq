@@ -13,7 +13,7 @@ ldconfig2=$(whereis -b ldconfig | cut -f2 -d " ")
 cd $(mktemp -d)
 
 # gapseq version
-echo -e `$dir/../gapseq -v`
+echo -e `$dir/../gapseq -v | head -n 1`
 
 # printing operation system
 echo $OSTYPE

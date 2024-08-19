@@ -254,7 +254,7 @@ build_panDraft <- function(subSet_rxn_df, info_all_rxns_mods, mod_desc) {
   }
 
   # add gapseq version info to model object
-  gapseq_version <- system(paste0(script.dir,"/.././gapseq -v"), intern = T)
+  gapseq_version <- system(paste0(script.dir,"/.././gapseq -v"), intern = T)[1]
   pan.mod@mod_desc <- gapseq_version
   
   cat("\tcompleted\n")

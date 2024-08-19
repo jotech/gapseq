@@ -45,6 +45,7 @@ usage()
     echo "  gapseq pan -m toy/MGYG000*-draft.RDS -c toy/MGYG000*-rxnWeights.RDS -g toy/MGYG000*-rxnXgenes.RDS -w toy/MGYG000*.tbl.gz"
     echo -e "\nOptions:"
     echo "  test            Testing dependencies and basic functionality of gapseq."
+    echo "  long-test       Testing model reconstruction for a E. coli core genome."
     echo "  find            Pathway analysis, try to find enzymes based on homology."
     echo "  find-transport  Search for transporters based on homology."
     echo "  draft           Draft model construction based on results from find and find-transport."
@@ -63,7 +64,7 @@ exit 1
 
 for arg in $@
 do
-    if [[ -f $arg && "$arg" != "test" ]]; then
+    if [[ -f $arg && ("$arg" != "test" || "$arg" != "test-long") ]]; then
         if [ ! -r $arg ]; then
             echo "No read access to file:" $arg
             exit 1
@@ -78,7 +79,7 @@ if [[ "$1" == "doall" ]]; then
     # If yes set OPTIND 2 to avoid reading "gapseq doall" and to parse all the options in the following while.
     subcommand=$1
     OPTIND=2
-elif [[ "$1" =~ ^(test|find|find-transport|draft|adapt|medium|fill|pan)$ ]]; then
+elif [[ "$1" =~ ^(test|test-long|find|find-transport|draft|adapt|medium|fill|pan)$ ]]; then
     # If another command line (like find), the options are not parsed with getopts (as they will be parsed in their own script).
     subcommand=$1
     parse_options=false
@@ -100,6 +101,26 @@ if [[ "$parse_options" == true ]]; then
                 cd $dir
                 git_rev=$(git rev-parse --short HEAD 2>/dev/null)
                 echo gapseq version: $version $git_rev
+                if [ -d "$dir/dat/seq/Bacteria/rev" ]; then
+                    Bseqdb_version=`md5sum $dir/dat/seq/Bacteria/rev/sequences.tar.gz | cut -c1-7`
+                    Bseqdb_date=$(stat -c %y $dir/dat/seq/Bacteria/rev/sequences.tar.gz | cut -c1-10)
+                    echo "Sequence DB md5sum: $Bseqdb_version ($Bseqdb_date, Bacteria)"
+                else
+                    echo """
+    The Bacteria Sequence Database has not yet been downloaded/updated (default version).
+    Get the latest version by running: 'bash ./src/update_sequences.sh' in your gapseq installation directory.
+                        """
+                fi
+                if [ -d "$dir/dat/seq/Archaea/rev" ]; then
+                    Aseqdb_version=`md5sum $dir/dat/seq/Archaea/rev/sequences.tar.gz | cut -c1-7`
+                    Aseqdb_date=$(stat -c %y $dir/dat/seq/Archaea/rev/sequences.tar.gz | cut -c1-10)
+                    echo "Sequence DB md5sum: $Aseqdb_version ($Aseqdb_date, Archaea)"
+                else
+                    echo """
+    The Archaea Sequence Database has not yet been downloaded/updated (default version).
+    Get the latest version by running: 'bash ./src/update_sequences.sh Archaea' in your gapseq installation directory.
+                        """
+                fi
                 exit 0
                 ;;
             n)
@@ -125,6 +146,14 @@ fi
 
 if   [ "$subcommand" == "test" ]; then
     $dir/src/test.sh
+
+elif   [ "$subcommand" == "test-long" ]; then
+    shift
+    $dir/src/gapseq_find.sh -v 0 -p min $dir/toy/ecore.faa.gz
+    $dir/src/transporter.sh -v 0 $dir/toy/ecore.faa.gz
+    Rscript $dir/src/generate_GSdraft.R -r ecore-min-Reactions.tbl -t ecore-Transporter.tbl -c $dir/toy/ecore.faa.gz -p ecore-min-Pathways.tbl
+    Rscript $dir/src/predict_medium.R -m ecore-draft.RDS -p ecore-min-Pathways.tbl
+    Rscript $dir/src/gf.suite.R -m ecore-draft.RDS -n ecore-medium.csv -c ecore-rxnWeights.RDS -g ecore-rxnXgenes.RDS -q
 
 elif   [ "$subcommand" == "find" ]; then
     shift
@@ -167,7 +196,7 @@ elif [ "$subcommand" == "doall" ]; then
     [[ ("$3" == "Bacteria" || "$4" == "Bacteria") ]] && taxonomy=Bacteria
     [[ ("$3" == "Archaea" || "$4" == "Archaea") ]] && taxonomy=Archaea
     $dir/src/gapseq_find.sh -v $verbose -b 200 -p all -t $taxonomy -K $n_threads "$file"
-    $dir/src/transporter.sh -b 200 -K $n_threads "$file"
+    $dir/src/transporter.sh -v $verbose -b 200 -K $n_threads "$file"
     Rscript $dir/src/generate_GSdraft.R -r "$id-all-Reactions.tbl" -t "$id-Transporter.tbl" -c "$file" -u 200 -l 100 -p "$id-all-Pathways.tbl" -b $taxonomy
     [[ ! -s "$3" ]] && Rscript $dir/src/predict_medium.R -m "./${id}-draft.RDS" -p "$id-all-Pathways.tbl"
     Rscript $dir/src/gf.suite.R -m "./${id}-draft.RDS" -n "$medium" -c "./${id}-rxnWeights.RDS" -b 100 -g "./${id}-rxnXgenes.RDS"

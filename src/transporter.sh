@@ -265,7 +265,7 @@ cp transporter.tbl $output_dir/${fastaid}-Transporter.tbl
 [[ -s transporter.tbl ]] && echo "id tc sub exid rea $blast_format comment" | tr ' ' '\t' | cat - transporter.tbl | awk '!a[$0]++' > $output_dir/${fastaid}-Transporter.tbl # add header and remove duplicates
 
 # add gapseq vesion and sequence database status to table comments head
-gapseq_version=$($dir/.././gapseq -v)
+gapseq_version=$($dir/.././gapseq -v | head -n 1)
 seqdb_version=$(md5sum $dir/../dat/seq/transporter.fasta | cut -c1-7)
 seqdb_date=$(stat -c %y $dir/../dat/seq/transporter.fasta | cut -c1-10)
 sed -i "1s/^/# $gapseq_version\n/" $output_dir/${fastaid}-Transporter.tbl
