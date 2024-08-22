@@ -540,6 +540,9 @@ if(!(biomass %in% c("auto","Auto","pos","neg","archaea","Archaea","bacteria",
                                               script.dir = script.dir,
                                               pathway.pred = pathway.pred)
   
+  # remove empty subsystems
+  subsRm <- which(apply(mod$mod@subSys,2,FUN = function(x) all(x==FALSE)))
+  mod$mod <- cobrar::rmSubsystem(mod$mod, subsRm)
   
   # save draft model and reaction weights and rxn-gene-table
   saveRDS(mod$mod,file = paste0(output.dir,"/",model.name, "-draft.RDS"))

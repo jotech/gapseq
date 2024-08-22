@@ -710,6 +710,10 @@ if( verbose ){
   cat(mod.out.rxns.added.without.seq, file = paste0(output.dir,"/",out.id,"-gapfilled.without.seq.rxnlst"))  
 }
 
+# remove empty subsystems
+subsRm <- which(apply(mod.out@subSys,2,FUN = function(x) all(x==FALSE)))
+mod.out <- cobrar::rmSubsystem(mod.out, subsRm)
+
 # add gapseq version info to model object
 gapseq_version <- system(paste0(script.dir,"/.././gapseq -v"), intern = T)[1]
 seqdb_version  <- str_match(mod.orig@mod_desc, "Sequence DB md5sum: .*")
