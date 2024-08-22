@@ -50,22 +50,20 @@ if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
   script.dir  <- dirname(script.name)
 }
 
-if( "cplexAPI" %in% installed.packages() )
-  suppressMessages(library(cplexAPI))
-if( "sybilSBML" %in% installed.packages() )
-  suppressMessages(library(sybilSBML))
-suppressMessages(library(sybil))
+if( "cobrarCPLEX" %in% installed.packages() )
+  suppressMessages(library(cobrarCPLEX))
+suppressMessages(library(cobrar))
 suppressMessages(library(data.table)); setDTthreads(1)
 suppressMessages(library(stringr))
 suppressMessages(library(methods))
 suppressMessages(library(tools))
 
 # select solver
-if( "cplexAPI" %in% rownames(installed.packages()) ){
-  sybil::SYBIL_SETTINGS("SOLVER","cplexAPI"); ok <- 1
+if( "cobrarCPLEX" %in% rownames(installed.packages()) ){
+  COBRAR_SETTINGS("SOLVER","cplex"); ok <- 1
 }else{
-  warning("glpkAPI is used but cplexAPI is recommended because it is much faster")
-  sybil::SYBIL_SETTINGS("SOLVER","glpkAPI"); ok <- 5
+  warning("glpk is used as LP solver but cplex is recommended because it is much faster. If you have IBM's ILOG cplex installed, you can add cplex-support to gapseq by installing the R-package 'cobarCPLEX' (https://github.com/Waschina/cobrarCPLEX).")
+  COBRAR_SETTINGS("SOLVER","glpk"); ok <- 0
 }
 
 # Setting defaults if required
@@ -220,11 +218,12 @@ if( !is.null(ids.remove) ){
   rxn.avail  <- intersect(rxn.remove, str_remove(mod.orig@react_id, "_[a-z]0$"))
   if( length(rxn.avail)==0 ) stop("No reactions present in model.")
   rxn.remove <- rxn.avail
-  
+  rxn.remove.ind <- grep(paste0("^",rxn.remove, collapse = "|"),mod.orig@react_id)
+
   if( exists("mod.out") ){
-    mod.out <- sybil::rmReact(mod.out, react=rxn.remove)  
+    mod.out <- rmReact(mod.out, react=rxn.remove.ind)  
   }else{
-    mod.out <- sybil::rmReact(mod.orig, react=rxn.remove)  
+    mod.out <- rmReact(mod.orig, react=rxn.remove.ind)  
   }
   print(paste("Removed reactions: ", paste0(rxn.remove, collapse = ",")))
 }
@@ -274,7 +273,7 @@ if( !is.null(min.growth) ){
 }
 
 
-if(mod.out@react_num == mod.orig@react_num && all(mod.out@react_id == mod.orig@react_id)){
+if(react_num(mod.out) == react_num(mod.orig) && all(mod.out@react_id == mod.orig@react_id)){
     warning("No changes made")
     quit()
 }
