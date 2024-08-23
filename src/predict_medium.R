@@ -1,5 +1,6 @@
 library(getopt)
 suppressMessages(library(stringr))
+suppressMessages(library(cobrar))
 suppressMessages(require(data.table))
 
 # get options first
@@ -141,8 +142,8 @@ if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
 if(grepl("\\.RDS", opt$model)) {
   mod <- readRDS(opt$model)
 } 
-if(!grepl("\\.RDS", opt$model) & "sybilSBML" %in% rownames(installed.packages())) {
-  mod <- sybilSBML::readSBMLmod(opt$model)
+if(!grepl("\\.RDS", opt$model)) {
+  mod <- readSBMLmod(opt$model)
 }
 pathway.pred     <- fread(opt$pathway.pred, skip = "ID	")
 manual.flux      <- opt$manual.flux
