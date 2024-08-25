@@ -61,18 +61,18 @@ load_files_from_paths_for_tbl <- function(file_paths, suf) {
 
 ### Add annotation column to model attributes if not already there
 add_annotation_column_to_attributes <- function(mod.orig) {
-    if(!("annotation" %in% colnames(mod.orig@mod_attr))) {
+  if(!("annotation" %in% colnames(mod.orig@mod_attr))) {
     bm_ind <- which(mod.orig@react_id == "bio1")
     annostr <- ""
     if(grepl("Bacteria",mod.orig@react_name[bm_ind]))
-        annostr <- "tax_domain:Bacteria"
+      annostr <- "tax_domain:Bacteria"
     if(grepl("Archaea",mod.orig@react_name[bm_ind]))
-        annostr <- "tax_domain:Archaea"
+      annostr <- "tax_domain:Archaea"
     
     mod.orig@mod_attr <- cbind(mod.orig@mod_attr,
-                                data.frame(annotation = annostr))
-    }
-    return(mod.orig)
+                               data.frame(annotation = annostr))
+  }
+  return(mod.orig)
 }
 
 # TRANSFORM DICT into DATA.FRAME
@@ -109,9 +109,9 @@ standardize_duplicated_met_name <- function(met_id2duplicated_met_name_df, met_i
     for (rxn_id in as.list(rxnid_with_met_dt)) {
       for (idx in seq_along(info_all_rxns_mods)) {
         rxn <- info_all_rxns_mods[[idx]]
-        if (rxn@react_id == rxn_id) {
-          matching_indexes <- which(rxn@met_id == cpd)
-          rxn@met_name[matching_indexes] <- as.character(cpd_name)
+        if (rxn$react_id == rxn_id) {
+          matching_indexes <- which(rxn$met_id == cpd)
+          rxn$met_name[matching_indexes] <- as.character(cpd_name)
           info_all_rxns_mods[idx] <- list(rxn)
         }
       }
@@ -155,90 +155,63 @@ build_panDraft <- function(subSet_rxn_df, info_all_rxns_mods, mod_desc) {
   subset_info_rxns_mods <- list()
   # extract reaction information only of the subset
   for (rxn in info_all_rxns_mods) {
-    if (rxn@react_id %in% rxn_subset){
-      subset_info_rxns_mods <- c(subset_info_rxns_mods, rxn)
+    if (rxn$react_id %in% rxn_subset){
+      subset_info_rxns_mods <- c(subset_info_rxns_mods, list(rxn))
     }
   }
   ############################
   # Reconstruct the Pan-Draft model  
   cat("\nConstructing draft model... \n")
-  pan.mod <- sybil::modelorg(name = "panDraf_model", id = "panDraf_model")
-
-  pan.mod@mod_compart <- c("c0","e0","p0")
-  mod_compart(pan.mod)
-  # add metabolite compartment list
-  # n.comp <- max(pan.mod@met_comp, na.rm = T)
-  # if(n.comp == 2)
-  #  pan.mod@mod_compart <- c("c0","e0")
-  # if(n.comp == 3)
-  #  pan.mod@mod_compart <- c("c0","e0","p0")
-
-  pan.mod@react_attr <- data.frame(seed = character(0), rxn = character(0), name = character(0), ec = character(0), tc = character(0), 
-                                qseqid = character(0), pident = numeric(0), evalue = numeric(0), bitscore = numeric(0), qcovs = numeric(0),
-                                stitle = character(0), sstart = numeric(0), send = numeric(0), pathway = character(0), status = character(0), 
-                                pathway.status = character(0), complex = character(0), exception = numeric(0), complex.status = numeric(0), gs.origin = logical(0), 
-                                annotation = character(0), MNX_ID = character(0), seedID = character(0), keggID = character(0), biggID = character(0), 
-                                biocycID = character(0), stringsAsFactors = F)
+  pan.mod <- new("ModelOrg", mod_name = "panDraft_model", mod_id = "panDraft_model")
+  pan.mod <- addCompartment(pan.mod, c("c0","e0","p0"),
+                            c("Cytosol","Extracellular space","Periplasm"))
+  
+  # pan.mod@react_attr <- data.frame(seed = character(0), rxn = character(0), name = character(0), ec = character(0), tc = character(0), 
+  #                                  qseqid = character(0), pident = numeric(0), evalue = numeric(0), bitscore = numeric(0), qcovs = numeric(0),
+  #                                  stitle = character(0), sstart = numeric(0), send = numeric(0), pathway = character(0), status = character(0), 
+  #                                  pathway.status = character(0), complex = character(0), exception = numeric(0), complex.status = numeric(0), gs.origin = logical(0), 
+  #                                  annotation = character(0), MNX_ID = character(0), seedID = character(0), keggID = character(0), biggID = character(0), 
+  #                                  biocycID = character(0), stringsAsFactors = F)
+  pan.mod@react_attr <- info_all_rxns_mods[[1]]$react_attr[0,]
 
   # generate the subSystems matrix and the react_attr dataframe
-  subsys_unique <- list()
+  subsys_unique <- c()
+  subsys_unique_names <- c()
   react_attr_list <- list()
 
   for (rxn in subset_info_rxns_mods){
-    subsys_unique <- c(subsys_unique, rxn@subSys)
-    subsys_unique <- as.character(unique(subsys_unique))
-    react_attr_list <- c(react_attr_list, list(rxn@react_attr))
+    subsys_unique <- c(subsys_unique, rxn$subSys_id)
+    subsys_unique_names <- c(subsys_unique_names, rxn$subSys_name)
+    react_attr_list <- c(react_attr_list, list(rxn$react_attr))
   }
-  pan.mod@subSys <- Matrix::Matrix(F,nrow = 0, ncol = length(subsys_unique),sparse = T)
-  colnames(pan.mod@subSys) <- subsys_unique
   react_attr_df <- do.call(rbind, lapply(react_attr_list, data.frame, stringsAsFactors = FALSE)) # Convert list of lists to dataframe
-
+  subsys_dupl <- duplicated(subsys_unique)
+  subsys_unique <- subsys_unique[!subsys_dupl]
+  subsys_unique_names <- subsys_unique_names[!subsys_dupl]
+  pan.mod <- addSubsystem(pan.mod, subsys_unique, subsys_unique_names)
+  
   # add one reaction at the time
   for (i in 1:length(subset_info_rxns_mods)) {
     rxn <- subset_info_rxns_mods[[i]]
-    rxn.id <- rxn@react_id
-    met.ids <- rxn@met_id
-    met.scoef <- rxn@s
-    is.rev <- rxn@react_rev
-    met.comp <- rxn@met_comp
-    rxn.uppbnd <- rxn@uppbnd
-    rxn.lowbnd <- rxn@lowbnd
-    rxn.name <- rxn@react_name
-    met.name <- rxn@met_name
-    gpr.tmp <- rxn@gpr
-    dts.tmp <- rxn@subSys
-
-    pan.mod <- sybil::addReact(model = pan.mod, 
-                            id = rxn.id, 
-                            met = met.ids,
-                            Scoef = met.scoef,
-                            reversible = is.rev, 
-                            metComp = met.comp,
-                            ub = rxn.uppbnd,
-                            lb = rxn.lowbnd,
-                            reactName = rxn.name, 
-                            metName = met.name,
-                            gprAssoc = gpr.tmp,
-                            subSys = dts.tmp)
+    
+    pan.mod <- addReact(model = pan.mod, 
+                        id = rxn$react_id, 
+                        met = rxn$met_id,
+                        Scoef = rxn$met_scoeff,
+                        metComp = rxn$met_comp,
+                        ub = rxn$uppbnd,
+                        lb = rxn$lowbnd,
+                        reactName = rxn$react_name, 
+                        metName = rxn$met_name,
+                        subsystem = rxn$subSys_id)
 
     # define the reactions attribute
-    if (grepl("DM", rxn.id)) {
-      pan.mod@react_attr[which(pan.mod@react_id == rxn.id),] <- subset(react_attr_df, seed == rxn.id) 
+    if (grepl("DM", rxn$react_id)) {
+      pan.mod@react_attr[which(pan.mod@react_id == rxn$react_id),] <- subset(react_attr_df, seed == rxn$react_id) 
     } else {
-      pan.mod@react_attr[which(pan.mod@react_id == rxn.id),] <- subset(react_attr_df, seed == strsplit(rxn.id, "_c0")) 
+      pan.mod@react_attr[which(pan.mod@react_id == rxn$react_id),] <- subset(react_attr_df, seed == strsplit(rxn$react_id, "_c0")) 
     }
 
-    # In case no genes are associated to the first reaction added to the model,
-    # no 'genes' 'grp' and 'gprRules' object are initiated by sybil, causing a
-    # mismatch between length of the number of reactions and those three objects
-    # in the final modelorg model. This mismatch causes libSBML to stop on a
-    # segmentation error. Solution: "Manually" initiate the three objects in those
-    # cases
-    if(i == 1 && gpr.tmp == "") {
-      pan.mod@genes[[1]] <- ""
-      pan.mod@gpr <- ""
-      pan.mod@gprRules <- ""
-    }
   }
 
   pan.mod@mod_desc <- mod_desc # mod description of first loaded model
@@ -250,7 +223,7 @@ build_panDraft <- function(subSet_rxn_df, info_all_rxns_mods, mod_desc) {
       annostr <- "tax_domain:Bacteria"
     if(grepl("Archaea",pan.mod@react_name[bm_ind]))
       annostr <- "tax_domain:Archaea"
-    pan.mod@mod_attr <- data.frame(annotation = annostr)
+    pan.mod@mod_attr$annotation <- annostr
   }
 
   # add gapseq version info to model object
@@ -292,4 +265,34 @@ build_rxn2mod_dt <- function(model_list) {
   rxn2mod_dt <- dcast(dt, rxn ~ mod_id, fun.aggregate = length, fill = 0) # Reshape the data.table
   
   return(list(rxn2mod_dt, mod_id2mod_dict))
+}
+
+getReactionPD <- function(model, rxn.id) {
+  rpos <- react_pos(model, rxn.id)
+  r_name <- model@react_name[rpos]
+  r_metpos <- which(model@S[,rpos] != 0)
+  r_metids <- model@met_id[r_metpos]
+  r_metnames <- model@met_name[r_metpos]
+  r_metcoeff <- model@S[r_metpos,rpos]
+  r_metcomp <- model@met_comp[r_metpos]
+  
+  r_lb <- model@lowbnd[rpos]
+  r_ub <- model@uppbnd[rpos]
+  
+  r_react_attr <- model@react_attr[rpos,]
+  r_subsyspos <- which(model@subSys[rpos,])
+  r_subsysid <- model@subSys_id[r_subsyspos]
+  r_subsysname <- model@subSys_name[r_subsyspos]
+  
+  return(list(react_id = rxn.id,
+              react_name = r_name,
+              react_attr = r_react_attr,
+              lowbnd = r_lb,
+              uppbnd = r_ub,
+              met_id = r_metids,
+              met_name = r_metnames,
+              met_comp = r_metcomp,
+              met_scoeff = r_metcoeff,
+              subSys_id = r_subsysid,
+              subSys_name = r_subsysname))
 }
