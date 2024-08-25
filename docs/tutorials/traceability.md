@@ -4,10 +4,10 @@ Keyword: **"Traceability"**
 
 Automatic metabolic network reconstruction is a multi-step process. Reactions and metabolites are added to a metabolic network model in various steps and based on different criteria. ***gapseq* records for each reaction, why and at which stage it was added to the network.** While this tracing of reactions was originally intended for debugging, we believe that this information is also highly relevant for users to understand their output network and for potential manual refinement / curation efforts. 
 
-gapseq stores the reaction tracing information in the reaction's attributes data.frame of the *sybil::modelorg* R-object, which is saved by gapseq in the *model.RDS* file. Here's a short code-snippet to access the reaction tracing information in R:
+gapseq stores the reaction tracing information in the reaction's attributes data.frame of the *cobrar::ModelOrg* R-object, which is saved by gapseq in the *model.RDS* file. Here's a short code-snippet to access the reaction tracing information in R:
 
 ```R
-library(sybil)
+library(cobrar)
 
 mod <- readRDS("model.RDS") # adjust with the respective model name
 
