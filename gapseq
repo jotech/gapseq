@@ -32,12 +32,12 @@ usage()
     echo "  gapseq pan (-m draft_list -c rxn_weights_list -g rxn_genes_list -w pathways_list)"
     echo -e "\nExamples:"
     echo "  gapseq test"
-    echo "  gapseq doall toy/ecoli.fna.gz"
+    echo "  gapseq doall toy/ecoli.faa.gz"
     echo "  gapseq doall toy/myb71.fna.gz dat/media/TSBmed.csv"
     echo "  gapseq find -p chitin toy/myb71.fna.gz"
     echo "  gapseq find -p all toy/myb71.fna.gz"
     echo "  gapseq find-transport toy/myb71.fna.gz"
-    echo "  gapseq draft -r toy/ecoli-all-Reactions.tbl -t toy/ecoli-Transporter.tbl -c toy/ecoli.fna.gz -p toy/ecoli-all-Pathways.tbl"
+    echo "  gapseq draft -r toy/ecoli-all-Reactions.tbl -t toy/ecoli-Transporter.tbl -c toy/ecoli.faa.gz -p toy/ecoli-all-Pathways.tbl"
     echo "  gapseq medium -m toy/ecoli-draft.RDS -p toy/ecoli-all-Pathways.tbl"
     echo "  gapseq fill -m toy/ecoli-draft.RDS -n dat/media/ALLmed.csv -c toy/ecoli-rxnWeights.RDS -g toy/ecoli-rxnXgenes.RDS"
     echo "  gapseq adapt -a 14DICHLORBENZDEG-PWY -m toy/myb71.RDS"
@@ -57,7 +57,7 @@ usage()
     echo "  -v              Show version."
     echo "  -h              Show this screen."
     echo "  -n              Enable noisy verbose mode."
-    echo "  -K Number of threads for sequence alignments. If option is not provided, number of available CPUs will be automatically determined."
+    echo "  -K              Number of threads for sequence alignments. If option is not provided, number of available CPUs will be automatically determined."
 
 exit 1
 }
