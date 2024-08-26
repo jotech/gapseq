@@ -3,6 +3,7 @@
 .Rapp.history
 # Session Data files
 .RData
+*.~lock*
 # Example code in package build process
 *-Ex.R
 # Output files from R CMD build
@@ -52,3 +53,8 @@ dat/seq/Bacteria/unrev/*
 dat/seq/Archaea/rev/*
 dat/seq/Archaea/rxn/*
 dat/seq/Archaea/unrev/*
+# Unit tests
+unit/genomes
+unit/out
+# pandraft toy intermediates
+toy/panDraft

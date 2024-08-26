@@ -1,4 +1,4 @@
 name	genome	medium	rxn	dir	description	parm_find	parm_transport	parm_draft	parm_fill
-Blautia hydrogenotrophica	GCF_001404935.1	dsmz_1611_YCFA	EX_cpd00011_e0,EX_cpd11640_e0,EX_cpd00029_e0	<,<,>	acetate production from co2 and h2 (Wood-Ljungdahl)				-e highH2
-Clostridium butyricum	GCF_003315755.1	FT	EX_cpd00211_e0,EX_cpd11640_e0	>,>	Butyrate fermentation				
-Escherichia coli	GCF_000005845.2	FT,gut	EX_cpd00029_e0,EX_cpd00047_e0,EX_cpd00363_e0,EX_cpd00036_e0	>,>,>,>	mixed acid fermentation				
+Blautia hydrogenotrophica	GCF_001404935.1	dsmz_1611_YCFA	EX_cpd00011_e0,EX_cpd11640_e0,EX_cpd00029_e0	<,<,>	acetate production from co2 and h2 (Wood-Ljungdahl)	-m auto -b 200	-b 200	-u 200 -l 100	-b 100 -e highH2
+Clostridium butyricum	GCF_003315755.1	FT	EX_cpd00211_e0,EX_cpd11640_e0	>,>	Butyrate fermentation	-m auto -b 200	-b 200	-u 200 -l 100	-b 100
+Escherichia coli	GCF_000005845.2	FT,gut	EX_cpd00029_e0,EX_cpd00047_e0,EX_cpd00363_e0,EX_cpd00036_e0	>,>,>,>	mixed acid fermentation	-m auto -b 200	-b 200	-u 200 -l 100	-b 100
