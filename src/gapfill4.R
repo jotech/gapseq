@@ -68,10 +68,10 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
     warning("FBA on original model did not end successfully! Zero solution is feasibile! But gapfilling will start anyway.")
   }
   
-  sol <- optimizeProb(mod)
+  sol <- optimizeProb(mod, scaling = 1)
   gr.dummy <- sol@lp_obj
   if(sol@lp_stat!=ok){
-    warning(paste0("Full model is already not able to form. There's no way to successful gap-filling."))
+    warning(paste0("Full model is already not able to yield a feasible solution. There's no way to successful gap-filling."))
     return(list(model = mod.orig.bak,
                 rxns.added = c(),
                 rxn.weights = rxn.weights,
@@ -204,7 +204,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
   
   mod.orig <- add_missing_exchanges(mod.orig)
   
-  sol <- optimizeProb(mod.orig)
+  sol <- optimizeProb(mod.orig, scaling = 1)
   #if(sol@lp_stat!=ok | sol@lp_obj < min.obj.val){
   if(sol@lp_stat!=ok | sol@lp_obj < 1e-7){
     warning(paste0("Final model ", mod.orig@mod_name, " cannot produce enough target even when all candidate reactions are added! obj=", sol@lp_obj, " lp_stat=",sol@lp_stat))
@@ -237,7 +237,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
     mod.orig@lowbnd[ko.dt[i,rxn.ind]] <- 0
     mod.orig@uppbnd[ko.dt[i,rxn.ind]] <- 0
     
-    sol <- optimizeProb(mod.orig) # feasibiliy already checked (zero solution is possible)
+    sol <- optimizeProb(mod.orig, scaling = 1) # feasibiliy already checked (zero solution is possible)
     ko.dt[i, ko.obj := sol@lp_obj]
     obj.val <- sol@lp_obj
     
@@ -256,7 +256,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
     mod.orig <- rmReact(mod.orig, react = dummy.rxn.rm)
   
   rxns.added <- gsub("_.0","",ko.dt[keep==T | core==T,dummy.rxn])
-  sol <- optimizeProb(mod.orig)
+  sol <- optimizeProb(mod.orig, scaling = 1)
   if(sol@lp_stat!=ok){
     stop("Final model cannot grow. Something is terribly wrong!")
     return(list(model = mod.orig.bak,
