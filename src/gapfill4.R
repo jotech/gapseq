@@ -70,7 +70,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
   sol <- fba(mod)
   gr.dummy <- sol@obj
   if(sol@ok!=ok){
-    warning(paste0("Full model is already not able to form. There's no way to successful gap-filling."))
+    warning(paste0("Full model is already not able to yield a feasible solution There's no way to successful gap-filling."))
     return(list(model = mod.orig.bak,
                 rxns.added = c(),
                 rxn.weights = rxn.weights,
@@ -231,7 +231,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
     sol <- fba(mod.orig) # feasibiliy already checked (zero solution is possible)
     ko.dt[i, ko.obj := sol@obj]
     obj.val <- sol@obj
-    
+
     # restore bounds
     if(obj.val < min.gr) {
       ko.dt[i, keep := T]
