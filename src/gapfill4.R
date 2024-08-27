@@ -154,10 +154,9 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
     is.rev <- ifelse(mseed[i,reversibility] %in% c("<","="),T,F)
     only.backwards <- ifelse(mseed[i,reversibility]=="<",T,F)
     
-    ind.new.mets <- which(met.ids %in% mod.orig@met_id)
-    ind.old.mets <- which(mod.orig@met_id %in% met.ids[ind.new.mets])
-    
-    met.name[ind.new.mets] <- mod.orig@met_name[ind.old.mets]
+    ind.notnew.mets <- which(met.ids %in% mod.orig@met_id)
+    notnew.mets.names <- mod.orig@met_name[met_pos(mod.orig, met.ids[ind.notnew.mets])]
+    met.name[ind.notnew.mets] <- notnew.mets.names
     
     # get gene associations if any
     #dtg.tmp <- rXg.tab[seed == mseed[i,id] & rm == F, .(complex,gene)]
@@ -176,9 +175,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
                          ub = ifelse(only.backwards, 0, 1000),
                          lb = ifelse(is.rev, -1000, 0),
                          reactName = mseed[i, name.x],
-                         metName = met.name#,
-                         #gprAssoc = gpr.tmp
-                         )
+                         metName = met.name)
     mod.orig@react_attr[which(mod.orig@react_id == paste0(mseed[i,id],"_c0")),c("gs.origin","seed")] <- data.frame(gs.origin = gs.origin,
                                                                                                                    seed = mseed[i,id],
                                                                                                                    stringsAsFactors = F)

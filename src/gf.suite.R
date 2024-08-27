@@ -52,9 +52,9 @@ suppressMessages(library(tools))
 if( "cobrarCPLEX" %in% rownames(installed.packages()) ){
   COBRAR_SETTINGS("SOLVER","cplex"); ok <- 1
 }else{
-  warning("glpk is used as LP solver but cplex is recommended because it is much faster. If you have IBM's ILOG cplex installed, you can add cplex-support to gapseq by installing the R-package 'cobarCPLEX' (https://github.com/Waschina/cobrarCPLEX).")
   COBRAR_SETTINGS("SOLVER","glpk"); ok <- 0
 }
+cat("LP solver:",COBRAR_SETTINGS("SOLVER"),"\n")
 
 # Setting defaults if required
 if ( is.null(opt$target.metabolite) ) { opt$target.metabolite = "cpd11416" }
@@ -254,7 +254,6 @@ mod.fill.lst <- gapfill4(mod.orig = mod.orig,
                          gs.origin = 1,
                          rXg.tab = rXg.tab,
                          env = env)
-
 mod.fill1 <- constrain.model(mod.fill.lst$model, media.file = media.file, scaling.fac = 1)
 mod.out <- mod.fill1
 
@@ -366,7 +365,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   mod.fill2 <- changeObjFunc(mod.fill2, react=paste0("EX_",target.met,"_c0"))
   mod.fill2 <- constrain.model(mod.fill2, media.file = media.file, scaling.fac = 1)
   mod.out <- mod.fill2
-  
+
   cat("\rGapfill summary:\n")
   cat("Filled components:    ",mod.fill2.counter, "(",paste(mod.fill2.names, collapse = ","),")\n")
   cat("Added reactions:      ",length(mod.fill2@react_id)-length(mod.fill1@react_id),"\n")
@@ -459,7 +458,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   mod.fill2 <- changeObjFunc(mod.fill2, react=paste0("EX_",target.met,"_c0"))
   mod.fill2 <- constrain.model(mod.fill2, media.file = media.file, scaling.fac = 1)
   mod.out <- mod.fill2
-  
+
   cat("\rGapfill summary:\n")
   cat("Filled components:    ",mod.fill2.counter, "(",paste(mod.fill2.names, collapse = ","),")\n")
   cat("Added reactions:      ",length(mod.fill2@react_id)-length(mod.orig2@react_id),"\n")
@@ -670,7 +669,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
                                 met.name = gsub("-e0 Exchange","",mod.fill4@react_name))
     dt.sol[, met.name := gsub(" Exchange","", met.name)]
     dt.sol.u      <- copy(dt.sol[flux < 0 & grepl("^EX_", rxn) & flux <= lb*0.999])
-    dt.sol.p      <- copy(dt.sol[flux > 0 & grepl("^EX_", rxn)][order(-flux)][1:min(c(10,.N))])
+    dt.sol.p      <- copy(dt.sol[flux > 0 & grepl("^EX_", rxn) & !grepl("cpd11416",rxn)][order(-flux)][1:min(c(10,.N))])
     
     cat("\rGapfill summary:\n")
     cat("Filled components:    ",mod.fill4.counter, "(",paste(mod.fill4.names, collapse = ","),")\n")
@@ -688,7 +687,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
 }
 mod.out <- add_missing_exchanges(mod.out)
 
-# delete unused addionally added exchange reactions later
+# delete unused additionally added exchange reactions later
 exchanges.rm <- exchanges.new.ids[!exchanges.new.used]
 if( length(exchanges.rm) > 0 )
 mod.out <- rmReact(mod.out, react=exchanges.rm)
