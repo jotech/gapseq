@@ -42,10 +42,10 @@ Table with gene-X-reaction association (temporary file needed for gapseq fill).
 Model draft file as R object.
 
 ### *-draft.xml
-Draft model in SBML format (only created if sybilSBML is installed).
+Draft model in SBML format.
 
 ## gapseq fill
 ### *.RDS
 Final model saved as R object.
 ### *.xml
-Final model in SBML format (only created if sybilSBML is installed).
+Final model in SBML format.

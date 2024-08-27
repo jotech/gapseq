@@ -70,7 +70,7 @@ gapseq fill -m $modelB-draft.RDS -n milk.csv -c $modelB-rxnWeights.RDS -g $model
 
 ##### FBA and FVA prediction of metabolic by-products
 
-Here, we will use the R-Package `sybil` ([Gelius-Dietrich *et al.* (2013) BMC Syst Biol](https://doi.org/10.1186/1752-0509-7-125)) to perform Flux-Balance-Analysis (FBA) and Flux-Variability-Analysis (FVA) with the two reconstructed network models.
+Here, we will use the R-Package [`cobrar`](https://waschina.github.io/cobrar/)  to perform Flux-Balance-Analysis (FBA) and Flux-Variability-Analysis (FVA) with the two reconstructed network models.
 
 First, we define a function, that automatically performs FBA with the minimization of total flux (MTF) as secondary objective and FVA for all exchange reactions. The function also summarizes the results in a sorted `data.table`.
 

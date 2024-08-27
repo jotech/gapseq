@@ -64,19 +64,18 @@ do
     parm_find=$(echo "$line" | cut -f7)
     parm_transport=$(echo "$line" | cut -f8)
     parm_draft=$(echo "$line" | cut -f9)
-    parm_fill=$(echo "$line" | cut -f10 | cut -c2-)
+    parm_fill=$(echo "$line" | cut -f10)
     
     id_tmp=${base%.*}
     id=${id_tmp%.*}
     echo $i $name $id $media
 
     if [[ "$fast" = false ]]; then
-        echo $parm_find
         $dir/../gapseq find $parm_find -v 0 -p all "$genome_file"
         mv "${id}-all-Reactions.tbl" "${id}-all-Pathways.tbl" $dir/out/
         $dir/../gapseq find-transport $parm_transport "$genome_file"
         mv "${id}-Transporter.tbl" $dir/out/
-        $dir/../gapseq draft $parm_draft -r $dir/out/"$id-all-Reactions.tbl" -t $dir/out/"$id-Transporter.tbl" -c $dir/out/"$genome_file" -p "$id-all-Pathways.tbl"
+        $dir/../gapseq draft $parm_draft -r $dir/out/"$id-all-Reactions.tbl" -t $dir/out/"$id-Transporter.tbl" -c "$genome_file" -p "$id-all-Pathways.tbl"
         mv "${id}-draft.RDS" "${id}-rxnWeights.RDS" "${id}-rxnXgenes.RDS" $dir/out/
     fi
     #ls "$dir/out/${id}-all-Reactions.tbl" "$dir/out/${id}-all-Pathways.tbl" "$dir/out/${id}-Transporter.tbl" "$dir/out/${id}-draft.RDS" "$dir/out/${id}-rxnWeights.RDS" "$dir/out/${id}-rxnXgenes.RDS"
@@ -104,7 +103,7 @@ do
 
         mod <- readRDS(mod.file)
         sol <- fba(mod)
-        suppressMessages(fva <- fva(mod, react=rxn))
+        fva <- fva(mod, react=rxn)
         fva_max <- fva$max.flux
         fva_min <- fva$min.flux
 
@@ -112,7 +111,7 @@ do
         rxn.all <- 0
         for(i in seq_along(rxn)){
             rxn.id  <- rxn[i]
-            rxn.idx <- match(rxn.id, react_id(mod))
+            rxn.idx <- match(rxn.id, mod@react_id)
             if( is.na(rxn.idx) ) warning(paste("Reaction", rxn[i], "not found in model", mod.file))
             rxn.dir <- dir[i]
             rxn.sol <- sol@fluxes[rxn.idx]
