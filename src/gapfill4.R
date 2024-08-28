@@ -1,4 +1,4 @@
-gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
+gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.01, bcore = 50,
                      dummy.weight = 100, script.dir, core.only = FALSE, verbose=verbose, gs.origin = NA, rXg.tab, env = "") {
 
   # backup model
@@ -87,6 +87,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.1, bcore = 50,
     max.iter  <- 100
     n.iter    <- 1
     pFBAcoeff <- 1e-3
+    mod@lowbnd[which(mod@obj_coef == 1)] <- min.gr # enforce minimum required growth rate
     while(sol.tmp <= 0 & n.iter <= max.iter) {
       sol.fba <- pfbaHeuristic(mod, costcoeffw = c.coef.dt$weight,
                                pFBAcoeff = pFBAcoeff)

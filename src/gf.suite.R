@@ -19,7 +19,7 @@ spec <- matrix(c(
   'relaxed.constraints', 'r', 2, "logical", "Save final model as unconstraint network (i.e. all exchange reactions are open). Default: FALSE",
   'environment', 'e', 2, "character", "Adjusting reaction directions according to specific environmental conditions. See documentation for details. CAUTION: experimental option!",
   'write.cs.ferm', 'w', 2, "logical", "Write a list with found carbon sources and fermentation products",
-  'min.obj.val', 'k', 2, "numeric", "Minimum growth rate that should be achieved by gap-filling. Default: 0.05"
+  'min.obj.val', 'k', 2, "numeric", "Minimum growth rate that should be achieved by gap-filling. Default: 0.01"
 ), ncol = 5, byrow = T)
 
 opt <- getopt(spec)
@@ -69,7 +69,7 @@ if ( is.null(opt$no.core) ) { opt$no.core = F }
 if ( is.null(opt$relaxed.constraints) ) { opt$relaxed.constraints = F }
 if ( is.null(opt$environment) ) { opt$environment = "" }
 if ( is.null(opt$write.cs.ferm) ) { opt$write.cs.ferm = F }
-if ( is.null(opt$min.obj.val) ) { opt$min.obj.val = 0.05 }
+if ( is.null(opt$min.obj.val) ) { opt$min.obj.val = 0.01 }
 
 # deprecation notice for flag '-o'
 if(!is.null(opt$depr.output.dir)) {
