@@ -17,10 +17,9 @@ if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
 
 # select solver
 if( "cobrarCPLEX" %in% rownames(installed.packages()) ){
-  COBRAR_SETTINGS("SOLVER","cplex"); ok <- 1
+  COBRAR_SETTINGS("SOLVER","cplex"); stat <- c(1,2)
 }else{
-  warning("glpk is used as LP solver but cplex is recommended because it is much faster. If you have IBM's ILOG cplex installed, you can add cplex-support to gapseq by installing the R-package 'cobarCPLEX' (https://github.com/Waschina/cobrarCPLEX).")
-  COBRAR_SETTINGS("SOLVER","glpk"); ok <- 0
+  COBRAR_SETTINGS("SOLVER","glpk"); stat <- c(2,5)
 }
 
 #setwd(script.dir)
@@ -86,7 +85,7 @@ check_lethal <- function(model, rxn_list, med.file=NA, med=NA){
         mod.tmp <- rmReact(mod.tmp, react=model@react_id[na.omit(rxn.idx)])
         
         sol <- fba(mod.tmp)
-        lethal <- !(sol@stat == ok & sol@obj >= 1e-7)  
+        lethal <- !(sol@stat %in% stat & sol@obj >= 1e-7)  
         lethal.dt <- rbind(lethal.dt, data.table(nr=i, rxn=paste0(model@react_id[na.omit(rxn.idx)],collapse=","), lethal=lethal))
       } else lethal.dt <- rbind(lethal.dt, data.table(nr=i, rxn="", lethal=NA))
     }else lethal.dt <- rbind(lethal.dt, data.table(nr=i, rxn="", lethal=NA))
@@ -154,9 +153,9 @@ add_growth <- function(model.orig, add.met.id=NA, weights=NA, genes=NA, verbose=
   mod.adapt    <- esp.mode(mod.adapt, media)
 
   sol <- fba(mod.adapt)
-  #cat("Check growth: ", sol@stat==ok, "\t", sol@obj, "\n")
+  #cat("Check growth: ", sol@stat %in% stat, "\t", sol@obj, "\n")
   
-  if(sol@stat == ok & sol@obj >= 1e-7){
+  if(sol@stat %in% stat & sol@obj >= 1e-7){
     warning(paste("Model is already growing with", add.met.id, add.met.name))
     if( verbose ){
       cat("solution", sol$obj, "\n")
@@ -190,7 +189,7 @@ add_growth <- function(model.orig, add.met.id=NA, weights=NA, genes=NA, verbose=
   #check_growth(mod.adapt.lst$model, medium = c(media$compounds), printExchanges = T, useNames = T, mtf = T)
   
   sol <- fba(mod.adapt)
-  #cat(sol@stat==ok, "\t", sol@obj, "\n")
+  #cat(sol@stat %in% stat, "\t", sol@obj, "\n")
   cat("\n")
   
   check <- check_lethal(mod.adapt, rxn_list = setdiff(mod.adapt@react_id, model.orig@react_id), med = media)
@@ -241,8 +240,8 @@ rm_growth <- function(model.orig, del.met.id, use.media=NA, rxn.blast.file, verb
   
   model <- esp.mode(model.orig, media)
   sol <- fba(model)
-  #cat(sol@stat==ok, "\t", sol@obj, "\n")
-  if( !(sol@stat==ok & sol@obj >= 1e-7 ) ){
+  #cat(sol@stat %in% stat, "\t", sol@obj, "\n")
+  if( !(sol@stat %in% stat & sol@obj >= 1e-7 ) ){
     warning(paste("Model already cannot grow with:", del.met.id, del.met.name))
     return(invisible(model.orig))
   }else{
@@ -325,9 +324,9 @@ check_theo_growth <- function(check.met.id, fullmod){
   mod.adapt    <- constrain.model(mod.adapt, media=media)
   
   sol <- pfbaHeuristic(mod.adapt)
-  cat("Check growth: ", sol@stat==ok, "\t", sol@obj, "\n")
+  cat("Check growth: ", sol@stat %in% stat, "\t", sol@obj, "\n")
   
-  if(sol@stat == ok & sol@obj >= 1e-7){
+  if(sol@stat %in% stat & sol@obj >= 1e-7){
     print("Growth possible")
   }else{
     print("No growth possible")
@@ -363,7 +362,7 @@ increase_growth <- function(model.orig, min.obj.val, weights=NA, genes=NA, verbo
   
   sol <- fba(model.orig)
   cat("Old growth rate:", round(sol@obj,6), "\n")
-  if(sol@stat == ok & sol@obj >= min.obj.val){
+  if(sol@stat %in% stat & sol@obj >= min.obj.val){
     warning(paste("Model already has growth rate >=",min.obj.val))
     return(invisible(model.orig))
   }else{

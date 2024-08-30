@@ -75,7 +75,7 @@ echo "##############################"
 i=0
 
 # Optimization
-Rscript -e 'suppressMessages(library(cobrar)); fpath <- system.file("extdata", "e_coli_core.xml", package="cobrar"); mod <- readSBMLmod(fpath); sol <- fba(mod); sol.ok <- sol@ok == 0; cat("Optimization test:", ifelse( sol.ok, "OK", "FAILED"), "\n"); ' > opt.log
+Rscript -e 'suppressMessages(library(cobrar)); fpath <- system.file("extdata", "e_coli_core.xml", package="cobrar"); mod <- readSBMLmod(fpath); sol <- fba(mod); sol.stat <- sol@stat %in% c(2,5) && sol@obj > 1e-7; cat("Optimization test:", ifelse( sol.stat, "OK", "FAILED"), "\n"); ' > opt.log
 cat opt.log
 if  grep -q "OK" opt.log; then
     i=$((i+1))

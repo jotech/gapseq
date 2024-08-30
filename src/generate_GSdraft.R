@@ -232,9 +232,10 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     }
   }
   if(input_mode == "nucl") {
+    ncont <- length(unique(dt_genes[rm == F, stitle]))
     cat(length(unique(dt_genes[rm == F & seed %in% mseed$id, paste(gene, sep="$")])),
-        "unique genes on",length(unique(dt_genes[rm == F, stitle])),
-        "genetic element(s)\n")
+        "unique genes on",ncont,
+        ifelse(ncont==1,"contig","contigs"),"\n")
   }
   if(input_mode == "prot") {
     cat(length(unique(dt_genes[rm == F & seed %in% mseed$id, paste(gene, sep="$")])),

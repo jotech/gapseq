@@ -60,10 +60,9 @@ suppressMessages(library(tools))
 
 # select solver
 if( "cobrarCPLEX" %in% rownames(installed.packages()) ){
-  COBRAR_SETTINGS("SOLVER","cplex"); ok <- 1
+  COBRAR_SETTINGS("SOLVER","cplex"); stat <- c(1,2)
 }else{
-  warning("glpk is used as LP solver but cplex is recommended because it is much faster. If you have IBM's ILOG cplex installed, you can add cplex-support to gapseq by installing the R-package 'cobarCPLEX' (https://github.com/Waschina/cobrarCPLEX).")
-  COBRAR_SETTINGS("SOLVER","glpk"); ok <- 0
+  COBRAR_SETTINGS("SOLVER","glpk"); stat <- c(2,5)
 }
 
 # Setting defaults if required

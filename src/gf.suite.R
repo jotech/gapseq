@@ -50,10 +50,11 @@ suppressMessages(library(tools))
 
 # select solver
 if( "cobrarCPLEX" %in% rownames(installed.packages()) ){
-  COBRAR_SETTINGS("SOLVER","cplex"); ok <- 1
+  COBRAR_SETTINGS("SOLVER","cplex"); stat <- c(1,2)
 }else{
-  COBRAR_SETTINGS("SOLVER","glpk"); ok <- 0
+  COBRAR_SETTINGS("SOLVER","glpk"); stat <- c(2,5)
 }
+# COBRAR_SETTINGS("SOLVER","glpk"); stat <- c(2,5)
 cat("LP solver:",COBRAR_SETTINGS("SOLVER"),"\n")
 
 # Setting defaults if required
@@ -98,6 +99,12 @@ min.obj.val         <- opt$min.obj.val
 # Parameters:
 dummy.weight <- 100
 sbml.export  <- FALSE 
+
+# check if minimum required growth rate is valid
+if(min.obj.val < 0.001) {
+  warning("Minimum required growth rate ('-k') should not be smaller than 0.001. Resetting value to 0.001.")
+  min.obj.val <- 0.001
+}
 
 # create output directory if not already there
 dir.create(output.dir, recursive = TRUE, showWarnings = FALSE)
@@ -331,7 +338,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     
     sol <- fba(mod.fill2)
     
-    if(sol@ok == ok & sol@obj >= 1e-6){
+    if(sol@stat %in% stat & sol@obj >= 1e-6){
       mod.fill2@obj_coef <- rep(0,react_num(mod.fill2))
     }else{
       if( verbose ) cat("\nTry to gapfill", bm.met.name[i],"\n")
@@ -368,9 +375,8 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
 
   cat("\rGapfill summary:\n")
   cat("Filled components:    ",mod.fill2.counter, "(",paste(mod.fill2.names, collapse = ","),")\n")
-  cat("Added reactions:      ",length(mod.fill2@react_id)-length(mod.fill1@react_id),"\n")
+  cat("Added reactions:      ",length(mod.fill2@react_id[!grepl("^EX_|^DM",mod.fill2@react_id) & mod.fill2@react_id %notin% mod.fill1@react_id]),"\n")
   cat("Final growth rate:    ",fba(mod.fill2)@obj,"\n")
-  
   
   
   media2 <- fread(paste0(script.dir,"/../dat/media/MM_glu.csv")) # load minimal medium and add available carbon sources
@@ -424,7 +430,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     
     sol <- fba(mod.fill2)
     
-    if(sol@ok == ok & sol@obj >= 1e-6){
+    if(sol@stat %in% stat & sol@obj >= 1e-6){
       mod.fill2@obj_coef <- rep(0,react_num(mod.fill2))
     }else{
       if( verbose ) cat("\nTry to gapfill", bm.met.name[i],"\n")
@@ -461,7 +467,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
 
   cat("\rGapfill summary:\n")
   cat("Filled components:    ",mod.fill2.counter, "(",paste(mod.fill2.names, collapse = ","),")\n")
-  cat("Added reactions:      ",length(mod.fill2@react_id)-length(mod.orig2@react_id),"\n")
+  cat("Added reactions:      ",length(mod.fill2@react_id[!grepl("^EX_|^DM",mod.fill2@react_id) & mod.fill2@react_id %notin% mod.fill1@react_id]),"\n")
   cat("Final growth rate:    ",fba(mod.fill2)@obj,"\n")
   
   
@@ -474,7 +480,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
   exchanges.new.met  <- str_replace(str_remove(carbon.source$seed[idx], "EX_"),"_e0","\\[e0\\]")
   exchanges.new.name <- mod@met_name[match(exchanges.new.met,mod@met_id)]
   exchanges.new.ids  <- carbon.source$seed[idx]
-  exchanges.new.used  <- rep(FALSE, length(exchanges.new.ids))  # delete unused addionally added exchange reactions later
+  exchanges.new.used  <- rep(FALSE, length(exchanges.new.ids))  # delete unused additionally added exchange reactions later
   mod.out       <- add_exchanges(mod.out, exchanges.new.met, metname=exchanges.new.name)
 
   if ( !quick.gf ){
@@ -539,7 +545,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
       
       sol <- fba(mod.fill3)
       
-      if(sol@ok == ok & sol@obj >= 1e-7){
+      if(sol@stat %in% stat & sol@obj >= 1e-7){
         #mod.fill3@obj_coef <- rep(0,react_nummod.fill3))
         src.status <- TRUE
       }else{
@@ -577,7 +583,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     mod.out <- mod.fill3
     cat("\rGapfill summary:\n")
     cat("Filled components:    ",mod.fill3.counter, "(",paste(mod.fill3.names, collapse = ","),")\n")
-    cat("Added reactions:      ",length(mod.fill3@react_id)-length(mod.fill2@react_id),"\n")
+    cat("Added reactions:      ",length(mod.fill3@react_id[!grepl("^EX_|^DM",mod.fill3@react_id) & mod.fill3@react_id %notin% mod.fill2@react_id]),"\n")
     cat("Final growth rate:    ",fba(mod.fill3)@obj,"\n")
   }
   
@@ -626,7 +632,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
       
       sol <- fba(mod.fill4)
       
-      if(sol@ok == ok & sol@obj >= 1e-7){
+      if(sol@stat %in% stat & sol@obj >= 1e-7){
         #mod.fill4@obj_coef <- rep(0,react_num(mod.fill4))
         src.status <- TRUE
       }else{
@@ -673,7 +679,7 @@ if(nrow(mseed.t)>0) { # Skip steps 2,2b,3, and 4 if core-reaction list does not 
     
     cat("\rGapfill summary:\n")
     cat("Filled components:    ",mod.fill4.counter, "(",paste(mod.fill4.names, collapse = ","),")\n")
-    cat("Added reactions:      ",length(mod.fill4@react_id)-length(mod.fill3@react_id),"\n")
+    cat("Added reactions:      ",length(mod.fill4@react_id[!grepl("^EX_|^DM",mod.fill4@react_id) & mod.fill4@react_id %notin% mod.fill3@react_id]),"\n")
     cat("Final growth rate:    ",mod.fill4.sol@fluxes[which(mod.fill4@obj_coef==1)],"\n\n")
     
     cat("Uptake at limit:\n")
@@ -690,7 +696,7 @@ mod.out <- add_missing_exchanges(mod.out)
 # delete unused additionally added exchange reactions later
 exchanges.rm <- exchanges.new.ids[!exchanges.new.used]
 if( length(exchanges.rm) > 0 )
-mod.out <- rmReact(mod.out, react=exchanges.rm)
+  mod.out <- rmReact(mod.out, react=exchanges.rm)
 mod.out <- rm_unused_exchanges(mod.out)
 
 

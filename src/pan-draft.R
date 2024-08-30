@@ -63,14 +63,6 @@ suppressMessages(library(methods))
 # Little helpers
 source(paste0(script.dir,"/pan-draft_functions.R"))
 
-# select solver
-if( "cobrarCPLEX" %in% rownames(installed.packages()) ){
-  COBRAR_SETTINGS("SOLVER","cplex"); ok <- 1
-}else{
-  warning("glpk is used as LP solver but cplex is recommended because it is much faster. If you have IBM's ILOG cplex installed, you can add cplex-support to gapseq by installing the R-package 'cobarCPLEX' (https://github.com/Waschina/cobrarCPLEX).")
-  COBRAR_SETTINGS("SOLVER","glpk"); ok <- 0
-}
-
 # Setting defaults if required
 if ( is.null(opt$output.dir) ) { opt$output.dir = "." }
 if ( is.null(opt$min.rxn.freq.in.mods) ) { opt$min.rxn.freq.in.mods = 0.06 }
