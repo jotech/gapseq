@@ -58,7 +58,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.01, bcore = 50,
   # get initial growth
   sol <- fba(mod.orig)
   gr.orig <- sol@obj
-  if(gr.orig >= min.gr){
+  if(!is.na(gr.orig) && gr.orig >= min.gr){
     warning("Original model is already able to produce the target compound. Nothing to do...")
     return(list(model = mod.orig.bak,
                 rxns.added = c(),
