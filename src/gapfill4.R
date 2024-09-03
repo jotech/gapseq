@@ -259,18 +259,18 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.01, bcore = 50,
     mod.orig@lowbnd[ko.dt[i,rxn.ind]] <- 0
     mod.orig@uppbnd[ko.dt[i,rxn.ind]] <- 0
     
-    sol <- fba(mod.orig) # feasibiliy already checked (zero solution is possible)
+    sol <- fba(mod.orig) # feasibility already checked (zero solution is possible)
     ko.dt[i, ko.obj := sol@obj]
     obj.val <- sol@obj
 
     # restore bounds
-    if(obj.val < min.gr) {
+    if(is.na(obj.val) || obj.val < min.gr) {
       ko.dt[i, keep := T]
       mod.orig@lowbnd[ko.dt[i,rxn.ind]] <- bu.lb
       mod.orig@uppbnd[ko.dt[i,rxn.ind]] <- bu.ub
     }
     # Remember reactions to be removed from model to be ready for iterative use
-    if(obj.val >= min.gr)
+    if(!is.na(obj.val) && obj.val >= min.gr)
       dummy.rxn.rm <- c(dummy.rxn.rm, ko.dt[i,dummy.rxn])
   }
   # Remove reaction from mod.orig if reaction is not needed (obj.val > min.obj.val)
