@@ -764,8 +764,12 @@ do
             query=$query_merge2
         fi
         
-        [[ "$skipBlast" = true ]] && { continue; }
-
+        # if blast search should be skipped write db hits to output file and continue with next reaction
+        if [ "$skipBlast" = true ]; then
+            echo -e "$rea\t$reaName\t$ec\tNA\t\t\t\t\t\t\t\t\t$pwy\tskipped_blast\tNA\t$dbhit\tNA\t$is_exception\tNA" >> reactions.tbl 
+            continue
+        fi
+      
         if [ -s $query ]; then
             [[ verbose -ge 1 ]] && echo -e "\t\tFinal file: $query (`cat $query | grep ">" | wc -l` sequences)"
             #query_id=$(basename $query)
