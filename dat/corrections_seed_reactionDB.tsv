@@ -2695,3 +2695,14 @@ rxn25906									TRUE
 rxn25907									TRUE
 rxn25893									TRUE
 rxn25894									TRUE
+									
+rxn40127	>		-1:cpd00098:0:0:"Choline";1:cpd00071:0:0:"Acetaldehyde";1:cpd00441:0:0:"Trimethylamine"	[SW] Choline degradation to TMA	https://www.rhea-db.org/rhea/35095		choline trimethylamine-lyase	choline trimethylamine-lyase	
+rxn23816		TRUE		[SW] duplicate reaction to rxn00657					
+rxn27956		TRUE		[SW] duplicate reaction to rxn02866					
+rxn13962				[SW] Reaction is charge balanced despite the charge imbalance tag in the original table					TRUE
+rxn14109				[SW] Reaction is charge balanced despite the charge imbalance tag in the original table					TRUE
+rxn14152				[SW] Reaction is charge balanced despite the charge imbalance tag in the original table					TRUE
+rxn45233	<		-1:cpd00003:0:0:"NAD";-1:cpd02084:0:0:"D-2-Hydroxyisocaproate";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd00200:0:0:"4MOP"	[SW] Reductive Stickland reaction for Leucine degradation (MetaCyc: PWY-7767)	https://www.rhea-db.org/rhea/10052		D-2-hydroxyacid dehydrogenase (NAD(+))	D-2-hydroxyacid dehydrogenase (NAD(+))	
+rxn42773	>		-1:cpd02084:0:0:"D-2-Hydroxyisocaproate";-1:cpd33312:0:0:"4-methylpentanoyl-CoA";1:cpd23040:0:0:"(R)-2-hydroxyisocaproyl-CoA";1:cpd34958:0:0:"4-methylpentanoate"	[SW] Reductive Stickland reaction for Leucine degradation (MetaCyc: PWY-7767)	https://www.rhea-db.org/rhea/49440		(R)-2-hydroxy-4-methylpentanoate CoA-transferase	(R)-2-hydroxy-4-methylpentanoate CoA-transferase	
+rxn43902	>		-1:cpd23040:0:0:"(R)-2-hydroxyisocaproyl-CoA";1:cpd00001:0:0:"H2O";1:cpd32069:0:0:"4-methylpent-2-enoyl-CoA"	[SW] Reductive Stickland reaction for Leucine degradation (MetaCyc: PWY-7767)	https://www.rhea-db.org/rhea/46924		(R)-2-hydroxyisocaproyl-CoA dehydratase	(R)-2-hydroxyisocaproyl-CoA dehydratase	
+rxn40585	<		-1:cpd00003:0:0:"NAD";-1:cpd33312:0:0:"4-methylpentanoyl-CoA";1:cpd00004:0:0:"NADH";1:cpd00067:0:0:"H+";1:cpd32069:0:0:"4-methylpent-2-enoyl-CoA"	[SW] Reductive Stickland reaction for Leucine degradation (MetaCyc: PWY-7767)	https://www.rhea-db.org/rhea/18177		trans-2-enoyl-CoA reductase (NAD+)	trans-2-enoyl-CoA reductase (NAD+)	
