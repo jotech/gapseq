@@ -1,5 +1,7 @@
 # Reconstruction of metabolic networks for archaea 
 
+> <mark>Please note</mark>: This tutorial assumes a gapseq  <= v1.3.1. An updated version of the tutorial for gapseq >= v1.4.0 is under construction.
+
 Archaea are prokaryotes with important unique characteristics which separate them from the other domains of life.
 Certain environmental process such as the production of methane is only described for archaea and there are estimates that they could make up to more than 10% of the human gut microbiome [1](https://doi.org/10.1016/j.anaerobe.2011.03.001).
 This tutorial is about the reconstruction and analysis of methane-producing archaea.
