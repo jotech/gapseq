@@ -1,12 +1,14 @@
 # Reconstruction of metabolic networks for archaea 
 
-Archaea are prokaryotes with important unique characteristics which seperate them from the other domains of life.
+> <mark>Please note</mark>: This tutorial assumes a gapseq  <= v1.3.1. An updated version of the tutorial for gapseq >= v1.4.0 is under construction.
+
+Archaea are prokaryotes with important unique characteristics which separate them from the other domains of life.
 Certain environmental process such as the production of methane is only described for archaea and there are estimates that they could make up to more than 10% of the human gut microbiome [1](https://doi.org/10.1016/j.anaerobe.2011.03.001).
 This tutorial is about the reconstruction and analysis of methane-producing archaea.
 
 ## Methanosarcina barkeri
 `Methanosarcina barkeri` is a methane-producing archaea that lives in sewage, mud, or rumen and is able to catabolize a variety of carbon sources.
-A genome of `M. barkeri` is avaialable on ncbi:
+A genome of `M. barkeri` is available on ncbi:
 ```
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/195/895/GCF_000195895.1_ASM19589v1/GCF_000195895.1_ASM19589v1_genomic.fna.gz
 ```
@@ -23,7 +25,7 @@ The metabolic model is created as SBML or RDS file and can further be used for c
 library(sybil)
 library(data.table)
 mod <- readRDS("GCF_000195895.1_ASM19589v1_genomic.RDS")
-mtf <- optimizeProb(mod, algorithm="mtf"); print(mtf)
+mtf <- pfba(mod); print(mtf)
 ex <- findExchReact(mod)
 ex.dt <- data.table(ex=ex@react_id, met=mod@met_name[ex@met_pos], flux=mtf@fluxdist@fluxes[ex@react_pos])
 ex.dt[flux<0][order(flux)] # substrate: h2+co2

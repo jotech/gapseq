@@ -19,6 +19,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   suppressMessages(require(data.table))
   setDTthreads(1)
   suppressMessages(require(stringr))
+  suppressMessages(require(cobrar))
   
   # get input genome fasta format (nucl/prot)
   input_mode <- readLines(blast.res)
@@ -147,26 +148,16 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   }
   # (5)
   dt.new.ids <- data.table(old.contig = contig.names.full, new.contig = new.stitle) # dictionary
-  for(i in 1:nrow(dt)) {
-    cur.stitles <- dt[i,stitle]
-    if(cur.stitles != "" & !is.na(cur.stitles)) {
-      tmptitle <- dt.new.ids[old.contig == cur.stitles, new.contig]
-      dt[i, stitle := tmptitle]
-    }
-  }
-  for(i in 1:nrow(dt.cand)) {
-    cur.stitles <- dt.cand[i,stitle]
-    if(cur.stitles != "" & !is.na(cur.stitles)) {
-      tmptitle <- dt.new.ids[old.contig == cur.stitles, new.contig]
-      dt.cand[i, stitle := tmptitle]
-    }
-  }
+  dt.new.ids <- dt.new.ids[!duplicated(old.contig)]
+  setkey(dt.new.ids, "old.contig")
+  dt[stitle != "" & !is.na(stitle), stitle := dt.new.ids[stitle,new.contig]]
+  dt.cand[stitle != "" & !is.na(stitle), stitle := dt.new.ids[stitle,new.contig]]
   
   # create gene list and attribute table
   cat("Creating Gene-Reaction list... ")
 
   dt_genes <- copy(dt[!is.na(bitscore)])
-  
+  saveRDS(dt_genes, "~/dt_genes.RDS")
   if(input_mode == "prot") {
     dt_genes[, gene := gsub(" .*","",stitle)]
     dt_genes <- dt_genes[!duplicated(paste0(stitle, gene, seed, complex, sep = "$"))]
@@ -241,9 +232,10 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     }
   }
   if(input_mode == "nucl") {
+    ncont <- length(unique(dt_genes[rm == F, stitle]))
     cat(length(unique(dt_genes[rm == F & seed %in% mseed$id, paste(gene, sep="$")])),
-        "unique genes on",length(unique(dt_genes[rm == F, stitle])),
-        "genetic element(s)\n")
+        "unique genes on",ncont,
+        ifelse(ncont==1,"contig","contigs"),"\n")
   }
   if(input_mode == "prot") {
     cat(length(unique(dt_genes[rm == F & seed %in% mseed$id, paste(gene, sep="$")])),
@@ -252,6 +244,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   
   # create subsys list and attribute table
   dt_subsys <- copy(dt[!is.na(pathway)])
+  dt_subsys[, pathway := gsub("^\\||\\|$","",pathway)]
   subsys_unique <- unique(dt_subsys$pathway)
   
   rxns <- unique(dt_seed_single_and_there[,seed])
@@ -270,7 +263,9 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   mseed <- mseed[!duplicated(rxn.hash)]
   
   cat("Constructing draft model: \n")
-  mod <- sybil::modelorg(name = model.name, id = model.name)
+  mod <- new("ModelOrg", mod_name = model.name, mod_id = model.name)
+  mod <- addCompartment(mod, c("c0","e0","p0"),
+                        c("Cytosol","Extracellular space","Periplasm"))
   
   # add gapseq version info to model object
   gapseq_version <- system(paste0(script.dir,"/.././gapseq -v"), intern = T)[1]
@@ -279,13 +274,17 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
       mod@mod_desc <- paste0(gapseq_version,"; ", na.omit(gsub("# ","",blast.header)))
   }else mod@mod_desc <- gapseq_version
   
-  mod@react_attr <- data.frame(rxn = character(0), name = character(0), ec = character(0), tc = character(0), qseqid = character(0),
-                               pident = numeric(0), evalue = numeric(0), bitscore = numeric(0), qcovs = numeric(0),
-                               stitle = character(0), sstart = numeric(0), send = numeric(0), pathway = character(0),
-                               status = character(0), pathway.status = character(0), complex = character(0), exception = numeric(0),
-                               complex.status = numeric(0), seed = character(0), stringsAsFactors = F)
-  mod@subSys <- Matrix::Matrix(F,nrow = 0, ncol = length(subsys_unique),sparse = T)
-  colnames(mod@subSys) <- subsys_unique
+  mod@react_attr$gs.origin <- integer(0L)
+  mod@react_attr$name <- character(0L)
+  mod@react_attr$ec <- character(0L)
+  mod@react_attr$tc <- character(0L)
+  mod@react_attr$exception <- integer(0L)
+  mod@react_attr$complex.status <- integer(0L)
+  
+  reactAttrAdHocCols <- intersect(colnames(mod@react_attr),
+                                  colnames(dt_seed_single_and_there))
+  
+  mod <- addSubsystem(mod, subsys_unique)
   for(i in (1:nrow(mseed))) {
     cat("\r",i,"/",nrow(mseed))
     rxn.info <- str_split(unlist(str_split(string = mseed[i,stoichiometry],pattern = ";")), pattern = ":", simplify = T)
@@ -299,17 +298,16 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     met.name  <- str_replace_all(rxn.info[,5],"\\\"","")
     
     met.name  <- paste0(met.name,"-",met.comp.n)
-    
+      
     ind <- which(met.name=="" | is.na(met.name))
     met.name[ind] <- met.ids[ind]
     
     is.rev <- ifelse(mseed[i,reversibility] %in% c("<","="),T,F)
     only.backwards <- ifelse(mseed[i,reversibility]=="<",T,F)
     
-    ind.new.mets <- which(met.ids %in% mod@met_id)
-    ind.old.mets <- which(mod@met_id %in% met.ids[ind.new.mets])
-    
-    met.name[ind.new.mets] <- mod@met_name[ind.old.mets]
+    ind.notnew.mets <- which(met.ids %in% mod@met_id)
+    if(length(ind.notnew.mets) > 0)
+      met.name[ind.notnew.mets] <- NA_character_
     
     # get reaction-associated stretches of DNA 
     dtg.tmp <- dt_genes[seed == mseed[i,id] & bitscore >= high.evi.rxn.BS & rm == F, .(complex,gene)]
@@ -323,45 +321,23 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     dts.tmp <- dt_subsys[seed == mseed[i,id], pathway]
     dts.tmp <- unique(dts.tmp)
     
-    mod <- sybil::addReact(model = mod, 
-                           id = paste0(mseed[i,id],"_c0"), 
-                           met = met.ids,
-                           Scoef = met.scoef,
-                           reversible = is.rev, 
-                           metComp = as.integer(met.comp)+1,
-                           ub = ifelse(only.backwards, 0, sybil::SYBIL_SETTINGS("MAXIMUM")),
-                           lb = ifelse(is.rev, -sybil::SYBIL_SETTINGS("MAXIMUM"), 0),
-                           reactName = mseed[i, name], 
-                           metName = met.name,
-                           gprAssoc = gpr.tmp,
-                           subSys = dts.tmp)
-    if(mseed[i,id] %in% dt_seed_single_and_there[,seed])
-      mod@react_attr[which(mod@react_id == paste0(mseed[i,id],"_c0")),] <- as.data.frame(dt_seed_single_and_there[seed == mseed[i,id]])
-    
-    # In case no genes are associated to the first reaction added to the model,
-    # no 'genes' 'grp' and 'gprRules' object are initiated by sybil, causing a
-    # mismatch between length of the number of reactions and those three objects
-    # in the final modelorg model. This mismatch causes libSBML to stop on a
-    # segmentation error. Solution: "Manually" initiate the three objects in those
-    # cases
-    if(i == 1 && gpr.tmp == "") {
-      mod@genes[[1]] <- ""
-      mod@gpr <- ""
-      mod@gprRules <- ""
+    mod <- addReact(model = mod, 
+                    id = paste0(mseed[i,id],"_c0"), 
+                    met = met.ids,
+                    Scoef = met.scoef,
+                    metComp = mod@mod_compart[as.integer(met.comp)+1],
+                    ub = ifelse(only.backwards, 0, COBRAR_SETTINGS("MAXIMUM")),
+                    lb = ifelse(is.rev, -COBRAR_SETTINGS("MAXIMUM"), 0),
+                    reactName = mseed[i, name], 
+                    metName = met.name,
+                    gprAssoc = gpr.tmp,
+                    subsystem = dts.tmp)
+    if(mseed[i,id] %in% dt_seed_single_and_there[,seed]) {
+      mod@react_attr[which(mod@react_id == paste0(mseed[i,id],"_c0")),reactAttrAdHocCols] <- as.data.frame(dt_seed_single_and_there[seed == mseed[i,id]])[1,reactAttrAdHocCols]
     }
       
   }
   
-  # In case no genes have been associated with any reactions, the slots
-  # 'genes' 'grp' and 'gprRules' are of length zero, causing an error in SBML
-  # export
-  if(length(mod@genes) == 0) {
-    for(k in 1:mod@react_num)
-      mod@genes[[k]] <- ""
-    mod@gpr <- rep("", mod@react_num)
-    mod@gprRules <- rep("", mod@react_num)
-  }
-
   mod@react_attr$gs.origin <- 0
   mod@react_attr$gs.origin[mod@react_attr$bitscore < high.evi.rxn.BS] <- 9 # Added due to Pathway Topology criteria
   #mod <- add_reaction_from_db(mod, react = c("rxn13782","rxn13783","rxn13784"), gs.origin = 6) # Adding pseudo-reactions for Protein biosynthesis, DNA replication and RNA transcription
@@ -412,8 +388,8 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   } else {
     stop("Invalid value for biomass option '-b'.")
   }
-  mod@mod_attr <- data.frame(annotation = paste0("tax_domain:",ls.bm$domain))
-  
+  # mod@mod_attr <- data.frame(annotation = paste0("tax_domain:",ls.bm$domain))
+  mod@mod_attr$annotation <- paste0("tax_domain:",ls.bm$domain)
   
   if(biomass %in% c("neg","pos","Gram_neg","Gram_pos")) {
     
@@ -433,21 +409,24 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     }
   }
   
-  mod <- sybil::addReact(mod,id = "bio1", 
-                         met = dt.bm$id, 
-                         Scoef = dt.bm$Scoef, 
-                         reversible = F, 
-                         lb = 0, ub = sybil::SYBIL_SETTINGS("MAXIMUM"), 
-                         obj = 1, 
-                         reactName = ls.bm$name,
-                         metName = dt.bm$name,
-                         metComp = ifelse(dt.bm$comp=="c",1,ifelse(dt.bm$comp=="e",2,3)))
+  mnames <- paste0(dt.bm$name,"-",dt.bm$comp,"0")
+  mnames <- ifelse(dt.bm$id %in% mod@met_id, NA_character_, dt.bm$name)
+  
+  mod <- addReact(mod,id = "bio1",
+                  met = dt.bm$id,
+                  Scoef = dt.bm$Scoef,
+                  lb = 0, ub = COBRAR_SETTINGS("MAXIMUM"),
+                  obj = 1, 
+                  reactName = ls.bm$name,
+                  metName = mnames,
+                  metComp = mod@mod_compart[ifelse(dt.bm$comp=="c",1,ifelse(dt.bm$comp=="e",2,3))],
+                  SBOTerm = "SBO:0000629")
   mod@react_attr[which(mod@react_id == "bio1"),c("gs.origin","seed")] <- data.frame(gs.origin = 6, seed = "bio1", stringsAsFactors = F)
 
   # add p-cresol sink reaction (further metabolism unclear especially relevant for anaerobic conditions)
-  mod <- sybil::addReact(mod, id="DM_cpd01042_c0", reactName="Sink needed for p-cresol",
-                         met="cpd01042[c0]", metName="p-Cresol", Scoef=-1, lb=0,
-                         ub=sybil::SYBIL_SETTINGS("MAXIMUM"), metComp = 1)
+  mod <- addReact(mod, id="DM_cpd01042_c0", reactName="Sink needed for p-cresol",
+                  met="cpd01042[c0]", metName="p-Cresol-c0", Scoef=-1, lb=0,
+                  ub=COBRAR_SETTINGS("MAXIMUM"), metComp = 1)
   mod@react_attr[which(mod@react_id == "DM_cpd01042_c0"),c("gs.origin","seed")] <- data.frame(gs.origin = 7, seed = "DM_cpd01042_c0", stringsAsFactors = F)
 
   
@@ -456,13 +435,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   # add metabolite & reaction attributes
   mod <- addMetAttr(mod, seed_x_mets = seed_x_mets)
   mod <- addReactAttr(mod)
-  
-  # add metabolite compartment list
-  n.comp <- max(mod@met_comp, na.rm = T)
-  if(n.comp == 2)
-    mod@mod_compart <- c("c0","e0")
-  if(n.comp == 3)
-    mod@mod_compart <- c("c0","e0","p0")
+  mod <- addGeneAttr(mod, dt_genes)
   
   return(list(mod=mod, cand.rxns=dt.cand, rxn_x_genes=dt_genes))
 }
@@ -483,6 +456,7 @@ source(paste0(script.dir,"/prepare_candidate_reaction_tables.R"))
 source(paste0(script.dir,"/get_gene_logic_string.R"))
 source(paste0(script.dir,"/addMetAttr.R"))
 source(paste0(script.dir,"/addReactAttr.R"))
+source(paste0(script.dir,"/addGeneAttr.R"))
 source(paste0(script.dir,"/parse_BMjson.R"))
 
 # get options first
@@ -491,14 +465,13 @@ spec <- matrix(c(
   'transporter.res', 't', 1, "character", "Blast-results table generated by gapseq find-transport.",
   'biomass', 'b', 2, "character", "Biomass reaction for network model. Options: Gram \"pos\" OR \"neg\" OR \"archaea\" OR \"auto\" OR path to user-defined biomass reaction. Default: \"auto\". See Details.",
   'model.name', 'n', 2, "character", "Name of draft model network. Default: the basename of \"blast.res\"",
-  'genome.seq', 'c', 2, "character", "If biomass \"-b\" is set to \"auto\", the genome sequence is required to search for 16S genes, which are used to predict the prokaryotic biomass reaction.",
+  'genome.seq', 'c', 2, "character", "If biomass \"-b\" is set to \"auto\", the genome sequence is required to predict the prokaryotic biomass reaction.",
   'high.evi.rxn.BS', "u", 2, "numeric", "Reactions with an associated blast-hit with a bitscore above this value will be added to the draft model as core reactions (i.e. high-sequence-evidence reactions)",
   'min.bs.for.core', "l", 2, "numeric", "Reactions with an associated blast-hit with a bitscore below this value will be considered just as reactions that have no blast hit.",
   'output.dir', 'f', 2, "character", "Path to directory, where output files will be saved (default: current directory)",
   'depr.output.dir', 'o', 2, "character", "deprecated. Use flag\"-f\" instead",
   'sbml.no.output', 's', 2, "logical", "Do not save draft model as sbml file. Default: Save as SBML",
   'pathway.pred', 'p', 2, "character", "Pathway-results table generated by gapseq find.",
-  'curve.alpha', 'a', 2, "numeric", "Deprecated. Flag will be removed in upcoming versions.",
   'help' , 'h', 0, "logical", "help"
 ), ncol = 5, byrow = T)
 
@@ -522,7 +495,6 @@ if ( is.null(opt$high.evi.rxn.BS) ) { opt$high.evi.rxn.BS = 200 }
 if ( is.null(opt$min.bs.for.core) ) { opt$min.bs.for.core = 50 }
 if ( is.null(opt$biomass) ) { opt$biomass = "auto" }
 if ( is.null(opt$pathway.pred) ) { opt$pathway.pred = NA }
-if ( is.null(opt$curve.alpha) ) { opt$curve.alpha = 1 }
 
 # deprecation notice for flag '-o'
 if(!is.null(opt$depr.output.dir)) {
@@ -541,7 +513,6 @@ genome.seq        <- opt$genome.seq
 high.evi.rxn.BS   <- opt$high.evi.rxn.BS
 min.bs.for.core   <- opt$min.bs.for.core
 pathway.pred      <- opt$pathway.pred
-curve.alpha       <- opt$curve.alpha
 sbml.no.output    <- opt$sbml.no.output
 
 # create output directory if not already there
@@ -570,6 +541,9 @@ if(!(biomass %in% c("auto","Auto","pos","neg","archaea","Archaea","bacteria",
                                               script.dir = script.dir,
                                               pathway.pred = pathway.pred)
   
+  # remove empty subsystems
+  subsRm <- which(apply(mod$mod@subSys,2,FUN = function(x) all(x==FALSE)))
+  mod$mod <- cobrar::rmSubsystem(mod$mod, subsRm)
   
   # save draft model and reaction weights and rxn-gene-table
   saveRDS(mod$mod,file = paste0(output.dir,"/",model.name, "-draft.RDS"))

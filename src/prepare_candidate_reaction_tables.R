@@ -4,12 +4,6 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   
   dt <- fread(blast.res, header=T, stringsAsFactors = F, blank.lines.skip = T, skip = "rxn	")
   
-  # dt <- dt[pathway != "|PWY-6168|"] # pathway exists only in fungi
-  # dt <- dt[pathway != "|PWY-1042|"] # pathway exists only in plants
-  # dt <- dt[pathway != "|PWY-6970|"] # pathway exists only in plants
-  # dt <- dt[pathway != "|PWY-4983|"] # pathway exists only in mammals
-  # dt <- dt[pathway != "|PWY-6845|"] # pathway exists only in mammals
-  
   dt <- dt[,.(rxn, name, ec, tc = NA_character_, qseqid, pident, evalue, bitscore, qcovs, stitle, sstart, send, pathway, status, 
               pathway.status, seed = dbhit, complex, exception, complex.status)]
   
@@ -112,7 +106,7 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
       dt <- dt[-rm.ids]
     return(dt)
   }
-  
+
   # specific reaction conflict fixes
   dt <- resolve_common_EC_conflicts("2.6.1.13","2.6.1.11", dt)
   dt <- resolve_common_EC_conflicts("2.3.1.29","2.3.1.37", dt)
@@ -139,7 +133,7 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt <- resolve_common_EC_conflicts("4.1.1.105","4.1.1.86", dt) # trp decarboxylase vs. diaminobutyrate decarboxylase
   dt <- resolve_common_EC_conflicts("4.1.1.28","4.1.1.18", dt) # aromatic AA decarboxylase vs. lysine decarboxylase
   dt <- resolve_common_EC_conflicts("4.1.1.28","4.1.1.86", dt) # aromatic AA decarboxylase vs. diaminobutyrate decarboxylase
-  
+
   # specific transporter conflict fixes
   dt.trans <- resolve_common_TC_conflicts("1.a.8.2.1","2.a.14.1.3", dt.trans)
   dt.trans <- resolve_common_TC_conflicts("1.a.8.2.7","2.a.14.1.3", dt.trans)

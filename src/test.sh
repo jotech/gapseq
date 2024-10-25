@@ -67,7 +67,7 @@ echo -e "\nMissing dependencies: $i\n\n"
 echo "#####################"
 echo "#Checking R packages#"
 echo "#####################"
-Rscript -e 'needed.packages <- c("data.table", "stringr", "sybil", "getopt", "doParallel", "foreach", "R.utils", "stringi", "glpkAPI", "BiocManager", "Biostrings", "jsonlite", "CHNOSZ", "httr"); avail.packages <- installed.packages(); i=0; for( pkg in needed.packages ){; idx <- match(pkg, avail.packages[,"Package"]); if( ! is.na(idx) ){; cat(pkg, avail.packages[idx,"Version"], "\n"); }else{; cat(pkg, "NOT FOUND", "\n"); i=i+1; }; }; cat("\nMissing R packages: ", i, "\n\n\n")'
+Rscript -e 'needed.packages <- c("data.table", "stringr", "cobrar", "getopt", "R.utils", "stringi", "BiocManager", "Biostrings", "jsonlite", "httr"); avail.packages <- installed.packages(); i=0; for( pkg in needed.packages ){; idx <- match(pkg, avail.packages[,"Package"]); if( ! is.na(idx) ){; cat(pkg, avail.packages[idx,"Version"], "\n"); }else{; cat(pkg, "NOT FOUND", "\n"); i=i+1; }; }; cat("\nMissing R packages: ", i, "\n\n\n")'
 
 echo "##############################"
 echo "#Checking basic functionality#"
@@ -75,14 +75,14 @@ echo "##############################"
 i=0
 
 # Optimization
-Rscript -e 'suppressMessages(library(sybil)); suppressMessages(library(glpkAPI)); data(Ec_core); sol <- sybil::optimizeProb(Ec_core); sol.ok <- sol@lp_stat == 5; cat("Optimization test:", ifelse( sol.ok, "OK", "FAILED"), "\n"); ' > opt.log
+Rscript -e 'suppressMessages(library(cobrar)); fpath <- system.file("extdata", "e_coli_core.xml", package="cobrar"); mod <- readSBMLmod(fpath); sol <- fba(mod); sol.stat <- sol@stat %in% c(2,5) && sol@obj > 1e-7; cat("Optimization test:", ifelse( sol.stat, "OK", "FAILED"), "\n"); ' > opt.log
 cat opt.log
 if  grep -q "OK" opt.log; then
     i=$((i+1))
 fi
 
 # Construct full model
-Rscript -e 'args = commandArgs(trailingOnly=TRUE); source(paste0(args[1],"/construct_full_model.R")); fmod = construct_full_model(args[1]); cat("Building full model:",ifelse(class(fmod) == "modelorg", "OK", "FAILED"), "\n"); ' $dir > opt.log
+Rscript -e 'args = commandArgs(trailingOnly=TRUE); source(paste0(args[1],"/construct_full_model.R")); fmod = construct_full_model(args[1]); cat("Building full model:",ifelse(class(fmod) == "ModelOrg", "OK", "FAILED"), "\n"); ' $dir > opt.log
 cat opt.log
 if  grep -q "OK" opt.log; then
     i=$((i+1))

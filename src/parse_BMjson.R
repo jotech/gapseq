@@ -3,11 +3,11 @@ parse_BMjson <- function(json.file, gs_mets) {
   # json.file should be path to the json-biomass file
   
   # chekcing if required packages are there
-  if(any(!(c("CHNOSZ","jsonlite") %in% rownames(installed.packages())))) {
-    missing_packages <- c("CHNOSZ","jsonlite")[!(c("CHNOSZ","jsonlite") %in% rownames(installed.packages()))]
+  if(any(!(c("cobrar","jsonlite") %in% rownames(installed.packages())))) {
+    missing_packages <- c("cobrar","jsonlite")[!(c("cobrar","jsonlite") %in% rownames(installed.packages()))]
     stop(paste0("Following required R-package(s) is/are missing: ",paste(missing_packages, collapse = ", ")))
   }
-  suppressMessages(require(CHNOSZ))
+  suppressMessages(require(cobrar))
   suppressMessages(require(jsonlite))
   suppressMessages(require(data.table))
 

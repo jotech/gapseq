@@ -56,22 +56,12 @@ if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
 }
 
 # Load R-packages
-# if( "cplexAPI" %in% installed.packages() )
-#   suppressMessages(library(cplexAPI))
-suppressMessages(library(sybil))
+suppressMessages(library(cobrar))
 suppressMessages(library(data.table)); setDTthreads(1)
 suppressMessages(library(methods))
 
 # Little helpers
 source(paste0(script.dir,"/pan-draft_functions.R"))
-
-# select solver
-if( "cplexAPI" %in% rownames(installed.packages()) ){
-  sybil::SYBIL_SETTINGS("SOLVER","cplexAPI"); ok <- 1
-}else{
-  warning("glpkAPI is used but cplexAPI is recommended because it is much faster")
-  sybil::SYBIL_SETTINGS("SOLVER","glpkAPI"); ok <- 5
-}
 
 # Setting defaults if required
 if ( is.null(opt$output.dir) ) { opt$output.dir = "." }
@@ -213,18 +203,18 @@ if ( !only.binary.rxn.tbl ){
   for (rxn_id in rxn2mod_dt$rxn) {
     first_modID_with_rxn <- colnames(rxn2mod_dt)[rxn2mod_dt[rxn_id, ]==1][1] # first model ID having the reaction
     first_mod_with_rxn <- attr(mod_id2mod_dict, first_modID_with_rxn) # first model having the reaction
-    rxn <- getReaction(first_mod_with_rxn, j = rxn_id) # extract the reaction from a model based on rxn_ID
-    info_all_rxns_mods <- c(info_all_rxns_mods, rxn) # save rxn in a list
+    rxn <- getReactionPD(first_mod_with_rxn, rxn_id) # extract the reaction from a model based on rxn_ID
+    info_all_rxns_mods <- c(info_all_rxns_mods, list(rxn)) # save rxn in a list
   }
 
   # find associations between MET_ID and MET_NAME/RXN_ID --- dictionary
   met_id2met_name_dict <- list()
   met_id2rxn_id_dict <- list()
   for (rxn in info_all_rxns_mods) {
-    rxn_id = rxn@react_id
-    for (idx in seq_along(rxn@met_id)) { # identify the metabolites associated to each rxn
-      met_id = rxn@met_id[idx] 
-      met_name = rxn@met_name[idx] 
+    rxn_id <- rxn$react_id
+    for (idx in seq_along(rxn$met_id)) { # identify the metabolites associated to each rxn
+      met_id <- rxn$met_id[idx] 
+      met_name <- rxn$met_name[idx] 
 
       # MET: metabolite ID to metabolite name dictionary
       if (!(met_id %in% names(met_id2met_name_dict))) {
@@ -248,7 +238,7 @@ if ( !only.binary.rxn.tbl ){
   cat(paste("Let's standanrdize the name of the duplicated compounds:\n"))
   dupl.th <- dim(met_id2met_name_padded_df)[2]-2 # ids have duplicated names if at least 2 different names are associated with the same id
   met_id2duplicated_met_name_df <- met_id2met_name_padded_df[!(rowSums(is.na(met_id2met_name_padded_df)) > dupl.th),] # find metabolites that have a duplicated name 
-  info_all_rxns_mods <- standardize_duplicated_met_name(met_id2duplicated_met_name_df, met_id2rxn_id_df, info_all_rxns_mods) # Standanrdize the duplicated MET_NAME 
+  info_all_rxns_mods <- standardize_duplicated_met_name(met_id2duplicated_met_name_df, met_id2rxn_id_df, info_all_rxns_mods) # Standardize the duplicated MET_NAME 
 
   # subset rxn2mod_dt based on min.rxn.freq.in.mods to reconstruct the pan-draft
   rxn_PresAbs_dt <- copy(rxn2mod_dt)

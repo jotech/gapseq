@@ -1,5 +1,7 @@
 # Cross-feeding of two gastrointestinal bacteria
 
+> <mark>Please note</mark>: This tutorial assumes a gapseq  <= v1.3.1. An updated version of the tutorial for gapseq >= v1.4.0 is under construction.
+
 ##### Background
 
 The intestinal bacterium *Eubacterium rectale* is known to be able to use acetate as energy source under anaerobic conditions and thereby forms butyrate as end product ([Rivère *et al.* (2015) Appl Envrion Microbiol](https://pubmed.ncbi.nlm.nih.gov/26319874/)). Acetate is a common fermentation end product in a number of different other intestinal bacteria, including Bifidobacteria (e.g. *Bifidobacterium longum*). In this tutorial, genome-scale models for *E. rectale* and *B. longum* are reconstructed using **gapseq**. Subsequently, the two models are simulated in co-growth and their interaction is investigated.
@@ -34,15 +36,15 @@ Download genome assemblies and gapfill medium. Renaming files.
 #!/bin/bash
 
 # Download genome assemblies 
-wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/020/605/GCF_000020605.1_ASM2060v1/GCF_000020605.1_ASM2060v1_genomic.fna.gz
-wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/007/525/GCF_000007525.1_ASM752v1/GCF_000007525.1_ASM752v1_genomic.fna.gz
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/020/605/GCF_000020605.1_ASM2060v1/GCF_000020605.1_ASM2060v1_protein.faa.gz
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/007/525/GCF_000007525.1_ASM752v1/GCF_000007525.1_ASM752v1_protein.faa.gz
 
 # Download gapfill-medium file
 wget https://github.com/Waschina/gapseq.tutorial.data/raw/master/CF_eure_bilo/gf_medium.csv
 
 # Rename genomes to "eure" (E. rectale) and "bilo" (B. longum) 
-mv GCF_000020605.1_ASM2060v1_genomic.fna.gz eure.fna.gz
-mv GCF_000007525.1_ASM752v1_genomic.fna.gz bilo.fna.gz
+mv GCF_000020605.1_ASM2060v1_protein.faa.gz eure.faa.gz
+mv GCF_000007525.1_ASM752v1_protein.faa.gz bilo.faa.gz
 ```
 
 
@@ -57,28 +59,24 @@ Now we have the genome sequences and a gapfill medium. That is all we need. Lets
 modelA="eure"
 modelB="bilo"
 
-# If not set already (e.g via .bashrc): set the path to gapseq
-# There are different ways to do this. One example:
-gapseq=~/path/to/gapseq/./gapseq
-
 # Reaction & Pathway prediction
-$gapseq find -p all -b 200 -m Bacteria $modelA.fna.gz
-$gapseq find -p all -b 200 -m Bacteria $modelB.fna.gz
+gapseq find -p all -b 200 -m Bacteria $modelA.faa.gz
+gapseq find -p all -b 200 -m Bacteria $modelB.faa.gz
 
 # Transporter prediction
-$gapseq find-transport -b 200 $modelA.fna.gz 
-$gapseq find-transport -b 200 $modelB.fna.gz
+gapseq find-transport -b 200 $modelA.faa.gz 
+gapseq find-transport -b 200 $modelB.faa.gz
 
 # Building Draft Model - based on Reaction-, Pathway-, and Transporter prediction
-$gapseq draft -r $modelA-all-Reactions.tbl -t $modelA-Transporter.tbl -p $modelA-all-Pathways.tbl -c $modelA.fna.gz -u 200 -l 100
-$gapseq draft -r $modelB-all-Reactions.tbl -t $modelB-Transporter.tbl -p $modelB-all-Pathways.tbl -c $modelB.fna.gz -u 200 -l 100
+gapseq draft -r $modelA-all-Reactions.tbl -t $modelA-Transporter.tbl -p $modelA-all-Pathways.tbl -c $modelA.faa.gz -u 200 -l 100
+gapseq draft -r $modelB-all-Reactions.tbl -t $modelB-Transporter.tbl -p $modelB-all-Pathways.tbl -c $modelB.faa.gz -u 200 -l 100
 
 # Gapfilling
-$gapseq fill -m $modelA-draft.RDS -n gf_medium.csv -c $modelA-rxnWeights.RDS -g $modelA-rxnXgenes.RDS -b 100
-$gapseq fill -m $modelB-draft.RDS -n gf_medium.csv -c $modelB-rxnWeights.RDS -g $modelB-rxnXgenes.RDS -b 100
+gapseq fill -m $modelA-draft.RDS -n gf_medium.csv -c $modelA-rxnWeights.RDS -g $modelA-rxnXgenes.RDS -b 100
+gapseq fill -m $modelB-draft.RDS -n gf_medium.csv -c $modelB-rxnWeights.RDS -g $modelB-rxnXgenes.RDS -b 100
 ```
 
-The final models are stored as R-Object files: `eure.RDS` and `bilo.RDS`, which can be loaded in R using the `readRDS()` command (After the *sybil* package has bee loaded). 
+The final models are stored as R-Object files: `eure.RDS` and `bilo.RDS`, which can be loaded in R using the `readRDS()` command. 
 
 
 ##### Community simulation
@@ -89,7 +87,6 @@ Here, we will use the R-Package `BacArena` to perform an agent-based simulation 
 # Load R-packages
 library(BacArena)
 library(data.table)
-sybil::SYBIL_SETTINGS("SOLVER","cplexAPI") # (optional)
 
 # Load reconstructed models
 er <- readRDS("eure.RDS") # E. rectale

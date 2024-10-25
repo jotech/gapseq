@@ -1,6 +1,9 @@
-library(data.table)
-library(tools)
-library(stringr)
+suppressMessages(library(data.table)); setDTthreads(1)
+suppressMessages(library(stringr))
+suppressMessages(library(tools))
+suppressMessages(library(cobrar))
+if( "cobrarCPLEX" %in% installed.packages() )
+  suppressMessages(library(cobrarCPLEX))
 
 # get current script path
 if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
@@ -13,11 +16,10 @@ if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
 }
 
 # select solver
-if( "cplexAPI" %in% rownames(installed.packages()) ){
-  sybil::SYBIL_SETTINGS("SOLVER","cplexAPI"); ok <- 1
+if( "cobrarCPLEX" %in% rownames(installed.packages()) ){
+  COBRAR_SETTINGS("SOLVER","cplex"); stat <- c(1,2)
 }else{
-  warning("glpkAPI is used but cplexAPI is recommended because it is much faster")
-  sybil::SYBIL_SETTINGS("SOLVER","glpkAPI"); ok <- 5
+  COBRAR_SETTINGS("SOLVER","glpk"); stat <- c(2,5)
 }
 
 #setwd(script.dir)
@@ -82,8 +84,8 @@ check_lethal <- function(model, rxn_list, med.file=NA, med=NA){
         else mod.tmp <- constrain.model(model, media = med)
         mod.tmp <- rmReact(mod.tmp, react=model@react_id[na.omit(rxn.idx)])
         
-        sol <- optimizeProb(mod.tmp, retOptSol=F)
-        lethal <- !(sol$stat == ok & sol$obj >= 1e-7)  
+        sol <- fba(mod.tmp)
+        lethal <- !(sol@stat %in% stat & sol@obj >= 1e-7)  
         lethal.dt <- rbind(lethal.dt, data.table(nr=i, rxn=paste0(model@react_id[na.omit(rxn.idx)],collapse=","), lethal=lethal))
       } else lethal.dt <- rbind(lethal.dt, data.table(nr=i, rxn="", lethal=NA))
     }else lethal.dt <- rbind(lethal.dt, data.table(nr=i, rxn="", lethal=NA))
@@ -94,7 +96,7 @@ check_lethal <- function(model, rxn_list, med.file=NA, med=NA){
 # prepare model for biolog-like test
 esp.mode <- function(model, media){
   model <- constrain.model(model, media = media) # constrain model
-  model@obj_coef <- rep(0,model@react_num)
+  model@obj_coef <- rep(0,react_num(model))
   
   # add biolog like test
   mql <- "cpd15499[c0]"; mqn <- "cpd15500[c0]"
@@ -103,11 +105,11 @@ esp.mode <- function(model, media){
   nad  <- "cpd00003[c0]"; nadh  <- "cpd00004[c0]"
   fdox <- "cpd11621[c0]"; fdred <- "cpd11620[c0]" # ferredoxin
   pql  <- "cpd27796[c0]"; pqn   <- "cpd27797[c0]" # plastoquinone
-  model <- addReact(model, "ESP1", met=c(mql,h,mqn), Scoef=c(-1,2,1), lb=0, ub=1000, metComp = rep(1,3))
-  model <- addReact(model, "ESP2", met=c(uql,h,uqn), Scoef=c(-1,2,1), lb=0, ub=1000, metComp = rep(1,3))
-  model <- addReact(model, "ESP3", met=c(nadh,h,nad), Scoef=c(-1,1,1), lb=0, ub=1000, metComp = rep(1,3))                                                         
-  model <- addReact(model, "ESP4", met=c(fdred,fdox), Scoef=c(-1,1), lb=0, ub=1000, metComp = rep(1,2))
-  model <- addReact(model, "ESP5", met=c(pql,h,pqn), Scoef=c(-1,2,1), lb=0, ub=1000, metComp = rep(1,3))
+  model <- addReact(model, "ESP1", met=c(mql,h,mqn), Scoef=c(-1,2,1), lb=0, ub=1000, metComp = rep(model@mod_compart[1],3))
+  model <- addReact(model, "ESP2", met=c(uql,h,uqn), Scoef=c(-1,2,1), lb=0, ub=1000, metComp = rep(model@mod_compart[1],3))
+  model <- addReact(model, "ESP3", met=c(nadh,h,nad), Scoef=c(-1,1,1), lb=0, ub=1000, metComp = rep(model@mod_compart[1],3))                                                         
+  model <- addReact(model, "ESP4", met=c(fdred,fdox), Scoef=c(-1,1), lb=0, ub=1000, metComp = rep(model@mod_compart[1],2))
+  model <- addReact(model, "ESP5", met=c(pql,h,pqn), Scoef=c(-1,2,1), lb=0, ub=1000, metComp = rep(model@mod_compart[1],3))
   model <- changeObjFunc(model, react=c("ESP1", "ESP2", "ESP3", "ESP4", "ESP5"), obj_coef=c(1,1,1,1,1))
   
   return(invisible(model))
@@ -130,16 +132,15 @@ add_growth <- function(model.orig, add.met.id=NA, weights=NA, genes=NA, verbose=
   
   if( !add.met.ex %in% model.orig@react_id ){
     print(paste0("Added exchange reaction for:", add.met.id))
-    mod.adapt  <- sybil::addReact(model = model.orig,
-                                  id = add.met.ex, 
-                                  met = paste0(add.met.id, "[e0]"),
-                                  Scoef = -1,
-                                  reversible = T, 
-                                  metComp = 2,
-                                  ub = 1000,
-                                  lb = 0,
-                                  reactName = paste0(add.met.name, " Exchange"), 
-                                  metName = add.met.name)
+    mod.adapt  <- addReact(model = model.orig,
+                           id = add.met.ex, 
+                           met = paste0(add.met.id, "[e0]"),
+                           Scoef = -1,
+                           metComp = model.orig@mod_compart[2],
+                           ub = 1000,
+                           lb = 0,
+                           reactName = paste0(add.met.name, " Exchange"), 
+                           metName = add.met.name)
   }else{
     mod.adapt <- model.orig
   }
@@ -151,10 +152,10 @@ add_growth <- function(model.orig, add.met.id=NA, weights=NA, genes=NA, verbose=
   # add metabolite objective + sink
   mod.adapt    <- esp.mode(mod.adapt, media)
 
-  sol <- optimizeProb(mod.adapt, retOptSol=F)
-  #cat("Check growth: ", sol$stat==ok, "\t", sol$obj, "\n")
+  sol <- fba(mod.adapt)
+  #cat("Check growth: ", sol@stat %in% stat, "\t", sol@obj, "\n")
   
-  if(sol$stat == ok & sol$obj >= 1e-7){
+  if(sol@stat %in% stat & sol@obj >= 1e-7){
     warning(paste("Model is already growing with", add.met.id, add.met.name))
     if( verbose ){
       cat("solution", sol$obj, "\n")
@@ -187,8 +188,8 @@ add_growth <- function(model.orig, add.met.id=NA, weights=NA, genes=NA, verbose=
   #print(creatioExNihilo(mod.adapt.lst$model,short = T))
   #check_growth(mod.adapt.lst$model, medium = c(media$compounds), printExchanges = T, useNames = T, mtf = T)
   
-  sol <- optimizeProb(mod.adapt, retOptSol=F)
-  #cat(sol$stat==ok, "\t", sol$obj, "\n")
+  sol <- fba(mod.adapt)
+  #cat(sol@stat %in% stat, "\t", sol@obj, "\n")
   cat("\n")
   
   check <- check_lethal(mod.adapt, rxn_list = setdiff(mod.adapt@react_id, model.orig@react_id), med = media)
@@ -199,8 +200,8 @@ add_growth <- function(model.orig, add.met.id=NA, weights=NA, genes=NA, verbose=
   if( length(rm.idx) > 0 ) mod.adapt <- rmReact(mod.adapt, react=rm.idx) 
   mod.adapt <- changeObjFunc(mod.adapt, react=model.orig@react_id[model.orig@obj_coef != 0])
   ex1 <- findExchReact(model.orig); ex2 <- findExchReact(mod.adapt)
-  mod.adapt@lowbnd[ex2@react_pos] <- 0
-  mod.adapt <- changeBounds(mod.adapt, react = ex1@react_id, lb = ex1@lowbnd) # reset medium 
+  mod.adapt@lowbnd[ex2$react_pos] <- 0
+  mod.adapt <- changeBounds(mod.adapt, react = ex1$react_id, lb = ex1$lb) # reset medium 
   rxn.added <- setdiff(mod.adapt@react_id, model.orig@react_id)
   cat("Added reactions:", rxn.added, "\n")
   printReaction(mod.adapt, react=rxn.added)
@@ -227,10 +228,10 @@ rm_growth <- function(model.orig, del.met.id, use.media=NA, rxn.blast.file, verb
   if ( !all(is.na(use.media)) ){
     media.user <- use.media
   }else{
-    ex <- findExchReact(model.orig); ex <- ex[which(ex@lowbnd<0)]
-    media.user <- data.table(compounds=str_extract(ex@met_id, "cpd[0-9]+"),
-                             name=ex@react_id,
-                             maxFlux=-ex@lowbnd)
+    ex <- findExchReact(model.orig); ex <- ex[which(ex$lb<0),]
+    media.user <- data.table(compounds=str_extract(ex$met_id, "cpd[0-9]+"),
+                             name=ex$react_id,
+                             maxFlux=-ex$lb)
   }
 
   media <- media.org[!name %in% c("D-Glucose", "Glucose")]
@@ -238,9 +239,9 @@ rm_growth <- function(model.orig, del.met.id, use.media=NA, rxn.blast.file, verb
   media <- rbind(media, data.table(compounds=del.met.id, name=del.met.name, maxFlux=100))
   
   model <- esp.mode(model.orig, media)
-  sol <- optimizeProb(model, retOptSol=F)
-  #cat(sol$stat==ok, "\t", sol$obj, "\n")
-  if( !(sol$stat==ok & sol$obj >= 1e-7 ) ){
+  sol <- fba(model)
+  #cat(sol@stat %in% stat, "\t", sol@obj, "\n")
+  if( !(sol@stat %in% stat & sol@obj >= 1e-7 ) ){
     warning(paste("Model already cannot grow with:", del.met.id, del.met.name))
     return(invisible(model.orig))
   }else{
@@ -322,11 +323,10 @@ check_theo_growth <- function(check.met.id, fullmod){
   mod.adapt    <- esp.mode(fullmod, media)
   mod.adapt    <- constrain.model(mod.adapt, media=media)
   
-  sol <- optimizeProb(mod.adapt, retOptSol=F, algorithm="mtf")
-  #sol <- optimizeProb(mod.adapt, retOptSol=F)
-  cat("Check growth: ", sol$stat==ok, "\t", sol$obj, "\n")
+  sol <- pfbaHeuristic(mod.adapt)
+  cat("Check growth: ", sol@stat %in% stat, "\t", sol@obj, "\n")
   
-  if(sol$stat == ok & sol$obj >= 1e-7){
+  if(sol@stat %in% stat & sol@obj >= 1e-7){
     print("Growth possible")
   }else{
     print("No growth possible")
@@ -344,7 +344,7 @@ addReactSrc <- function(mod, src, rxn.id){
   rxn.obj   <- src@obj_coef[rxn.idx]
   
   model.new <- addReact(mod, id=rxn.id, met=met.id,
-                       Scoef=met.scoef, reversible=rxn.rev,
+                       Scoef=met.scoef,
                        lb=rxn.lb, ub=rxn.ub, obj=rxn.obj)
   return(model.new)
 }
@@ -360,9 +360,9 @@ increase_growth <- function(model.orig, min.obj.val, weights=NA, genes=NA, verbo
   if( !is.na(weights) ) rxn.weights <- readRDS(weights)
   if( !is.na(genes) )   rXg.tab     <- readRDS(genes)
   
-  sol <- optimizeProb(model.orig, retOptSol=F)
-  cat("Old growth rate:", round(sol$obj,6), "\n")
-  if(sol$stat == ok & sol$obj >= min.obj.val){
+  sol <- fba(model.orig)
+  cat("Old growth rate:", round(sol@obj,6), "\n")
+  if(sol@stat %in% stat & sol@obj >= min.obj.val){
     warning(paste("Model already has growth rate >=",min.obj.val))
     return(invisible(model.orig))
   }else{
@@ -385,8 +385,8 @@ increase_growth <- function(model.orig, min.obj.val, weights=NA, genes=NA, verbo
       mod.adapt <- mod.adapt.lst$model
     }
   }
-  sol <- optimizeProb(mod.adapt, retOptSol=F)
-  cat("New growth rate:", round(sol$obj,6), "\n")
+  sol <- fba(mod.adapt)
+  cat("New growth rate:", round(sol@obj,6), "\n")
   rxn.added <- setdiff(mod.adapt@react_id, model.orig@react_id)
   printReaction(mod.adapt, react=rxn.added)
   return(invisible( mod.adapt ))

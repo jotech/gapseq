@@ -70,32 +70,27 @@ gapseq fill -m $modelB-draft.RDS -n milk.csv -c $modelB-rxnWeights.RDS -g $model
 
 ##### FBA and FVA prediction of metabolic by-products
 
-Here, we will use the R-Package `sybil` ([Gelius-Dietrich *et al.* (2013) BMC Syst Biol](https://doi.org/10.1186/1752-0509-7-125)) to perform Flux-Balance-Analysis (FBA) and Flux-Variability-Analysis (FVA) with the two reconstructed network models.
+Here, we will use the R-Package [`cobrar`](https://waschina.github.io/cobrar/)  to perform Flux-Balance-Analysis (FBA) and Flux-Variability-Analysis (FVA) with the two reconstructed network models.
 
-First, we define a function, that automatically performs FBA with the minimalization of total flux (MTF) as secondary objective and FVA for all exchange reactions. The function also summarizes the results in a sorted `data.table`.
+First, we define a function, that automatically performs FBA with the minimization of total flux (MTF) as secondary objective and FVA for all exchange reactions. The function also summarizes the results in a sorted `data.table`.
 
 ```R
 getMetaboliteProduction <- function(mod) {
-  require(sybil)
+  require(cobrar)
   require(data.table)
   
   # MTF
-  sol.mtf <- optimizeProb(mod, algorithm = "mtf")
+  sol.mtf <- pfba(mod)
   dt.mtf  <- data.table(ex = mod@react_id,
-                        mtf.flux = sol.mtf@fluxdist@fluxes[1:mod@react_num])
-  dt.mtf.tmp <- copy(dt.mtf[grepl("^EX_cpd[0-9]+_e0", ex)])
+                        name = mod@react_name,
+                        mtf.flux = sol.mtf@fluxes)
   
   # FVA
-  sol.fv <- fluxVar(mod, react = mod@react_id[grep("^EX_cpd[0-9]+_e0", mod@react_id)])
+  sol.fv <- fva(mod, react = mod@react_id[grep("^EX_cpd[0-9]+_e0", mod@react_id)])
+  sol.fv$growth.fraction <- NULL
   
-  dt <- data.table(ex       = rep(mod@react_id[grep("^EX_cpd[0-9]+_e0", mod@react_id)],2),
-                   rxn.name = rep(mod@react_name[grep("^EX_cpd[0-9]+_e0", mod@react_id)],2),
-                   dir      = c(rep("l",length(grep("^EX_cpd[0-9]+_e0", mod@react_id))),
-                                rep("u",length(grep("^EX_cpd[0-9]+_e0", mod@react_id)))),
-                   fv       = sol.fv@lp_obj)
-  dt <- dcast(dt, ex + rxn.name ~ dir, value.var = "fv")[(u>1e-6 & l >= 0)]
-  
-  dt <- merge(dt, dt.mtf, by = "ex")
+  dt <- merge(dt.mtf, sol.fv, by.x = "ex", by.y = "react")
+  dt <- dt[mtf.flux > 1e-6]
   
   return(dt[order(-mtf.flux)])
 }
@@ -104,8 +99,7 @@ getMetaboliteProduction <- function(mod) {
 Now, we can apply this function to the network models of *L. delbrueckii* and *S. thermophilus* to predict the top 10 produced metabolic by-products.
 
 ```R
-library(sybil)
-sybil::SYBIL_SETTINGS("SOLVER","cplexAPI") # (optional)
+library(cobrar)
 
 ld <- readRDS("ldel.RDS") # for L. delbrueckii
 st <- readRDS("sthe.RDS") # for S. thermophilus

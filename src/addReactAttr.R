@@ -5,53 +5,53 @@ addReactAttr <- function(mod) {
   seed_x_metCyc <- fread(paste0(script.dir,"/../dat/mnxref_seed-other.tsv"), header = T)
     
   reacttmp <- data.table(mod@react_attr)
-  
+  reacttmp[is.na(CVTerms), CVTerms := ""]
+  reacttmp$seed <- mod@react_id
+  reacttmp[grepl("^rxn",seed), seed := gsub("_.0$","",seed)]
   #print(reacttmp)
   
   
-  # adding general attributes
-  reacttmp$annotation <- "bqbiol_is;http://identifiers.org/SBO:0000167" # "biochemical or transport reaction"
+  # # adding general attributes
+  # reacttmp$annotation <- "bqbiol_is;http://identifiers.org/SBO:0000167" # "biochemical or transport reaction"
   
   # EC-code
   ec_id_mult <- function(ec) {
     ecs <- unique(unlist(strsplit(ec, "/", fixed = T)))
+    ecs <- ecs[ecs!=""]
     
     ecs_out <- paste0("http://identifiers.org/ec-code:",ecs, collapse = ";")
     
     return(ecs_out)
   }
-  reacttmp[!is.na(ec) & ec!="", annotation := paste0(annotation,";",ec_id_mult(ec)), by = seed]
+  reacttmp[!is.na(ec) & ec!="", CVTerms := paste0(CVTerms,";",ec_id_mult(ec)), by = seed]
   
   # SEED
   reacttmp[!is.na(seed) & seed!="" & grepl("^rxn", seed) & !grepl("^rxn9", seed), 
-           annotation := paste0(annotation,";http://identifiers.org/seed.reaction:",seed)]
+           CVTerms := paste0(CVTerms,";http://identifiers.org/seed.reaction:",seed)]
   
-  # SBO Term for exchange reactions 
-  reacttmp[grepl("^EX_", seed), annotation := paste0(annotation,";http://identifiers.org/SBO:0000627")]
+  # # SBO Term for exchange reactions 
+  # reacttmp[grepl("^EX_", seed), annotation := paste0(annotation,";http://identifiers.org/SBO:0000627")]
   
-  # demand reactions
-  reacttmp[grepl("^DM_",mod@react_id), annotation := paste0(annotation,";http://identifiers.org/SBO:0000628")]
-  reacttmp[grepl("^rxn13782",mod@react_id), annotation := paste0(annotation,";http://identifiers.org/SBO:0000628")]
-  reacttmp[grepl("^rxn13783",mod@react_id), annotation := paste0(annotation,";http://identifiers.org/SBO:0000628")]
-  reacttmp[grepl("^rxn13784",mod@react_id), annotation := paste0(annotation,";http://identifiers.org/SBO:0000628")]
+  # # demand reactions
+  # reacttmp[grepl("^DM_",mod@react_id), annotation := paste0(annotation,";http://identifiers.org/SBO:0000628")]
+  # reacttmp[grepl("^rxn13782",mod@react_id), annotation := paste0(annotation,";http://identifiers.org/SBO:0000628")]
+  # reacttmp[grepl("^rxn13783",mod@react_id), annotation := paste0(annotation,";http://identifiers.org/SBO:0000628")]
+  # reacttmp[grepl("^rxn13784",mod@react_id), annotation := paste0(annotation,";http://identifiers.org/SBO:0000628")]
   
-  # annotate transport reactions
-  prod <- apply(mod@S, 2, FUN = function(x) which(x > 0))
-  cons <- apply(mod@S, 2, FUN = function(x) which(x < 0))
-  prod <- lapply(prod, FUN = function(x) sort(gsub("\\[.0\\]","",mod@met_id[x])))
-  cons <- lapply(cons, FUN = function(x) sort(gsub("\\[.0\\]","",mod@met_id[x])))
-  prod <- lapply(prod, FUN = function(x) paste(x, collapse = "$"))
-  cons <- lapply(cons, FUN = function(x) paste(x, collapse = "$"))
-  is.transp <- which(unlist(lapply(1:mod@react_num, FUN = function(x) prod[[x]] == cons[[x]])))
-  reacttmp[is.transp, annotation := paste0(annotation,";http://identifiers.org/SBO:0000185")]
-  # TODO: Find ATPase transporters
+  # # annotate transport reactions
+  # prod <- apply(mod@S, 2, FUN = function(x) which(x > 0))
+  # cons <- apply(mod@S, 2, FUN = function(x) which(x < 0))
+  # prod <- lapply(prod, FUN = function(x) sort(gsub("\\[.0\\]","",mod@met_id[x])))
+  # cons <- lapply(cons, FUN = function(x) sort(gsub("\\[.0\\]","",mod@met_id[x])))
+  # prod <- lapply(prod, FUN = function(x) paste(x, collapse = "$"))
+  # cons <- lapply(cons, FUN = function(x) paste(x, collapse = "$"))
+  # is.transp <- which(unlist(lapply(1:react_num(mod), FUN = function(x) prod[[x]] == cons[[x]])))
+  # reacttmp[is.transp, annotation := paste0(annotation,";http://identifiers.org/SBO:0000185")]
+  # # TODO: Find ATPase transporters
   
-  # annotate biomass Reaction
-  reacttmp[grepl("^bio1",mod@react_id), annotation := paste0(annotation,";http://identifiers.org/SBO:0000629")]
-  
-  # demand reactions
-  reacttmp[!grepl("SBO:0000185",annotation) & !grepl("SBO:0000627",annotation), 
-           annotation := paste0(annotation,";http://identifiers.org/SBO:0000176")]
+  # # anything else: biochemical reaction (SBO:0000176)
+  # reacttmp[!grepl("SBO:0000185",annotation) & !grepl("SBO:0000627",annotation), 
+  #          annotation := paste0(annotation,";http://identifiers.org/SBO:0000176")]
   
   
   #~~~~~~~~~~~~~~~#
@@ -98,7 +98,7 @@ addReactAttr <- function(mod) {
   # add X-refs to annotations
   reacttmp <- merge(reacttmp, mx_seed, by = "seed", sort = F, all.x = T)
   # ModelSEED
-  reacttmp[!is.na(seedID) & !grepl("^rxn9", seedID), annotation := paste0(annotation,";http://identifiers.org/seed.reaction:",seedID)]
+  reacttmp[!is.na(seedID) & !grepl("^rxn9", seedID), CVTerms := paste0(CVTerms,";http://identifiers.org/seed.reaction:",seedID)]
   # kegg
   tmp_ids <- str_split(reacttmp[, keggID], pattern = ";")
   tmp_ids <- lapply(tmp_ids, FUN = function(x) {
@@ -108,7 +108,7 @@ addReactAttr <- function(mod) {
       return(NA)
   })
   reacttmp[, tmpids := tmp_ids]
-  reacttmp[!is.na(tmpids), annotation := paste0(annotation,tmpids)]
+  reacttmp[!is.na(tmpids), CVTerms := paste0(CVTerms,tmpids)]
   reacttmp[, tmpids := NULL]; rm(tmp_ids)
   # bigg
   tmp_ids <- str_split(reacttmp[, biggID], pattern = ";")
@@ -119,7 +119,7 @@ addReactAttr <- function(mod) {
       return(NA)
   })
   reacttmp[, tmpids := tmp_ids]
-  reacttmp[!is.na(tmpids), annotation := paste0(annotation,tmpids)]
+  reacttmp[!is.na(tmpids), CVTerms := paste0(CVTerms,tmpids)]
   reacttmp[, tmpids := NULL]; rm(tmp_ids)
   # biocyc
   tmp_ids <- str_split(reacttmp[, biocycID], pattern = ";")
@@ -130,7 +130,7 @@ addReactAttr <- function(mod) {
       return(NA)
   })
   reacttmp[, tmpids := tmp_ids]
-  reacttmp[!is.na(tmpids), annotation := paste0(annotation,tmpids)]
+  reacttmp[!is.na(tmpids), CVTerms := paste0(CVTerms,tmpids)]
   reacttmp[, tmpids := NULL]; rm(tmp_ids)
   # metanetx
   tmp_ids <- str_split(reacttmp[, MNX_ID], pattern = ";")
@@ -141,15 +141,13 @@ addReactAttr <- function(mod) {
       return(NA)
   })
   reacttmp[, tmpids := tmp_ids]
-  reacttmp[!is.na(tmpids), annotation := paste0(annotation,tmpids)]
+  reacttmp[!is.na(tmpids), CVTerms := paste0(CVTerms,tmpids)]
   reacttmp[, tmpids := NULL]; rm(tmp_ids)
   
   
   # Export
+  reacttmp[!is.na(CVTerms) & CVTerms != "" & !grepl("^bqbiol_is", CVTerms), CVTerms := paste0("bqbiol_is",CVTerms)]
   mod@react_attr <- as.data.frame(reacttmp)
   
   return(mod)
 }
-
-
-

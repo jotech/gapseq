@@ -26,14 +26,11 @@ dependencies:
   - r-stringr
   - r-stringi
   - r-getopt
-  - r-doParallel
-  - r-foreach
   - r-r.utils
-  - r-sybil
+  - r-cobrar >=0.1.1
   - r-biocmanager
   - bioconductor-biostrings
   - r-jsonlite
   - r-renv
-  - r-glpkapi
   - r-rcurl
   - r-httr

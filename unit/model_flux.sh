@@ -45,7 +45,7 @@ if [[ $? -eq 0 ]]; then
     download=$(comm -23 $needed $avail | tr '\n' ',' | rev | cut -c2- | rev)
     if [[ -n "$download" ]]; then
         echo Downloading $download
-        ncbi-genome-download -A $download --flat-output -F fasta -o $dir/genomes/ bacteria
+        ncbi-genome-download -A $download --flat-output -F protein-fasta -o $dir/genomes/ bacteria
     fi
 fi
 
@@ -55,7 +55,7 @@ do
     line=$(sed -n ${i}p $db)
     name=$(echo "$line" | cut -f1)
     genome=$(echo "$line" | cut -f2)
-    genome_file=$(ls $dir/genomes/${genome}*.fna.gz)
+    genome_file=$(ls $dir/genomes/${genome}*.faa.gz)
     media=$(echo "$line" | cut -f3 | tr ',' '\n')
     base=$(basename "$genome_file")
     rxn=$(echo "$line" | cut -f4)
@@ -64,18 +64,18 @@ do
     parm_find=$(echo "$line" | cut -f7)
     parm_transport=$(echo "$line" | cut -f8)
     parm_draft=$(echo "$line" | cut -f9)
-    parm_fill=$(echo "$line" | cut -f10 | cut -c2-)
+    parm_fill=$(echo "$line" | cut -f10)
     
     id_tmp=${base%.*}
     id=${id_tmp%.*}
     echo $i $name $id $media
 
     if [[ "$fast" = false ]]; then
-        $dir/../gapseq find $parm_find -v 0 -k -b 200 -p all -m bacteria "$genome_file"
+        $dir/../gapseq find $parm_find -v 0 -p all "$genome_file"
         mv "${id}-all-Reactions.tbl" "${id}-all-Pathways.tbl" $dir/out/
-        $dir/../gapseq find-transport $parm_transport -k -b 200 "$genome_file"
+        $dir/../gapseq find-transport $parm_transport "$genome_file"
         mv "${id}-Transporter.tbl" $dir/out/
-        $dir/../gapseq draft $parm_draft -r $dir/out/"$id-all-Reactions.tbl" -t $dir/out/"$id-Transporter.tbl" -c $dir/out/"$genome_file" -u 200 -l 100 -p "$id-all-Pathways.tbl"
+        $dir/../gapseq draft $parm_draft -r $dir/out/"$id-all-Reactions.tbl" -t $dir/out/"$id-Transporter.tbl" -c "$genome_file" -p "$id-all-Pathways.tbl"
         mv "${id}-draft.RDS" "${id}-rxnWeights.RDS" "${id}-rxnXgenes.RDS" $dir/out/
     fi
     #ls "$dir/out/${id}-all-Reactions.tbl" "$dir/out/${id}-all-Pathways.tbl" "$dir/out/${id}-Transporter.tbl" "$dir/out/${id}-draft.RDS" "$dir/out/${id}-rxnWeights.RDS" "$dir/out/${id}-rxnXgenes.RDS"
@@ -83,13 +83,12 @@ do
     for medium in $media
     do
         medium_file=$(ls $dir/../dat/media/${medium}.csv)
-        $dir/../gapseq fill $parm_fill -m $dir/out/"${id}-draft.RDS" -n "$medium_file" -c $dir/out/"${id}-rxnWeights.RDS" -b 100 -g $dir/out/"${id}-rxnXgenes.RDS"
+        $dir/../gapseq fill $parm_fill -m $dir/out/"${id}-draft.RDS" -n "$medium_file" -c $dir/out/"${id}-rxnWeights.RDS" -g $dir/out/"${id}-rxnXgenes.RDS"
         mv ${id}.RDS $dir/out/${id}_${medium}.RDS
         model_file=$(ls $dir/out/${id}_${medium}.RDS)
 
         Rscript -e '
-        suppressMessages(library(sybil))
-        suppressMessages(library(glpkAPI))
+        suppressMessages(library(cobrar))
         suppressMessages(library(stringr))
 
         args = commandArgs(trailingOnly=TRUE)
@@ -103,19 +102,19 @@ do
         log.file <- args[8]
 
         mod <- readRDS(mod.file)
-        sol <- optimizeProb(mod, retOptSol=F)
-        suppressMessages(fva <- fluxVar(mod, percentage=100, react=rxn))
-        fva_max <- maxSol(fva, "lp_obj")
-        fva_min <- minSol(fva, "lp_obj")
+        sol <- fba(mod)
+        fva <- fva(mod, react=rxn)
+        fva_max <- fva$max.flux
+        fva_min <- fva$min.flux
 
         cat("Checking phenotype:", description, "on medium:", medium, "\n")
         rxn.all <- 0
         for(i in seq_along(rxn)){
             rxn.id  <- rxn[i]
-            rxn.idx <- match(rxn.id, react_id(mod))
+            rxn.idx <- match(rxn.id, mod@react_id)
             if( is.na(rxn.idx) ) warning(paste("Reaction", rxn[i], "not found in model", mod.file))
             rxn.dir <- dir[i]
-            rxn.sol <- sol$fluxes[rxn.idx]
+            rxn.sol <- sol@fluxes[rxn.idx]
             rxn.max <- fva_max[i]
             rxn.min <- fva_min[i]
             if( rxn.dir==">" ){
