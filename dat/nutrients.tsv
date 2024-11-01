@@ -373,7 +373,6 @@ cpd01132	Puromycin	C22H30N7O5	1	MNXM3088
 cpd01133	Stachyose	C24H42O21	0	MNXM1503
 cpd01150	Acrylamide	C3H5NO	0	MNXM3208
 cpd01155	Cadaverine	C5H16N2	2	MNXM943
-cpd01157	Chitobiose	C16H28N2O11	0	MNXM1680
 cpd01160	Cysteamine	C2H8NS	1	MNXM1226
 cpd01170	Ergosterol	C28H44O	0	MNXM922
 cpd01171	Dulcose	C6H14O6	0	MNXM1233
@@ -397,7 +396,6 @@ cpd01400	Phenylalanine	C9H11NO2	0	MNXM97
 cpd01414	Tetrathionate	O6S4	-2	MNXM1781
 cpd01499	2-Methylbutanal	C5H10O	0	MNXM2604
 cpd01502	Citraconate	C5H4O4	-2	MNXM2356
-cpd01524	D-Chondrosamine	C6H14NO5	1	MNXM723318
 cpd01550	Phosphocreatine	C4H8N3O5P	-2	MNXM90130
 cpd01553	Saligenin	C7H8O2	0	MNXM1855
 cpd01570	2',3'-Cyclic AMP	C10H11N5O6P	-1	MNXM2598
@@ -438,7 +436,6 @@ cpd02351	Glucosaminate	C6H13NO6	0	MNXM2469
 cpd02475	Lithocholate	C24H39O3	-1	MNXM886
 cpd02557	Farnesylfarnesylgeraniol	C40H66O7P2	-2	MNXM811
 cpd02591	pendp	C25H42O7P2	-2	MNXM2210
-cpd02599	Octopamine	C8H12NO2	1	MNXM3679
 cpd02605	2-isopropyl-3-oxosuccinate	C7H8O5	-2	MNXM1602
 cpd02693	3-Isopropylmalate	C7H10O5	-2	MNXM891
 cpd02733	Deoxycholate	C24H39O4	-1	MNXM57907
@@ -467,7 +464,6 @@ cpd03453	Enterobactin	C30H27N3O15	0	MNXM883
 cpd03454	3'-CMP	C9H12N3O8P	-2	MNXM2182
 cpd03460	N-Carbamyl-L-glutamate	C6H8N2O5	-2	MNXM5237
 cpd03481	2-phenylethanol	C8H10O	0	MNXM2476
-cpd03495	Undecaprenyl-diphospho-N-acetylmuramoyl--N-acetylglucosamine-L-ala-D-glu-meso-2-6-diaminopimeloyl-D-ala-D-ala	C95H152N8O28P2	-4	MNXM722781
 cpd03535	Phosphoarginine	C6H14N4O5P	-1	MNXM3663
 cpd03561	2-Hydroxybutyrate	C4H7O3	-1	MNXM722772
 cpd03586	kdo2-lipid iva	C84H148N2O37P2	-6	MNXM824
@@ -476,7 +472,6 @@ cpd03662	n-Butanol	C4H10O	0	MNXM3230
 cpd03696	Ursin	C12H16O7	0	MNXM2683
 cpd03701	Gp	C10H12N5O8P	-2	MNXM2183
 cpd03702	2',3'-Cyclic GMP	C10H11N5O7P	-1	MNXM3149
-cpd03727	Ectoine	C6H10N2O2	0	MNXM2227
 cpd03734	Acetamide	C2H5NO	0	MNXM4428
 cpd03778	Terephthalate	C8H4O4	-2	MNXM2734
 cpd03807	Lacto-N-tetraose	C26H45NO21	0	MNXM2978
@@ -595,7 +590,6 @@ cpd15143	Leucine	C6H13NO2	0	MNXM140
 cpd15198	2-Octaprenyl-6-hydroxyphenol (5 repeating units)	C36H54O2	0	MNXM5483
 cpd15202	2-Octaprenyl-6-methoxyphenol (5 repeating units)	C37H56O2	0	MNXM4300
 cpd15208	3-Octaprenyl-4-hydroxybenzoate (5 repeating units)	C37H53O3	-1	MNXM8120
-cpd15210	4,4-dimethylzymosterol	C29H48O	0	MNXM913
 cpd15220	Ceramide-1 Sphinganine:n-C24:0)	C42H85NO3	0	MNXM64020
 cpd15221	Ceramide-1 Sphinganine:n-C26:0)	C44H89NO3	0	MNXM63798
 cpd15224	Ceramide-2 Phytosphingosine:n-C24:0)	C42H85NO4	0	MNXM64019
