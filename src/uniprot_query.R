@@ -64,7 +64,7 @@ args = commandArgs(trailingOnly=TRUE)
 
 # parse positional arguments
 query_type <- args[1]
-query_term <- utils::URLencode(args[2])
+query_term <- utils::URLencode(args[2], reserved = TRUE)
 
 if(query_type == "protein_name") {
   query_term <- paste0("%22",query_term,"%22")
@@ -87,36 +87,48 @@ if (query_type=="id" & length(args)!=4) {
 
 # parse taxonomy term
 taxonomy <- unlist(strsplit(taxonomy, ","))
-taxonomy <- paste0("(taxonomy_name:",taxonomy,")", collapse = "%20OR%20")
-taxonomy <- paste0("(",taxonomy,")")
+taxonomy <- paste0("%28taxonomy_name:",taxonomy,"%29", collapse = "%20OR%20")
+taxonomy <- paste0("%28",taxonomy,"%29")
 
 if(query_type != "id") {
   # (0) - Build uniprot entry URL
-  # urli <- paste0("https://rest.uniprot.org/uniprotkb/search?format=list&query=(",
-  #                query_type,":",query_term,
-  #                ")%20AND%20",taxonomy,"%20AND%20(reviewed:",
-  #                rev_status,")&size=",
-  #                batch_size_query_results)
-  # urli <- "https://rest.uniprot.org/uniprotkb/stream?compressed=false&fields=accession&format=tsv&query=%28%28ec%3A2.7.1.90%29%20AND%20%28taxonomy_id%3A2%29%20AND%20%28reviewed%3Afalse%29%29"
-  urli <- paste0("https://rest.uniprot.org/uniprotkb/stream?compressed=false&fields=accession&format=tsv&query=%28%28",
-                 query_type,"%3A",query_term,"%29%20AND%20",taxonomy,"%20AND%20%28reviewed%3A",rev_status,"%29%29")
+  # urli <- "https://rest.uniprot.org/uniprotkb/search?fields=accession&format=list&query=%28%28ec%3A1.4.4.2%29+AND+%28%28taxonomy_name:Bacteria%29%29+AND+%28reviewed%3Afalse%29%29&size=500"
+  urli <- paste0("https://rest.uniprot.org/uniprotkb/search?fields=accession&format=list&query=%28%28",
+                 query_type,"%3A",query_term,"%29+AND+",taxonomy,"+AND+%28reviewed%3A",rev_status,"%29%29&size=500")
 
-  # (1) - Find uniprot accession numbers of matching entries (Note: This will break if there are more than 10 million accessions. Unlikely!?)
-  ri <- GET_retries(urli)
-  accessions <- content(ri, as = "text", encoding = "UTF-8")
-  accessions <- unlist(str_split(accessions, "\n"))[-1]
-  accessions <- accessions[accessions != ""]
+  # (1) - Find uniprot accession numbers of matching entries
+  # Note: This uses pagination
+  accessions <- character(0L)
+  while(!is.null(urli)) {
+    ri <- GET(urli)
+    acctmp <- content(ri, as = "text", encoding = "UTF-8")
+    acctmp <- unlist(str_split(acctmp, "\n"))
+    acctmp <- acctmp[acctmp != ""]
+    accessions <- c(accessions, acctmp)
+
+    linkurl <- ri$headers$link
+    if(is.null(linkurl)) {
+      urli <- NULL
+    } else {
+      urli <- gsub("^<|>.*$","",linkurl)
+    }
+    cat("\r",length(accessions))
+  }
   total <- length(accessions)
   if(length(accessions) == 0) {
     cat(NULL, file = output_fasta_file)
     quit(save = "no", status = 0)
   }
+#   ri <- GET_retries(urli)
+#   accessions <- content(ri, as = "text", encoding = "UTF-8")
+#   accessions <- unlist(str_split(accessions, "\n"))[-1]
+#   accessions <- accessions[accessions != ""]
 
 
   # (2) retrieve corresponding uniref90 cluster IDs (not sequences)
   acc_batches <- split(accessions, ceiling(seq_along(accessions)/batch_size_clusters))
   cl <- makeCluster(min(length(acc_batches),15))
-  clusterExport(cl, c("GET_retries","uniref_id","max_attempts"))
+  clusterExport(cl, c("GET_retries","uniref_id","max_attempts","output_fasta_file"))
   map_worker <- function(accvec) {
     require(stringr)
     acc_concat <- paste0("%28uniprot_id%3A",accvec,"%29",

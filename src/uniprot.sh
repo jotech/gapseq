@@ -134,7 +134,7 @@ if [ -n "$ecnumber" ]; then
             fi
             newmd5=$(md5sum $ec.fasta | cut -d " " -f1)
             newcount=$(cat $ec.fasta | grep ">" | wc -l)
-            [[ "$oldmd5" != "$newmd5" ]] && echo "`date +"%d/%m/%Y"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$ec.fasta $stat" >> ../updating.log
+            [[ "$oldmd5" != "$newmd5" ]] && echo "`date -u +"%Y-%m-%d_%H:%M:%SUTC"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$ec.fasta $stat" >> ../updating.log
         fi
     done
 fi
@@ -156,14 +156,14 @@ if [ -n "$reaNames" ]; then
         rm -f $reaNameHash.fasta
         rea="${rea//\"/}"
         echo -en " ... Downloading $rea\t\t"
-        if [ "$get_unrev" = false ]; then 
+        if [ "$get_unrev" = false ]; then
             Rscript $dir/uniprot_query.R protein_name "$rea" $reaNameHash.fasta $taxonomy true 0.9 && stat=ok || stat=err
-        else 
+        else
             Rscript $dir/uniprot_query.R protein_name "$rea" $reaNameHash.fasta $taxonomy false 0.5 && stat=ok || stat=err
         fi
         newmd5=$(md5sum $reaNameHash.fasta | cut -d " " -f1)
         newcount=$(cat $reaNameHash.fasta | grep ">" | wc -l)
-        [[ "$oldmd5" != "$newmd5" ]] && echo "`date +"%d/%m/%Y"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$reaNameHash.fasta $stat" >> ../updating.log
+        [[ "$oldmd5" != "$newmd5" ]] && echo "`date -u +"%Y-%m-%d_%H:%M:%SUTC"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$reaNameHash.fasta $stat" >> ../updating.log
     done
 fi
 
@@ -175,21 +175,21 @@ if [ -n "$geneName" ]; then
         oldcount=$(cat $geneName.fasta | grep ">" | wc -l)
         rm -f $geneName.fasta
         echo -en " ... Downloading $geneName\t\t"
-        if [ "$get_unrev" = false ]; then 
+        if [ "$get_unrev" = false ]; then
             Rscript $dir/uniprot_query.R gene "$geneName" $reaNameHash.fasta $taxonomy true 0.9 && stat=ok || stat=err
-        else 
+        else
             Rscript $dir/uniprot_query.R gene "$geneName" $reaNameHash.fasta $taxonomy false 0.5 && stat=ok || stat=err
         fi
         newmd5=$(md5sum $geneName.fasta | cut -d " " -f1)
         newcount=$(cat $geneName.fasta | grep ">" | wc -l)
-        [[ "$oldmd5" != "$newmd5" ]] && echo "`date +"%d/%m/%Y"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$geneName.fasta $stat" >> ../updating.log
+        [[ "$oldmd5" != "$newmd5" ]] && echo "`date -u +"%Y-%m-%d_%H:%M:%SUTC"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$geneName.fasta $stat" >> ../updating.log
     fi
 fi
 
 # handling different because several DB links are collected as one reaction sequence file by gapseq_find
 if [ -n "$dbref" ]; then
     mkdir -p $seqpath/../rxn
-    cd $seqpath/../rxn # different folder necessary because database references are direct sequence links 
+    cd $seqpath/../rxn # different folder necessary because database references are direct sequence links
     if [ ! -f "$dbref.fasta" ] || [ ! "$overwrite" = false ]; then # do not update existing files
         [[ ! -f "$dbref.fasta" ]] && touch "$dbref.fasta"
         oldmd5=$(md5sum $dbref.fasta | cut -d " " -f1)
@@ -199,6 +199,6 @@ if [ -n "$dbref" ]; then
         Rscript $dir/uniprot_query.R id $dbref $dbref.fasta $taxonomy && stat=ok || stat=err
         newmd5=$(md5sum $dbref.fasta | cut -d " " -f1)
         newcount=$(cat $dbref.fasta | grep ">" | wc -l)
-        [[ "$oldmd5" != "$newmd5" ]] && echo "`date +"%d/%m/%Y"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$dbref.fasta $stat" >> ../updating.log
+        [[ "$oldmd5" != "$newmd5" ]] && echo "`date -u +"%Y-%m-%d_%H:%M:%SUTC"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$dbref.fasta $stat" >> ../updating.log
      fi
 fi
