@@ -1,8 +1,18 @@
 # News
 
+#### Reference sequence database for Bacteria and Archaea v1.3 released
+
+*2024-11-06*
+
+The database for reference protein sequenes (bacteria and archaea) was updated. gapseq should automatically download the latest version. The sequences were retrieved from [UniProt](https://www.uniprot.org/) Release 2024_05.
+
+DOI of Zenodo data set: https://doi.org/10.5281/zenodo.14046824
+
+---
+
 #### gapseq version 1.4.0 now uses 'cobrar' instead of 'sybil'
 
-*2024-20-25*
+*2024-10-25*
 
 Prior to v1.4.0, gapseq used the R packages 'sybil' and 'sybilSBML' for constraint-based metabolic modelling, including FBA and SBML file export. In addition, the R package 'glpkAPI' was required to interface with GLPK as an LP solver. All these dependencies are now replaced by the single R package '**[cobrar](https://waschina.github.io/cobrar/)**'.
 
