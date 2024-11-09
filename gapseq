@@ -45,7 +45,7 @@ usage()
     echo "  gapseq pan -m toy/MGYG000*-draft.RDS -c toy/MGYG000*-rxnWeights.RDS -g toy/MGYG000*-rxnXgenes.RDS -w toy/MGYG000*.tbl.gz"
     echo -e "\nOptions:"
     echo "  test            Testing dependencies and basic functionality of gapseq."
-    echo "  long-test       Testing model reconstruction for a E. coli core genome."
+    echo "  test-long       Testing model reconstruction for a E. coli core genome."
     echo "  find            Pathway analysis, try to find enzymes based on homology."
     echo "  find-transport  Search for transporters based on homology."
     echo "  draft           Draft model construction based on results from find and find-transport."
