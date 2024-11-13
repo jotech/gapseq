@@ -411,9 +411,16 @@ function already_downloaded(){
 if [ -n "$ecnumber" ] || [ -n "$reaname" ]; then
     # create dummpy pwy template for given ec number
     if [[ -z "$ecnumber" ]]; then
-        rea_count=$(echo "$reaname" | tr ';' '\n' | wc -l)
-        ecnumber=$(echo "$reaname" | grep -o ";" | tr ';' ',') # get dummy empty comma seperated ec numbers
-        pwyname="$reaname"
+        metaRea_hit=$(grep -wFe "$reaname" $metaRea)
+        if [[ -n "$metaRea_hit" ]]; then
+            rea_count=1
+            ecnumber=$(echo "$metaRea_hit" | awk -F "\t" {'print $4'} | sed 's/EC-//g' | sed 's/,/\//g')
+            pwyname="$reaname"
+        else
+            rea_count=$(echo "$reaname" | tr ';' '\n' | wc -l)
+            ecnumber=$(echo "$reaname" | grep -o ";" | tr ';' ',') # get dummy empty comma seperated ec numbers
+            pwyname="$reaname"
+        fi
     elif [[ -z "$reaname" ]]; then
         rea_count=$(echo $ecnumber | tr ',' '\n' | wc -l)
         reaname=$(echo $ecnumber | grep -o "," | tr -d '\n' | tr ',' ';') # get dummy empty colon seperated reaction names
