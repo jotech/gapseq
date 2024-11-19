@@ -411,9 +411,16 @@ function already_downloaded(){
 if [ -n "$ecnumber" ] || [ -n "$reaname" ]; then
     # create dummpy pwy template for given ec number
     if [[ -z "$ecnumber" ]]; then
-        rea_count=$(echo "$reaname" | tr ';' '\n' | wc -l)
-        ecnumber=$(echo "$reaname" | grep -o ";" | tr ';' ',') # get dummy empty comma seperated ec numbers
-        pwyname="$reaname"
+        metaRea_hit=$(grep -wFe "$reaname" $metaRea)
+        if [[ -n "$metaRea_hit" ]]; then
+            rea_count=1
+            ecnumber=$(echo "$metaRea_hit" | awk -F "\t" {'print $4'} | sed 's/EC-//g' | sed 's/,/\//g')
+            pwyname="$reaname"
+        else
+            rea_count=$(echo "$reaname" | tr ';' '\n' | wc -l)
+            ecnumber=$(echo "$reaname" | grep -o ";" | tr ';' ',') # get dummy empty comma seperated ec numbers
+            pwyname="$reaname"
+        fi
     elif [[ -z "$reaname" ]]; then
         rea_count=$(echo $ecnumber | tr ',' '\n' | wc -l)
         reaname=$(echo $ecnumber | grep -o "," | tr -d '\n' | tr ',' ';') # get dummy empty colon seperated reaction names
@@ -637,6 +644,7 @@ do
         ((count++))
         query=$(mktemp -p $tmpdir)
         query_all=$(mktemp -p $tmpdir)
+        query_all_rev=$(mktemp -p $tmpdir)
         for i in "${!ec[@]}"; do
             #echo test: ${ec[i]} ${EC_test[i]}
             if [[ -n "${EC_test[i]}" ]]; then
@@ -657,10 +665,13 @@ do
                 fi
                 if [ -s "$seqpath_user/${ec[i]}.fasta" ]; then
                     query_tmp=$seqpath_user/${ec[i]}.fasta
+                    query_tmp_rev=$seqpath_user/${ec[i]}.fasta
                 elif [ $seqSrc -eq 1 ]; then
                     query_tmp=$seqpath/rev/${ec[i]}.fasta
+                    query_tmp_rev=$seqpath/rev/${ec[i]}.fasta
                 elif [ $seqSrc -eq 2 ]; then
                     query_tmp=$seqpath/rev/${ec[i]}.fasta
+                    query_tmp_rev=$seqpath/rev/${ec[i]}.fasta
                     [[ ! -s $query_tmp ]] && query_tmp=$seqpath/unrev/${ec[i]}.fasta
                 elif [ $seqSrc -eq 3 ]; then
                     query_tmp=$(mktemp -p $tmpdir)
@@ -670,6 +681,7 @@ do
                 fi
                 if [[ -s $query_tmp ]]; then
                     cat $query_tmp >> $query_all
+                    [[ -n "$query_tmp_rev" ]] && { cat $query_tmp_rev >> $query_all_rev; }
                     if [[ "$query_tmp" == "$seqpath_user"* ]]; then
                         [[ verbose -ge 1 ]] && echo -e "\t\t--> Found user sequences: $query_tmp (`cat $query_tmp | grep ">" | wc -l` sequences)" 
                     elif [[ $i -eq 0 ]]; then
@@ -680,6 +692,10 @@ do
                 fi
             fi
         done
+        if [[ -s $query_all_rev ]] && [[ $seqSrc -eq 2 ]]; then
+            [[ verbose -ge 1 ]] && echo -e "\t\tOnly reviewed sequences will be used"
+            query_all=$query_all_rev
+        fi
         [[ -s $query_all ]] && { cat $query_all | awk '/^>/{f=!d[$1];d[$1]=1}f' > $query; } # no duplicates
         ec_avail=$(join_by / "${EC_test[@]}") # all valid ec numbers
         
