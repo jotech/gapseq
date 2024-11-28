@@ -40,7 +40,7 @@ com.pat3  <- paste0("\\b[A-Z]+ ", com.synonymes)
 com.pat4  <- paste0("(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma) ", com.synonymes)
 com.pat5  <- paste0(com.synonymes, " (alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma)")
 com.pat6  <- paste0(com.synonymes, " [A-Z][A-z]+\\b")
-com.pat7  <- paste0("(large|small) ", com.synonymes)
+com.pat7  <- paste0("(large|medium|small) ", com.synonymes)
 com.pat8  <- paste0("(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma)-", com.synonymes)
 hits <- str_extract(seq.id, paste0(com.pat1,"|",com.pat2,"|",com.pat3,"|",com.pat4,"|",com.pat5,"|",com.pat6,"|",com.pat7,"|",com.pat8))
 
@@ -52,7 +52,7 @@ hits <- gsub("subunit|chain|polypeptide|component", "Subunit", hits)
 hits <- str_replace(hits, "([A-Z]+) Subunit", "Subunit \\1")
 hits <- str_replace(hits, "(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma) Subunit", "Subunit \\1")
 hits <- str_replace(hits, "(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma)-Subunit", "Subunit \\1")
-hits <- str_replace(hits, "(large|small) Subunit", "Subunit \\1")
+hits <- str_replace(hits, "(small|medium|large) Subunit", "Subunit \\1")
 #hits[1949]
 
 # latin numbers
@@ -74,9 +74,10 @@ hits <- str_replace_all(hits, setNames(replace2, pattern2))
 #hits[1949]
 
 #
-pattern3 <- c("large", "small")
-replace3 <- as.character(1:2)
+pattern3 <- c("small", "medium", "large")
+replace3 <- as.character(1:3)
 hits <- str_replace_all(hits, setNames(replace3, pattern3))
+
 
 # other corrections
 hits <- str_replace(hits, "(Subunit [0-9]+)[A-z]", "\\1") # how to handle sub-sub-complexes?
