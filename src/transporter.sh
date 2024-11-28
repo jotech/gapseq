@@ -126,14 +126,14 @@ fi
 
 # Determine if fasta is nucl or prot
 if [ $input_mode == "auto" ]; then
-    n_char=`cat $fasta | grep -v "^>" | awk '{for(i=1;i<=NF;i++)if(!a[$i]++)print $i}' FS="" | wc -l`
-    if [ $n_char -ge 15 ]; then
+    input_mode=`$dir/./nuclprot.sh $fasta`
+    
+    if [ $input_mode == "prot" ]; then
         echo "Protein fasta detected."
-        input_mode="prot"
     else
         echo "Nucleotide fasta detected."
-        input_mode="nucl"
     fi
+    
 fi
 
 tmpvar=$(basename $fasta)

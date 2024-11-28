@@ -21,7 +21,25 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   suppressMessages(require(stringr))
   suppressMessages(require(cobrar))
   
+  genome_mode <- "none"
+  
   # get input genome fasta format (nucl/prot)
+  if(!is.na(genome.seq) && biomass %in% c("auto","Bacteria","bacteria")) {
+    if(grepl("\\.gz$", genome.seq)) {
+      suppressMessages(require(R.utils))
+      genome.seq <- R.utils::gunzip(genome.seq, remove = F, temporary = T, overwrite = T)
+    }
+    genome_mode <- system(paste0(script.dir,"/./nuclprot.sh ", genome.seq), intern = T)
+    if(!(genome_mode %in% c("nucl","prot")))
+      stop("Unrecognized genome format.")
+    if(genome_mode == "prot") {
+      cat("Protein fasta detected.\n")
+    } else {
+      cat("Nucleotide fasta detected.\n")
+    }
+  }
+  
+  # get input mode from find step
   input_mode <- readLines(blast.res)
   input_mode <- input_mode[grep("^# Genome format\\:", input_mode)]
   if(length(input_mode) == 0) {
@@ -38,14 +56,9 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     model.name <- gsub("-[a-z]+-Reactions.tbl","",basename(blast.res))
   
   if(biomass %in% c("auto","Bacteria","bacteria")) {
-    if(grepl("\\.gz$", genome.seq)) {
-      suppressMessages(require(R.utils))
-      genome.seq <- R.utils::gunzip(genome.seq, remove = F, temporary = T, overwrite = T)
-    } 
-    
     forced_bacterial <- biomass %in% c("Bacteria", "bacteria")
     
-    if(input_mode == "nucl") {
+    if(genome_mode == "nucl") {
       biomass <- system(paste0(script.dir,"/./predict_biomass_from16S.sh ",genome.seq), intern = T)
       
       # If user specified Bacteria but sequence-based prediction tool says archaeal
@@ -63,9 +76,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
         stop("ERROR: Gram-staining prediction failed or ambiguous result. Please check whether genome sequence contains 16S rRNA gene(s).")
         
       }
-    }
-    
-    if(input_mode == "prot") {
+    } else if(genome_mode == "prot") {
       # first predict domain if needed
       if(biomass %in% c("Auto","auto")) {
         hmmres <- tempfile()
@@ -90,6 +101,8 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
         cat("Predicted Gram-staining:", biomass, "\n")
       }
       
+    } else {
+      biomass <- find_gram_by_network(pathway.pred, script.dir)
     }
     
   }
@@ -479,6 +492,11 @@ opt <- getopt(spec)
 
 # Help Screen
 if ( !is.null(opt$help) | is.null(opt$blast.res) | (is.null(opt$biomass) & is.null(opt$genome.seq)) | (!is.null(opt$biomass) && opt$biomass=="auto" && is.null(opt$genome.seq))) {
+  
+  if(opt$biomass=="auto" && is.null(opt$genome.seq)) {
+    cat("\nInput error: No genome supplied for biomass (bacteria / archaea) prediction. Please provide a genome sequence with the option \"-c|--genome.seq\" or specify a biomass catagory (e.g. \"Archaea\",\"Gram_neg\",\"Gram_pos\") with option\"-b|--biomass\".\n\n")
+  }
+  
   cat(getopt(spec, usage=TRUE))
   
   cat("\n")
@@ -489,6 +507,7 @@ if ( !is.null(opt$help) | is.null(opt$blast.res) | (is.null(opt$biomass) & is.nu
 
 # Setting defaults if required
 if ( is.null(opt$model.name) ) { opt$model.name = NA_character_ }
+if ( is.null(opt$genome.seq) ) { opt$genome.seq = NA_character_ }
 if ( is.null(opt$output.dir) ) { opt$output.dir = "." }
 if ( is.null(opt$sbml.no.output) ) { opt$sbml.no.output = F } else { opt$sbml.no.output = T }
 if ( is.null(opt$high.evi.rxn.BS) ) { opt$high.evi.rxn.BS = 200 }
