@@ -170,7 +170,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   cat("Creating Gene-Reaction list... ")
 
   dt_genes <- copy(dt[!is.na(bitscore)])
-  saveRDS(dt_genes, "~/dt_genes.RDS")
+  #saveRDS(dt_genes, "~/dt_genes.RDS")
   if(input_mode == "prot") {
     dt_genes[, gene := gsub(" .*","",stitle)]
     dt_genes <- dt_genes[!duplicated(paste0(stitle, gene, seed, complex, sep = "$"))]
@@ -324,6 +324,10 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
     
     # get reaction-associated stretches of DNA 
     dtg.tmp <- dt_genes[seed == mseed[i,id] & bitscore >= high.evi.rxn.BS & rm == F, .(complex,gene)]
+    setorder(dtg.tmp, gene) # ensure gene name order
+    #if("Subunit undefined" %in% dtg.tmp$complex & !all(dtg.tmp$complex == "Subunit undefined")){
+    #  dtg.tmp <- dtg.tmp[complex != "Subunit undefined"] # do not consider undefined subunits for gpr when defined subunits were found
+    #}  
     if(nrow(dtg.tmp)>0) {
       gpr.tmp <- get_gene_logic_string(dtg.tmp$complex, dtg.tmp$gene)
     } else {
@@ -361,7 +365,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   # GS origin code: 5                                            #
   #––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––#
   
-  # in case of electron bifurcatingbutanoyl-CoA dehydrogenase (NAD+, ferredoxin) presence:
+  # in case of electron bifurcating butanoyl-CoA dehydrogenase (NAD+, ferredoxin) presence:
   # add butyrate transporter as well
   if(any(grepl("rxn90001", mod@react_id)) & all(!grepl("rxn05683", mod@react_id))) {
     mod <- add_reaction_from_db(mod, react = "rxn05683", gs.origin = 5)

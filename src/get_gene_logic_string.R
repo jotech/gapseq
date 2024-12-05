@@ -10,8 +10,8 @@ get_gene_logic_string <- function(complex.str, gene) {
   
   su.n <- length(unique(dt.gl$complex))
   
-  #dt.gl.cplx <- dt.gl[!is.na(complex) & complex != "Subunit undefined"]
-  dt.gl.cplx <- dt.gl[!is.na(complex)]
+  dt.gl.cplx <- dt.gl[!is.na(complex) & complex != "Subunit undefined"] # do not consider undefined subunits if normal complex is found (AND link)
+  #dt.gl.cplx <- dt.gl[!is.na(complex)]
   
   if(nrow(dt.gl.cplx) > 0) {
     strings_cx <- dt.gl.cplx[, paste(gene, collapse = " | "), by = complex]
@@ -23,8 +23,12 @@ get_gene_logic_string <- function(complex.str, gene) {
     str_cx <- NA
   }
   
-  #dt.gl.mono <- dt.gl[is.na(complex) | complex == "Subunit undefined"]
-  dt.gl.mono <- dt.gl[is.na(complex)]
+  # if no normal complex is found, then also consider undefined subunits (OR link)
+  if(nrow(dt.gl.cplx) == 0){
+    dt.gl.mono <- dt.gl[is.na(complex) | complex == "Subunit undefined"]
+  } else{
+    dt.gl.mono <- dt.gl[is.na(complex)]  
+  }
   
   if(nrow(dt.gl.mono) > 0) {
     str_mo <- paste(dt.gl.mono$gene, collapse = " | ")
