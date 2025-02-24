@@ -85,4 +85,4 @@ GNU General Public License version 3.0 ([GPLv3](https://www.gnu.org/licenses/gpl
 
 ## Citation
 - Zimmermann, J., Kaleta, C. & Waschina, S. gapseq: informed prediction of bacterial metabolic pathways and reconstruction of accurate metabolic models. Genome Biol 22, 81 (2021). https://doi.org/10.1186/s13059-021-02295-1
-- De Bernardini, N., Zampieri, G., Campanaro, S., Zimmermann, J., Waschina, S. & Treu, L. pan-Draft: Automated reconstruction of species-representative metabolic models from multiple genomes. *Currently under revision*
+- De Bernardini, N., Zampieri, G., Campanaro, S., Zimmermann, J., Waschina, S. & Treu, L. pan-Draft: automated reconstruction of species-representative metabolic models from multiple genomes. Genome Biol 25, 280 (2024). https://doi.org/10.1186/s13059-024-03425-1
