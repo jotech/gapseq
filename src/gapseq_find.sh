@@ -565,7 +565,7 @@ if [ -n "$taxRange" ] && [ "$taxRange" != "all" ]; then
     [[ -z "$validTax" ]] && { echo "Taxonomic range not found: $taxRange (available ranges: $dir/../dat/taxonomy.tbl)"; exit 0; }
     pwyDB_new=$(echo "$pwyDB" | grep -wE `echo "TAX-($validTax)"`)
     pwyDB_old=$(echo "$pwyDB" | awk -F '\t' 'BEGIN {OFS=FS="\t"} $5=="" {print $0}')
-    pwyDB=$(echo "$pwyDB_new""$pwyDB_old")
+    pwyDB=$(echo -e "$pwyDB_new\n$pwyDB_old")
     [[ -z "$pwyDB" ]] && { echo "No pathways found"; exit 0; }
 fi
 
