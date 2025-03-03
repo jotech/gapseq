@@ -572,6 +572,11 @@ fi
 pwyNr=$(echo "$pwyDB" | wc -l)
 [[ verbose -ge 1 ]] && echo Checking for pathways and reactions in: $1 $pwyKey
 [[ verbose -ge 1 ]] && echo Number of pathways to be considered: $pwyNr
+
+pwyDBfile=$(mktemp -p $tmpdir)
+echo "$pwyDB" > $pwyDBfile
+Rscript $dir/prepare_batch_alignments.R $pwyDBfile
+
 for i in `seq 1 $pwyNr`
 do
     pwyCand="" # candidate reaction of current pathway
