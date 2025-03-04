@@ -474,15 +474,15 @@ fi
 getDBhit(){
     kegg=$(grep -wFe "$rea" $metaRea | awk -F "\t" {'print $5'})
     altec=""
+    dbhit=""
 
     for i in "${!ec[@]}"; do
         # 1) search in reaction db by EC
         if [[ -n "${EC_test[i]}" ]]; then
             if [ "$database" == "vmh" ]; then
-                dbhit=$(grep -wF ${ec[i]} $reaDB1 | awk -F ',' '{print $1}')
+                dbhit="$dbhit $(grep -wF ${ec[i]} $reaDB1 | awk -F ',' '{print $1}')"
             elif [ "$database" == "seed" ]; then
-                dbhit=$(cat $seedEC | cut -f1,3 | grep -wF ${ec[i]} | cut -f1 | tr '|' ' ')
-                #dbhit="$dbhit $(grep -wF ${ec[i]} $reaDB4 | awk -F '\t' '{print $4}' | tr '\n' ' ')" # mnxref considers also obsolete seed hits 
+                dbhit="$dbhit $(cat $seedEC | cut -f1,3 | grep -wF ${ec[i]} | cut -f1 | tr '|' ' ')"
             fi
         fi
 
@@ -540,7 +540,7 @@ getDBhit(){
         dbhit="$dbhit $(grep -wFe "$reaName" $seedEnzymesNames | awk -F '\t' ' {print $1}')"
     fi
 
-    [ "$dbhit" == " " ] && dbhit=""
+    dbhit=$(echo "$dbhit" | sed 's/^[[:space:]]*//')
 }
 
 
