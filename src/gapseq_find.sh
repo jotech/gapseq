@@ -576,7 +576,7 @@ pwyNr=$(echo "$pwyDB" | wc -l)
 
 pwyDBfile=$(mktemp -p $tmpdir)
 echo "$pwyDB" > $pwyDBfile
-Rscript $dir/prepare_batch_alignments.R $pwyDBfile
+Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy
 
 for i in `seq 1 $pwyNr`
 do

@@ -104,7 +104,7 @@ getDBhit <- function(rea, reaName, ec, database) {
   }
 
   return(list(dbhit = paste(sort(unique(dbhit)), collapse = " "),
-              altec = paste(altec, collapse = ","),
+              altec = paste(altec, collapse = "/"),
               altec_src = paste(altec_src, collapse = ",")))
 }
 
