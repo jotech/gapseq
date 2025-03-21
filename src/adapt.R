@@ -288,9 +288,17 @@ if(is.null(mod.id)){
   out.id <- mod.id
 }
 out.rds <- paste0(output.dir,"/",out.id,"-adapt",".RDS")
+if(file.exists(out.rds)){
+  out.tmp <- tools::file_path_sans_ext(out.rds)
+  out.tmp <- make.unique(c(out.tmp, out.tmp), sep="")[2] # add increasing number to existing output file
+  out.rds <- paste0(out.tmp, ".RDS")
+  warning("Output file already exists")
+}
+print(paste0("Save output file ", out.rds))
 saveRDS(mod.out, file = out.rds)
 # Write SBML
 if(!sbml.no.output){
+  out.sbml <- paste0(output.dir,"/",out.id, "-adapt")
   source(paste0(script.dir,"/sbml_write.R"))
-  write_gapseq_sbml(mod.out, paste0(output.dir,"/",out.id, "-adapt"))
+  write_gapseq_sbml(mod.out, out.sbml, verbose=TRUE, overwrite=FALSE)
 }

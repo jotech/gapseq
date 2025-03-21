@@ -1,4 +1,4 @@
-write_gapseq_sbml <- function(mod, out.id) {
+write_gapseq_sbml <- function(mod, out.id, verbose=FALSE, overwrite=TRUE) {
   
   # handling of missing values/attributes
   mod@met_attr$chemicalFormula <- ifelse(mod@met_attr$chemicalFormula=="null",
@@ -14,7 +14,14 @@ write_gapseq_sbml <- function(mod, out.id) {
   mod@mod_notes <- notes_str
   
   # writing sbml
-  sbml.o <- cobrar::writeSBMLmod(mod, file_path = paste0(out.id, ".xml"))
+  sbml.f <- paste0(out.id, ".xml")
+  if(overwrite==FALSE & file.exists(sbml.f)){
+    out.tmp <- tools::file_path_sans_ext(sbml.f)
+    out.tmp <- make.unique(c(out.tmp, out.tmp), sep="")[2] # add increasing number to existing output file
+    sbml.f <- paste0(out.tmp, ".xml")
+  }
+  if(verbose) print(paste0("Writing SBML file ", sbml.f))
+  sbml.o <- cobrar::writeSBMLmod(mod, file_path = sbml.f)
   if(sbml.o==F)
     warning("Writing SBML-file failed.")
 }
