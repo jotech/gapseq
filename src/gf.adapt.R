@@ -254,7 +254,7 @@ rm_growth <- function(model.orig, del.met.id, use.media=NA, rxn.blast.file, verb
   
   idx <- na.omit(match(rxn.involved.meta, rxn.blast$rxn))
   rxn.involved <- rxn.blast[unique(idx),.(rxn,name,bitscore,dbhit)]
-  rxn.transporter <- na.omit(str_extract(model@react_id[which(S(model)[match(paste0(del.met.id, "[e0]"), model@met_id),]!=0)], "rxn[0-9]+")) # ATTENTION adding transporter to candidate list!!
+  rxn.transporter <- na.omit(str_extract(model@react_id[which(model@S[match(paste0(del.met.id, "[e0]"), model@met_id),]!=0)], "rxn[0-9]+")) # ATTENTION adding transporter to candidate list!!
   rxn.involved <- rbind(rxn.involved, data.table(rxn="TR", name="transporter", bitscore=NA, dbhit=paste(rxn.transporter, collapse = " ")))
   cat("\tCandidate reactions found:", nrow(rxn.involved), "\n")
   
