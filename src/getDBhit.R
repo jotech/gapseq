@@ -59,8 +59,15 @@ getDBhit <- function(rea, reaName, ec, database) {
           brendaec <- brenda[grepl(paste0(ec_esc[i],"($|,| |\t|;)"),brenda)]
           brendaec <- paste(brendaec, collapse = ";")
           brendaec <- str_extract_all(brendaec, "[0-9]\\.[0-9]+\\.[0-9]+\\.[0-9]+(?=$|,|;|\\.)")[[1]]
-          altectmp <- unique(brendaec[brendaec %notin% ec])
-          altec_srctmp <- rep("brenda", length(altectmp))
+          bralttmp <- unique(brendaec[brendaec %notin% ec])
+          if(length(bralttmp) <= 3) {
+            # Too many matches (>3) would suggest ambiguity, so they are discarded.
+            altectmp <- bralttmp
+            altec_srctmp <- rep("brenda", length(altectmp))
+          } else {
+            altectmp <- character(0L)
+            altec_srctmp <- character(0L)
+          }
         }
 
         altec <- c(altec, altectmp)
