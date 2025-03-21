@@ -3,7 +3,7 @@
 curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
-echo $dir
+#echo $dir
 metaPwy=$dir/../dat/meta_pwy.tbl
 identity=0.9 # clustered uniprot database (0.5 or 0.9)
 identity_unrev=0.5

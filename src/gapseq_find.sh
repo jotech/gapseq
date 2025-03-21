@@ -82,12 +82,12 @@ exit 1
 }
 
 
-# paths and eariables
+# paths and variables
 curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
 script_name=$(basename -- "$0")
-uniprotIdentity=0.9 # clustered uniprot database (0.5 or 0.9)
+uniprotIdentity=0.9 # clustered uniprot database (0.5 or 0.9) # This variable has currently not effect. Reviewed cluster identity: 0.9, unreviews: 0.5. These values are hardcoded in 'src/uniprot.sh'
 metaPwy=$dir/../dat/meta_pwy.tbl
 keggPwy=$dir/../dat/kegg_pwy.tbl
 seedPwy=$dir/../dat/seed_pwy.tbl
@@ -576,7 +576,7 @@ pwyNr=$(echo "$pwyDB" | wc -l)
 
 pwyDBfile=$(mktemp -p $tmpdir)
 echo "$pwyDB" > $pwyDBfile
-Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy
+Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy $seqSrc $force_offline $update_manually
 
 for i in `seq 1 $pwyNr`
 do
