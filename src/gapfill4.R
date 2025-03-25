@@ -280,7 +280,7 @@ gapfill4 <- function(mod.orig, mod.full, rxn.weights, min.gr = 0.01, bcore = 50,
   rxns.added <- gsub("_.0","",ko.dt[keep==T | core==T,dummy.rxn])
   sol <- fba(mod.orig)
   if(sol@stat %notin% stat){
-    stop("Final model cannot grow. Something is terribly wrong!")
+    stop(paste0("Final model cannot grow (status=", sol@stat, "). Something is terribly wrong!"))
     return(list(model = mod.orig.bak,
                 rxns.added = c(),
                 rxn.weights = rxn.weights,
