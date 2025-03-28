@@ -1,6 +1,6 @@
-library(data.table)
+suppressMessages(library(data.table))
 library(stringr)
-library(Biostrings)
+suppressMessages(library(Biostrings))
 
 #-------------------------------------------------------------------------------
 # (0) Parse arguments and gapseq/script path
@@ -339,15 +339,16 @@ allseqs <- lapply(allseqfiles, function(sf) {
 })
 allseqs <- do.call("c",allseqs)
 
-cat("Number of reference sequences used for alignments:",length(allseqs))
+cat("Number of reference sequences used for alignments:",length(allseqs),"\n")
 
 #-------------------------------------------------------------------------------
 # (6) Data export
 #-------------------------------------------------------------------------------
 
 save(pwyrea, reaec, seqfiles, file = paste0(args[1],".RData"))
-writeXStringSet(allseqs, filepath = paste0(args[1],".faa"))
+writeXStringSet(allseqs, filepath = "query.faa")
 
 # debugging
-# writeXStringSet(allseqs, filepath = "~/tmp/refs.faa")
+writeXStringSet(allseqs, filepath = "~/tmp/refs.faa")
+save(pwyrea, reaec, seqfiles, file = "~/tmp/preblast_data.RData")
 
