@@ -1,5 +1,10 @@
 library(data.table)
 library(stringr)
+library(Biostrings)
+
+#-------------------------------------------------------------------------------
+# (0) Parse arguments and gapseq/script path
+#-------------------------------------------------------------------------------
 
 args <- commandArgs(trailingOnly = TRUE)
 # TODO check if all required arguments are provided:
@@ -20,20 +25,38 @@ if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
 
 # get arguments
 pwyDB <- fread(args[1], sep="\t", quote=FALSE)
+pwyDB[, V9 := gsub("  "," ",V9)] # remove double spaces in reaction names
 setkey(pwyDB, "V1")
 database <- args[2]
 taxonomy <- args[3]
 seqSrc <- args[4]
 force_offline <- args[5] == "true"
 update_manually <- args[6] == "true"
+use_gene_seq <- args[7] == "true"
+
+# some hard-coded correction of syntax errors in reaction names that would break string parsing (remove when meta_pwy.tbl is corrected/updated)
+pwyDB[V1 %in% c("|PWY18C3-10|","|PWY18C3-12|"), V9 := sub("sucrose-3-isobutanoyl-4-isovaleryl-3;-isovaleroyltransferase",
+                                                        "sucrose-3-isobutanoyl-4-isovaleryl-3'-isovaleroyltransferase",
+                                                        V9)]
+pwyDB[V1 == "|PWY-6024|", V9 := sub("vitexin 2;;-O-arabinoside 7-O-galactosyltransferase",
+                                    "vitexin 2''-O-arabinoside 7-O-galactosyltransferase",
+                                    V9)]
+
+# some reaction names contain HTML character entities such as "&pi;". In those cases, drop the "&" and ";"
+pwyDB[, V9 := gsub("&([a-zA-Z0-9#]+);", "\\1", V9)]
 
 # ensure correct column types
 pwyDB$V8 <- as.character(pwyDB$V8) # key reactions
 pwyDB$V14 <- as.character(pwyDB$V14) # spontaneous reactions
 
 # for debugging
-saveRDS(pwyDB, "~/tmp/pwyDB.RDS")
+# saveRDS(pwyDB, "~/tmp/pwyDB.RDS")
 # pwyDB <- readRDS("~/tmp/pwyDB.RDS")
+
+#-------------------------------------------------------------------------------
+# (1) Create pathway table
+# keys: `pwyID`, `rea`
+#-------------------------------------------------------------------------------
 
 pwyrea <- lapply(pwyDB$V1, FUN = function(pwyi) {
   tmpdat <- pwyDB[pwyi]
@@ -42,8 +65,8 @@ pwyrea <- lapply(pwyDB$V1, FUN = function(pwyi) {
   reaids <- tmpdat[, str_split(V6,",")][[1]]
   namestmp <- tmpdat[, V9]
   namestmp <- gsub("\\(([^()]*?);([^()]*?)\\)", "\\(\\1,\\2\\)",namestmp) # In rare cases the reaction name separator ";" occurs within a reaction name, when inside brackets "(...)". These semicolons need to be replaced before string splitting.
-  namestmp <- gsub("\\&[a-zA-Z0-9]+;","___",namestmp) # in other rare cases, reaction names contain HTML character entities such as "&pi;", causing issues when splitting at ";"
   reanames <- str_split(namestmp,";")[[1]]
+  #reanames <- unlist(str_split(namestmp, "(?<!&[a-zA-Z]{1,10});")) # in other rare cases, reaction names contain HTML character entities such as "&pi;". This lines ensures that at these ";" the string is not split
   ecs <- tmpdat[, str_split(V7,",")][[1]]
   if(length(reanames) != length(reaids)) {
     message(paste0("Mismatch in the number of reaction IDs and reaction names in pathway ",pwyi,". Replacing reaction names with arbitrary rxn[1-n]..."))
@@ -60,19 +83,18 @@ pwyrea <- lapply(pwyDB$V1, FUN = function(pwyi) {
 names(pwyrea) <- pwyDB$V1
 pwyrea <- rbindlist(pwyrea, idcol = "pwyID")
 
-# get target database hits
+#-------------------------------------------------------------------------------
+# (2) Create reaction data base hits (target database: gapseq/seed reactions)
+# keys: `rea`, `reaName`, `ec`)
+#-------------------------------------------------------------------------------
+
+# get target database hits (parallel comp?)
 source(paste0(script.dir,"/getDBhit.R"))
-reaec <- pwyrea[spont == FALSE, getDBhit(rea, reaName, ec, database), by = .(rea, reaName, ec)] # spont == FALSE because we don't need to download sequences for spontaneous reactions
+reaec <- pwyrea[spont == FALSE, getDBhit(rea, reaName, ec, database), by = .(rea, reaName, ec)] # spont == FALSE because we don't need to download/blast sequences for spontaneous reactions
 
 #-------------------------------------------------------------------------------
-# collate reference sequences to use for later alignments
+# (3) identify fasta files with reference sequences to use for later alignments
 #-------------------------------------------------------------------------------
-
-# allseqfiles <- dir(paste0(script.dir,"/../dat/seq/",taxonomy,"/"),
-#                    recursive = TRUE,
-#                    pattern = "\\.fasta$")
-# fsz <- file.size(paste0(script.dir,"/../dat/seq/",taxonomy,"/",allseqfiles))
-# names(fsz) <- allseqfiles
 
 # for some metacyc reactions, there are already uniprot accessions assigned.
 metaGenes <- fread(paste0(script.dir,"/../dat/meta_genes.csv"))
@@ -80,22 +102,27 @@ metaGenes[, rxn := gsub("^\\||\\|$","",rxn)]
 setkey(metaGenes, "rxn")
 metaGenes <- metaGenes[uniprot != ""]
 
-md5sum <- function(str) {
-  temp_file <- tempfile()
-  writeLines(str, temp_file, useBytes = TRUE)
-  hash <- tools::md5sum(temp_file)
-  unlink(temp_file)  # Remove the temporary file
-  return(unname(hash))
-}
+# md5sums of reaction names
+rnuniq <- unique(reaec$reaName)
+temp_file <- tempfile()
+writeLines(rnuniq, temp_file, useBytes = TRUE)
+md5_hashes <- system(sprintf(("while IFS= read -r line; do
+                  echo -n \"$line\" | md5sum
+                done < %s"), temp_file), intern = TRUE)
+md5_hashes <- sub(" .*$","", md5_hashes)
+names(md5_hashes) <- rnuniq
+unlink(temp_file) # Clean up the temp file
+rm(rnuniq)
 
 identifySeqFiles <- function(reaID, reaName, ecs, altecs) {
   allecs <- c(unlist(str_split(ecs, "/")),
               unlist(str_split(altecs, "/")))
   allecs <- allecs[grepl("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$",allecs)]
-  rnmd5 <- md5sum(reaName)
+  #print(reaName)
+  rnmd5 <- md5_hashes[reaName]
 
   # MetaCyc geneXreaction assignments
-  sq_rxn <- paste0("rxn/",reaID,".fasta") # what when this one is not there?
+  sq_rxn <- paste0("rxn/",reaID,".fasta")
 
   # geneXec assignments (reviewed and unreviewed)
   if(length(allecs) > 0) {
@@ -132,7 +159,7 @@ identifySeqFiles <- function(reaID, reaName, ecs, altecs) {
   fileDT[, src := sub("/.*$","",file)]
   fileDT[, use := FALSE] # tbd later, dep. on "seqSrc"
 
-  # If only unreviewed or only reviewed, we can directly remove some file entries
+  # If only unreviewed or only reviewed, we can directly drop some file entries
   if(seqSrc == "1") {
     # only reviewed
     fileDT <- fileDT[src %in% c("rxn","rev","user")]
@@ -141,25 +168,21 @@ identifySeqFiles <- function(reaID, reaName, ecs, altecs) {
     fileDT <- fileDT[src %in% c("rxn","unrev","user")]
   }
 
+  # if no direct metacyc gene links should be used ('rxn'), drop those entries
+  if(!use_gene_seq)
+    fileDT <- fileDT[type != "metacyc"]
+
+  # reaName fasta (md5hash file names) should not be used if reaction names are arbitrary (e.g., rxn1)
+  fileDT <- fileDT[!(type == "reaName" & grepl("^rxn[0-9]+$|^Rxn[0-9]+$|^RXN",reaName))]
+
   # if the reaction ID is not listed in metaGenes, we can remove the "rxn" entry
-  if(reaID %notin% metaGenes$rxn) {
+  if(use_gene_seq && reaID %notin% metaGenes$rxn) {
     fileDT <- fileDT[src != "rxn"]
   }
 
   fileDT[, fex := file.exists(paste0(script.dir,"/../dat/seq/",taxonomy,"/",file))]
   fileDT <- fileDT[!(src == "user" & fex == FALSE)] # when user fasta does not exist, nothing to collect/use here
   fileDT[fex == TRUE, file_size := file.size(paste0(script.dir,"/../dat/seq/",taxonomy,"/",file))]
-
-  if(!force_offline) {
-    # TODO: Check if something needs to be downloaded here
-    # Everything of type "EC" should be there
-    if(fileDT[type == "EC" & !fex, .N] > 0) {
-      print(reaID)
-      print(fileDT[type == "EC" & !fex])
-    }
-    # files for hashed reaName should be there in cases where all EC files are empty
-    # files for "rxn" should be there, if the reaction ID is listed in table metaGenes
-  }
 
   return(fileDT)
 }
@@ -173,7 +196,7 @@ seqfiles <- lapply(1:nrow(reaec), function(i) {
 seqfiles <- rbindlist(seqfiles)
 
 #-------------------------------------------------------------------------------
-# (n) Download sequences (if required)
+# (4) Download sequences (if required/wanted)
 #-------------------------------------------------------------------------------
 
 seqfiles$uniprot_query <- NA_character_
@@ -189,7 +212,7 @@ if(!force_offline) {
   if(ndl > 0) {
     cat(ndl, "sequence files need to be downloaded from UniProt (via EC / metacyc-genes):\n")
     for(i in 1:ndl) {
-      cat("\r", i, "/", ndl,"(",seqfiles_dlEC[i,file],")\n")
+      cat(" ", i, "/", ndl,"(",seqfiles_dlEC[i,file],")\n")
       system(seqfiles_dlEC[i,uniprot_query], ignore.stdout = TRUE, ignore.stderr = FALSE)
     }
     cat("\n")
@@ -197,10 +220,29 @@ if(!force_offline) {
 
   # update file existence and size columns
   seqfiles[type == "EC" & !is.na(uniprot_query), fex := file.exists(paste0(script.dir,"/../dat/seq/",taxonomy,"/",file))]
-  seqfiles[type == "EC" & !is.na(file_size) & fex == TRUE, file_size := file.size(paste0(script.dir,"/../dat/seq/",taxonomy,"/",file))]
+  seqfiles[type == "EC" & !is.na(uniprot_query) & fex == TRUE, file_size := file.size(paste0(script.dir,"/../dat/seq/",taxonomy,"/",file))]
 
-  # use reaction names for uniprot queries if no EC for reaction, or EC fastas are empty
-  # seqfiles[, use_reanames := all(ecs == "") || sum(file_size * (type == "EC" & fex), na.rm = TRUE) == 0,by = .(rea, reaName, ecs)]
+  # use reaction names for uniprot queries if no valid EC for reaction, or EC fastas are empty
+  seqfiles[, use_reanames := !any(type == "EC") || sum(file_size * (type == "EC" & fex), na.rm = TRUE) == 0,
+           by = .(rea, reaName, ecs)]
+  seqfiles[use_reanames == TRUE & type == "reaName" & (!fex | update_manually) & src == "rev" & reaName != "",
+           uniprot_query := paste0(script.dir,"/uniprot.sh -r \"",reaName,"\" -t \"",taxonomy,"\" -i 0.9 -o")]
+  seqfiles[use_reanames == TRUE & type == "reaName" & (!fex | update_manually) & src == "unrev" & reaName != "",
+           uniprot_query := paste0(script.dir,"/uniprot.sh -u -r \"",reaName,"\" -t \"",taxonomy,"\" -i 0.5 -o")]
+  seqfiles_dlRN <- seqfiles[type == "reaName" & !is.na(uniprot_query)][!duplicated(file)]
+  ndl <- nrow(seqfiles_dlRN)
+  if(ndl > 0) {
+    cat(ndl, "sequence files need to be downloaded from UniProt (via reaction name):\n")
+    for(i in 1:ndl) {
+      cat(" ", i, "/", ndl,"(",seqfiles_dlRN[i,reaName],"/",seqfiles_dlRN[i,file],")\n")
+      system(seqfiles_dlRN[i,uniprot_query], ignore.stdout = TRUE, ignore.stderr = FALSE)
+    }
+    cat("\n")
+  }
+
+  # update file existence and size columns
+  seqfiles[type == "reaName" & !is.na(uniprot_query), fex := file.exists(paste0(script.dir,"/../dat/seq/",taxonomy,"/",file))]
+  seqfiles[type == "reaName" & !is.na(uniprot_query) & fex == TRUE, file_size := file.size(paste0(script.dir,"/../dat/seq/",taxonomy,"/",file))]
 
   # perform sequence download for direct uniprot links from metacyc reaction IDs
   mc_uplinks <- merge(seqfiles[src=="rxn" & (!fex | update_manually),
@@ -210,7 +252,7 @@ if(!force_offline) {
   if(ndl > 0) {
     cat(ndl, "files need to be downloaded from UniProt via diect metacyc gene links:\n")
     for(i in 1:ndl) {
-      cat("\r",i,"/",ndl)
+      cat(" ",i,"/",ndl,"(",updlids[i],")\n")
       system(paste0(
         script.dir,"/uniprot.sh -d ",updlids[i]," -t ",taxonomy," -i 0.9 -o"
       ), ignore.stdout = TRUE, ignore.stderr = FALSE)
@@ -223,6 +265,89 @@ if(!force_offline) {
                   paste0(script.dir,"/../dat/seq/",taxonomy,"/rxn/",mc_uplinks[file == reai,uniprot],".fasta"))
     }
   }
-
-
 }
+seqfiles[, uniprot_query := NULL] # column not needed anymore
+seqfiles[, use_reanames := NULL]
+
+#-------------------------------------------------------------------------------
+# (5) Decide which reference sequence files to use
+#-------------------------------------------------------------------------------
+
+# Decision rules:
+# (a) sequences in folder "rxn" are always used
+# (b) sequences in folder "user" are always used
+# (c) Sequences of type "EC" are always of priority, meaning that if there are sequences via the EC number (also in unrev), sequences of type "reaName" are not used, even if they are reviewed.
+#     Thus the decision tree is:
+#       has rev EC seqs? --no--> has unrev EC seqs? --no--> has rev reaName seqs? --no--> use unrev reaName seqs
+# (d) if sequences are there in user file, files in "unrev" or "rev" are ignored (this might be changed in future versions)
+# (e) sequences in folder "rev" are only used when seqSrc is in c("1","2","3") and when there are no user sequences
+# (f) sequences in folder "unrev" are only used when (seqSrc is in c("3","4") OR (seqSrc is "2" AND reviewed seqs don't exist)) and when there are no user sequences
+# (g) If sequence file does not exist or is empty, don't use it. Obviously.
+
+seqfiles[, has_user_seqs := any(src == "user", na.rm = TRUE), by = .(rea, reaName, ecs)]
+seqfiles[, has_revEC_seqs := sum(((type == "EC") * (src == "rev") * file_size), na.rm = TRUE) > 0, by = .(rea, reaName, ecs)]
+seqfiles[, has_unrevEC_seqs := sum(((type == "EC") * (src == "unrev") * file_size), na.rm = TRUE) > 0, by = .(rea, reaName, ecs)]
+seqfiles[, has_revRN_seqs := sum(((type == "reaName") * (src == "rev") * file_size), na.rm = TRUE) > 0, by = .(rea, reaName, ecs)]
+seqfiles[, has_unrevRN_seqs := sum(((type == "reaName") * (src == "unrev") * file_size), na.rm = TRUE) > 0, by = .(rea, reaName, ecs)]
+
+# (a+b)
+seqfiles[src == "rxn", use := TRUE]
+seqfiles[src == "user", use := TRUE]
+
+if(seqSrc == "1") {
+  # only reviewed
+  # (c+d+e)
+  seqfiles[has_user_seqs == FALSE & has_revEC_seqs == TRUE & src %in% c("rev") & type == "EC", use := TRUE]
+  seqfiles[has_user_seqs == FALSE & has_revEC_seqs == FALSE & has_revRN_seqs == TRUE & src %in% c("rev") & type == "reaName", use := TRUE]
+} else if(seqSrc == "2") {
+  # only reviewed
+  # (c+d+e) EC
+  seqfiles[has_user_seqs == FALSE & has_revEC_seqs == TRUE & src %in% c("rev") & type == "EC", use := TRUE]
+  # (c+d+f) EC
+  seqfiles[has_user_seqs == FALSE & has_revEC_seqs == FALSE & has_unrevEC_seqs == TRUE & src %in% c("unrev") & type == "EC", use := TRUE]
+  # (c+d+e) reaName
+  seqfiles[has_user_seqs == FALSE & has_revEC_seqs == FALSE & has_unrevEC_seqs == FALSE & has_revRN_seqs == TRUE & src %in% c("rev") & type == "reaName", use := TRUE]
+  # (c+d+f) reaName
+  seqfiles[has_user_seqs == FALSE & has_revEC_seqs == FALSE & has_unrevEC_seqs == FALSE & has_revRN_seqs == FALSE & has_unrevRN_seqs == TRUE & src %in% c("unrev") & type == "reaName", use := TRUE]
+} else if(seqSrc == "3") {
+  # reviewed+unreviewed
+  # (c+d+e+f)
+  seqfiles[has_user_seqs == FALSE & src %in% c("unrev","rev") & type == "EC", use := TRUE]
+  seqfiles[has_user_seqs == FALSE & has_revEC_seqs == FALSE & has_unrevEC_seqs == FALSE & src %in% c("unrev","rev") & type == "reaName", use := TRUE]
+} else if(seqSrc == "4") {
+  # only unreviewed
+  # (c+d+e+f)
+  seqfiles[has_user_seqs == FALSE & src %in% c("unrev") & type == "EC", use := TRUE]
+  seqfiles[has_user_seqs == FALSE & has_unrevEC_seqs == FALSE & src %in% c("unrev") & type == "reaName", use := TRUE]
+}
+
+# (g)
+seqfiles[fex == FALSE | file_size == 0, use := FALSE]
+
+# for debugging
+# seqfiles[use == TRUE, table(type, src)]
+
+#-------------------------------------------------------------------------------
+# (6) Combine all fasta files into one (keeping track of file source in headers)
+#-------------------------------------------------------------------------------
+
+allseqfiles <- unique(seqfiles[use == TRUE, file])
+allseqs <- lapply(allseqfiles, function(sf) {
+  tmpseqs <- readAAStringSet(paste0(script.dir,"/../dat/seq/",taxonomy,"/",sf))
+  names(tmpseqs) <- paste0(sf,"|",names(tmpseqs))
+  return(tmpseqs)
+})
+allseqs <- do.call("c",allseqs)
+
+cat("Number of reference sequences used for alignments:",length(allseqs))
+
+#-------------------------------------------------------------------------------
+# (6) Data export
+#-------------------------------------------------------------------------------
+
+save(pwyrea, reaec, seqfiles, file = paste0(args[1],".RData"))
+writeXStringSet(allseqs, filepath = paste0(args[1],".faa"))
+
+# debugging
+# writeXStringSet(allseqs, filepath = "~/tmp/refs.faa")
+

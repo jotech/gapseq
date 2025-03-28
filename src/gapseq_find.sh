@@ -576,7 +576,11 @@ pwyNr=$(echo "$pwyDB" | wc -l)
 
 pwyDBfile=$(mktemp -p $tmpdir)
 echo "$pwyDB" > $pwyDBfile
-Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy $seqSrc $force_offline $update_manually
+Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy $seqSrc $force_offline $update_manually $use_gene_seq
+
+# Calculate Alignments
+
+
 
 for i in `seq 1 $pwyNr`
 do

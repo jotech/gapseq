@@ -73,6 +73,11 @@ getDBhit <- function(rea, reaName, ec, database) {
         altec <- c(altec, altectmp)
         altec_src <- c(altec_src, altec_srctmp)
 
+        # remove unspecific alternative ECs (i.e., EC numbers with unknown acceptors)
+        altec_unspecific <- grepl("\\.99\\.[0-9]+$",altec)
+        altec <- altec[!altec_unspecific]
+        altec_src <- altec_src[!altec_unspecific]
+
         if(length(altectmp) > 0) {
           altec_esc <- gsub(".","\\.", altectmp, fixed = TRUE)
           altec_esc_comb <- paste0(altec_esc,"(,|$|;)", collapse = "|")
