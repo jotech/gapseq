@@ -33,6 +33,7 @@ user_temp=false
 force_offline=false
 input_mode="auto"
 output_dir=.
+aliTool="blast"
 OS=$(uname -s)
 if [ "$OS" = "Darwin" -o "$OS" = "FreeBSD" ]; then
     n_threads=$(sysctl hw.ncpu|cut -f2 -d' ')
@@ -74,6 +75,7 @@ usage()
     echo "  -O Force offline mode (default: $force_offline)"
     echo "  -M Input genome mode. Either 'nucl', 'prot', or 'auto' (default '$input_mode')"
     echo "  -K Number of threads for sequence alignments. If option is not provided, number of available CPUs will be automatically determined."
+    echo "  -A Tool to be used for sequence alignments (blast, mmseqs2, diamond; default: $aliTool)"
     echo ""
     echo "Details:"
     echo "\"-t\": if 'auto', gapseq tries to predict if the organism is Bacteria or Archaea based on the provided genome sequence. The prediction is based on the 16S rRNA gene sequence using a classifier that was trained on 16S rRNA genes from organisms with known Gram-staining phenotype. In case no 16S rRNA gene was found, a k-mer based classifier is used instead."
@@ -105,12 +107,10 @@ seedEnzymesNames=$dir/../dat/seed_Enzyme_Name_Reactions_Aliases.tsv
 altecdb=$dir/../dat/altec.csv
 metaGenes=$dir/../dat/meta_genes.csv
 
-function join_by { local IFS="$1"; shift; echo "$*"; }
-
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:A:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -213,6 +213,9 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:" opt; do
             use_parallel=false
         fi
         ;;
+    A)
+        aliTool=$OPTARG
+        ;;
     esac
 done
 shift $((OPTIND-1))
@@ -221,12 +224,15 @@ shift $((OPTIND-1))
 # after parsing arguments, only fasta file should be there
 [ "$#" -ne 1 ] && { usage; }
 
-# blast format
+# alignment statistics format
 if [ "$includeSeq" = true ]; then
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
+    mmseqs_format="query,pident,evalue,bits,qcov,theader,tstart,tend,qseq"
+    diamnd_format="qseqid pident evalue bitscore qcovhsp stitle sstart send sseq"
 else
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send"
-    #blast_format="qseqid pident evalue bitscore qcovhsp stitle sstart send"
+    mmseqs_format="query,pident,evalue,bits,qcov,theader,tstart,tend"
+    diamond_format="qseqid pident evalue bitscore qcovhsp stitle sstart send"
 fi
 
 # set output directory
@@ -572,21 +578,38 @@ Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy $seqSrc $
 # Calculate Alignments #
 #----------------------#
 
-# create blast database
-if [ "$input_mode" == "nucl" ]; then
-    makeblastdb -in "$fasta" -dbtype nucl -out orgdb >/dev/null
-fi
-if [ "$input_mode" == "prot" ]; then
-    makeblastdb -in "$fasta" -dbtype prot -out orgdb >/dev/null
-    #diamond makedb -p 16 --in "$fasta" --quiet -d orgdb >/dev/null
+if [ "$aliTool" == "blast" ]; then
+    if [ "$input_mode" == "nucl" ]; then
+        makeblastdb -in "$fasta" -dbtype nucl -out orgdb >/dev/null
+    fi
+    if [ "$input_mode" == "prot" ]; then
+        makeblastdb -in "$fasta" -dbtype prot -out orgdb >/dev/null
+    fi
+    
+    if [ "$input_mode" == "prot" ]; then
+        blastp -db orgdb -query query.faa -qcov_hsp_perc $covcutoff -num_threads $n_threads -outfmt "6 $blast_format" > alignments.tsv
+    fi
+    
 fi
 
-# run alignments
-if [ "$input_mode" == "prot" ]; then
-    blastp -db orgdb -query query.faa -qcov_hsp_perc $covcutoff -num_threads $n_threads -outfmt "6 $blast_format" > query.blast
+if [ "$aliTool" == "diamond" ]; then
+    diamond makedb --in "$fasta" -d orgdb >/dev/null
+    diamond blastp -d orgdb.dmnd -q query.faa \
+      --threads $n_threads \
+      --out alignments.tsv \
+      --outfmt 6 $diamond_format \
+      --query-cover $covcutoff
 fi
-cp query.blast ~/tmp/query.blast
 
+if [ "$aliTool" == "mmseqs2" ]; then
+    mmseqs createdb "$fasta" targetDB
+    mmseqs createdb query.faa queryDB
+    mmseqs search queryDB targetDB resultDB $tmpdir --threads $n_threads -c 0.$covcutoff
+    mmseqs convertalis queryDB targetDB resultDB res_mmseqs.tsv \
+      --format-output "$mmseqs_format"
+fi
+
+cp alignments.tsv ~/tmp/alignments.tsv # debug line
 
 # add gapseq version and sequence database status to table comments head
 gapseq_version=$($dir/.././gapseq -v | head -n 1)
