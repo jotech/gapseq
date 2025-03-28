@@ -599,7 +599,8 @@ if [ "$aliTool" == "diamond" ]; then
       --threads $n_threads \
       --out alignments.tsv \
       --outfmt 6 $diamond_format \
-      --query-cover $covcutoff
+      --query-cover $covcutoff \
+      --quiet
 fi
 
 if [ "$aliTool" == "mmseqs2" ]; then
@@ -612,14 +613,20 @@ fi
 
 cp alignments.tsv ~/tmp/alignments.tsv # debug line
 
+#----------------------#
+# Analyse Alignments   #
+#----------------------#
+Rscript $dir/analyse_alignments.R $bitcutoff $identcutoff $strictCandidates $identcutoff_exception $subunit_cutoff
+cp output.tbl $output_dir/${fastaID}-$output_suffix-Reactions.tbl
+
 # add gapseq version and sequence database status to table comments head
 gapseq_version=$($dir/.././gapseq -v | head -n 1)
 seqdb_version=`md5sum $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1-7`
 seqdb_date=$(stat -c %y $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1-10)
 
-#sed -i "1s/^/# $gapseq_version\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
-#sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
-#sed -i "3s/^/# Genome format: $input_mode\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
+sed -i "1s/^/# $gapseq_version\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
+sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
+sed -i "3s/^/# Genome format: $input_mode\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
 #sed -i "1s/^/# $gapseq_version\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
 #sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
 #sed -i "3s/^/# Genome format: $input_mode\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
