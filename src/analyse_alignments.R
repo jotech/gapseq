@@ -3,10 +3,11 @@ suppressMessages(library(data.table))
 #-------------------------------------------------------------------------------
 # (0) Read pre-alignment data and alignment stats
 #-------------------------------------------------------------------------------
-load("~/tmp/prealignment_data.RData")
+load("prealignment_data.RData") # load("~/tmp/prealignment_data.RData")
+setnames(seqfiles,"ecs","ec")
 
 alicols <- c("qseqid","pident","evalue","bitscore","qcovs","stitle","sstart","send","sseq")
-alignments <- fread("~/tmp/alignments.tsv")
+alignments <- fread("alignments.tsv") # alignments <- fread("~/tmp/alignments.tsv")
 setnames(alignments, alicols[1:ncol(alignments)])
 alignments[, file := sub("\\|.+$","",qseqid)]
 alignments[, qseqid := sub("^.+\\.fasta\\|","",qseqid)]
@@ -30,13 +31,18 @@ if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
 bitcutoff <- as.numeric(args[1])
 identcutoff <- as.numeric(args[2])
 strictCandidates <- args[3] == "true"
-output_suffix <- args[4]
-aliTool <- args[5]
+identcutoff_exception <- as.numeric(args[4])
+subunit_cutoff <- as.numeric(args[5])/100
 
-pwyrea
-reaec
-seqfiles
-setnames(seqfiles,"ecs","ec")
+#-------------------------------------------------------------------------------
+# (2) Read additional required gapseq files
+#-------------------------------------------------------------------------------
+source(paste0(script.dir,"/complex_detection2.R"))
+dt_exceptions <- fread(paste0(script.dir,"/../dat/exception.tbl"), skip = "enzyme/reaction")
+
+#-------------------------------------------------------------------------------
+# (3) Complex detection
+#-------------------------------------------------------------------------------
 
 # identify reactions probably catalyzed by protein complexes
 cplx <- merge(seqfiles[use == TRUE, .(file, rea, reaName, ec)], seq_headers, by = "file", allow.cartesian = TRUE)
@@ -54,19 +60,47 @@ cplx_bin <- cplx[,.(is_complex = any(is_complex),
                     subunits = paste(unique(complex),collapse = ",")), by = .(rea, reaName, ec)]
 cplx_bin[is_complex == FALSE, subunit_count := NA_integer_]
 
-#
-rxndt <- merge(reaec[,.(rxn = rea, name = reaName, ec, dbhit)],
+
+#-------------------------------------------------------------------------------
+# (4) Inferring Reaction presence/absence
+#-------------------------------------------------------------------------------
+
+rxndt <- merge(reaec[,.(rxn = rea, name = reaName, ec, dbhit, spont)],
                seqfiles[use == TRUE, .(rxn = rea, name = reaName, ec, file, type, src)], by = c("rxn","name", "ec"),
                all.x = TRUE)
-rxndt <- merge(rxndt, cplx_bin[,.(rxn = rea, name = reaName, ec, is_complex, subunit_count)], by = c("rxn","name", "ec"), all.x = TRUE)
+rxndt <- merge(rxndt, cplx_bin[,.(rxn = rea, name = reaName, ec, is_complex, subunit_count, subunits)], by = c("rxn","name", "ec"), all.x = TRUE)
 rxndt <- merge(rxndt, alignments, by = "file", all.x = TRUE, allow.cartesian = TRUE)
 rxndt$complex <- cplx[rxndt[,.(rxn, name, ec, qseqid)], complex]
 rxndt[is.na(is_complex), is_complex := FALSE]
 
+exc_ec <- dt_exceptions[grepl("^[0-9]\\.[0-9]+\\.[0-9]+\\.[0-9]+$", `enzyme/reaction`),
+                        paste0("(",`enzyme/reaction`,"($|/))", collapse = "|")]
+rxndt[, exception := as.numeric(grepl(exc_ec, ec))]
 
-rxndt[!is.na(file) & is_complex == TRUE, complex := cplx[.(rxn, name, ec, qseqid),]]
+rxndt[bitscore >= bitcutoff & pident >= identcutoff, status := "good_blast"]
+rxndt[bitscore < bitcutoff | pident < identcutoff, status := "bad_blast"]
+rxndt[exception == 1 & !is.na(bitscore) & pident < identcutoff_exception, status := "bad_blast"]
+rxndt[is.na(qseqid) & !is.na(file), status := "no_blast"]
+rxndt[is.na(qseqid) & is.na(file), status := "no_seq_data"]
+rxndt[is.na(qseqid) & is.na(file) & spont == TRUE, status := "spontaneous"]
+
+# infere if complexes are complete (enough)
+rxndt[is_complex == TRUE, subunits_found := length(unique(complex[!is.na(complex) & complex != "Subunit undefined" & status == "good_blast"])), by = .(rxn,name,ec)]
+rxndt[is_complex == TRUE, subunit_undefined_found := any(complex == "Subunit undefined" & status == "good_blast"), by = .(rxn,name,ec)]
+rxndt[(subunits_found / subunit_count > subunit_cutoff) | (subunits_found / subunit_count == subunit_cutoff & subunit_undefined_found == TRUE), complex.status := 1]
+
+# merge in pathway info
+rxndt <- merge(pwyrea[, .(rxn = rea, name = reaName, ec, pathway = pwyID)],
+               rxndt, by = c("rxn","name", "ec"),
+               allow.cartesian = TRUE)
+rxndt <- rxndt[order(pathway, rxn, complex, -bitscore)]
+
+#-------------------------------------------------------------------------------
+# (4) Inferring Pathway presence/absence
+#-------------------------------------------------------------------------------
 
 
-# rxndt <- merge(pwyrea, reaec, by = c("rea", "reaName", "ec"), all.x = TRUE)
-# rxndt <- merge(rxndt, seqfiles[use == TRUE, .(rea, reaName, ec, file, type, src)], by = c("rea","reaName", "ec"), all.x = TRUE)
-# rxndt <- merge(rxndt, alignments, by = "file", all.x = TRUE, allow.cartesian = TRUE)
+#-------------------------------------------------------------------------------
+# (n) Export reaction and pathway tables
+#-------------------------------------------------------------------------------
+fwrite(rxndt, file = "output.tbl", sep = "\t", quote = FALSE)

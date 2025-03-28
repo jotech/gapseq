@@ -90,7 +90,7 @@ pwyrea <- rbindlist(pwyrea, idcol = "pwyID")
 
 # get target database hits (parallel comp?)
 source(paste0(script.dir,"/getDBhit.R"))
-reaec <- pwyrea[spont == FALSE, getDBhit(rea, reaName, ec, database), by = .(rea, reaName, ec)] # spont == FALSE because we don't need to download/blast sequences for spontaneous reactions
+reaec <- pwyrea[, getDBhit(rea, reaName, ec, database), by = .(rea, reaName, ec, spont)]
 
 #-------------------------------------------------------------------------------
 # (3) identify fasta files with reference sequences to use for later alignments
@@ -114,7 +114,7 @@ names(md5_hashes) <- rnuniq
 unlink(temp_file) # Clean up the temp file
 rm(rnuniq)
 
-identifySeqFiles <- function(reaID, reaName, ecs, altecs) {
+identifySeqFiles <- function(reaID, reaName, ecs, altecs, spont) {
   allecs <- c(unlist(str_split(ecs, "/")),
               unlist(str_split(altecs, "/")))
   allecs <- allecs[grepl("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$",allecs)]
@@ -187,13 +187,15 @@ identifySeqFiles <- function(reaID, reaName, ecs, altecs) {
   return(fileDT)
 }
 
-seqfiles <- lapply(1:nrow(reaec), function(i) {
-  return(identifySeqFiles(reaID = reaec[i,rea],
-                          reaName = reaec[i,reaName],
-                          ecs = reaec[i,ec],
-                          altecs = reaec[i,altec]))
+reaec_nospont <- reaec[spont == FALSE]
+seqfiles <- lapply(1:nrow(reaec_nospont), function(i) {
+  return(identifySeqFiles(reaID = reaec_nospont[i,rea],
+                          reaName = reaec_nospont[i,reaName],
+                          ecs = reaec_nospont[i,ec],
+                          altecs = reaec_nospont[i,altec]))
 })
 seqfiles <- rbindlist(seqfiles)
+rm(reaec_nospont)
 
 #-------------------------------------------------------------------------------
 # (4) Download sequences (if required/wanted)
@@ -250,7 +252,7 @@ if(!force_offline) {
   updlids <- unique(mc_uplinks$uniprot)
   ndl <- length(updlids)
   if(ndl > 0) {
-    cat(ndl, "files need to be downloaded from UniProt via diect metacyc gene links:\n")
+    cat(ndl, "files need to be downloaded from UniProt via direct metacyc gene links:\n")
     for(i in 1:ndl) {
       cat(" ",i,"/",ndl,"(",updlids[i],")\n")
       system(paste0(
