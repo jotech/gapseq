@@ -50,7 +50,7 @@ pwyDB$V8 <- as.character(pwyDB$V8) # key reactions
 pwyDB$V14 <- as.character(pwyDB$V14) # spontaneous reactions
 
 # for debugging
-# saveRDS(pwyDB, "~/tmp/pwyDB.RDS")
+saveRDS(pwyDB, "~/tmp/pwyDB.RDS")
 # pwyDB <- readRDS("~/tmp/pwyDB.RDS")
 
 #-------------------------------------------------------------------------------
@@ -345,10 +345,16 @@ cat("Number of reference sequences used for alignments:",length(allseqs),"\n")
 # (6) Data export
 #-------------------------------------------------------------------------------
 
-save(pwyrea, reaec, seqfiles, file = paste0(args[1],".RData"))
 writeXStringSet(allseqs, filepath = "query.faa")
+
+# sequence headers
+seq_headers <- data.table(header = names(allseqs))
+seq_headers[, file := sub("\\|.+$","",header)]
+seq_headers[, header := sub("^.+\\.fasta\\|","",header)]
+
+# save central temporary data structures
+save(pwyrea, reaec, seqfiles, seq_headers, file = "prealignment_data.RData")
 
 # debugging
 writeXStringSet(allseqs, filepath = "~/tmp/refs.faa")
-save(pwyrea, reaec, seqfiles, file = "~/tmp/preblast_data.RData")
-
+save(pwyrea, reaec, seqfiles, seq_headers, file = "~/tmp/prealignment_data.RData")
