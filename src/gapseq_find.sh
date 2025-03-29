@@ -577,37 +577,31 @@ Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy $seqSrc $
 #----------------------#
 # Calculate Alignments #
 #----------------------#
+touch aligner.log
 
 if [ "$aliTool" == "blast" ]; then
-    if [ "$input_mode" == "nucl" ]; then
-        makeblastdb -in "$fasta" -dbtype nucl -out orgdb >/dev/null
-    fi
-    if [ "$input_mode" == "prot" ]; then
-        makeblastdb -in "$fasta" -dbtype prot -out orgdb >/dev/null
-    fi
-    
-    if [ "$input_mode" == "prot" ]; then
-        blastp -db orgdb -query query.faa -qcov_hsp_perc $covcutoff -num_threads $n_threads -outfmt "6 $blast_format" > alignments.tsv
-    fi
-    
+    echo `blastp -version` >> aligner.log
+    makeblastdb -in "$fasta" -dbtype prot -out orgdb >> aligner.log
+    blastp -db orgdb -query query.faa -qcov_hsp_perc $covcutoff -num_threads $n_threads -outfmt "6 $blast_format" > alignments.tsv
 fi
 
 if [ "$aliTool" == "diamond" ]; then
-    diamond makedb --in "$fasta" -d orgdb >/dev/null
+    echo `diamond --version` >> aligner.log
+    diamond makedb --in "$fasta" -d orgdb >> aligner.log 2>&1
     diamond blastp -d orgdb.dmnd -q query.faa \
       --threads $n_threads \
       --out alignments.tsv \
       --outfmt 6 $diamond_format \
-      --query-cover $covcutoff \
-      --quiet
+      --query-cover $covcutoff >> aligner.log 2>&1
 fi
 
 if [ "$aliTool" == "mmseqs2" ]; then
-    mmseqs createdb "$fasta" targetDB
-    mmseqs createdb query.faa queryDB
-    mmseqs search queryDB targetDB resultDB $tmpdir --threads $n_threads -c 0.$covcutoff
-    mmseqs convertalis queryDB targetDB resultDB res_mmseqs.tsv \
-      --format-output "$mmseqs_format"
+    echo `mmseqs version` >> aligner.log
+    mmseqs createdb "$fasta" targetDB >> aligner.log 2>&1
+    mmseqs createdb query.faa queryDB >> aligner.log 2>&1
+    mmseqs search queryDB targetDB resultDB $tmpdir --threads $n_threads -c 0.$covcutoff >> aligner.log
+    mmseqs convertalis queryDB targetDB resultDB alignments.tsv \
+      --format-output "$mmseqs_format" >> aligner.log 2>&1
 fi
 
 cp alignments.tsv ~/tmp/alignments.tsv # debug line
@@ -615,8 +609,11 @@ cp alignments.tsv ~/tmp/alignments.tsv # debug line
 #----------------------#
 # Analyse Alignments   #
 #----------------------#
-Rscript $dir/analyse_alignments.R $bitcutoff $identcutoff $strictCandidates $identcutoff_exception $subunit_cutoff
+Rscript $dir/analyse_alignments.R $bitcutoff $identcutoff $strictCandidates $identcutoff_exception $subunit_cutoff $completenessCutoffNoHints $completenessCutoff
+
+cp aligner.log $output_dir/${fastaID}-$output_suffix-find_aligner.log
 cp output.tbl $output_dir/${fastaID}-$output_suffix-Reactions.tbl
+cp output_pwy.tbl $output_dir/${fastaID}-$output_suffix-Pathways.tbl
 
 # add gapseq version and sequence database status to table comments head
 gapseq_version=$($dir/.././gapseq -v | head -n 1)
@@ -626,9 +623,9 @@ seqdb_date=$(stat -c %y $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1
 sed -i "1s/^/# $gapseq_version\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
 sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
 sed -i "3s/^/# Genome format: $input_mode\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
-#sed -i "1s/^/# $gapseq_version\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
-#sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
-#sed -i "3s/^/# Genome format: $input_mode\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
+sed -i "1s/^/# $gapseq_version\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
+sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
+sed -i "3s/^/# Genome format: $input_mode\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
 
 # print annotation genome coverage
 #[[ verbose -ge 1 ]] && [[ "$anno_genome_cov" = true ]] && Rscript $dir/coverage.R "$fasta" $output_dir/${fastaID}-$output_suffix-Reactions.tbl 

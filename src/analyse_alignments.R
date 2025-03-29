@@ -33,6 +33,8 @@ identcutoff <- as.numeric(args[2])
 strictCandidates <- args[3] == "true"
 identcutoff_exception <- as.numeric(args[4])
 subunit_cutoff <- as.numeric(args[5])/100
+completenessCutoffNoHints <- as.numeric(args[6])/100
+completenessCutoff <- as.numeric(args[7])/100
 
 #-------------------------------------------------------------------------------
 # (2) Read additional required gapseq files
@@ -89,8 +91,12 @@ rxndt[is_complex == TRUE, subunits_found := length(unique(complex[!is.na(complex
 rxndt[is_complex == TRUE, subunit_undefined_found := any(complex == "Subunit undefined" & status == "good_blast"), by = .(rxn,name,ec)]
 rxndt[(subunits_found / subunit_count > subunit_cutoff) | (subunits_found / subunit_count == subunit_cutoff & subunit_undefined_found == TRUE), complex.status := 1]
 
+# remove duplicate hits (same reaction & complex & gene in target genome)
+rxndt <- rxndt[order(rxn, name, ec, stitle, complex, -bitscore)]
+rxndt <- unique(rxndt, by = c("rxn", "name", "ec", "stitle", "complex"))
+
 # merge in pathway info
-rxndt <- merge(pwyrea[, .(rxn = rea, name = reaName, ec, pathway = pwyID)],
+rxndt <- merge(pwyrea[, .(rxn = rea, name = reaName, ec, pathway = pwyID, keyrea)],
                rxndt, by = c("rxn","name", "ec"),
                allow.cartesian = TRUE)
 rxndt <- rxndt[order(pathway, rxn, complex, -bitscore)]
@@ -98,9 +104,22 @@ rxndt <- rxndt[order(pathway, rxn, complex, -bitscore)]
 #-------------------------------------------------------------------------------
 # (4) Inferring Pathway presence/absence
 #-------------------------------------------------------------------------------
-
+pwydt <- unique(rxndt, by = c("pathway","rxn"))
+pwydt <- pwydt[, .(pathway, rxn, spont, keyrea, is_complex, complex.status, status)]
+pwydt <- pwydt[, .(NrReaction = .N,
+                   NrSpontaneous = sum(spont),
+                   NrVague = sum(status == "no_seq_data"),
+                   NrKeyReaction = sum(keyrea),
+                   NrReactionFound = sum((is_complex == FALSE & status == "good_blast") | (is_complex == TRUE & !is.na(complex.status))),
+                   NrKeyReactionFound = sum(status == "good_blast" & keyrea == TRUE),
+                   ReactionsFound = paste(rxn[(is_complex == FALSE & status == "good_blast") | (is_complex == TRUE & !is.na(complex.status))], collapse = " "),
+                   SpontaneousReactions = paste(rxn[spont == TRUE], collapse = " "),
+                   KeyReactions = paste(rxn[keyrea == TRUE], collapse = " ")),by = pathway]
+pwydt[, Completeness := NrReactionFound / (NrReaction - NrVague - NrSpontaneous) * 100]
+pwydt[, Prediction := Completeness >= completenessCutoffNoHints]
 
 #-------------------------------------------------------------------------------
 # (n) Export reaction and pathway tables
 #-------------------------------------------------------------------------------
 fwrite(rxndt, file = "output.tbl", sep = "\t", quote = FALSE)
+fwrite(rxndt, file = "output_pwy.tbl", sep = "\t", quote = FALSE)
