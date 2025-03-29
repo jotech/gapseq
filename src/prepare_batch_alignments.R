@@ -49,6 +49,9 @@ pwyDB[, V9 := gsub("&([a-zA-Z0-9#]+);", "\\1", V9)]
 pwyDB$V8 <- as.character(pwyDB$V8) # key reactions
 pwyDB$V14 <- as.character(pwyDB$V14) # spontaneous reactions
 
+# when ec numbers are searched -> empty reaction name
+pwyDB[is.na(V9), V9 := ""]
+
 # for debugging
 saveRDS(pwyDB, "~/tmp/pwyDB.RDS")
 # pwyDB <- readRDS("~/tmp/pwyDB.RDS")
@@ -347,12 +350,19 @@ cat("Number of reference sequences used for alignments:",length(allseqs),"\n")
 # (6) Data export
 #-------------------------------------------------------------------------------
 
+if(length(allseqs) == 0)
+  allseqs <- AAStringSet()
 writeXStringSet(allseqs, filepath = "query.faa")
 
 # sequence headers
-seq_headers <- data.table(header = names(allseqs))
-seq_headers[, file := sub("\\|.+$","",header)]
-seq_headers[, header := sub("^.+\\.fasta\\|","",header)]
+if(length(allseqs) > 0) {
+  seq_headers <- data.table(header = names(allseqs))
+  seq_headers[, file := sub("\\|.+$","",header)]
+  seq_headers[, header := sub("^.+\\.fasta\\|","",header)]
+} else {
+  seq_headers <- data.table(header = character(0L),
+                            file = character(0L))
+}
 
 # save central temporary data structures
 save(pwyrea, reaec, seqfiles, seq_headers, file = "prealignment_data.RData")
