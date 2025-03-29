@@ -1,4 +1,8 @@
 complex_detection <- function(seq.id) {
+  if(length(seq.id) == 0) {
+    return(character(0L))
+  }
+
   require(stringr)
 
   # patterns
