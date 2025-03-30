@@ -7,7 +7,14 @@ load("prealignment_data.RData") # load("~/tmp/prealignment_data.RData")
 setnames(seqfiles,"ecs","ec")
 
 alicols <- c("qseqid","pident","evalue","bitscore","qcovs","stitle","sstart","send","sseq")
-alignments <- fread("alignments.tsv") # alignments <- fread("~/tmp/alignments.tsv")
+if(file.size("alignments.tsv") == 0) {
+  alignments <- data.table(matrix(0,nrow = 1, ncol = length(alicols)-1))
+  alignments[, V1 := as.character(V1)]
+  alignments[, V6 := as.character(V6)]
+} else {
+  alignments <- fread("alignments.tsv") # alignments <- fread("~/tmp/alignments.tsv")
+}
+setnames(alignments, alicols[1:ncol(alignments)])
 setnames(alignments, alicols[1:ncol(alignments)])
 alignments[, file := sub("\\|.+$","",qseqid)]
 alignments[, qseqid := sub("^.+\\.fasta\\|","",qseqid)]
@@ -116,10 +123,10 @@ pwydt <- pwydt[, .(NrReaction = .N,
                    SpontaneousReactions = paste(rxn[spont == TRUE], collapse = " "),
                    KeyReactions = paste(rxn[keyrea == TRUE], collapse = " ")),by = pathway]
 pwydt[, Completeness := NrReactionFound / (NrReaction - NrVague - NrSpontaneous) * 100]
-pwydt[, Prediction := Completeness >= completenessCutoffNoHints]
+pwydt[, Prediction := (Completeness/100) >= completenessCutoffNoHints]
 
 #-------------------------------------------------------------------------------
 # (n) Export reaction and pathway tables
 #-------------------------------------------------------------------------------
 fwrite(rxndt, file = "output.tbl", sep = "\t", quote = FALSE)
-fwrite(rxndt, file = "output_pwy.tbl", sep = "\t", quote = FALSE)
+fwrite(pwydt, file = "output_pwy.tbl", sep = "\t", quote = FALSE)
