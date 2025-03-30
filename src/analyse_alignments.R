@@ -123,15 +123,15 @@ pwydt <- pwydt[, .(NrReaction = .N,
                    SpontaneousReactions = paste(rxn[spont == TRUE], collapse = " "),
                    KeyReactions = paste(rxn[keyrea == TRUE], collapse = " ")),by = pathway]
 pwydt[, Completeness := NrReactionFound / (NrReaction - NrVague - NrSpontaneous) * 100]
-pwydt[, Prediction := (Completeness/100) >= completenessCutoffNoHints]
-pwydt[NrKeyReaction > 0 & NrKeyReaction == NrKeyReactionFound & Completeness >= completenessCutoff, Prediction := TRUE]
+pwydt[, Prediction := Completeness >= completenessCutoffNoHints*100]
+pwydt[NrKeyReaction > 0 & NrKeyReaction == NrKeyReactionFound & Completeness >= completenessCutoff*100, Prediction := TRUE]
 pwydt[NrReaction == NrVague + NrSpontaneous, Prediction := FALSE]
 
 # add pathway status term (explaing why pathway is predicted to be present)
 pwydt[, pathway.status := NA_character_]
 pwydt[Completeness == 100, pathway.status := "full"]
 pwydt[Prediction == TRUE & Completeness < 100, pathway.status := "threshold"]
-pwydt[Prediction == TRUE & Completeness < completenessCutoffNoHints, pathway.status := "keyenzyme"]
+pwydt[Prediction == TRUE & Completeness < completenessCutoffNoHints*100, pathway.status := "keyenzyme"]
 
 #-------------------------------------------------------------------------------
 # (4) Add pathway prediction info to reaction table, too
