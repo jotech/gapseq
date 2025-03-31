@@ -557,7 +557,7 @@ bestPwy=""  # list of found pathways
 echo -e "ID\tName\tPrediction\tCompleteness\tVagueReactions\tKeyReactions\tKeyReactionsFound\tReactionsFound" > output.tbl # pahtway statistics file
 
 #taxRange=Proteobacteria
-if [ -n "$taxRange" ] && [ "$taxRange" != "all" ]; then
+if [ -n "$taxRange" ] && [ "$taxRange" != "all" ] && [ "$pathways" != "custom" ]; then
     validTax=$(grep -i $taxRange $dir/../dat/taxonomy.tbl | cut -f1 | tr '\n' '|' | sed 's/.$//')
     [[ -z "$validTax" ]] && { echo "Taxonomic range not found: $taxRange (available ranges: $dir/../dat/taxonomy.tbl)"; exit 0; }
     pwyDB_new=$(echo "$pwyDB" | grep -wE `echo "TAX-($validTax)"`)
@@ -572,7 +572,7 @@ pwyNr=$(echo "$pwyDB" | wc -l)
 
 pwyDBfile=$(mktemp -p $tmpdir)
 echo "$pwyDB" > $pwyDBfile
-Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy $seqSrc $force_offline $update_manually $use_gene_seq
+Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy $seqSrc $force_offline $update_manually $use_gene_seq $n_threads
 # the final reference sequences are stored by the above R-script in "query.faa"
 
 #----------------------#
@@ -610,7 +610,7 @@ cp alignments.tsv ~/tmp/alignments.tsv # debug line
 #----------------------#
 # Analyse Alignments   #
 #----------------------#
-Rscript $dir/analyse_alignments.R $bitcutoff $identcutoff $strictCandidates $identcutoff_exception $subunit_cutoff $completenessCutoffNoHints $completenessCutoff
+Rscript $dir/analyse_alignments.R $bitcutoff $identcutoff $strictCandidates $identcutoff_exception $subunit_cutoff $completenessCutoffNoHints $completenessCutoff $n_threads
 
 cp aligner.log $output_dir/${fastaID}-$output_suffix-find_aligner.log
 cp output.tbl $output_dir/${fastaID}-$output_suffix-Reactions.tbl

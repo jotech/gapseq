@@ -1,6 +1,7 @@
 suppressMessages(library(data.table))
 library(stringr)
 suppressMessages(library(Biostrings))
+library(parallel)
 
 #-------------------------------------------------------------------------------
 # (0) Parse arguments and gapseq/script path
@@ -33,6 +34,7 @@ seqSrc <- args[4]
 force_offline <- args[5] == "true"
 update_manually <- args[6] == "true"
 use_gene_seq <- args[7] == "true"
+n_threads <- as.integer(args[8])
 
 # some hard-coded correction of syntax errors in reaction names that would break string parsing (remove when meta_pwy.tbl is corrected/updated)
 pwyDB[V1 %in% c("|PWY18C3-10|","|PWY18C3-12|"), V9 := sub("sucrose-3-isobutanoyl-4-isovaleryl-3;-isovaleroyltransferase",
@@ -53,7 +55,7 @@ pwyDB$V14 <- as.character(pwyDB$V14) # spontaneous reactions
 pwyDB[is.na(V9), V9 := ""]
 
 # for debugging
-saveRDS(pwyDB, "~/tmp/pwyDB.RDS")
+# saveRDS(pwyDB, "~/tmp/pwyDB.RDS")
 # pwyDB <- readRDS("~/tmp/pwyDB.RDS")
 
 #-------------------------------------------------------------------------------
@@ -61,7 +63,7 @@ saveRDS(pwyDB, "~/tmp/pwyDB.RDS")
 # keys: `pwyID`, `rea`
 #-------------------------------------------------------------------------------
 
-pwyrea <- lapply(pwyDB$V1, FUN = function(pwyi) {
+pwyrea <- mclapply(pwyDB$V1, mc.cores = n_threads, FUN = function(pwyi) {
   tmpdat <- pwyDB[pwyi]
   keyrea <- strsplit(tmpdat[,V8],",")[[1]]
   spontrea <- strsplit(tmpdat[,V14],",")[[1]]
@@ -69,7 +71,6 @@ pwyrea <- lapply(pwyDB$V1, FUN = function(pwyi) {
   namestmp <- tmpdat[, V9]
   namestmp <- gsub("\\(([^()]*?);([^()]*?)\\)", "\\(\\1,\\2\\)",namestmp) # In rare cases the reaction name separator ";" occurs within a reaction name, when inside brackets "(...)". These semicolons need to be replaced before string splitting.
   reanames <- str_split(namestmp,";")[[1]]
-  #reanames <- unlist(str_split(namestmp, "(?<!&[a-zA-Z]{1,10});")) # in other rare cases, reaction names contain HTML character entities such as "&pi;". This lines ensures that at these ";" the string is not split
   ecs <- tmpdat[, str_split(V7,",")][[1]]
   if(length(reanames) != length(reaids)) {
     message(paste0("Mismatch in the number of reaction IDs and reaction names in pathway ",pwyi,". Replacing reaction names with arbitrary rxn[1-n]..."))
@@ -93,7 +94,9 @@ pwyrea <- rbindlist(pwyrea, idcol = "pwyID")
 
 # get target database hits (parallel comp?)
 source(paste0(script.dir,"/getDBhit.R"))
-reaec <- pwyrea[, getDBhit(rea, reaName, ec, database), by = .(rea, reaName, ec, spont)]
+reaec <- unique(pwyrea[,.(rea, reaName, ec, spont)])
+reaec <- cbind(reaec,
+               reaec[, getDBhit(rea, reaName, ec, database, n_threads)])
 
 #-------------------------------------------------------------------------------
 # (3) identify fasta files with reference sequences to use for later alignments
@@ -191,12 +194,13 @@ identifySeqFiles <- function(reaID, reaName, ecs, altecs, spont) {
 }
 
 reaec_nospont <- reaec[spont == FALSE]
-seqfiles <- lapply(1:nrow(reaec_nospont), function(i) {
-  return(identifySeqFiles(reaID = reaec_nospont[i,rea],
-                          reaName = reaec_nospont[i,reaName],
-                          ecs = reaec_nospont[i,ec],
-                          altecs = reaec_nospont[i,altec]))
-})
+seqfiles <- mclapply(1:nrow(reaec_nospont), mc.cores = n_threads,
+                     FUN = function(i) {
+                       return(identifySeqFiles(reaID = reaec_nospont[i,rea],
+                                               reaName = reaec_nospont[i,reaName],
+                                               ecs = reaec_nospont[i,ec],
+                                               altecs = reaec_nospont[i,altec]))
+                     })
 seqfiles <- rbindlist(seqfiles)
 rm(reaec_nospont)
 
@@ -337,7 +341,7 @@ seqfiles[fex == FALSE | file_size == 0, use := FALSE]
 #-------------------------------------------------------------------------------
 
 allseqfiles <- unique(seqfiles[use == TRUE, file])
-allseqs <- lapply(allseqfiles, function(sf) {
+allseqs <- mclapply(allseqfiles, mc.cores = n_threads, FUN = function(sf) {
   tmpseqs <- readAAStringSet(paste0(script.dir,"/../dat/seq/",taxonomy,"/",sf))
   names(tmpseqs) <- paste0(sf,"|",names(tmpseqs))
   return(tmpseqs)

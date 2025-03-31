@@ -1,4 +1,6 @@
 suppressMessages(library(data.table))
+library(parallel)
+library(stringr)
 
 #-------------------------------------------------------------------------------
 # (0) Read pre-alignment data and alignment stats
@@ -42,6 +44,7 @@ identcutoff_exception <- as.numeric(args[4])
 subunit_cutoff <- as.numeric(args[5])/100
 completenessCutoffNoHints <- as.numeric(args[6])/100
 completenessCutoff <- as.numeric(args[7])/100
+n_threads <- as.integer(args[8])
 
 #-------------------------------------------------------------------------------
 # (2) Read additional required gapseq files
@@ -57,7 +60,18 @@ dt_exceptions <- fread(paste0(script.dir,"/../dat/exception.tbl"), skip = "enzym
 cplx <- merge(seqfiles[use == TRUE, .(file, rea, reaName, ec)], seq_headers, by = "file", allow.cartesian = TRUE)
 cplx <- unique(cplx, by = c("rea","reaName","ec", "header"))
 cplx[, is_complex := any(grepl("subunit|chain|polypeptide|component",header)), by = .(rea, reaName, ec)]
-cplx[is_complex == TRUE, complex := complex_detection(header), by = .(rea, reaName, ec)]
+
+cplx_sub <- cplx[is_complex == TRUE]
+split_groups <- split(cplx_sub, by = c("rea", "reaName", "ec"))
+results_list <- mclapply(split_groups, function(dt_group) {
+  dt_group[, complex := complex_detection(header)]
+  return(dt_group)
+}, mc.cores = n_threads)
+cplx_result <- rbindlist(results_list)
+cplx[cplx_result, on = .(rea, reaName, ec, header), complex := i.complex]
+
+#cplx[is_complex == TRUE, complex := complex_detection(header), by = .(rea, reaName, ec)]
+
 cplx[, subunit_count := length(unique(complex[!is.na(complex)])), by = .(rea, reaName, ec)]
 cplx <- cplx[subunit_count < 2, is_complex := FALSE]
 cplx[, qseqid := sub(" .*$","",header)]
@@ -116,14 +130,14 @@ pwydt <- pwydt[, .(pathway, rxn, spont, keyrea, is_complex, complex.status, stat
 pwydt <- pwydt[, .(NrReaction = .N,
                    NrSpontaneous = sum(spont),
                    NrVague = sum(status == "no_seq_data"),
-                   NrKeyReaction = sum(keyrea),
+                   NrKeyReaction = sum(keyrea & status != "no_seq_data"),
                    NrReactionFound = sum((is_complex == FALSE & status == "good_blast") | (is_complex == TRUE & !is.na(complex.status))),
-                   NrKeyReactionFound = sum(status == "good_blast" & keyrea == TRUE),
+                   NrKeyReactionFound = sum((is_complex == FALSE & status == "good_blast" & keyrea == TRUE) | (is_complex == TRUE & !is.na(complex.status) & keyrea == TRUE)),
                    ReactionsFound = paste(rxn[(is_complex == FALSE & status == "good_blast") | (is_complex == TRUE & !is.na(complex.status))], collapse = " "),
                    SpontaneousReactions = paste(rxn[spont == TRUE], collapse = " "),
                    KeyReactions = paste(rxn[keyrea == TRUE], collapse = " ")),by = pathway]
 pwydt[, Completeness := NrReactionFound / (NrReaction - NrVague - NrSpontaneous) * 100]
-pwydt[strictCandidates == FALSE, Prediction := Completeness >= completenessCutoffNoHints*100]
+pwydt[strictCandidates == FALSE, Prediction := Completeness >= completenessCutoffNoHints*100 & NrKeyReaction == NrKeyReactionFound]
 pwydt[strictCandidates == FALSE & NrKeyReaction > 0 & NrKeyReaction == NrKeyReactionFound & Completeness >= completenessCutoff*100, Prediction := TRUE]
 pwydt[NrReaction == NrVague + NrSpontaneous, Prediction := FALSE]
 
