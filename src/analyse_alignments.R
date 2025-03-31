@@ -45,6 +45,7 @@ subunit_cutoff <- as.numeric(args[5])/100
 completenessCutoffNoHints <- as.numeric(args[6])/100
 completenessCutoff <- as.numeric(args[7])/100
 n_threads <- as.integer(args[8])
+vagueCutoff <- as.numeric(args[9])
 
 #-------------------------------------------------------------------------------
 # (2) Read additional required gapseq files
@@ -136,7 +137,12 @@ pwydt <- pwydt[, .(NrReaction = .N,
                    ReactionsFound = paste(rxn[(is_complex == FALSE & status == "good_blast") | (is_complex == TRUE & !is.na(complex.status))], collapse = " "),
                    SpontaneousReactions = paste(rxn[spont == TRUE], collapse = " "),
                    KeyReactions = paste(rxn[keyrea == TRUE], collapse = " ")),by = pathway]
-pwydt[, Completeness := NrReactionFound / (NrReaction - NrVague - NrSpontaneous) * 100]
+
+# infere completeness
+pwydt[NrVague/NrReaction < vagueCutoff, Completeness := NrReactionFound / (NrReaction - NrVague - NrSpontaneous) * 100] # if vague reaction are considered they should not influence the completeness threshold
+pwydt[NrVague/NrReaction >= vagueCutoff, Completeness := NrReactionFound / (NrReaction - NrSpontaneous) * 100]
+
+# infere pathway presence/absence
 pwydt[strictCandidates == FALSE, Prediction := Completeness >= completenessCutoffNoHints*100 & NrKeyReaction == NrKeyReactionFound]
 pwydt[strictCandidates == FALSE & NrKeyReaction > 0 & NrKeyReaction == NrKeyReactionFound & Completeness >= completenessCutoff*100, Prediction := TRUE]
 pwydt[NrReaction == NrVague + NrSpontaneous, Prediction := FALSE]
@@ -156,5 +162,7 @@ pwydt[Prediction == TRUE & Completeness < completenessCutoffNoHints*100, pathway
 #-------------------------------------------------------------------------------
 # (n) Export reaction and pathway tables
 #-------------------------------------------------------------------------------
+setnames(pwydt, "pathway", "ID")
+
 fwrite(rxndt, file = "output.tbl", sep = "\t", quote = FALSE)
 fwrite(pwydt, file = "output_pwy.tbl", sep = "\t", quote = FALSE)

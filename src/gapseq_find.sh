@@ -609,7 +609,7 @@ cp alignments.tsv ~/tmp/alignments.tsv # debug line
 #----------------------#
 # Analyse Alignments   #
 #----------------------#
-Rscript $dir/analyse_alignments.R $bitcutoff $identcutoff $strictCandidates $identcutoff_exception $subunit_cutoff $completenessCutoffNoHints $completenessCutoff $n_threads
+Rscript $dir/analyse_alignments.R $bitcutoff $identcutoff $strictCandidates $identcutoff_exception $subunit_cutoff $completenessCutoffNoHints $completenessCutoff $n_threads $vagueCutoff
 
 cp aligner.log $output_dir/${fastaID}-$output_suffix-find_aligner.log
 cp output.tbl $output_dir/${fastaID}-$output_suffix-Reactions.tbl
