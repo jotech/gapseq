@@ -288,6 +288,10 @@ if [ $input_mode == "auto" ]; then
     
 fi
 
+#if [ $input_mode == "nucl" ]; then
+    # TODO: Pyrodigal for ORF prediction
+#fi
+
 # pathways or ec number as well as fasta file have to be provided
 ( [ -z "$pathways" ] && [ -z "$ecnumber" ] && [ -z "$reaname" ] ) || [ -z "$fasta" ]  && { usage; }
 
@@ -604,7 +608,7 @@ if [ "$aliTool" == "mmseqs2" ]; then
       --format-output "$mmseqs_format" >> aligner.log 2>&1
 fi
 
-cp alignments.tsv ~/tmp/alignments.tsv # debug line
+# cp alignments.tsv ~/tmp/alignments.tsv # debug line
 
 #----------------------#
 # Analyse Alignments   #
