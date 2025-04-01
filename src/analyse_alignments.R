@@ -50,7 +50,7 @@ vagueCutoff <- as.numeric(args[9])
 #-------------------------------------------------------------------------------
 # (2) Read additional required gapseq files
 #-------------------------------------------------------------------------------
-source(paste0(script.dir,"/complex_detection2.R"))
+source(paste0(script.dir,"/complex_detection.R"))
 dt_exceptions <- fread(paste0(script.dir,"/../dat/exception.tbl"), skip = "enzyme/reaction")
 
 #-------------------------------------------------------------------------------
@@ -62,19 +62,24 @@ cplx <- merge(seqfiles[use == TRUE, .(file, rea, reaName, ec)], seq_headers, by 
 cplx <- unique(cplx, by = c("rea","reaName","ec", "header"))
 cplx[, is_complex := any(grepl("subunit|chain|polypeptide|component",header)), by = .(rea, reaName, ec)]
 
-cplx_sub <- cplx[is_complex == TRUE]
-split_groups <- split(cplx_sub, by = c("rea", "reaName", "ec"))
-results_list <- mclapply(split_groups, function(dt_group) {
-  dt_group[, complex := complex_detection(header)]
-  return(dt_group)
-}, mc.cores = n_threads)
-cplx_result <- rbindlist(results_list)
-cplx[cplx_result, on = .(rea, reaName, ec, header), complex := i.complex]
+if(any(cplx$is_complex == TRUE)) {
+  cplx_sub <- cplx[is_complex == TRUE]
+  split_groups <- split(cplx_sub, by = c("rea", "reaName", "ec"))
+  results_list <- mclapply(split_groups, function(dt_group) {
+    dt_group[, complex := complex_detection(header)]
+    return(dt_group)
+  }, mc.cores = n_threads)
+  cplx_result <- rbindlist(results_list)
+  cplx[cplx_result, on = .(rea, reaName, ec, header), complex := i.complex]
+} else {
+  cplx[, complex := NA_character_]
+}
 
 #cplx[is_complex == TRUE, complex := complex_detection(header), by = .(rea, reaName, ec)]
 
 cplx[, subunit_count := length(unique(complex[!is.na(complex)])), by = .(rea, reaName, ec)]
-cplx <- cplx[subunit_count < 2, is_complex := FALSE]
+cplx[subunit_count < 2, is_complex := FALSE]
+cplx[subunit_count < 2, complex := NA_character_]
 cplx[, qseqid := sub(" .*$","",header)]
 cplx[is_complex == TRUE & is.na(complex), complex := "Subunit undefined"]
 setkeyv(cplx, cols = c("rea","reaName","ec","qseqid"))
@@ -83,7 +88,7 @@ cplx_bin <- cplx[,.(is_complex = any(is_complex),
                     subunit_count = subunit_count[1],
                     subunits = paste(unique(complex),collapse = ",")), by = .(rea, reaName, ec)]
 cplx_bin[is_complex == FALSE, subunit_count := NA_integer_]
-
+#print(cplx[, table(rea, complex, useNA = "always")])
 
 #-------------------------------------------------------------------------------
 # (4) Inferring Reaction presence/absence
@@ -139,8 +144,8 @@ pwydt <- pwydt[, .(NrReaction = .N,
                    KeyReactions = paste(rxn[keyrea == TRUE], collapse = " ")),by = pathway]
 
 # infere completeness
-pwydt[NrVague/NrReaction < vagueCutoff, Completeness := NrReactionFound / (NrReaction - NrVague - NrSpontaneous) * 100] # if vague reaction are considered they should not influence the completeness threshold
-pwydt[NrVague/NrReaction >= vagueCutoff, Completeness := NrReactionFound / (NrReaction - NrSpontaneous) * 100]
+pwydt[NrVague/(NrReaction-NrSpontaneous) < vagueCutoff, Completeness := NrReactionFound / (NrReaction - NrVague - NrSpontaneous) * 100] # if vague reaction are considered they should not influence the completeness threshold
+pwydt[NrVague/(NrReaction-NrSpontaneous) >= vagueCutoff, Completeness := NrReactionFound / (NrReaction - NrSpontaneous) * 100]
 
 # infere pathway presence/absence
 pwydt[strictCandidates == FALSE, Prediction := Completeness >= completenessCutoffNoHints*100 & NrKeyReaction == NrKeyReactionFound]

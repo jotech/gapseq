@@ -371,6 +371,6 @@ if(length(allseqs) > 0) {
 # save central temporary data structures
 save(pwyrea, reaec, seqfiles, seq_headers, file = "prealignment_data.RData")
 
-# debugging
-writeXStringSet(allseqs, filepath = "~/tmp/refs.faa")
-save(pwyrea, reaec, seqfiles, seq_headers, file = "~/tmp/prealignment_data.RData")
+# # debugging
+# writeXStringSet(allseqs, filepath = "~/tmp/refs.faa")
+# save(pwyrea, reaec, seqfiles, seq_headers, file = "~/tmp/prealignment_data.RData")
