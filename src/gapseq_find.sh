@@ -209,7 +209,11 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:A:" opt; do
         n_threads=$OPTARG
         ;;
     A)
-        aliTool=$OPTARG
+        aliTool=$(echo "$OPTARG" | tr '[:upper:]' '[:lower:]')
+        if [[ "$aliTool" != "blast" && "$aliTool" != "diamond" && "$aliTool" != "mmseqs2" ]]; then
+            echo "Error: Invalid value for -A. Expected 'blast', 'diamond', or 'mmseqs2', got '$OPTARG'."
+            exit 1
+        fi
         ;;
     esac
 done
@@ -625,6 +629,7 @@ fi
 #----------------------#
 # Analyse Alignments   #
 #----------------------#
+
 Rscript $dir/analyse_alignments.R $bitcutoff $identcutoff $strictCandidates $identcutoff_exception $subunit_cutoff $completenessCutoffNoHints $completenessCutoff $n_threads $vagueCutoff
 
 #------------------------#
@@ -635,22 +640,28 @@ cp aligner.log $output_dir/${fastaID}-$output_suffix-find_aligner.log
 cp output.tbl $output_dir/${fastaID}-$output_suffix-Reactions.tbl
 cp output_pwy.tbl $output_dir/${fastaID}-$output_suffix-Pathways.tbl
 
+if [ $input_mode == "nucl" ] && [ $newtranslate == "true" ]; then
+    gzip -c $fasta > "$output_dir/${fastaID}.faa.gz"
+    mv ${fastaID}.gff "$output_dir/${fastaID}.gff"
+fi
+
 # add gapseq version and sequence database status to table comments head
 gapseq_version=$($dir/.././gapseq -v | head -n 1)
 seqdb_version=`md5sum $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1-7`
 seqdb_date=$(stat -c %y $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1-10)
 
+genome_info="genome_format=$input_mode"
+[[ $input_mode == "nucl" ]] && faamd5=`md5sum $output_dir/${fastaID}.faa.gz | cut -c1-7` && genome_info="${genome_info};translation_md5=${faamd5}"
+[[ $input_mode == "nucl" ]] && [[ $newtranslate == "true" ]] && genome_info="${genome_info};translation_tabel=${transl_table}"
+
 sed -i "1s/^/# $gapseq_version\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
 sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
-sed -i "3s/^/# Genome format: $input_mode\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
+sed -i "3s/^/# $genome_info\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
 sed -i "1s/^/# $gapseq_version\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
 sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
-sed -i "3s/^/# Genome format: $input_mode\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
+sed -i "3s/^/# $genome_info\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
 
-if [ $input_mode == "nucl" ] && [ $newtranslate == "true" ]; then
-    gzip -c $fasta > "$output_dir/${fastaID}.faa.gz"
-    mv ${fastaID}.gff "$output_dir/${fastaID}.gff"
-fi
+
 
 
 # print annotation genome coverage
