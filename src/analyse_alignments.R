@@ -162,7 +162,9 @@ pwydt[Prediction == TRUE & Completeness < completenessCutoffNoHints*100, pathway
 # (4) Add pathway prediction info to reaction table, too
 #-------------------------------------------------------------------------------
 
-# TODO
+print(nrow(rxndt))
+rxndt <- merge(rxndt, pwydt[, .(pathway, pathway.status)], by = "pathway")
+print(nrow(rxndt))
 
 #-------------------------------------------------------------------------------
 # (n) Export reaction and pathway tables
