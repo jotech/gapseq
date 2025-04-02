@@ -22,7 +22,6 @@ vagueCutoff=0.3 # cutoff for vague reactions. If the amount of vague reactions i
 onlyList=false
 skipBlast=false
 includeSeq=false
-use_parallel=true
 exhaustive=false
 seqSrc=2
 anno_genome_cov=false
@@ -169,7 +168,6 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:A:" opt; do
         includeSeq=true
         ;;
     k)
-        use_parallel=false
         n_threads=1
         echo "DEPRECATION NOTICE: Option '-k' is deprecated. To disable multi-threading use '-K 1' instead."
         ;;
@@ -209,9 +207,6 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:A:" opt; do
         ;;
     K)
         n_threads=$OPTARG
-        if [ $n_threads -eq 1 ]; then
-            use_parallel=false
-        fi
         ;;
     A)
         aliTool=$OPTARG
@@ -289,9 +284,37 @@ if [ $input_mode == "auto" ]; then
     
 fi
 
-#if [ $input_mode == "nucl" ]; then
-    # TODO: Pyrodigal for ORF prediction
-#fi
+if [ $input_mode == "nucl" ]; then
+    newtranslate=true
+    # Check if genome was already translated
+    if [ -f $output_dir/${fastaID}.faa.gz ]; then
+        # Check if found file matches contig names in nucleotide fasta
+        faacont=`zcat $output_dir/${fastaID}.faa.gz | grep "^>" | sed -E 's/^>(.+)_[0-9]+ # .*/\1/' | sort -u`
+        fnacont=`cat $fasta | grep "^>" | sed -E 's/^>([^ ]+).*/\1/' | sort -u`
+        reusefaa=true
+        for entry in $faacont; do
+            if ! echo "$fnacont" | grep -qx "$entry"; then
+                reusefaa=false
+                break
+            fi
+        done
+        if [ $reusefaa == "true" ]; then
+            [[ $verbose -ge 1 ]] && echo "Re-using previously translated genome: $output_dir/${fastaID}.faa.gz"
+            gunzip -c "$output_dir/${fastaID}.faa.gz" > "$fastaID.faa"
+            fasta="$fastaID.faa"
+            newtranslate=false
+        fi
+    fi
+    
+    if [ $newtranslate == "true" ]; then
+        [[ $verbose -ge 1 ]] && echo "Translating genomic nucleotide fasta to protein fasta..."
+        $dir/translate_genome.sh -i "$fasta" -o "$fastaID" -K $n_threads 
+        fasta="$fastaID.faa"
+        transl_table=`cat ${fastaID}_code`
+        rm ${fastaID}_code
+        [[ $verbose -ge 1 ]] && echo "Genome translated to" `grep -c "^>" $fasta` "ORFs using translation table $transl_table."
+    fi
+fi
 
 # pathways or ec number as well as fasta file have to be provided
 ( [ -z "$pathways" ] && [ -z "$ecnumber" ] && [ -z "$reaname" ] ) || [ -z "$fasta" ]  && { usage; }
@@ -370,22 +393,11 @@ if [ $input_mode == "prot" ] && [ $taxonomy == "auto" ]; then
     
     echo Predicted taxonomy: $taxonomy
 fi
-if [ $input_mode == "nucl" ] && [ "$taxonomy" == "auto" ]; then
-    pred_biom=$($dir/predict_biomass_from16S.sh "$fasta")
-    if [ "$pred_biom" == "Gram_neg" ] || [ "$pred_biom" == "Gram_pos" ]; then
-        taxonomy=Bacteria
-    elif [ "$pred_biom" == "Archaea" ]; then
-        taxonomy=Archaea
-    else
-        echo "Taxonomy could be predicted automatically. Assuming default case: Bacteria (Use '-t' parameter to modify it)."
-        taxonomy=Bacteria
-    fi
-    echo Predicted taxonomy: $taxonomy
-fi
+
 [[ "$taxonomy" == "bacteria" ]] && taxonomy=Bacteria
 [[ "$taxonomy" == "archaea" ]] &&  taxonomy=Archaea
 
-# Follow taxonomy preiction for pathway tax range if set to "auto"
+# Follow taxonomy prediction for pathway tax range if set to "auto"
 if [ "$taxRange" == "auto" ]; then
     taxRange=$taxonomy
 fi
@@ -447,7 +459,7 @@ if [ -n "$ecnumber" ] || [ -n "$reaname" ]; then
 else
     pwyDatabase=$(echo $pwyDatabase | tr '[:upper:]' '[:lower:]')
     # get entries for pathways from databases
-    [[ verbose -ge 1 ]] && { echo $pwyDatabase; }
+    [[ $verbose -ge 1 ]] && { echo $pwyDatabase; }
     [[ "$pwyDatabase" =~ "all" ]]     && cat $metaPwy $keggPwy $seedPwy $customPwy > allPwy
     [[ "$pwyDatabase" =~ "metacyc" ]] && cat $metaPwy >> allPwy
     [[ "$pwyDatabase" =~ "kegg" ]]    && cat $keggPwy >> allPwy
@@ -455,9 +467,9 @@ else
     [[ "$pwyDatabase" =~ "custom" ]]  && cat $customPwy >> allPwy
     dupli=$(cat allPwy | cut -f1 | sort | uniq -d | tr -d 'id' | sed '/^$/d')
     if [ -n "$dupli" ]; then
-        [[ verbose -ge 1 ]] && echo Duplicated pathway IDs found: $dupli will only use $customPwy
+        [[ $verbose -ge 1 ]] && echo Duplicated pathway IDs found: $dupli will only use $customPwy
         dupli_search=$(echo "$dupli" | sed 's/|/\\|/g' |tr '\n' '|' | rev | cut -c2- | rev)
-        [[ verbose -ge 1 ]] && echo "$dupli_search"
+        [[ $verbose -ge 1 ]] && echo "$dupli_search"
         cat allPwy | grep -wEv "$dupli_search" > allPwy.tmp
         cat $customPwy | grep -wE "$dupli_search" >> allPwy.tmp
         mv allPwy.tmp allPwy
@@ -467,7 +479,7 @@ else
     pwyDB=$(cat allPwy | grep -wEi $pwyKey | awk -F "\t" '{if ($6) print $0;}')
     NApwy=$(cat allPwy | grep -wEi $pwyKey | awk -F "\t" '{if (!$6) print $1, $2;}')
     [[ -n "$NApwy" ]] && echo Pathways ignored because no reactions found: $(echo "$NApwy" | wc -l)
-    [[ -n "$NApwy" ]] && [[ verbose -ge 2 ]] && echo "$NApwy"
+    [[ -n "$NApwy" ]] && [[ $verbose -ge 2 ]] && echo "$NApwy"
     [[ "$noSuperpathways" = true ]] && pwyDB=$(echo "$pwyDB" | grep -v 'Super-Pathways')
     [ -z "$ecnumber" ] && [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
 fi
@@ -571,8 +583,8 @@ if [ -n "$taxRange" ] && [ "$taxRange" != "all" ] && [ "$pathways" != "custom" ]
 fi
 
 pwyNr=$(echo "$pwyDB" | wc -l)
-[[ verbose -ge 1 ]] && echo Checking for pathways and reactions in: $1 $pwyKey
-[[ verbose -ge 1 ]] && echo Number of pathways to be considered: $pwyNr
+[[ $verbose -ge 1 ]] && echo Checking for pathways and reactions in: $1 $pwyKey
+[[ $verbose -ge 1 ]] && echo Number of pathways to be considered: $pwyNr
 
 pwyDBfile=$(mktemp -p $tmpdir)
 echo "$pwyDB" > $pwyDBfile
@@ -616,6 +628,10 @@ fi
 #----------------------#
 Rscript $dir/analyse_alignments.R $bitcutoff $identcutoff $strictCandidates $identcutoff_exception $subunit_cutoff $completenessCutoffNoHints $completenessCutoff $n_threads $vagueCutoff
 
+#------------------------#
+# Exporting result files # 
+#------------------------#
+
 cp aligner.log $output_dir/${fastaID}-$output_suffix-find_aligner.log
 cp output.tbl $output_dir/${fastaID}-$output_suffix-Reactions.tbl
 cp output_pwy.tbl $output_dir/${fastaID}-$output_suffix-Pathways.tbl
@@ -632,8 +648,14 @@ sed -i "1s/^/# $gapseq_version\n/" $output_dir/${fastaID}-$output_suffix-Pathway
 sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
 sed -i "3s/^/# Genome format: $input_mode\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
 
+if [ $input_mode == "nucl" ] && [ $newtranslate == "true" ]; then
+    gzip -c $fasta > "$output_dir/${fastaID}.faa.gz"
+    mv ${fastaID}.gff "$output_dir/${fastaID}.gff"
+fi
+
+
 # print annotation genome coverage
-#[[ verbose -ge 1 ]] && [[ "$anno_genome_cov" = true ]] && Rscript $dir/coverage.R "$fasta" $output_dir/${fastaID}-$output_suffix-Reactions.tbl 
+#[[ $verbose -ge 1 ]] && [[ "$anno_genome_cov" = true ]] && Rscript $dir/coverage.R "$fasta" $output_dir/${fastaID}-$output_suffix-Reactions.tbl 
 
 # cleaning
 #[[ -s "$tmp_fasta" ]] && rm "$tmp_fasta"
