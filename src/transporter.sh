@@ -6,11 +6,11 @@ identcutoff=0   # cutoff blast: min identity
 covcutoff=75 # cutoff blast: min coverage
 use_alternatives=true
 includeSeq=false
-use_parallel=true
 only_met=""
 verbose=1
 input_mode="auto"
 output_dir=.
+aliTool="blast"
 OS=$(uname -s)
 if [ "$OS" = "Darwin" -o "$OS" = "FreeBSD" ]; then
 	n_threads=$(sysctl hw.ncpu|cut -f2 -d' ')
@@ -26,18 +26,19 @@ usage()
     echo "  -i identity cutoff for local alignment (default: $identcutoff)"
     echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
     echo "  -q Include sequences of hits in log files; default $includeSeq"
-    echo "  -k do not use parallel"
+    echo "  -k Do not use parallel (Deprecated: use '-K 1' instead to disable multi-threading.)"
     echo "  -m only check for this keyword/metabolite (default: all)"
     echo "  -f Path to directory, where output files will be saved (default: current directory)"
     echo "  -v Verbose level, 0 for nothing, 1 for full (default $verbose)"
     echo "  -M Input genome mode. Either 'nucl' or 'prot' (default '$input_mode')"
     echo "  -K Number of threads for sequence alignments. If option is not provided, number of available CPUs will be automatically determined."
+    echo "  -A Tool to be used for sequence alignments (blast, mmseqs2, diamond; default: $aliTool)"
     echo ""
 exit 1
 }
 
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
-while getopts "h?i:b:c:qkm:f::v:M:K:" opt; do
+while getopts "h?i:b:c:qkm:f::v:M:K:A:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -56,7 +57,8 @@ while getopts "h?i:b:c:qkm:f::v:M:K:" opt; do
         includeSeq=true
         ;;
     k)
-        use_parallel=false
+        n_threads=1
+        echo "DEPRECATION NOTICE: Option '-k' is deprecated. To disable multi-threading use '-K 1' instead."
         ;;
     m)
         only_met=$OPTARG
@@ -72,6 +74,13 @@ while getopts "h?i:b:c:qkm:f::v:M:K:" opt; do
         ;;
     K)
         n_threads=$OPTARG
+        ;;
+    A)
+        aliTool=$(echo "$OPTARG" | tr '[:upper:]' '[:lower:]')
+        if [[ "$aliTool" != "blast" && "$aliTool" != "diamond" && "$aliTool" != "mmseqs2" ]]; then
+            echo "Error: Invalid value for -A. Expected 'blast', 'diamond', or 'mmseqs2', got '$OPTARG'."
+            exit 1
+        fi
         ;;
     esac
 done
@@ -123,6 +132,8 @@ if [[ $fasta == *.gz ]]; then # in case fasta is in a archive
     fasta=$tmp_fasta
 fi
 [[ ! -s $fasta ]] && { echo Invalid file: $1; exit 0; }
+tmpvar=$(basename "$fasta")
+fastaID="${tmpvar%.*}"
 
 # Determine if fasta is nucl or prot
 if [ $input_mode == "auto" ]; then
@@ -136,14 +147,47 @@ if [ $input_mode == "auto" ]; then
     
 fi
 
-tmpvar=$(basename $fasta)
-fastaid=${tmpvar%.*}
+if [ $input_mode == "nucl" ]; then
+    newtranslate=true
+    # Check if genome was already translated
+    if [ -f $output_dir/${fastaID}.faa.gz ]; then
+        # Check if contigs of found ORFs matches contig names in nucleotide fasta
+        faacont=`zcat $output_dir/${fastaID}.faa.gz | grep "^>" | sed -E 's/^>(.+)_[0-9]+ # .*/\1/' | sort -u`
+        fnacont=`cat $fasta | grep "^>" | sed -E 's/^>([^ ]+).*/\1/' | sort -u`
+        reusefaa=true
+        for entry in $faacont; do
+            if ! echo "$fnacont" | grep -qx "$entry"; then
+                reusefaa=false
+                break
+            fi
+        done
+        if [ $reusefaa == "true" ]; then
+            [[ $verbose -ge 1 ]] && echo "Re-using previously translated genome: $output_dir/${fastaID}.faa.gz"
+            gunzip -c "$output_dir/${fastaID}.faa.gz" > "$fastaID.faa"
+            fasta="$fastaID.faa"
+            newtranslate=false
+        fi
+    fi
+    
+    if [ $newtranslate == "true" ]; then
+        [[ $verbose -ge 1 ]] && echo "Translating genomic nucleotide fasta to protein fasta..."
+        $dir/translate_genome.sh -i "$fasta" -o "$fastaID" -K $n_threads 
+        fasta="$fastaID.faa"
+        transl_table=`cat ${fastaID}_code`
+        rm ${fastaID}_code
+        [[ $verbose -ge 1 ]] && echo "Genome translated to" `grep -c "^>" $fasta` "ORFs using translation table $transl_table."
+    fi
+fi
 
-# blast format
+# alignment statistics format
 if [ "$includeSeq" = true ]; then
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
+    mmseqs_format="query,pident,evalue,bits,qcov,theader,tstart,tend,qseq"
+    diamnd_format="qseqid pident evalue bitscore qcovhsp stitle sstart send sseq"
 else
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send"
+    mmseqs_format="query,pident,evalue,bits,qcov,theader,tstart,tend"
+    diamond_format="qseqid pident evalue bitscore qcovhsp stitle sstart send"
 fi
 
 cat $tcdb $otherDB > all.fasta # join transporter databases
@@ -168,16 +212,39 @@ grep -Fivf SUBkey fasta_header.noTCkey > fasta_header.noKey
 comm -23 fasta_header fasta_header.noKey > fasta_header.small
 awk 'BEGIN{while((getline<"fasta_header.small")>0)l[$1]=1}/^>/{f=l[$1]}f' all.fasta > small.fasta 
 
+#----------------------#
+# Calculate Alignments #
+#----------------------#
+touch aligner.log
 
-makeblastdb -in $fasta -dbtype $input_mode -out orgdb >/dev/null
-if [ "$input_mode" == "nucl" ]; then
-    tblastn -db orgdb -qcov_hsp_perc $covcutoff -outfmt "6 $blast_format" -query small.fasta > out
+if [ "$aliTool" == "blast" ]; then
+    echo `blastp -version` >> aligner.log
+    makeblastdb -in "$fasta" -dbtype prot -out orgdb >> aligner.log
+    blastp -db orgdb -query small.fasta -qcov_hsp_perc $covcutoff -num_threads $n_threads -outfmt "6 $blast_format" > out
 fi
-if [ "$input_mode" == "prot" ]; then
-    blastp -db orgdb -qcov_hsp_perc $covcutoff -num_threads $n_threads -outfmt "6 $blast_format" -query small.fasta > out
+
+if [ "$aliTool" == "diamond" ]; then
+    echo `diamond --version` >> aligner.log
+    diamond makedb --in "$fasta" -d orgdb >> aligner.log 2>&1
+    diamond blastp -d orgdb.dmnd -q small.fasta  \
+      --threads $n_threads \
+      --out out \
+      --outfmt 6 $diamond_format \
+      --query-cover $covcutoff >> aligner.log 2>&1
 fi
 
+if [ "$aliTool" == "mmseqs2" ]; then
+    echo `mmseqs version` >> aligner.log
+    mmseqs createdb "$fasta" targetDB >> aligner.log 2>&1
+    mmseqs createdb small.fasta queryDB >> aligner.log 2>&1
+    mmseqs search queryDB targetDB resultDB $tmpdir --threads $n_threads -c 0.$covcutoff >> aligner.log
+    mmseqs convertalis queryDB targetDB resultDB out \
+      --format-output "$mmseqs_format" >> aligner.log 2>&1
+fi
 
+#----------------------#
+# Analyse Alignments   #
+#----------------------#
 
 cat out | awk -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $5>=covcutoff) print $0}'> blasthits
 TC_blasthits=$(grep -Pwo "([1-4]\\.[A-z]\\.[0-9]+\\.[0-9]+\\.[0-9]+)" blasthits | sort | uniq)
