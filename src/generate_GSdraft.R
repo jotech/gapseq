@@ -41,9 +41,12 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   
   # get input mode from find step
   input_mode <- readLines(blast.res)
+  notblastn <- any(grepl("^# genome_format\\="), input_mode) # starting from the version where nucleotide fasta are translated before alignments
   input_mode <- input_mode[grep("^# Genome format\\:", input_mode)]
   if(length(input_mode) == 0) {
     input_mode <- "nucl" # to ensure this scripts works also on older find-output tables
+  } else if(notblastn) {
+    input_mode <- "prot"
   } else {
     input_mode <- gsub("^# Genome format\\: ","",input_mode)
     if(!(input_mode %in% c("prot","nucl")))
