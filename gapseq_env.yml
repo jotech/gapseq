@@ -15,12 +15,11 @@ dependencies:
   - coreutils
   - wget
   - openssl
-  - barrnap
-  - bedtools
-  - exonerate
   - glpk
   - hmmer
   - blast
+  - bioconda::diamond >=2.1.9
+  - bioconda::mmseqs2
   - bioconda::libsbml 
   - r-data.table
   - r-stringr
