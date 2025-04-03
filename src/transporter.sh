@@ -9,6 +9,7 @@ includeSeq=false
 use_parallel=true
 only_met=""
 verbose=1
+user_temp=false
 input_mode="auto"
 output_dir=.
 OS=$(uname -s)
@@ -30,6 +31,7 @@ usage()
     echo "  -m only check for this keyword/metabolite (default: all)"
     echo "  -f Path to directory, where output files will be saved (default: current directory)"
     echo "  -v Verbose level, 0 for nothing, 1 for full (default $verbose)"
+    echo "  -T Set user-defined temporary folder (default: $user_temp)"
     echo "  -M Input genome mode. Either 'nucl' or 'prot' (default '$input_mode')"
     echo "  -K Number of threads for sequence alignments. If option is not provided, number of available CPUs will be automatically determined."
     echo ""
@@ -37,7 +39,7 @@ exit 1
 }
 
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
-while getopts "h?i:b:c:qkm:f::v:M:K:" opt; do
+while getopts "h?i:b:c:qkm:f::v:T:M:K:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -66,6 +68,10 @@ while getopts "h?i:b:c:qkm:f::v:M:K:" opt; do
         ;;
     v)  
         verbose=$OPTARG
+        ;;
+    T)
+        user_temp=true
+        user_temp_folder=$OPTARG
         ;;
     M)
         input_mode=$OPTARG
@@ -112,12 +118,22 @@ mkdir -p $output_dir || { echo "$output_dir not writable. Aborting..."; exit 1; 
 
 # tmp working directory
 fasta=$(readlink -f "$1") # save input file before changing to temporary directory
-cd $(mktemp -d)
+tmp_fasta=$(basename "${fasta}" .gz | tr ' ' '_')
+if [[ "$user_temp" = true ]]; then
+    mkdir -p $user_temp_folder || { echo "Temporary directory $user_temp_folder cannot be created. Aborting..."; exit 1; }
+    tmpdir=$(mktemp -d $user_temp_folder/"$tmp_fasta"_XXXXXX)
+    [[ "$tmpdir" != /* ]] && tmpdir="$(cd "$tmpdir" && pwd)" # if relative path — convert it to absolute
+else
+    tmpdir=$(mktemp -d)
+fi
+trap 'rm -rf "$tmpdir"' EXIT
+echo $tmpdir
+cd $tmpdir
 
 cat $seedDB $customDB > allDB
 
 # Get fasta file
-if [[ $fasta == *.gz ]]; then # in case fasta is in a archive
+if [[ $fasta == *.gz ]]; then # in case fasta is in an archive
     tmp_fasta=$(basename "${fasta}" .gz)
     gunzip -c $fasta > $tmp_fasta
     fasta=$tmp_fasta

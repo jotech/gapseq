@@ -252,12 +252,13 @@ mkdir -p $output_dir || { echo "$output_dir not writable. Aborting..."; exit 1; 
 fasta=$(readlink -f "$1") # save input file before changing to temporary directory
 tmp_fasta=$(basename "${fasta}" .gz | tr ' ' '_')
 if [[ "$user_temp" = true ]]; then
-    mkdir -p $user_temp_folder
+    mkdir -p $user_temp_folder || { echo "Temporary directory $user_temp_folder cannot be created. Aborting..."; exit 1; }
     tmpdir=$(mktemp -d $user_temp_folder/"$tmp_fasta"_XXXXXX)
+    [[ "$tmpdir" != /* ]] && tmpdir="$(cd "$tmpdir" && pwd)" # if relative path — convert it to absolute
 else
     tmpdir=$(mktemp -d)
-    trap 'rm -rf "$tmpdir"' EXIT
 fi
+trap 'rm -rf "$tmpdir"' EXIT
 echo $tmpdir
 cd $tmpdir
 
