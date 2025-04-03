@@ -46,6 +46,7 @@ completenessCutoffNoHints <- as.numeric(args[6])/100
 completenessCutoff <- as.numeric(args[7])/100
 n_threads <- as.integer(args[8])
 vagueCutoff <- as.numeric(args[9])
+verbose <- as.integer(args[10])
 
 #-------------------------------------------------------------------------------
 # (2) Read additional required gapseq files

@@ -29,6 +29,7 @@ use_gene_seq=true
 stop_on_files_exist=false
 update_manually=false
 user_temp=false
+gramstaining=NA
 force_offline=false
 input_mode="auto"
 output_dir=.
@@ -226,11 +227,11 @@ shift $((OPTIND-1))
 # alignment statistics format
 if [ "$includeSeq" = true ]; then
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
-    mmseqs_format="query,pident,evalue,bits,qcov,theader,tstart,tend,qseq"
+    mmseqs_format="qheader,pident,evalue,bits,qcov,theader,tstart,tend,qseq"
     diamnd_format="qseqid pident evalue bitscore qcovhsp stitle sstart send sseq"
 else
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send"
-    mmseqs_format="query,pident,evalue,bits,qcov,theader,tstart,tend"
+    mmseqs_format="qheader,pident,evalue,bits,qcov,theader,tstart,tend"
     diamond_format="qseqid pident evalue bitscore qcovhsp stitle sstart send"
 fi
 
@@ -264,7 +265,7 @@ else
     tmpdir=$(mktemp -d)
 fi
 trap 'rm -rf "$tmpdir"' EXIT
-echo $tmpdir
+[[ $verbose -ge 1 ]] && echo $tmpdir
 cd $tmpdir
 
 # get fasta file
@@ -281,9 +282,9 @@ if [ $input_mode == "auto" ]; then
     input_mode=`$dir/./nuclprot.sh $fasta`
     
     if [ $input_mode == "prot" ]; then
-        echo "Protein fasta detected."
+        [[ $verbose -ge 1 ]] && echo "Protein fasta detected."
     else
-        echo "Nucleotide fasta detected."
+        [[ $verbose -ge 1 ]] && echo "Nucleotide fasta detected."
     fi
     
 fi
@@ -311,12 +312,13 @@ if [ $input_mode == "nucl" ]; then
     fi
     
     if [ $newtranslate == "true" ]; then
-        [[ $verbose -ge 1 ]] && echo "Translating genomic nucleotide fasta to protein fasta..."
+        [[ $verbose -ge 1 ]] && echo -n "Translating genomic nucleotide fasta to protein fasta..."
         $dir/translate_genome.sh -i "$fasta" -o "$fastaID" -K $n_threads 
         fasta="$fastaID.faa"
         transl_table=`cat ${fastaID}_code`
         rm ${fastaID}_code
-        [[ $verbose -ge 1 ]] && echo "Genome translated to" `grep -c "^>" $fasta` "ORFs using translation table $transl_table."
+        orf_count=$(grep -c "^>" "$fasta")
+        [[ $verbose -ge 1 ]] && echo "$orf_count ORFs (translation table: $transl_table)"
     fi
 fi
 
@@ -386,8 +388,8 @@ case $pathways in
         ;;
 esac
 
-# determine taxonomy
-if [ $input_mode == "prot" ] && [ $taxonomy == "auto" ]; then
+# predict taxonomy (Bacteria or Archaea?)
+if [ $taxonomy == "auto" ]; then
     cp $dir/../dat/seq/hmm/domain.hmm.gz .
     gunzip domain.hmm.gz
     hmmsearch --tblout $fastaID.tblout --cpu $n_threads domain.hmm $fasta > /dev/null
@@ -395,11 +397,28 @@ if [ $input_mode == "prot" ] && [ $taxonomy == "auto" ]; then
     rm domain.hmm
     rm $fastaID.tblout
     
-    echo Predicted taxonomy: $taxonomy
-fi
+    [[ $verbose -ge 1 ]] && echo Predicted taxonomy: $taxonomy
+    
 
+fi
 [[ "$taxonomy" == "bacteria" ]] && taxonomy=Bacteria
 [[ "$taxonomy" == "archaea" ]] &&  taxonomy=Archaea
+
+
+# Predict Gram staining
+if [ "$taxonomy" == "Bacteria" ]; then
+    cp $dir/../dat/seq/hmm/gram.hmm.gz .
+    gunzip gram.hmm.gz
+    hmmsearch --tblout $fastaID.tblout --cpu $n_threads gram.hmm $fasta > /dev/null
+    gramstaining=`Rscript $dir/predict_gramstaining.R "$dir" "$fastaID.tblout"`
+    rm gram.hmm
+    rm $fastaID.tblout
+
+    [[ $verbose -ge 1 ]] && echo Predicted Gram-staining: $gramstaining
+
+fi
+
+
 
 # Follow taxonomy prediction for pathway tax range if set to "auto"
 if [ "$taxRange" == "auto" ]; then
@@ -479,7 +498,7 @@ else
         mv allPwy.tmp allPwy
         #cat allPwy | grep -wE "$dupli_search"
     fi
-    cat allPwy | grep -wEi $pwyKey | wc -l
+    # cat allPwy | grep -wEi $pwyKey | wc -l
     pwyDB=$(cat allPwy | grep -wEi $pwyKey | awk -F "\t" '{if ($6) print $0;}')
     NApwy=$(cat allPwy | grep -wEi $pwyKey | awk -F "\t" '{if (!$6) print $1, $2;}')
     [[ -n "$NApwy" ]] && echo Pathways ignored because no reactions found: $(echo "$NApwy" | wc -l)
@@ -592,7 +611,7 @@ pwyNr=$(echo "$pwyDB" | wc -l)
 
 pwyDBfile=$(mktemp -p $tmpdir)
 echo "$pwyDB" > $pwyDBfile
-Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy $seqSrc $force_offline $update_manually $use_gene_seq $n_threads
+Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy $seqSrc $force_offline $update_manually $use_gene_seq $n_threads $verbose
 # the final reference sequences are stored by the above R-script in "query.faa"
 
 #----------------------#
@@ -623,6 +642,8 @@ if [ "$aliTool" == "mmseqs2" ]; then
     mmseqs search queryDB targetDB resultDB $tmpdir --threads $n_threads -c 0.$covcutoff >> aligner.log
     mmseqs convertalis queryDB targetDB resultDB alignments.tsv \
       --format-output "$mmseqs_format" >> aligner.log 2>&1
+    
+    sed -Ei 's/^([^ ]+) [^\t]+/\1/' alignments.tsv
 fi
 
 # cp alignments.tsv ~/tmp/alignments.tsv # debug line
@@ -631,36 +652,37 @@ fi
 # Analyse Alignments   #
 #----------------------#
 
-Rscript $dir/analyse_alignments.R $bitcutoff $identcutoff $strictCandidates $identcutoff_exception $subunit_cutoff $completenessCutoffNoHints $completenessCutoff $n_threads $vagueCutoff
+Rscript $dir/analyse_alignments.R $bitcutoff $identcutoff $strictCandidates $identcutoff_exception $subunit_cutoff $completenessCutoffNoHints $completenessCutoff $n_threads $vagueCutoff $verbose
 
 #------------------------#
 # Exporting result files # 
 #------------------------#
-
-cp aligner.log $output_dir/${fastaID}-$output_suffix-find_aligner.log
-cp output.tbl $output_dir/${fastaID}-$output_suffix-Reactions.tbl
-cp output_pwy.tbl $output_dir/${fastaID}-$output_suffix-Pathways.tbl
-
-if [ $input_mode == "nucl" ] && [ $newtranslate == "true" ]; then
-    gzip -c $fasta > "$output_dir/${fastaID}.faa.gz"
-    mv ${fastaID}.gff "$output_dir/${fastaID}.gff"
-fi
 
 # add gapseq version and sequence database status to table comments head
 gapseq_version=$($dir/.././gapseq -v | head -n 1)
 seqdb_version=`md5sum $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1-7`
 seqdb_date=$(stat -c %y $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1-10)
 
-genome_info="genome_format=$input_mode"
-[[ $input_mode == "nucl" ]] && faamd5=`md5sum $output_dir/${fastaID}.faa.gz | cut -c1-7` && genome_info="${genome_info};translation_md5=${faamd5}"
-[[ $input_mode == "nucl" ]] && [[ $newtranslate == "true" ]] && genome_info="${genome_info};translation_tabel=${transl_table}"
+if [ $input_mode == "nucl" ] && [ $newtranslate == "true" ]; then
+    gzip -c $fasta > "$output_dir/${fastaID}.faa.gz"
+    mv ${fastaID}.gff "$output_dir/${fastaID}.gff"
+fi
 
-sed -i "1s/^/# $gapseq_version\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
-sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
-sed -i "3s/^/# $genome_info\n/" $output_dir/${fastaID}-$output_suffix-Reactions.tbl
-sed -i "1s/^/# $gapseq_version\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
-sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
-sed -i "3s/^/# $genome_info\n/" $output_dir/${fastaID}-$output_suffix-Pathways.tbl
+genome_info="genome_format=${input_mode};taxonomy=${taxonomy}"
+[[ $taxonomy == "Bacteria" ]] && genome_info="${genome_info};gram=${gramstaining}"
+[[ $input_mode == "nucl" ]] && faamd5=`md5sum $output_dir/${fastaID}.faa.gz | cut -c1-7` && genome_info="${genome_info};translation_md5=${faamd5}"
+[[ $input_mode == "nucl" ]] && [[ $newtranslate == "true" ]] && genome_info="${genome_info};translation_table=${transl_table}"
+
+sed -i "1s/^/# $gapseq_version\n/" output.tbl
+sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" output.tbl
+sed -i "3s/^/# $genome_info\n/" output.tbl
+sed -i "1s/^/# $gapseq_version\n/" output_pwy.tbl
+sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" output_pwy.tbl
+sed -i "3s/^/# $genome_info\n/" output_pwy.tbl
+
+cp aligner.log $output_dir/${fastaID}-$output_suffix-find_aligner.log
+cp output.tbl $output_dir/${fastaID}-$output_suffix-Reactions.tbl
+cp output_pwy.tbl $output_dir/${fastaID}-$output_suffix-Pathways.tbl
 
 
 

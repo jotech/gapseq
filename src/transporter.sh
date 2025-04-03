@@ -186,23 +186,24 @@ if [ $input_mode == "nucl" ]; then
     fi
     
     if [ $newtranslate == "true" ]; then
-        [[ $verbose -ge 1 ]] && echo "Translating genomic nucleotide fasta to protein fasta..."
+        [[ $verbose -ge 1 ]] && echo -n "Translating genomic nucleotide fasta to protein fasta..."
         $dir/translate_genome.sh -i "$fasta" -o "$fastaID" -K $n_threads 
         fasta="$fastaID.faa"
         transl_table=`cat ${fastaID}_code`
         rm ${fastaID}_code
-        [[ $verbose -ge 1 ]] && echo "Genome translated to" `grep -c "^>" $fasta` "ORFs using translation table $transl_table."
+        orf_count=$(grep -c "^>" "$fasta")
+        [[ $verbose -ge 1 ]] && echo "$orf_count ORFs (translation table: $transl_table)"
     fi
 fi
 
 # alignment statistics format
 if [ "$includeSeq" = true ]; then
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
-    mmseqs_format="query,pident,evalue,bits,qcov,theader,tstart,tend,qseq"
+    mmseqs_format="qheader,pident,evalue,bits,qcov,theader,tstart,tend,qseq"
     diamnd_format="qseqid pident evalue bitscore qcovhsp stitle sstart send sseq"
 else
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send"
-    mmseqs_format="query,pident,evalue,bits,qcov,theader,tstart,tend"
+    mmseqs_format="qheader,pident,evalue,bits,qcov,theader,tstart,tend"
     diamond_format="qseqid pident evalue bitscore qcovhsp stitle sstart send"
 fi
 
@@ -236,7 +237,7 @@ touch aligner.log
 if [ "$aliTool" == "blast" ]; then
     echo `blastp -version` >> aligner.log
     makeblastdb -in "$fasta" -dbtype prot -out orgdb >> aligner.log
-    blastp -db orgdb -query small.fasta -qcov_hsp_perc $covcutoff -num_threads $n_threads -outfmt "6 $blast_format" > out
+    blastp -db orgdb -query small.fasta -qcov_hsp_perc $covcutoff -num_threads $n_threads -outfmt "6 $blast_format" > out.tsv
 fi
 
 if [ "$aliTool" == "diamond" ]; then
@@ -244,7 +245,7 @@ if [ "$aliTool" == "diamond" ]; then
     diamond makedb --in "$fasta" -d orgdb >> aligner.log 2>&1
     diamond blastp -d orgdb.dmnd -q small.fasta  \
       --threads $n_threads \
-      --out out \
+      --out out.tsv \
       --outfmt 6 $diamond_format \
       --query-cover $covcutoff >> aligner.log 2>&1
 fi
@@ -253,16 +254,20 @@ if [ "$aliTool" == "mmseqs2" ]; then
     echo `mmseqs version` >> aligner.log
     mmseqs createdb "$fasta" targetDB >> aligner.log 2>&1
     mmseqs createdb small.fasta queryDB >> aligner.log 2>&1
-    mmseqs search queryDB targetDB resultDB $tmpdir --threads $n_threads -c 0.$covcutoff >> aligner.log
-    mmseqs convertalis queryDB targetDB resultDB out \
+    mmseqs search queryDB targetDB resultDB $tmpdir --threads $n_threads -c 0.$covcutoff >> aligner.log 2>&1
+    mmseqs convertalis queryDB targetDB resultDB out.tsv \
       --format-output "$mmseqs_format" >> aligner.log 2>&1
+      
+    sed -Ei 's/^([^ ]+) [^\t]+/\1/' out.tsv
 fi
 
 #----------------------#
 # Analyse Alignments   #
 #----------------------#
-
-cat out | awk -v identcutoff=$identcutoff -v covcutoff=$covcutoff '{if ($2>=identcutoff && $5>=covcutoff) print $0}'> blasthits
+cp out.tsv ~/test/transl/out.tsv
+cat out.tsv | wc -l
+cat out.tsv | awk -v identcutoff=$identcutoff '{if ($2>=identcutoff) print $0}'> blasthits
+cat blasthits | wc -l
 TC_blasthits=$(grep -Pwo "([1-4]\\.[A-z]\\.[0-9]+\\.[0-9]+\\.[0-9]+)" blasthits | sort | uniq)
 TC_types[1]="1.Channels and pores"
 TC_types[2]="2.Electrochemical potential-driven transporters"
@@ -342,18 +347,35 @@ if [ "$use_alternatives" = true ] ; then
     done
 fi
 unset IFS
-echo Total number of found substance transporter for $fastaid: `cat transporter_bitscore.tbl | cut -f4 | sort | uniq | wc -l`
+echo Total number of found substance transporter for $fastaID: `cat transporter_bitscore.tbl | cut -f4 | sort | uniq | wc -l`
 
-cp transporter.tbl $output_dir/${fastaid}-Transporter.tbl
-[[ -s transporter.tbl ]] && echo "id tc sub exid rea $blast_format comment" | tr ' ' '\t' | cat - transporter.tbl | awk '!a[$0]++' > $output_dir/${fastaid}-Transporter.tbl # add header and remove duplicates
+#-------------------------#
+# Exporting results table # 
+#-------------------------#
+
+[[ -s transporter.tbl ]] && echo "id tc sub exid rea $blast_format comment" | tr ' ' '\t' | cat - transporter.tbl | awk '!a[$0]++' > transporter.tbl # add header and remove duplicates
 
 # add gapseq vesion and sequence database status to table comments head
 gapseq_version=$($dir/.././gapseq -v | head -n 1)
 seqdb_version=$(md5sum $dir/../dat/seq/transporter.fasta | cut -c1-7)
 seqdb_date=$(stat -c %y $dir/../dat/seq/transporter.fasta | cut -c1-10)
-sed -i "1s/^/# $gapseq_version\n/" $output_dir/${fastaid}-Transporter.tbl
-sed -i "2s/^/# Transporter sequence DB md5sum: $seqdb_version ($seqdb_date)\n/" $output_dir/${fastaid}-Transporter.tbl
+
+if [ $input_mode == "nucl" ] && [ $newtranslate == "true" ]; then
+    gzip -c $fasta > "$output_dir/${fastaID}.faa.gz"
+    mv ${fastaID}.gff "$output_dir/${fastaID}.gff"
+fi
+
+genome_info="genome_format=${input_mode}"
+[[ $input_mode == "nucl" ]] && faamd5=`md5sum $output_dir/${fastaID}.faa.gz | cut -c1-7` && genome_info="${genome_info};translation_md5=${faamd5}"
+[[ $input_mode == "nucl" ]] && [[ $newtranslate == "true" ]] && genome_info="${genome_info};translation_table=${transl_table}"
+
+sed -i "1s/^/# $gapseq_version\n/" transporter.tbl
+sed -i "2s/^/# Transporter sequence DB md5sum: $seqdb_version ($seqdb_date)\n/" transporter.tbl
+
+cp transporter.tbl $output_dir/${fastaID}-Transporter.tbl
+cp aligner.log $output_dir/${fastaID}-Transporter-find_aligner.log
 
 # finishing
 end_time=`date +%s`
 echo Running time: `expr $end_time - $start_time` s.
+

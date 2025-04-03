@@ -35,6 +35,7 @@ force_offline <- args[5] == "true"
 update_manually <- args[6] == "true"
 use_gene_seq <- args[7] == "true"
 n_threads <- as.integer(args[8])
+verbose <- as.integer(args[9])
 
 # some hard-coded correction of syntax errors in reaction names that would break string parsing (remove when meta_pwy.tbl is corrected/updated)
 pwyDB[V1 %in% c("|PWY18C3-10|","|PWY18C3-12|"), V9 := sub("sucrose-3-isobutanoyl-4-isovaleryl-3;-isovaleroyltransferase",
@@ -348,7 +349,8 @@ allseqs <- mclapply(allseqfiles, mc.cores = n_threads, FUN = function(sf) {
 })
 allseqs <- do.call("c",allseqs)
 
-cat("Number of reference sequences used for alignments:",length(allseqs),"\n")
+if(verbose >= 1)
+  cat("Number of reference sequences used for alignments:",length(allseqs),"\n")
 
 #-------------------------------------------------------------------------------
 # (6) Data export
