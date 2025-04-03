@@ -652,7 +652,7 @@ fi
 # Analyse Alignments   #
 #----------------------#
 
-Rscript $dir/analyse_alignments.R $bitcutoff $identcutoff $strictCandidates $identcutoff_exception $subunit_cutoff $completenessCutoffNoHints $completenessCutoff $n_threads $vagueCutoff $verbose
+Rscript $dir/analyse_alignments.R $bitcutoff $identcutoff $strictCandidates $identcutoff_exception $subunit_cutoff $completenessCutoffNoHints $completenessCutoff $n_threads $vagueCutoff $verbose $pwyDBfile
 
 #------------------------#
 # Exporting result files # 
@@ -662,13 +662,16 @@ Rscript $dir/analyse_alignments.R $bitcutoff $identcutoff $strictCandidates $ide
 gapseq_version=$($dir/.././gapseq -v | head -n 1)
 seqdb_version=`md5sum $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1-7`
 seqdb_date=$(stat -c %y $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1-10)
+nORFs=$(grep -c "^>" "$fasta")
+nORFsMapped=$(cat nmappedORFs.tmp)
+ORFcov=`echo "scale=2; $nORFsMapped*100/$nORFs" | bc`
 
 if [ $input_mode == "nucl" ] && [ $newtranslate == "true" ]; then
     gzip -c $fasta > "$output_dir/${fastaID}.faa.gz"
     mv ${fastaID}.gff "$output_dir/${fastaID}.gff"
 fi
 
-genome_info="genome_format=${input_mode};taxonomy=${taxonomy}"
+genome_info="genome_format=${input_mode};taxonomy=${taxonomy};ORF_coverage=${ORFcov}"
 [[ $taxonomy == "Bacteria" ]] && genome_info="${genome_info};gram=${gramstaining}"
 [[ $input_mode == "nucl" ]] && faamd5=`md5sum $output_dir/${fastaID}.faa.gz | cut -c1-7` && genome_info="${genome_info};translation_md5=${faamd5}"
 [[ $input_mode == "nucl" ]] && [[ $newtranslate == "true" ]] && genome_info="${genome_info};translation_table=${transl_table}"

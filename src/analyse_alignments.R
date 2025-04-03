@@ -47,6 +47,7 @@ completenessCutoff <- as.numeric(args[7])/100
 n_threads <- as.integer(args[8])
 vagueCutoff <- as.numeric(args[9])
 verbose <- as.integer(args[10])
+pwyDB <- fread(args[11], sep="\t", quote=FALSE)
 
 #-------------------------------------------------------------------------------
 # (2) Read additional required gapseq files
@@ -159,6 +160,15 @@ pwydt[Completeness == 100, pathway.status := "full"]
 pwydt[Prediction == TRUE & Completeness < 100 & NrKeyReactionFound == NrKeyReaction, pathway.status := "threshold"]
 pwydt[Prediction == TRUE & Completeness < completenessCutoffNoHints*100, pathway.status := "keyenzyme"]
 
+# add a column with pathway names
+pwydt <- merge(pwydt, pwyDB[,.(pathway = V1, Name = V2)], by = "pathway")
+
+# reorder columns
+pwydt <- pwydt[, .(pathway, Name, Prediction, Completeness, pathway.status,
+                   NrReaction, NrSpontaneous, NrVague, NrKeyReaction,
+                   NrReactionFound, NrKeyReactionFound,
+                   ReactionsFound, SpontaneousReactions, KeyReactions)]
+
 #-------------------------------------------------------------------------------
 # (4) Add pathway prediction info to reaction table, too
 #-------------------------------------------------------------------------------
@@ -166,9 +176,17 @@ pwydt[Prediction == TRUE & Completeness < completenessCutoffNoHints*100, pathway
 rxndt <- merge(rxndt, pwydt[, .(pathway, pathway.status)], by = "pathway")
 
 #-------------------------------------------------------------------------------
+# ORFs associated with at least one found reaction (used for coverage calc.)
+#-------------------------------------------------------------------------------
+
+nmapped <- rxndt[(is_complex == FALSE & status == "good_blast") | (is_complex == TRUE & !is.na(complex.status)),
+                 length(unique(stitle))]
+writeLines(as.character(nmapped), "nmappedORFs.tmp")
+
+#-------------------------------------------------------------------------------
 # (n) Export reaction and pathway tables
 #-------------------------------------------------------------------------------
-setnames(pwydt, "pathway", "ID")
+setnames(pwydt, c("pathway", "pathway.status"), c("ID", "Status"))
 
 fwrite(rxndt, file = "output.tbl", sep = "\t", quote = FALSE)
 fwrite(pwydt, file = "output_pwy.tbl", sep = "\t", quote = FALSE)

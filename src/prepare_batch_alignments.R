@@ -280,7 +280,7 @@ seqfiles[, uniprot_query := NULL] # column not needed anymore
 seqfiles[, use_reanames := NULL]
 
 #-------------------------------------------------------------------------------
-# (5) Decide which reference sequence files to use
+# (5) Decide which reference sequences files to use
 #-------------------------------------------------------------------------------
 
 # Decision rules:
