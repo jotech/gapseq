@@ -258,13 +258,12 @@ if [ "$aliTool" == "mmseqs2" ]; then
     mmseqs convertalis queryDB targetDB resultDB out.tsv \
       --format-output "$mmseqs_format" >> aligner.log 2>&1
       
-    sed -Ei 's/^([^ ]+) [^\t]+/\1/' out.tsv
+    sed -Ei 's/^([^ ]+) [^\t]+/\1/' out.tsv # get the fastq sequence identifier from query header (everything between the leading ">" and the first space).
 fi
 
 #----------------------#
 # Analyse Alignments   #
 #----------------------#
-cp out.tsv ~/test/transl/out.tsv
 cat out.tsv | wc -l
 cat out.tsv | awk -v identcutoff=$identcutoff '{if ($2>=identcutoff) print $0}'> blasthits
 cat blasthits | wc -l

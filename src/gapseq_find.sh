@@ -643,7 +643,7 @@ if [ "$aliTool" == "mmseqs2" ]; then
     mmseqs convertalis queryDB targetDB resultDB alignments.tsv \
       --format-output "$mmseqs_format" >> aligner.log 2>&1
     
-    sed -Ei 's/^([^ ]+) [^\t]+/\1/' alignments.tsv
+    sed -Ei 's/^([^ ]+) [^\t]+/\1/' alignments.tsv # get the fastq sequence identifier from query header (everything between the leading ">" and the first space).
 fi
 
 # cp alignments.tsv ~/tmp/alignments.tsv # debug line
