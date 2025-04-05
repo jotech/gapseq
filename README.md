@@ -33,11 +33,11 @@ For detailed use cases and full tutorials, see the [documentation](https://gapse
 
 Prediction of network candidate reactions, building of a draft model and gap filling:
 ```
-./gapseq doall toy/myb71.fna
+./gapseq doall toy/myb71.faa.gz
 ```
 Do the same but with a defined medium for gap filling:
 ```
-./gapseq doall toy/ecoli.fna.gz dat/media/MM_glu.csv
+./gapseq doall toy/ecoli.faa.gz dat/media/MM_glu.csv
 ```
 
 
@@ -53,7 +53,7 @@ GNU General Public License version 3.0 ([GPLv3](https://www.gnu.org/licenses/gpl
   Licensed under a Creative Commons Attribution 4.0 International License.
   Link to license: https://creativecommons.org/licenses/by/4.0/
   Website: https://www.metanetx.org/
-- **MetaCyc**: Copyright © SRI International 1999-2020, Marine Biological Laboratory  1998-2001, DoubleTwist Inc 1998-1999.  
+- **MetaCyc**: Copyright © SRI International 1999-2020, Marine Biological Laboratory  1998-2001, DoubleTwist Inc 1998-1999.
   Link to license: https://metacyc.org/ptools-academic-license.shtml .
   Website: https://metacyc.org/
 - **MODELSEED**: Copyright 2015 ModelSEED.
