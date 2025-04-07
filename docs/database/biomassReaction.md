@@ -1,6 +1,6 @@
 # Biomass Reactions
 
-The biomass reaction is an essential part in Flux Balance Analysis of microbial growth. The composition of the biomass reaction (i.e. stoichiometry of molecular cell constituents) should ideally reflect the molecular makeup of the organism of interest.
+The biomass reaction is an essential part in Flux Balance Analysis of cell growth. The composition of the biomass reaction (i.e. stoichiometry of molecular cell constituents) should ideally reflect the molecular makeup of the organism of interest.
 
 ## Biomass reaction presets
 
@@ -26,7 +26,7 @@ gapseq currently provides three template biomass reactions: One for archaea and 
 | Polysaccharides                          | -                                                            | -                                                            | 0.1 %                                                        |
 |                                          |                                                              |                                                              |                                                              |
 
-\* If no biomass reaction is defined using this command, gapseq will predict the most likely biomass reaction based on the 16S rRNA gene sequence using a pre-trained classifier (when input is nucleotide fasta) or specific protein-coding marker genes (when input is protein fasta).
+\* If no biomass reaction is defined using this command, gapseq will predict the most likely biomass reaction based on specific protein-coding marker genes.
 
 \** When using gapseq for publications, please also cite these original research papers to acknowledge their work. And of course gapseq :)
 
@@ -37,7 +37,7 @@ As an advanced usage feature, gapseq allows user-defined biomass reactions.
 To use this feature, simple supply the path to your biomass definition JSON-file with the option `-b` for the `gapseq draft` module. For example:
 
 ```sh
-gapseq draft -r genome-all-Reactions.tbl -t genome-Transporter.tbl -b ~/path/to/biomass/user_biomass.json -c genome.fna.gz -p genome-all-Pathways.tbl
+gapseq draft -r genome-all-Reactions.tbl -t genome-Transporter.tbl -b ~/path/to/biomass/user_biomass.json -p genome-all-Pathways.tbl
 ```
 
 The JSON-file for the biomass formulation needs to follow a specific format. An example for a user-defined biomass json-file:

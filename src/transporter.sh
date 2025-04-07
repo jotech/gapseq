@@ -264,9 +264,7 @@ fi
 #----------------------#
 # Analyse Alignments   #
 #----------------------#
-cat out.tsv | wc -l
 cat out.tsv | awk -v identcutoff=$identcutoff '{if ($2>=identcutoff) print $0}'> blasthits
-cat blasthits | wc -l
 TC_blasthits=$(grep -Pwo "([1-4]\\.[A-z]\\.[0-9]+\\.[0-9]+\\.[0-9]+)" blasthits | sort | uniq)
 TC_types[1]="1.Channels and pores"
 TC_types[2]="2.Electrochemical potential-driven transporters"
@@ -352,7 +350,8 @@ echo Total number of found substance transporter for $fastaID: `cat transporter_
 # Exporting results table # 
 #-------------------------#
 
-[[ -s transporter.tbl ]] && echo "id tc sub exid rea $blast_format comment" | tr ' ' '\t' | cat - transporter.tbl | awk '!a[$0]++' > transporter.tbl # add header and remove duplicates
+[[ -s transporter.tbl ]] && echo "id tc sub exid rea $blast_format comment" | tr ' ' '\t' | cat - transporter.tbl | awk '!a[$0]++' > transporter2.tbl # add header and remove duplicates
+mv transporter2.tbl transporter.tbl
 
 # add gapseq vesion and sequence database status to table comments head
 gapseq_version=$($dir/.././gapseq -v | head -n 1)
@@ -370,6 +369,7 @@ genome_info="genome_format=${input_mode}"
 
 sed -i "1s/^/# $gapseq_version\n/" transporter.tbl
 sed -i "2s/^/# Transporter sequence DB md5sum: $seqdb_version ($seqdb_date)\n/" transporter.tbl
+sed -i "3s/^/# $genome_info\n/" transporter.tbl
 
 cp transporter.tbl $output_dir/${fastaID}-Transporter.tbl
 cp aligner.log $output_dir/${fastaID}-Transporter-find_aligner.log
