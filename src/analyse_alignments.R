@@ -17,7 +17,6 @@ if(file.size("alignments.tsv") == 0) {
   alignments <- fread("alignments.tsv") # alignments <- fread("~/tmp/alignments.tsv")
 }
 setnames(alignments, alicols[1:ncol(alignments)])
-setnames(alignments, alicols[1:ncol(alignments)])
 alignments[, file := sub("\\|.+$","",qseqid)]
 alignments[, qseqid := sub("^.+\\.fasta\\|","",qseqid)]
 

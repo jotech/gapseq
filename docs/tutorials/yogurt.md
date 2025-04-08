@@ -50,16 +50,16 @@ modelA="ldel"
 modelB="sthe"
 
 # (1) Reaction & Pathway prediction
-gapseq find -p all -b 200 -m auto -t auto $modelA.faa.gz
-gapseq find -p all -b 200 -m auto -t auto $modelB.faa.gz
+gapseq find -p all -b 200 -m auto -t auto -A diamond $modelA.faa.gz
+gapseq find -p all -b 200 -m auto -t auto -A diamond $modelB.faa.gz
 
 # (2) Transporter prediction
-gapseq find-transport -b 200 $modelA.faa.gz 
-gapseq find-transport -b 200 $modelB.faa.gz
+gapseq find-transport -b 200 -A diamond $modelA.faa.gz 
+gapseq find-transport -b 200 -A diamond $modelB.faa.gz
 
 # (3) Building Draft Model - based on Reaction-, Pathway-, and Transporter prediction
-gapseq draft -r $modelA-all-Reactions.tbl -t $modelA-Transporter.tbl -p $modelA-all-Pathways.tbl -u 200 -l 100 -c $modelA.faa.gz
-gapseq draft -r $modelB-all-Reactions.tbl -t $modelB-Transporter.tbl -p $modelB-all-Pathways.tbl -u 200 -l 100 -c $modelB.faa.gz
+gapseq draft -r $modelA-all-Reactions.tbl -t $modelA-Transporter.tbl -p $modelA-all-Pathways.tbl -u 200 -l 100
+gapseq draft -r $modelB-all-Reactions.tbl -t $modelB-Transporter.tbl -p $modelB-all-Pathways.tbl -u 200 -l 100
 
 # (4) Gapfilling
 gapseq fill -m $modelA-draft.RDS -n milk.csv -c $modelA-rxnWeights.RDS -g $modelA-rxnXgenes.RDS -b 100
