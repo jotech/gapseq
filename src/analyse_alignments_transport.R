@@ -33,6 +33,8 @@ SUBkey <- str_trim(readLines("SUBkey")) # SUBkey <- str_trim(readLines("~/test/t
 SUBid <- fread("SUBid", header = FALSE) # SUBid <- fread("~/test/transl/tmpdirNew/HRGMv2_0240.faa_Rufax1/SUBid", header = FALSE)
 SUBid[, V1 := tolower(V1)]
 allDB <- fread("allDB") # allDB <- fread("~/test/transl/tmpdirNew/HRGMv2_0240.faa_Rufax1/allDB")
+allDB[, metid := sub("\\[e.\\]$","",exmet)]
+allDB <- allDB[, .(rea = paste(unique(id), collapse = ",")), by = .(type, metid)]
 
 #-------------------------------------------------------------------------------
 # (1) Parse arguments and gapseq/script path; and load gapseq data files
@@ -111,6 +113,9 @@ blasthits <- unique(blasthits, by = c("qseqid","stitle"))
 
 # find reaction reaction IDs (gapseq database)
 blasthits <- blasthits[, metid := gsub("^EX_|_e.$","",exid)]
+blasthits[, type.i := as.numeric(substr(tc,1,1))]
+blasthits[, type := TC_types[type.i]]
+merge(blasthits, allDB[, .(type, metid, rea)], by = c("type","metid"), all.x = TRUE)
 
 
 
