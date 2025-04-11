@@ -4,7 +4,7 @@ start_time=`date +%s`
 bitcutoff=50
 identcutoff=0   # cutoff blast: min identity
 covcutoff=75 # cutoff blast: min coverage
-use_alternatives=true
+nouse_alternatives=false
 includeSeq=false
 only_met=""
 verbose=1
@@ -26,7 +26,8 @@ usage()
     echo "  -b bit score cutoff for local alignment (default: $bitcutoff)"
     echo "  -i identity cutoff for local alignment (default: $identcutoff)"
     echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
-    echo "  -q Include sequences of hits in log files; default $includeSeq"
+    echo "  -q Include sequences of hits in results table"
+    echo "  -a Do not use alternative transport reaction types if no database reaction exists for the specific TC type of the reference sequence"
     echo "  -k Do not use parallel (Deprecated: use '-K 1' instead to disable multi-threading.)"
     echo "  -m only check for this keyword/metabolite (default: all)"
     echo "  -f Path to directory, where output files will be saved (default: current directory)"
@@ -40,7 +41,7 @@ exit 1
 }
 
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
-while getopts "h?i:b:c:qkm:f::v:T:M:K:A:" opt; do
+while getopts "h?i:b:c:qakm:f::v:T:M:K:A:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -61,6 +62,9 @@ while getopts "h?i:b:c:qkm:f::v:T:M:K:A:" opt; do
     k)
         n_threads=1
         echo "DEPRECATION NOTICE: Option '-k' is deprecated. To disable multi-threading use '-K 1' instead."
+        ;;
+    a)
+        nouse_alternatives=true
         ;;
     m)
         only_met=$OPTARG
@@ -200,7 +204,7 @@ fi
 if [ "$includeSeq" = true ]; then
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
     mmseqs_format="qheader,pident,evalue,bits,qcov,theader,tstart,tend,qseq"
-    diamnd_format="qseqid pident evalue bitscore qcovhsp stitle sstart send sseq"
+    diamond_format="qseqid pident evalue bitscore qcovhsp stitle sstart send sseq"
 else
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send"
     mmseqs_format="qheader,pident,evalue,bits,qcov,theader,tstart,tend"
@@ -234,124 +238,47 @@ awk 'BEGIN{while((getline<"fasta_header.small")>0)l[$1]=1}/^>/{f=l[$1]}f' all.fa
 #----------------------#
 touch aligner.log
 
-if [ "$aliTool" == "blast" ]; then
-    echo `blastp -version` >> aligner.log
-    makeblastdb -in "$fasta" -dbtype prot -out orgdb >> aligner.log
-    blastp -db orgdb -query small.fasta -qcov_hsp_perc $covcutoff -num_threads $n_threads -outfmt "6 $blast_format" > out.tsv
-fi
+if [ -s small.fasta ]; then
+    if [ "$aliTool" == "blast" ]; then
+        echo `blastp -version` >> aligner.log
+        makeblastdb -in "$fasta" -dbtype prot -out orgdb >> aligner.log
+        blastp -db orgdb -query small.fasta -qcov_hsp_perc $covcutoff -num_threads $n_threads -outfmt "6 $blast_format" > out.tsv
+    fi
 
-if [ "$aliTool" == "diamond" ]; then
-    echo `diamond --version` >> aligner.log
-    diamond makedb --in "$fasta" -d orgdb >> aligner.log 2>&1
-    diamond blastp -d orgdb.dmnd -q small.fasta  \
-      --threads $n_threads \
-      --out out.tsv \
-      --outfmt 6 $diamond_format \
-      --query-cover $covcutoff >> aligner.log 2>&1
-fi
+    if [ "$aliTool" == "diamond" ]; then
+        echo `diamond --version` >> aligner.log
+        diamond makedb --in "$fasta" -d orgdb >> aligner.log 2>&1
+        diamond blastp -d orgdb.dmnd -q small.fasta  \
+          --threads $n_threads \
+          --out out.tsv \
+          --outfmt 6 $diamond_format \
+          --query-cover $covcutoff >> aligner.log 2>&1
+    fi
 
-if [ "$aliTool" == "mmseqs2" ]; then
-    echo `mmseqs version` >> aligner.log
-    mmseqs createdb "$fasta" targetDB >> aligner.log 2>&1
-    mmseqs createdb small.fasta queryDB >> aligner.log 2>&1
-    mmseqs search queryDB targetDB resultDB $tmpdir --threads $n_threads -c 0.$covcutoff >> aligner.log 2>&1
-    mmseqs convertalis queryDB targetDB resultDB out.tsv \
-      --format-output "$mmseqs_format" >> aligner.log 2>&1
-      
-    sed -Ei 's/^([^ ]+) [^\t]+/\1/' out.tsv # get the fastq sequence identifier from query header (everything between the leading ">" and the first space).
+    if [ "$aliTool" == "mmseqs2" ]; then
+        echo `mmseqs version` >> aligner.log
+        mmseqs createdb "$fasta" targetDB >> aligner.log 2>&1
+        mmseqs createdb small.fasta queryDB >> aligner.log 2>&1
+        mmseqs search queryDB targetDB resultDB $tmpdir --threads $n_threads -c 0.$covcutoff >> aligner.log 2>&1
+        mmseqs convertalis queryDB targetDB resultDB out.tsv \
+          --format-output "$mmseqs_format" >> aligner.log 2>&1
+          
+        sed -Ei 's/^([^ ]+) [^\t]+/\1/' out.tsv # get the fastq sequence identifier from query header (everything between the leading ">" and the first space).
+    fi
+else
+    touch out.tsv
 fi
 
 #----------------------#
 # Analyse Alignments   #
 #----------------------#
-cat out.tsv | awk -v identcutoff=$identcutoff '{if ($2>=identcutoff) print $0}'> blasthits
-TC_blasthits=$(grep -Pwo "([1-4]\\.[A-z]\\.[0-9]+\\.[0-9]+\\.[0-9]+)" blasthits | sort | uniq)
-TC_types[1]="1.Channels and pores"
-TC_types[2]="2.Electrochemical potential-driven transporters"
-TC_types[3]="3.Primary active transporters"
-TC_types[4]="4.Group translocators"
 
-touch DBfound DBfound_bitscore DBmissing DBmissing_bitscore transporter.tbl transporter_bitscore.tbl
-IFS=$'\n' # only splits by newline in for-loop
-for tc in $TC_blasthits
-do
-    i=$(echo $tc | head -c1) # get first character of TC number => transporter type
-    type=${TC_types[$i]}
-    substrates=$(grep -F $tc tcdb_all | cut -f2)
-    sub_hit=$(echo "$substrates" | grep -woiFf SUBkey | sort | uniq)
-    if [[ -z "$sub_hit" ]]; then
-        sub_hit=$(grep -F $tc fasta_header.small | grep -woiFf SUBkey | sort | uniq)
-    fi
-    if [[ -z "$sub_hit" ]]; then
-        echo -e "$substrates\t$tc\t$type" >> SUBmissing
-        continue
-    fi
-    best_hit=$(grep -F $tc blasthits | sort -rgk 4,4 | head -1)
-    hit_good=$(echo "`echo "$best_hit" | cut -f4` >= $bitcutoff" | bc)
+Rscript $dir/analyse_alignments_transport.R $bitcutoff $identcutoff $nouse_alternatives $verbose
 
-    for sub in $sub_hit
-    do 
-        exid_all=$(awk -F '\t' -v subl="$sub" 'tolower($1)==tolower(subl) {print $2}' SUBid | sort | uniq) # get id of substance to avoid mismatches
-        for exid in $exid_all
-        do 
-            exmet=$(echo "$exid" | sed 's/EX_//g' | sed 's/_e0/\[e0\]/g')
-            candidates=$(cat allDB | awk -F '\t' -v type="$type" -v exmet="$exmet" '{if($3==type && $4==exmet) print $0}')
-            if [[ -n "$candidates" ]]; then
-                rea=$(echo "$candidates" | cut -f1)
-                rea_export=$(echo "$rea" | tr '\n' ',' | sed 's/,$//g')
-                exid_export=$(echo "$exid" | tr '\n' ',' | sed 's/,$//g')
-                echo -e "`echo $best_hit | cut -f1`\t$tc\t$sub\t$exid_export\t$rea_export\t$best_hit\ttransporter" >> transporter.tbl
-                echo -e "$sub\t$exmet\t$tc\t$type" >> DBfound
-                if [[ $hit_good -eq 1 ]]; then
-                    [[ verbose -ge 1 ]] && echo $sub_hit $tc $type 
-                    [[ -n "$only_met" ]] && { echo -e "\t"Found reaction: $rea; } 
-                    echo -e "`echo $best_hit | cut -f1`\t$tc\t$sub\t$exid_export\t$rea_export\t$hit_good\ttransporter" >> transporter_bitscore.tbl
-                    echo -e "$sub\t$exmet\t$tc\t$type" >> DBfound_bitscore
-                fi
-            else
-                echo -e "$sub\t$exmet\t$tc\t$type" >> DBmissing
-                [[ $hit_good -eq 1 ]] && echo -e "$sub\t$exmet\t$tc\t$type" >> DBmissing_bitscore
-            fi
-        done
-    done
-done
-
-cat DBfound | cut -f1 | sort | uniq -i > IDfound
-cat DBfound_bitscore | cut -f1 | sort | uniq -i > IDfound_bitscore
-[[ verbose -ge 1 ]] && { echo -e "\nFound transporter for substances:"; cat IDfound_bitscore; }
-cat DBmissing | cut -f1 | sort | uniq -i > IDmissing
-cat DBmissing_bitscore | cut -f1 | sort | uniq -i > IDmissing_bitscore
-[[ verbose -ge 1 ]] && { echo -e "\nFound transporter without reaction in DB:"; comm -23 IDmissing_bitscore IDfound_bitscore; }
-
-
-if [ "$use_alternatives" = true ] ; then
-    [[ verbose -ge 1 && -s IDmissing ]] && echo -e "\nAdd alternative transport reactions:"
-    for missing in `comm -23 IDmissing IDfound`
-    do
-        [[ verbose -ge 1 ]] && echo $missing
-        exid_all=$(awk -F '\t' -v subl="$missing" 'tolower($1)==tolower(subl) {print $2}' SUBid | sort | uniq)
-        for exid in $exid_all
-        do
-            exmet=$(echo "$exid" | sed 's/EX_//g' | sed 's/_e0/\[e0\]/g')
-            candidates=$(cat allDB | awk -F '\t' -v exmet="$exmet" '{if($4==exmet) print $0}')
-            rea=$(echo "$candidates" | cut -f1)
-            rea_export=$(echo "$rea" | tr '\n' ',' | sed 's/,$//g')
-            exid_export=$(echo "$exid" | tr '\n' ',' | sed 's/,$//g')
-            tc=$(grep $missing DBmissing | cut -f3 | paste -s -d '|')
-            best_alter=$(grep -E $tc blasthits | sort -rgk 4,4 | head -1)
-            echo -e "`echo $best_alter | cut -f1`\t`echo $best_alter|grep -Pwo "([1-4]\\.[A-z]\\.[0-9]+\\.[0-9]+\\.[0-9]+)"`\t$missing\t$exid_export\t$rea_export\t$best_alter\talt-transporter" >> transporter.tbl
-        done
-    done
-fi
-unset IFS
-echo Total number of found substance transporter for $fastaID: `cat transporter_bitscore.tbl | cut -f4 | sort | uniq | wc -l`
 
 #-------------------------#
 # Exporting results table # 
 #-------------------------#
-
-[[ -s transporter.tbl ]] && echo "id tc sub exid rea $blast_format comment" | tr ' ' '\t' | cat - transporter.tbl | awk '!a[$0]++' > transporter2.tbl # add header and remove duplicates
-mv transporter2.tbl transporter.tbl
 
 # add gapseq vesion and sequence database status to table comments head
 gapseq_version=$($dir/.././gapseq -v | head -n 1)

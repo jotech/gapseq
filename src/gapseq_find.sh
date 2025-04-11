@@ -228,7 +228,7 @@ shift $((OPTIND-1))
 if [ "$includeSeq" = true ]; then
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send sseq"
     mmseqs_format="qheader,pident,evalue,bits,qcov,theader,tstart,tend,qseq"
-    diamnd_format="qseqid pident evalue bitscore qcovhsp stitle sstart send sseq"
+    diamond_format="qseqid pident evalue bitscore qcovhsp stitle sstart send sseq"
 else
     blast_format="qseqid pident evalue bitscore qcovs stitle sstart send"
     mmseqs_format="qheader,pident,evalue,bits,qcov,theader,tstart,tend"
