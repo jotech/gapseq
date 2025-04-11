@@ -11,3 +11,4 @@ rxn90101	sulfoquinovose symporter	2.Electrochemical potential-driven transporter
 rxn90102	DHPS transporter	2.Electrochemical potential-driven transporters	cpd31356[e0]	(S)-2,3-Dihydroxypropane-1-sulfonate
 rxn27362	formate-oxalate antiporter	2.Electrochemical potential-driven transporters	cpd00180[e0]	Oxalate
 rxn27362	formate-oxalate antiporter	2.Electrochemical potential-driven transporters	cpd00047[e0]	Formate
+rxn05466	Ammonia channel	1.Channels and pores	cpd00013[e0]	NH3
