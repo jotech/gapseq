@@ -11,9 +11,9 @@ spec <- matrix(c(
   \t\t\t values in medium for specific compounds.
   \t\t\t Format: [Compound 1]:[Compound 1 maxFlux];[Compound 2]:[Compound 2 maxFlux]",
   'output.file', 'o', 2, "character", "(optional, character). File name for medium
-  \t\t\t table in csv format. Default: Replacement of 'model' file extension 
+  \t\t\t table in csv format. Default: Replacement of 'model' file extension
   \t\t\t (eg. '.RDS' or '-draft.RDS') with '-medium.csv.",
-  'output.dir', '-f', 2, "character", "Path to directory, where output files will be saved (default: current directory)",
+  'output.dir', 'f', 2, "character", "Path to directory, where output files will be saved (default: current directory)",
   'help' , 'h', 0, "logical", "help"
 ), ncol = 5, byrow = T)
 
@@ -40,51 +40,51 @@ if (!dir.exists(output.dir) || file.access(output.dir, mode = 2) == -1)
 #' Example for manual.flux: "cpd00007:18.5;cpd00011:0" for a medium with allowed
 #' oxygen (cpd00007) uptake (18.5) but without CO2 (cpd00011)
 predict_medium <- function(mod, pathway.pred, manual.flux = NULL) {
-  
+
   # load prediction rules
   #medium_rules <- fread("dat/medium_prediction_rules.tsv", quote = "")
   medium_rules <- fread(paste0(script.dir,"/../dat/medium_prediction_rules.tsv"), header=T, quote = F)
   medium_rules <- medium_rules[grepl("^cpd", cpd.id)] # remove empty rows
-  
+
   # get string with all reactions
   all_reactions <- mod@react_id
   all_reactions <- gsub("_.0$","", all_reactions)
   all_reactions <- all_reactions[grepl("^rxn",all_reactions)]
   all_reactions <- paste(all_reactions, collapse = "|")
-  
+
   # get string with all compounds
   all_compounds <- mod@met_id
   all_compounds <- gsub("\\[.0\\]$","", all_compounds)
   all_compounds <- all_compounds[grepl("^cpd",all_compounds)]
   all_compounds <- paste(all_compounds, collapse = "|")
-  
+
   # get string with all pathways
   all_pathways  <- pathway.pred[Prediction == T, ID]
   all_pathways  <- gsub("\\|","",all_pathways)
   all_pathways  <- gsub("([.|()\\^{}+$*?]|\\[|\\])", "\\\\\\1", all_pathways) # adding escape \\
   all_pathways  <- paste0("\\\"", all_pathways, "\\\"")
   all_pathways  <- paste(all_pathways, collapse = "|")
-  
+
   #
   # Predictions
   #
-  
+
   medium_rules[, rule_input := str_replace_all(rule, all_pathways, "TRUE")]
   medium_rules[, rule_input := str_replace_all(rule_input, all_compounds, "TRUE")]
   medium_rules[, rule_input := str_replace_all(rule_input, all_reactions, "TRUE")]
-  
+
   medium_rules[, rule_input := str_replace_all(rule_input, "\\\"[^\\\"]+\\\"", "FALSE")]
   medium_rules[, rule_input := str_replace_all(rule_input, "cpd[0-9]{5}", "FALSE")]
   medium_rules[, rule_input := str_replace_all(rule_input, "rxn[0-9]{5}", "FALSE")]
-  
+
   for(i in 1:nrow(medium_rules))
     medium_rules[i, rule_res := eval(parse(text = rule_input))]
-  
+
   medium_rules <- medium_rules[rule_res == T]
   medium_rules[, maxFlux_comb := mean(maxFlux), by = cpd.id]
   medium_rules[is.na(maxFlux_comb), maxFlux_comb:=0]
   medium_rules <- medium_rules[!duplicated(cpd.id), .(Nutrient, cpd.id, maxFlux = maxFlux_comb, Category, proton.balance)]
-  
+
   # apply manual concentrations
   if(!is.null(manual.flux)) {
     manual.flux <- unlist(str_split(manual.flux, ";"))
@@ -95,7 +95,7 @@ predict_medium <- function(mod, pathway.pred, manual.flux = NULL) {
              \t \"[Compound 1]:[Compound 1 maxFlux];[Compound 2]:[Compound 2 maxFlux]\"
              \t e.g. \"cpd00007:18.5;cpd00011:0\"")
       }
-      
+
       if(manual.flux[[i]][1] %in% medium_rules$cpd.id) {
         medium_rules[cpd.id == manual.flux[[i]][1], maxFlux := as.numeric(manual.flux[[i]][2])]
       } else {
@@ -106,15 +106,15 @@ predict_medium <- function(mod, pathway.pred, manual.flux = NULL) {
       }
     }
   }
-  
+
   # add name and charge from metabolite database
   seed_x_mets <- fread(paste0(script.dir,"/../dat/seed_metabolites_edited.tsv"), header=T, stringsAsFactors = F, na.strings = c("null","","NA"))
   medium_rules <- merge(medium_rules, seed_x_mets[, .(cpd.id = id, name, charge)], sort = F)
   medium_rules[is.na(charge), proton.balance := FALSE]
-  
+
   # Proton balance
   metsum_charge <- medium_rules[proton.balance == T, sum(maxFlux * charge)]
-  
+
   if(metsum_charge < 0 & !("cpd00067" %in% medium_rules$cpd.id)) {
     dttmp <- data.table(cpd.id = "cpd00067",
                         maxFlux = -metsum_charge,
@@ -141,7 +141,7 @@ if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
 # Arguments:
 if(grepl("\\.RDS", opt$model)) {
   mod <- readRDS(opt$model)
-} 
+}
 if(!grepl("\\.RDS", opt$model)) {
   mod <- readSBMLmod(opt$model)
 }

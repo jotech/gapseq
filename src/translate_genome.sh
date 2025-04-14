@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Check if pyrodigal is installed
+if ! command -v pyrodigal >/dev/null 2>&1; then
+  echo "pyrodigal is NOT installed, but required to translate nucleotide genome to protein amino acid sequences."
+  exit 1
+fi
+
+
 curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")

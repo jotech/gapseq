@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version=1.4.0
+version=1.5.0
 
 curdir=$(pwd)
 path=$(readlink -f "$0")
@@ -9,6 +9,7 @@ dir=$(dirname "$path")
 medium=$dir/dat/media/ALLmed.csv
 verbose=0
 n_threads=1
+aliTool="blast"
 
 usage()
 {
@@ -21,23 +22,23 @@ usage()
     echo -e "Informed prediction and analysis of bacterial metabolic pathways and genome-scale networks"
     echo -e "\nUsage:"
     echo "  gapseq test"
-    echo "  gapseq (find | find-transport | draft | fill | doall | adapt) (...)"
-    echo "  gapseq doall (genome) [medium] [Bacteria|Archaea]"
-    echo "  gapseq find (-p pathways | -e enzymes) [-b bitscore] (genome)"
+    echo "  gapseq (find | find-transport | draft | fill | doall | adapt | medium | pan) (...)"
+    echo "  gapseq doall [-A aligner] (genome)"
+    echo "  gapseq find (-p pathways | -e enzymes | -r reaction) [-b bitscore] (genome)"
     echo "  gapseq find-transport [-b bitscore] (genome)"
-    echo "  gapseq draft (-r reactions | -t transporter -c genome -p pathways) [-b pos|neg|archaea|auto]"
+    echo "  gapseq draft (-r reactions | -t transporter -p pathways) [-b pos|neg|archaea|auto]"
     echo "  gapseq medium (-m draft -p pathways) [-c manual_fluxes -o output_file]"
     echo "  gapseq fill (-m draft -n medium -c rxn_weights -g rxn_genes)"
-    echo "  gapseq adapt (-a reactions/pathways | -r reactions/pathways| -w growh_compounds) -m model (-g rxn_genes, -c rxn_weights, -b reaction_blast_file)"
+    echo "  gapseq adapt (-a reactions/pathways | -r reactions/pathways | -w growth_compounds) -m model (-g rxn_genes, -c rxn_weights, -b reaction_blast_file)"
     echo "  gapseq pan (-m draft_list -c rxn_weights_list -g rxn_genes_list -w pathways_list)"
     echo -e "\nExamples:"
     echo "  gapseq test"
     echo "  gapseq doall toy/ecoli.faa.gz"
-    echo "  gapseq doall toy/myb71.fna.gz dat/media/TSBmed.csv"
-    echo "  gapseq find -p chitin toy/myb71.fna.gz"
-    echo "  gapseq find -p all toy/myb71.fna.gz"
-    echo "  gapseq find-transport toy/myb71.fna.gz"
-    echo "  gapseq draft -r toy/ecoli-all-Reactions.tbl -t toy/ecoli-Transporter.tbl -c toy/ecoli.faa.gz -p toy/ecoli-all-Pathways.tbl"
+    echo "  gapseq doall -m dat/media/TSBmed.csv toy/myb71.faa.gz"
+    echo "  gapseq find -p chitin toy/myb71.faa.gz"
+    echo "  gapseq find -p all toy/myb71.faa.gz"
+    echo "  gapseq find-transport toy/myb71.faa.gz"
+    echo "  gapseq draft -r toy/ecoli-all-Reactions.tbl -t toy/ecoli-Transporter.tbl -p toy/ecoli-all-Pathways.tbl"
     echo "  gapseq medium -m toy/ecoli-draft.RDS -p toy/ecoli-all-Pathways.tbl"
     echo "  gapseq fill -m toy/ecoli-draft.RDS -n dat/media/ALLmed.csv -c toy/ecoli-rxnWeights.RDS -g toy/ecoli-rxnXgenes.RDS"
     echo "  gapseq adapt -a 14DICHLORBENZDEG-PWY -m toy/myb71.RDS"
@@ -56,8 +57,6 @@ usage()
     echo "  pan             Reconstruct a pan-Draft from a list of models."
     echo "  -v              Show version."
     echo "  -h              Show this screen."
-    echo "  -n              Enable noisy verbose mode."
-    echo "  -K              Number of threads for sequence alignments. If option is not provided, number of available CPUs will be automatically determined."
 
 exit 1
 }
@@ -75,11 +74,7 @@ done
 # Set a parsing variable to use getops when either the (1) doall subcommand is given or (2) only gapseq command is given.
 parse_options=true
 
-if [[ "$1" == "doall" ]]; then
-    # If yes set OPTIND 2 to avoid reading "gapseq doall" and to parse all the options in the following while.
-    subcommand=$1
-    OPTIND=2
-elif [[ "$1" =~ ^(test|test-long|find|find-transport|draft|adapt|medium|fill|pan)$ ]]; then
+if [[ "$1" =~ ^(test|test-long|find|find-transport|draft|adapt|medium|fill|pan|doall)$ ]]; then
     # If another command line (like find), the options are not parsed with getopts (as they will be parsed in their own script).
     subcommand=$1
     parse_options=false
@@ -91,7 +86,7 @@ else
 fi
 
 if [[ "$parse_options" == true ]]; then
-    while getopts "hvnK:" opt; do
+    while getopts "hv" opt; do
         case "$opt" in
             h|\?)
                 usage
@@ -123,23 +118,12 @@ if [[ "$parse_options" == true ]]; then
                 fi
                 exit 0
                 ;;
-            n)
-                verbose=1
-                ;;
-            K)
-                n_threads=$OPTARG
-                ;;
             esac
     done
 fi
 
-if [[ "$subcommand" == "doall" ]]; then
-    # Remove the options parsed with getopts and keep "gapseq doall" and genome/medium filenames.
-    shift "$((OPTIND-2))"
-else
-    # Do not remove anything.
-    shift "$((OPTIND-1))"
-fi
+
+shift "$((OPTIND-1))"
 
 [ "$subcommand" = "--" ] && shift
 [ "$#" -eq 0 ]  && usage
@@ -151,7 +135,7 @@ elif   [ "$subcommand" == "test-long" ]; then
     shift
     $dir/src/gapseq_find.sh -v 0 -p min $dir/toy/ecore.faa.gz
     $dir/src/transporter.sh -v 0 $dir/toy/ecore.faa.gz
-    Rscript $dir/src/generate_GSdraft.R -r ecore-min-Reactions.tbl -t ecore-Transporter.tbl -c $dir/toy/ecore.faa.gz -p ecore-min-Pathways.tbl
+    Rscript $dir/src/generate_GSdraft.R -r ecore-min-Reactions.tbl -t ecore-Transporter.tbl -p ecore-min-Pathways.tbl
     Rscript $dir/src/predict_medium.R -m ecore-draft.RDS -p ecore-min-Pathways.tbl
     Rscript $dir/src/gf.suite.R -m ecore-draft.RDS -n ecore-medium.csv -c ecore-rxnWeights.RDS -g ecore-rxnXgenes.RDS -q
 
@@ -184,22 +168,8 @@ elif [ "$subcommand" == "pan" ]; then
     Rscript $dir/src/pan-draft.R "$@"
 
 elif [ "$subcommand" == "doall" ]; then
-    parm=$(echo $@ | sed 's/doall//')
-    file=$(readlink -f $2)
-    base=$(basename "$file")
-    id="${base%.*}"
-    [[ ! -s "$file" ]]  && usage
-    [[ $file == *.gz ]] && id="${id%.*}" 
-    medium=${id}-medium.csv
-    [[ -s "$3" ]]       && medium=$3
-    taxonomy=auto
-    [[ ("$3" == "Bacteria" || "$4" == "Bacteria") ]] && taxonomy=Bacteria
-    [[ ("$3" == "Archaea" || "$4" == "Archaea") ]] && taxonomy=Archaea
-    $dir/src/gapseq_find.sh -v $verbose -b 200 -p all -t $taxonomy -K $n_threads "$file"
-    $dir/src/transporter.sh -v $verbose -b 200 -K $n_threads "$file"
-    Rscript $dir/src/generate_GSdraft.R -r "$id-all-Reactions.tbl" -t "$id-Transporter.tbl" -c "$file" -u 200 -l 100 -p "$id-all-Pathways.tbl" -b $taxonomy
-    [[ ! -s "$3" ]] && Rscript $dir/src/predict_medium.R -m "./${id}-draft.RDS" -p "$id-all-Pathways.tbl"
-    Rscript $dir/src/gf.suite.R -m "./${id}-draft.RDS" -n "$medium" -c "./${id}-rxnWeights.RDS" -b 100 -g "./${id}-rxnXgenes.RDS"
+    shift
+    $dir/src/doall.sh "$@"
 
 else
     usage

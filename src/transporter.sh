@@ -21,8 +21,10 @@ fi
 
 usage()
 {
+    echo "gapseq - transporter prediction"
+    echo ""
     echo "Usage"
-    echo "$0 file.fasta."
+    echo "$0 file.fasta"
     echo "  -b bit score cutoff for local alignment (default: $bitcutoff)"
     echo "  -i identity cutoff for local alignment (default: $identcutoff)"
     echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
@@ -140,7 +142,7 @@ else
     tmpdir=$(mktemp -d)
 fi
 trap 'rm -rf "$tmpdir"' EXIT
-echo $tmpdir
+[[ $verbose -ge 1 ]] && echo $tmpdir
 cd $tmpdir
 
 cat $seedDB $customDB > allDB
