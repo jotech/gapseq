@@ -37,7 +37,7 @@ Prediction of network candidate reactions, building of a draft model and gap fil
 ```
 Do the same but with a defined medium for gap filling:
 ```
-./gapseq doall toy/ecoli.faa.gz dat/media/MM_glu.csv
+./gapseq doall -m dat/media/MM_glu.csv toy/ecoli.faa.gz
 ```
 
 

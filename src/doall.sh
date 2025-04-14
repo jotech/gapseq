@@ -34,7 +34,6 @@ usage()
     echo "  -f Path to directory, where output files will be saved (default: current directory)"
     echo "  -v Verbose level, 0 for nothing, 1 for full (default $verbose)"
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
-    echo "  -M Input genome mode. Either 'nucl' or 'prot' (default '$input_mode')"
     echo "  -K Number of threads. If option is not provided, number of available CPUs will be automatically determined."
     echo "  -A Tool to be used for sequence alignments (blast, mmseqs2, diamond; default: $aliTool)"
     echo ""
@@ -120,14 +119,13 @@ id="${base%.*}"
 [[ ! -s "$file" ]]  && usage
 [[ $file == *.gz ]] && id="${id%.*}" 
 
-$dir/gapseq_find.sh -v $verbose -b 200 -p all -t $taxonomy -K $n_threads -A $aliTool -f $output_dir $user_temp_opt "$file"
-$dir/transporter.sh -v $verbose -b 200 -K $n_threads -A $aliTool -f $output_dir $user_temp_opt "$file"
-Rscript $dir/generate_GSdraft.R -r "$output_dir/$id-all-Reactions.tbl" -t "$output_dir/$id-Transporter.tbl" -u 200 -l 100 -p "$output_dir/$id-all-Pathways.tbl" -b $taxonomy -f $output_dir
+$dir/gapseq_find.sh -v $verbose -b $bitcutoff -p all -t $taxonomy -K $n_threads -A $aliTool -f $output_dir $user_temp_opt "$file"
+$dir/transporter.sh -v $verbose -b $bitcutoff -K $n_threads -A $aliTool -f $output_dir $user_temp_opt "$file"
+Rscript $dir/generate_GSdraft.R -r "$output_dir/$id-all-Reactions.tbl" -t "$output_dir/$id-Transporter.tbl" -u $bitcutoff -l $min_bs_core -p "$output_dir/$id-all-Pathways.tbl" -b $taxonomy -f $output_dir
 if [ $medium == "auto" ]; then
     Rscript $dir/predict_medium.R -m "$output_dir/${id}-draft.RDS" -p "$output_dir/$id-all-Pathways.tbl" -f $output_dir
     medium="$output_dir/${id}-medium.csv"
 fi
-[[ ! -s "$3" ]] && 
-Rscript $dir/gf.suite.R -m "$output_dir/${id}-draft.RDS" -n "$medium" -c "$output_dir/${id}-rxnWeights.RDS" -b 100 -g "$output_dir/${id}-rxnXgenes.RDS" -f $output_dir
+Rscript $dir/gf.suite.R -m "$output_dir/${id}-draft.RDS" -n "$medium" -c "$output_dir/${id}-rxnWeights.RDS" -b $min_bs_core -g "$output_dir/${id}-rxnXgenes.RDS" -f $output_dir
 
 
