@@ -631,38 +631,42 @@ Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy $seqSrc $
 #----------------------#
 touch aligner.log
 
-if [ "$aliTool" == "blast" ]; then
-    [[ "$aliArgs" == "default" ]] && aliArgs=""
-    echo `blastp -version` >> aligner.log
-    makeblastdb -in "$fasta" -dbtype prot -out orgdb >> aligner.log
-    blastp -db orgdb -query query.faa -qcov_hsp_perc $covcutoff $aliArgs \
-      -num_threads $n_threads \
-      -outfmt "6 $blast_format" > alignments.tsv
-fi
+if [ -s query.faa ] && [ $skipBlast == false ]; then
+    if [ "$aliTool" == "blast" ]; then
+        [[ "$aliArgs" == "default" ]] && aliArgs=""
+        echo `blastp -version` >> aligner.log
+        makeblastdb -in "$fasta" -dbtype prot -out orgdb >> aligner.log
+        blastp -db orgdb -query query.faa -qcov_hsp_perc $covcutoff $aliArgs \
+          -num_threads $n_threads \
+          -outfmt "6 $blast_format" > alignments.tsv
+    fi
 
-if [ "$aliTool" == "diamond" ]; then
-    [[ $aliArgs == "default" ]] && aliArgs="--more-sensitive"
-    echo `diamond --version` >> aligner.log
-    diamond makedb --in "$fasta" -d orgdb >> aligner.log 2>&1
-    diamond blastp -d orgdb.dmnd -q query.faa $aliArgs \
-      --threads $n_threads \
-      --out alignments.tsv \
-      --outfmt 6 $diamond_format \
-      --query-cover $covcutoff >> aligner.log 2>&1
-fi
+    if [ "$aliTool" == "diamond" ]; then
+        [[ $aliArgs == "default" ]] && aliArgs="--more-sensitive"
+        echo `diamond --version` >> aligner.log
+        diamond makedb --in "$fasta" -d orgdb >> aligner.log 2>&1
+        diamond blastp -d orgdb.dmnd -q query.faa $aliArgs \
+          --threads $n_threads \
+          --out alignments.tsv \
+          --outfmt 6 $diamond_format \
+          --query-cover $covcutoff >> aligner.log 2>&1
+    fi
 
-if [ "$aliTool" == "mmseqs2" ]; then
-    [[ $aliArgs == "default" ]] && aliArgs=""
-    echo `mmseqs version` >> aligner.log
-    mmseqs createdb "$fasta" targetDB >> aligner.log 2>&1
-    mmseqs createdb query.faa queryDB >> aligner.log 2>&1
-    mmseqs search queryDB targetDB resultDB $tmpdir $aliArgs \
-      --threads $n_threads \
-      -c 0.$covcutoff >> aligner.log
-    mmseqs convertalis queryDB targetDB resultDB alignments.tsv \
-      --format-output "$mmseqs_format" >> aligner.log 2>&1
-    
-    sed -Ei 's/^([^ ]+) [^\t]+/\1/' alignments.tsv # get the fastq sequence identifier from query header (everything between the leading ">" and the first space).
+    if [ "$aliTool" == "mmseqs2" ]; then
+        [[ $aliArgs == "default" ]] && aliArgs=""
+        echo `mmseqs version` >> aligner.log
+        mmseqs createdb "$fasta" targetDB >> aligner.log 2>&1
+        mmseqs createdb query.faa queryDB >> aligner.log 2>&1
+        mmseqs search queryDB targetDB resultDB $tmpdir $aliArgs \
+          --threads $n_threads \
+          -c 0.$covcutoff >> aligner.log
+        mmseqs convertalis queryDB targetDB resultDB alignments.tsv \
+          --format-output "$mmseqs_format" >> aligner.log 2>&1
+
+        sed -Ei 's/^([^ ]+) [^\t]+/\1/' alignments.tsv # get the fastq sequence identifier from query header (everything between the leading ">" and the first space).
+    fi
+else
+    touch alignments.tsv
 fi
 
 # cp alignments.tsv ~/tmp/alignments.tsv # debug line
@@ -708,7 +712,7 @@ cp output_pwy.tbl $output_dir/${fastaID}-$output_suffix-Pathways.tbl
 
 
 # print annotation genome coverage
-[[ $verbose -ge 1 ]] && [[ "$anno_genome_cov" = true ]] && echo "ORF coverage: $ORFcov %"
+[[ $verbose -ge 1 ]] && echo "ORF coverage: $ORFcov %"
 
 
 ps -q $$ -o %cpu,%mem,args
