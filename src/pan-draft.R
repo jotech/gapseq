@@ -27,8 +27,8 @@ for(i in parm_idx){
   parm_nr <- which(i==parm_idx)
   if(parm_nr < length(parm_idx)){
     end <- parm_idx[parm_nr+1]-1
-  } else{ 
-    end <- length(args) 
+  } else{
+    end <- length(args)
   }
   parm_items <- args[i:end]
   if(length(parm_items) == 1){
@@ -62,6 +62,10 @@ suppressMessages(library(methods))
 
 # Little helpers
 source(paste0(script.dir,"/pan-draft_functions.R"))
+source(paste0(script.dir,"/addMetAttr.R"))
+source(paste0(script.dir,"/addReactAttr.R"))
+seed_x_mets   <- fread(paste0(script.dir,"/../dat/seed_metabolites_edited.tsv"), header=T, stringsAsFactors = F, na.strings = c("null","","NA"))
+
 
 # Setting defaults if required
 if ( is.null(opt$output.dir) ) { opt$output.dir = "." }
@@ -112,27 +116,27 @@ if ( !only.binary.rxn.tbl ){
   if(length(model_list)==length(weights_list) & length(model_list) == length(xgenes_list) & length(model_list) == length(pathways_list)){
     cat("The sizes of input lists are consistent, the number of loaded model is", length(model_list), "\n\n")
   } else {
-    stop("Check you input, the number of loaded files per data type is differ")  
-  } 
+    stop("Check you input, the number of loaded files per data type is differ")
+  }
 
-  ### Update rxnWeights table scores 
+  ### Update rxnWeights table scores
   num.mod <- length(weights_list)
   weights_dt <- rbindlist(weights_list, idcol = "model_id")
-  weights_dt[, num.pan := .N, by = .(seed)] # Add lines for seed in order to obtain corrected median  
+  weights_dt[, num.pan := .N, by = .(seed)] # Add lines for seed in order to obtain corrected median
   # Calculate custom median of "weight" by grouping "seed"
   # alternative: "median(weight)" do not consider missing RXN and compute only the once present
   #              "custom_quartile_weight(weight, num.pan, num.mod, min.rxn.freq.in.mods)" consider missing RXN and compute the updated weight based on the total number input models and the threshold passed (e.g. 0.06)
-  #                 has been tested the effect of changing th on gapfilling, it didn't showed considerable effects.  
+  #                 has been tested the effect of changing th on gapfilling, it didn't showed considerable effects.
   weights_dt[, weight.pan := custom_median(weight, num.pan, num.mod), by = .(seed)]
   weights_dt[, num.pan := NULL] # drop the colum num.pan
-  weights_dt <- weights_dt[order(seed, weight)] # alternative: "abs(weight - weigth.pan)" 
+  weights_dt <- weights_dt[order(seed, weight)] # alternative: "abs(weight - weigth.pan)"
   weights_dt <- weights_dt[!duplicated(seed)] # keep the entry with the highest score.
   weights_dt[,c("weight", "weight.pan")] <- weights_dt[,c("weight.pan", "weight")] # Swap the values of "weight" and "weight.pan" columns
   colnames(weights_dt)[colnames(weights_dt)=="weight.pan"] <- "weight.old" # Rename column
   setkeyv(weights_dt, c("model_id", "seed")) # set data.table keys
   saveRDS(weights_dt, file.path(output.dir,"panModel-rxnWeigths.RDS"))
 
-  ### Update rxnXGenes table  
+  ### Update rxnXGenes table
   xgenes_dt <- rbindlist(xgenes_list, idcol = "model_id")
   setkeyv(xgenes_dt, c("model_id", "seed"))
   xgenes_dt <- xgenes_dt[weights_dt] # extract only genes corresponding to the ref reactions
@@ -164,12 +168,12 @@ for (mod_idx in names(model_list)) {
     mod_ids <- c(mod_ids, mod@mod_id)
   }
   # Add annotation column to model attributes if not already there
-  mod <- add_annotation_column_to_attributes(mod) 
+  mod <- add_annotation_column_to_attributes(mod)
 }
 mod_ids <- unlist(mod_ids)
 
 # Build the data.table of presence/absence reaction in a list of models
-res <- build_rxn2mod_dt(model_list) 
+res <- build_rxn2mod_dt(model_list)
 rxn2mod_dt <- res[[1]]
 mod_id2mod_dict <- res[[2]]
 first_mod_desc <- model_list[[1]]@mod_desc
@@ -177,28 +181,28 @@ rm(list = c("model_list", "res")) # Remove some variables
 fwrite(rxn2mod_dt, file = file.path(output.dir,"rxnXmod.tsv"), sep = "\t", quote = FALSE)
 
 if ( !only.binary.rxn.tbl ){
-  # Core reactome size 
+  # Core reactome size
   strict_core_rxn_df <- subset(rxn2mod_dt, rowSums(rxn2mod_dt[, ..mod_ids]) == num.mod) # STRICT CORE
   core_rxn_df <- subset(rxn2mod_dt, rowSums(rxn2mod_dt[, ..mod_ids]) >= round(num.mod*core.th)) # CORE
   shell_rxn_df <- subset(rxn2mod_dt, rowSums(rxn2mod_dt[, ..mod_ids]) >= round(num.mod*shell.th)) # SHELL
   strict_core_rxn_num <- dim(strict_core_rxn_df)[1]
   core_rxn_num <- dim(core_rxn_df)[1] - strict_core_rxn_num
   shell_rxn_num <- dim(shell_rxn_df)[1] - core_rxn_num - strict_core_rxn_num
-  cloud_rxn_num <- dim(rxn2mod_dt)[1] - shell_rxn_num - core_rxn_num - strict_core_rxn_num 
+  cloud_rxn_num <- dim(rxn2mod_dt)[1] - shell_rxn_num - core_rxn_num - strict_core_rxn_num
   cat(paste("\nThe total # of rxn is:", dim(rxn2mod_dt)[1], "\n"))
   cat(paste("The # of strict core rxn (all mod) is:", strict_core_rxn_num, "\n"))
   cat(paste("The # of core rxn ( >=", core.th*100, "% mod) is:", core_rxn_num, "\n"))
   cat(paste("The # of shell rxn ( >=", shell.th*100, "% mod) is:", shell_rxn_num, "\n"))
   cat(paste("The # of cloud rxn ( <", shell.th*100, "% mod) is:", cloud_rxn_num, "\n\n"))
 
-  # write statistics on pan-reactome 
+  # write statistics on pan-reactome
   stat <- c(dim(rxn2mod_dt)[2]-1, dim(rxn2mod_dt)[1], strict_core_rxn_num, core_rxn_num, shell_rxn_num, cloud_rxn_num)
   stat_dt <- data.table(t(stat))
   colnames(stat_dt) <- c("nGenome", "total_RXN", "strict_core (rxn freq. 100%)", "core (rxn freq. >95%)", "shell (rxn freq. 5-95%)", "cloud (rxn freq. <5%)")
   fwrite(stat_dt, file = file.path(output.dir,"pan-reactome_stat.tsv"), sep = "\t")
 
   ### Reconstruct pan-Draft
-  # Extract RXN from model, extract for all rxn the info from the first model having that rxn 
+  # Extract RXN from model, extract for all rxn the info from the first model having that rxn
   info_all_rxns_mods <- list()
   for (rxn_id in rxn2mod_dt$rxn) {
     first_modID_with_rxn <- colnames(rxn2mod_dt)[rxn2mod_dt[rxn_id, ]==1][1] # first model ID having the reaction
@@ -213,20 +217,20 @@ if ( !only.binary.rxn.tbl ){
   for (rxn in info_all_rxns_mods) {
     rxn_id <- rxn$react_id
     for (idx in seq_along(rxn$met_id)) { # identify the metabolites associated to each rxn
-      met_id <- rxn$met_id[idx] 
-      met_name <- rxn$met_name[idx] 
+      met_id <- rxn$met_id[idx]
+      met_name <- rxn$met_name[idx]
 
       # MET: metabolite ID to metabolite name dictionary
       if (!(met_id %in% names(met_id2met_name_dict))) {
         met_id2met_name_dict[[met_id]] <- list(met_name)
-      } else if (!(met_name %in% met_id2met_name_dict[[met_id]])) { # save all the met_name associated to a specific met_id 
+      } else if (!(met_name %in% met_id2met_name_dict[[met_id]])) { # save all the met_name associated to a specific met_id
         met_id2met_name_dict[[met_id]] <- c(met_id2met_name_dict[[met_id]], met_name)
       }
       # RXN: metabolite ID to rxn ID dictionary
       if (!(met_id %in% names(met_id2rxn_id_dict))) {
         met_id2rxn_id_dict[[met_id]] <- list(rxn_id)
       } else if (!(rxn_id %in% met_id2rxn_id_dict[[met_id]])) {
-        met_id2rxn_id_dict[[met_id]] <- c(met_id2rxn_id_dict[[met_id]], rxn_id) # save all the rxn_id associated to a specific met_id 
+        met_id2rxn_id_dict[[met_id]] <- c(met_id2rxn_id_dict[[met_id]], rxn_id) # save all the rxn_id associated to a specific met_id
       }
     }
   }
@@ -235,21 +239,22 @@ if ( !only.binary.rxn.tbl ){
   met_id2met_name_padded_df <- pad_dict_to_dataframe(met_id2met_name_dict)
   rm(list = c("met_id2rxn_id_dict", "met_id2met_name_dict")) # Remove some variables
 
-  cat(paste("Let's standanrdize the name of the duplicated compounds:\n"))
+  cat(paste("Let's standardize the name of the duplicated compounds:\n"))
   dupl.th <- dim(met_id2met_name_padded_df)[2]-2 # ids have duplicated names if at least 2 different names are associated with the same id
-  met_id2duplicated_met_name_df <- met_id2met_name_padded_df[!(rowSums(is.na(met_id2met_name_padded_df)) > dupl.th),] # find metabolites that have a duplicated name 
-  info_all_rxns_mods <- standardize_duplicated_met_name(met_id2duplicated_met_name_df, met_id2rxn_id_df, info_all_rxns_mods) # Standardize the duplicated MET_NAME 
+  met_id2duplicated_met_name_df <- met_id2met_name_padded_df[!(rowSums(is.na(met_id2met_name_padded_df)) > dupl.th),] # find metabolites that have a duplicated name
+  info_all_rxns_mods <- standardize_duplicated_met_name(met_id2duplicated_met_name_df, met_id2rxn_id_df, info_all_rxns_mods) # Standardize the duplicated MET_NAME
 
   # subset rxn2mod_dt based on min.rxn.freq.in.mods to reconstruct the pan-draft
   rxn_PresAbs_dt <- copy(rxn2mod_dt)
   cat(paste("\nth: ", min.rxn.freq.in.mods))
   col_n <- paste0("pan.mod_", min.rxn.freq.in.mods)
   th_rxn_df <- subset(rxn2mod_dt, rowSums(rxn2mod_dt[, ..mod_ids]) >= round(num.mod*min.rxn.freq.in.mods)) # Reactions present/absence in pan-Draft based on frequency th
-  rxn_PresAbs_dt[, (col_n) := as.integer(rxn %in% th_rxn_df$rxn)] # add column on dataset 
-  row_sub <- rxn_PresAbs_dt[,  ..col_n]==1   
+  rxn_PresAbs_dt[, (col_n) := as.integer(rxn %in% th_rxn_df$rxn)] # add column on dataset
+  row_sub <- rxn_PresAbs_dt[,  ..col_n]==1
   subSet_rxn_dt <- rxn_PresAbs_dt[row_sub[, 1], .SD, .SDcols = "rxn"] # select id of present reactions
   pan.mod <- build_panDraft(subSet_rxn_dt, info_all_rxns_mods, first_mod_desc) # build pan-Draft
   saveRDS(pan.mod, file.path(output.dir,"panModel-draft.RDS"))
+
 
   # Write SBML
   if(!opt$sbml.no.output){
