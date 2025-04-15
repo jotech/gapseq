@@ -34,6 +34,7 @@ force_offline=false
 input_mode="auto"
 output_dir=.
 aliTool="blast"
+aliArgs="default"
 OS=$(uname -s)
 if [ "$OS" = "Darwin" -o "$OS" = "FreeBSD" ]; then
     n_threads=$(sysctl hw.ncpu|cut -f2 -d' ')
@@ -64,12 +65,12 @@ usage()
     echo "  -x Do not blast only list pathways, reactions and check for available sequences (default: $skipBlast)"
     echo "  -q Include sequences of hits in log files (default: $includeSeq)"
     echo "  -v Verbose level, 0 for nothing, 1 for pathway infos, 2 for full (default: $verbose)"
-    echo "  -k Do not use parallel (Deprecated: use '-K 1' instead to disable multi-threading.)"
-    echo "  -g Exhaustive search, continue blast even when cutoff is reached (default: $exhaustive)"
+    echo "  -k (Deprecated) Do not use parallel (use '-K 1' instead to disable multi-threading.)"
+    echo "  -g (Deprecated) Exhaustive search, continue blast even when cutoff is reached (default: $exhaustive)"
     echo "  -z Quality of sequences for homology search: 1:only reviewed (swissprot), 2:unreviewed only if reviewed not available, 3:reviewed+unreviewed, 4:only unreviewed (default: $seqSrc)"
     echo "  -m Limit pathways to taxonomic range (default: $taxRange)"
     echo "  -w Use additional sequences derived from gene names (default: $use_gene_seq)"
-    echo "  -y Print annotation genome coverage (default: $anno_genome_cov)"
+    echo "  -y (Deprecated) Print annotation genome coverage (deprecated: Coverage is now always printed)"
     echo "  -j Quit if output files already exist (default: $stop_on_files_exist)"
     echo "  -f Path to directory, where output files will be saved (default: current directory)"
     echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default: $update_manually)"
@@ -78,6 +79,7 @@ usage()
     echo "  -M Input genome mode. Either 'nucl', 'prot', or 'auto' (default '$input_mode')"
     echo "  -K Number of threads for sequence alignments. If option is not provided, number of available CPUs will be automatically determined."
     echo "  -A Tool to be used for sequence alignments (blast, mmseqs2, diamond; default: $aliTool)"
+    echo "  -R Extra parameters to provide to the alignment tool. Note that using this parameter may have security implications if untrusted input is specified."
     echo ""
     echo "Details:"
     echo "\"-t\": if 'auto', gapseq will predict the most likely domain (bacteria/archaea) based on specific protein-coding marker genes."
@@ -112,7 +114,7 @@ metaGenes=$dir/../dat/meta_genes.csv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:A:" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:A:R:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -217,6 +219,9 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:A:" opt; do
             echo "Error: Invalid value for -A. Expected 'blast', 'diamond', or 'mmseqs2', got '$OPTARG'."
             exit 1
         fi
+        ;;
+    R)
+        aliArgs="$OPTARG"
         ;;
     esac
 done
@@ -622,15 +627,19 @@ Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy $seqSrc $
 touch aligner.log
 
 if [ "$aliTool" == "blast" ]; then
+    [[ "$aliArgs" == "default" ]] && aliArgs=""
     echo `blastp -version` >> aligner.log
     makeblastdb -in "$fasta" -dbtype prot -out orgdb >> aligner.log
-    blastp -db orgdb -query query.faa -qcov_hsp_perc $covcutoff -num_threads $n_threads -outfmt "6 $blast_format" > alignments.tsv
+    blastp -db orgdb -query query.faa -qcov_hsp_perc $covcutoff $aliArgs \
+      -num_threads $n_threads \
+      -outfmt "6 $blast_format" > alignments.tsv
 fi
 
 if [ "$aliTool" == "diamond" ]; then
+    [[ $aliArgs == "default" ]] && aliArgs="--more-sensitive"
     echo `diamond --version` >> aligner.log
     diamond makedb --in "$fasta" -d orgdb >> aligner.log 2>&1
-    diamond blastp -d orgdb.dmnd -q query.faa \
+    diamond blastp -d orgdb.dmnd -q query.faa $aliArgs \
       --threads $n_threads \
       --out alignments.tsv \
       --outfmt 6 $diamond_format \
@@ -638,10 +647,13 @@ if [ "$aliTool" == "diamond" ]; then
 fi
 
 if [ "$aliTool" == "mmseqs2" ]; then
+    [[ $aliArgs == "default" ]] && aliArgs=""
     echo `mmseqs version` >> aligner.log
     mmseqs createdb "$fasta" targetDB >> aligner.log 2>&1
     mmseqs createdb query.faa queryDB >> aligner.log 2>&1
-    mmseqs search queryDB targetDB resultDB $tmpdir --threads $n_threads -c 0.$covcutoff >> aligner.log
+    mmseqs search queryDB targetDB resultDB $tmpdir $aliArgs \
+      --threads $n_threads \
+      -c 0.$covcutoff >> aligner.log
     mmseqs convertalis queryDB targetDB resultDB alignments.tsv \
       --format-output "$mmseqs_format" >> aligner.log 2>&1
     
@@ -690,13 +702,8 @@ cp output.tbl $output_dir/${fastaID}-$output_suffix-Reactions.tbl
 cp output_pwy.tbl $output_dir/${fastaID}-$output_suffix-Pathways.tbl
 
 
-
-
 # print annotation genome coverage
-#[[ $verbose -ge 1 ]] && [[ "$anno_genome_cov" = true ]] && Rscript $dir/coverage.R "$fasta" $output_dir/${fastaID}-$output_suffix-Reactions.tbl 
-
-# cleaning
-#[[ -s "$tmp_fasta" ]] && rm "$tmp_fasta"
+[[ $verbose -ge 1 ]] && [[ "$anno_genome_cov" = true ]] && echo "ORF coverage: $ORFcov %"
 
 
 ps -q $$ -o %cpu,%mem,args

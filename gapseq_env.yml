@@ -5,7 +5,6 @@ channels:
 dependencies:
   - bash
   - r
-  - perl
   - gawk
   - sed
   - grep

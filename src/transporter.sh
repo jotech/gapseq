@@ -12,6 +12,7 @@ user_temp=false
 input_mode="auto"
 output_dir=.
 aliTool="blast"
+aliArgs="default"
 OS=$(uname -s)
 if [ "$OS" = "Darwin" -o "$OS" = "FreeBSD" ]; then
 	n_threads=$(sysctl hw.ncpu|cut -f2 -d' ')
@@ -38,12 +39,13 @@ usage()
     echo "  -M Input genome mode. Either 'nucl' or 'prot' (default '$input_mode')"
     echo "  -K Number of threads for sequence alignments. If option is not provided, number of available CPUs will be automatically determined."
     echo "  -A Tool to be used for sequence alignments (blast, mmseqs2, diamond; default: $aliTool)"
+    echo "  -R Extra parameters to provide to the alignment tool. Note that using this parameter may have security implications if untrusted input is specified."
     echo ""
 exit 1
 }
 
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
-while getopts "h?i:b:c:qakm:f::v:T:M:K:A:" opt; do
+while getopts "h?i:b:c:qakm:f::v:T:M:K:A:R:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -93,6 +95,9 @@ while getopts "h?i:b:c:qakm:f::v:T:M:K:A:" opt; do
             echo "Error: Invalid value for -A. Expected 'blast', 'diamond', or 'mmseqs2', got '$OPTARG'."
             exit 1
         fi
+        ;;
+    R)
+        aliArgs="$OPTARG"
         ;;
     esac
 done
@@ -242,15 +247,19 @@ touch aligner.log
 
 if [ -s small.fasta ]; then
     if [ "$aliTool" == "blast" ]; then
+        [[ "$aliArgs" == "default" ]] && aliArgs=""
         echo `blastp -version` >> aligner.log
         makeblastdb -in "$fasta" -dbtype prot -out orgdb >> aligner.log
-        blastp -db orgdb -query small.fasta -qcov_hsp_perc $covcutoff -num_threads $n_threads -outfmt "6 $blast_format" > out.tsv
+        blastp -db orgdb -query small.fasta -qcov_hsp_perc $covcutoff $aliArgs \
+          -num_threads $n_threads \
+          -outfmt "6 $blast_format" > out.tsv
     fi
 
     if [ "$aliTool" == "diamond" ]; then
+        [[ "$aliArgs" == "default" ]] && aliArgs="--more-sensitive"
         echo `diamond --version` >> aligner.log
         diamond makedb --in "$fasta" -d orgdb >> aligner.log 2>&1
-        diamond blastp -d orgdb.dmnd -q small.fasta  \
+        diamond blastp -d orgdb.dmnd -q small.fasta  $aliArgs \
           --threads $n_threads \
           --out out.tsv \
           --outfmt 6 $diamond_format \
@@ -258,10 +267,13 @@ if [ -s small.fasta ]; then
     fi
 
     if [ "$aliTool" == "mmseqs2" ]; then
+        [[ "$aliArgs" == "default" ]] && aliArgs=""
         echo `mmseqs version` >> aligner.log
         mmseqs createdb "$fasta" targetDB >> aligner.log 2>&1
         mmseqs createdb small.fasta queryDB >> aligner.log 2>&1
-        mmseqs search queryDB targetDB resultDB $tmpdir --threads $n_threads -c 0.$covcutoff >> aligner.log 2>&1
+        mmseqs search queryDB targetDB resultDB $tmpdir $aliArgs \
+          --threads $n_threads \
+          -c 0.$covcutoff >> aligner.log 2>&1
         mmseqs convertalis queryDB targetDB resultDB out.tsv \
           --format-output "$mmseqs_format" >> aligner.log 2>&1
           
@@ -282,7 +294,7 @@ Rscript $dir/analyse_alignments_transport.R $bitcutoff $identcutoff $nouse_alter
 # Exporting results table # 
 #-------------------------#
 
-# add gapseq vesion and sequence database status to table comments head
+# add gapseq version and sequence database status to table comments head
 gapseq_version=$($dir/.././gapseq -v | head -n 1)
 seqdb_version=$(md5sum $dir/../dat/seq/transporter.fasta | cut -c1-7)
 seqdb_date=$(stat -c %y $dir/../dat/seq/transporter.fasta | cut -c1-10)

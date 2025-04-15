@@ -51,15 +51,10 @@ check_cmd $ldconfig2 "-N -v $(sed 's/:/ /g' <<< $LD_LIBRARY_PATH:$CONDA_PREFIX/l
 check_cmd awk "--version | head -n 1"
 check_cmd sed "--version | head -n 1"
 check_cmd grep "-V | head -n 1"
-check_cmd perl "-v | head -n 2 | tail -n 1"
-check_cmd tblastn "-version | head -n 1"
-check_cmd exonerate "-v | head -n 1"
-check_cmd bedtools "--version"
-check_cmd barrnap "--help | head -n 2 | tail -n 1"
+check_cmd blastp "-version | head -n 1"
 check_cmd R "--version | head -n 1"
 check_cmd Rscript "--version | head -n 1" false
 check_cmd git "--version"
-check_cmd parallel "--version | head -n 1"
 check_cmd hmmsearch "-h | grep \"# HMMER\" | cut -c 3-"
 check_cmd bc "-v | head -n 1"
 echo -e "\nMissing dependencies: $i\n\n"
@@ -91,9 +86,9 @@ fi
 # blast
 fasta=$dir/../dat/seq/Bacteria/user/1.2.1.87.fasta
 tmp_file=$(mktemp)
-gunzip -c $dir/../toy/myb71.fna.gz > $tmp_file
-makeblastdb -in $tmp_file -dbtype nucl -out orgdb >/dev/null
-tblastn -db orgdb -query $fasta -qcov_hsp_perc 75 -outfmt "6 $blast_format" > blast.out
+gunzip -c $dir/../toy/myb71.faa.gz > $tmp_file
+makeblastdb -in $tmp_file -dbtype prot -out orgdb >/dev/null
+blastp -db orgdb -query $fasta -qcov_hsp_perc 75 -outfmt "6 $blast_format" > blast.out
 if [[ -s blast.out ]]; then
     echo "Blast test: OK"
     i=$((i+1))
