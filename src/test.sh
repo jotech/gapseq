@@ -97,3 +97,16 @@ else
 fi
 
 echo -e "\nPassed tests: $i/3\n"
+
+echo "################################"
+echo "#Checking optional dependencies#"
+echo "################################"
+
+echo "(Alternative sequence alignment tools)"
+echo "    `check_cmd diamond "--version "`"
+echo "    mmseqs `check_cmd mmseqs "version"`"
+
+echo "(Nucleotide genome to protein genome translation)"
+echo "    `check_cmd pyrodigal "--version "`"
+echo ""
+
