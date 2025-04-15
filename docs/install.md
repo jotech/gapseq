@@ -100,7 +100,28 @@ conda activate gapseq-dev
 bash ./src/update_sequences.sh
 ```
 
+## Optional dependencies
+
+### Alternative aligners
+
+In addition, gapseq can use the sequence alignment tools [**diamond**](https://github.com/bbuchfink/diamond) and **[mmseqs2](https://mmseqs.com/)**. Using one of these tools can reduce the runtime of the modules `gapseq find` and `gapseq find-transport`. Please follow the installation instructions provided on the websites of the two tools. Once installed you can specify the alignment tool using the option `-A`, e.g.:
+
+```sh
+# diamond
+gapseq find -p all -A diamond genome.faa.gz
+gapseq find-transport -p all -A diamond genome.faa.gz
+
+# mmseqs2
+gapseq find -p all -A mmseqs2 genome.faa.gz
+gapseq find-transport -p all -A mmseqs2 genome.faa.gz
+```
+
+###  Nucleotide genome to protein genome translation
+
+TODO.
+
 ## SBML support
+
 The Systems Biology markup Language (SBML) can be used to exchange model files between gapseq and other programs.
 
 The above installation instructions for linux systems, MacOS, and using conda should already include the SBML support. If there were no errors during the installation, you should be all set using gapseq with SBML format exports.
