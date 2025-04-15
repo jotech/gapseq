@@ -36,6 +36,7 @@ update_manually <- args[6] == "true"
 use_gene_seq <- args[7] == "true"
 n_threads <- as.integer(args[8])
 verbose <- as.integer(args[9])
+onlyList <- args[10] == "true"
 
 # some hard-coded correction of syntax errors in reaction names that would break string parsing (remove when meta_pwy.tbl is corrected/updated)
 pwyDB[V1 %in% c("|PWY18C3-10|","|PWY18C3-12|"), V9 := sub("sucrose-3-isobutanoyl-4-isovaleryl-3;-isovaleroyltransferase",
@@ -58,6 +59,25 @@ pwyDB[is.na(V9), V9 := ""]
 # for debugging
 # saveRDS(pwyDB, "~/tmp/pwyDB.RDS")
 # pwyDB <- readRDS("~/tmp/pwyDB.RDS")
+
+if(onlyList) {
+  pwyDB[, tmpstr := paste0(gsub("\\|","",V1), " – ",
+                           V2, " with ",
+                           str_count(V6,",")+1, " reactions\n"), by = V1]
+  parseCats <- function(str) {
+    out <- unlist(str_split(str,","))
+    out <- gsub("\\|","",out)
+    out <- out[out %notin% c("THINGS","FRAMES","Pathways","Generalized-Reactions")]
+    out <- paste0("(",paste(out,collapse = ","),")")
+    return(out)
+  }
+  pwyDB[, cats := parseCats(V4), by = V1]
+  pwyDB[, tmpstr := paste0(1:.N,"/",.N," ",tmpstr,cats,"\n\n")]
+  cat("\n")
+  cat(pwyDB$tmpstr, sep = "")
+  cat("\n")
+  quit(save = "no")
+}
 
 #-------------------------------------------------------------------------------
 # (1) Create pathway table

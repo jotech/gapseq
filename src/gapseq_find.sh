@@ -618,8 +618,13 @@ pwyNr=$(echo "$pwyDB" | wc -l)
 
 pwyDBfile=$(mktemp -p $tmpdir)
 echo "$pwyDB" > $pwyDBfile
-Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy $seqSrc $force_offline $update_manually $use_gene_seq $n_threads $verbose
+
+
+
+Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy $seqSrc $force_offline $update_manually $use_gene_seq $n_threads $verbose $onlyList
 # the final reference sequences are stored by the above R-script in "query.faa"
+
+[[ $onlyList == true ]] && exit 0
 
 #----------------------#
 # Calculate Alignments #
