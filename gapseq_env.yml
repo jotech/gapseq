@@ -6,7 +6,6 @@ dependencies:
   - bash
   - r
   - perl
-  - parallel
   - gawk
   - sed
   - grep
@@ -15,8 +14,6 @@ dependencies:
   - coreutils
   - wget
   - openssl
-  - barrnap
-  - bedtools
   - glpk
   - hmmer
   - blast
