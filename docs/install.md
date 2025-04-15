@@ -104,7 +104,13 @@ bash ./src/update_sequences.sh
 
 ### Alternative aligners
 
-In addition, gapseq can use the sequence alignment tools [**diamond**](https://github.com/bbuchfink/diamond) and **[mmseqs2](https://mmseqs.com/)**. Using one of these tools can reduce the runtime of the modules `gapseq find` and `gapseq find-transport`. Please follow the installation instructions provided on the websites of the two tools. Once installed you can specify the alignment tool using the option `-A`, e.g.:
+In addition, gapseq can use the sequence alignment tools [**diamond**](https://github.com/bbuchfink/diamond) and **[mmseqs2](https://mmseqs.com/)**. Using one of these tools can reduce the runtime of the modules `gapseq find` and `gapseq find-transport`. On Ubuntu/Debian/Mint Linux systems, these tools can be installed via `apt`:
+
+```sh
+sudo apt install mmseqs2 diamond-aligner
+```
+
+For other installation options, please follow the installation instructions provided on the websites of the two tools. Once installed you can specify the alignment tool using the option `-A`, e.g.:
 
 ```sh
 # diamond
@@ -116,9 +122,15 @@ gapseq find -p all -A mmseqs2 genome.faa.gz
 gapseq find-transport -p all -A mmseqs2 genome.faa.gz
 ```
 
-###  Nucleotide genome to protein genome translation
+### Nucleotide genome to protein genome translation
 
-TODO.
+gapseq expects the input genome as protein amino acid sequences. If the input sequence is a genomic nucleotide fasta file, gapseq can automatically predict open reading frames (ORFs) and translates these to the respective amino acid sequences. For this, gapseq uses [**pyrodigal**](https://pyrodigal.readthedocs.io/en/stable/). It can be easily installed from PyPi:
+
+```sh
+pip install pyrodigal
+```
+
+For other installation options, please follow [these instructions](https://pyrodigal.readthedocs.io/en/stable/guide/install.html).
 
 ## SBML support
 

@@ -26,3 +26,21 @@ $$
 C = \frac{N_{found}}{N_{pwy} - N_{spont}}
 $$
 This prevents over-prediction of pathways where the majority of reactions cannot be predicted due to missing reference sequences.
+
+# Which codon table does gapseq use when translating a nucleotide genome?
+
+gapseq automatically selects the appropriate codon translation table by running pyrodigal with three options:
+
+  - Translation Table 4: ["Mycoplasma/Spiroplasma (Mollicutes)"](https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapter=cgencodes#SG4)
+  - Translation Table 11: ["Bacterial, Archaeal, and Plant Plastid Code"](https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapter=cgencodes#SG11) (default for most prokaryotic tools)
+  - Translation Table 25: ["Candidate Division SR1 and Gracilibacteria"](https://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapter=cgencodes#SG25)
+
+The choice between Table 11 and Tables 4/25 depends on genome coverage. If using Table 4 or 25 gives at least 5% higher coverage than Table 11, then 4 or 25 is used. Choosing between Table 4 and 25 is more nuanced since both yield the same coverage. The key difference is how the codon UGA is interpreted:
+
+  - In Table 11, UGA is a stop codon.
+  - In Table 4, UGA codes for Tryptophan.
+  - In Table 25, UGA codes for Glycine.
+
+Since the Tryptophan content in proteins is typically around 1%, the table that produces a Tryptophan usage closest to this value is selected.
+
+Admittedly, this approach relies on heuristic thresholds, but it works well in practice. If users already know the correct codon table for their genome, they can provide a protein FASTA file directly to avoid translation by gapseq.
