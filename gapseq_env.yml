@@ -18,6 +18,7 @@ dependencies:
   - blast
   - bioconda::diamond >=2.1.9
   - bioconda::mmseqs2
+  - pyrodigal
   - bioconda::libsbml 
   - r-data.table
   - r-stringr

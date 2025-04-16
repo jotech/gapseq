@@ -295,9 +295,9 @@ if(!force_offline) {
                   paste0(script.dir,"/../dat/seq/",taxonomy,"/rxn/",mc_uplinks[file == reai,uniprot],".fasta"))
     }
   }
+  seqfiles[, use_reanames := NULL] # column not needed anymore
 }
 seqfiles[, uniprot_query := NULL] # column not needed anymore
-seqfiles[, use_reanames := NULL]
 
 #-------------------------------------------------------------------------------
 # (5) Decide which reference sequences files to use
