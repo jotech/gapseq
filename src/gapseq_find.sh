@@ -22,9 +22,7 @@ vagueCutoff=0.3 # cutoff for vague reactions. If the amount of vague reactions i
 onlyList=false
 skipBlast=false
 includeSeq=false
-exhaustive=false
 seqSrc=2
-anno_genome_cov=false
 use_gene_seq=true
 stop_on_files_exist=false
 update_manually=false
@@ -65,12 +63,9 @@ usage()
     echo "  -x Do not blast only list pathways, reactions and check for available sequences (default: $skipBlast)"
     echo "  -q Include sequences of hits in log files (default: $includeSeq)"
     echo "  -v Verbose level, 0 for nothing, 1 for pathway infos, 2 for full (default: $verbose)"
-    echo "  -k (Deprecated) Do not use parallel (use '-K 1' instead to disable multi-threading.)"
-    echo "  -g (Deprecated) Exhaustive search, continue blast even when cutoff is reached (default: $exhaustive)"
     echo "  -z Quality of sequences for homology search: 1:only reviewed (swissprot), 2:unreviewed only if reviewed not available, 3:reviewed+unreviewed, 4:only unreviewed (default: $seqSrc)"
     echo "  -m Limit pathways to taxonomic range (default: $taxRange)"
     echo "  -w Use additional sequences derived from gene names (default: $use_gene_seq)"
-    echo "  -y (Deprecated) Print annotation genome coverage (deprecated: Coverage is now always printed)"
     echo "  -j Quit if output files already exist (default: $stop_on_files_exist)"
     echo "  -f Path to directory, where output files will be saved (default: current directory)"
     echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default: $update_manually)"
@@ -172,21 +167,11 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:A:R:" opt; do
     q)
         includeSeq=true
         ;;
-    k)
-        n_threads=1
-        echo "DEPRECATION NOTICE: Option '-k' is deprecated. To disable multi-threading use '-K 1' instead."
-        ;;
-    g)
-        exhaustive=true
-        ;;
     z)
         seqSrc=$OPTARG
         ;;
     m)
         taxRange=$OPTARG
-        ;;
-    y)
-        anno_genome_cov=true
         ;;
     w)
         use_gene_seq=true

@@ -31,7 +31,6 @@ usage()
     echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
     echo "  -q Include sequences of hits in results table"
     echo "  -a Do not use alternative transport reaction types if no database reaction exists for the specific TC type of the reference sequence"
-    echo "  -k Do not use parallel (Deprecated: use '-K 1' instead to disable multi-threading.)"
     echo "  -m only check for this keyword/metabolite (default: all)"
     echo "  -f Path to directory, where output files will be saved (default: current directory)"
     echo "  -v Verbose level, 0 for nothing, 1 for full (default $verbose)"
@@ -62,10 +61,6 @@ while getopts "h?i:b:c:qakm:f::v:T:M:K:A:R:" opt; do
         ;;
     q)
         includeSeq=true
-        ;;
-    k)
-        n_threads=1
-        echo "DEPRECATION NOTICE: Option '-k' is deprecated. To disable multi-threading use '-K 1' instead."
         ;;
     a)
         nouse_alternatives=true
