@@ -16,29 +16,29 @@ names(fna) <- sub(" .*$","",names(fna))
 
 codestat <- lapply(codes, function(code) {
   gff <- paste0(prefix,"_",code,".gff")
+  # file.copy(gff,paste0("~/tmp/",prefix,"_",code,".gff"))
   faa <- readAAStringSet(paste0(prefix,"_",code,".faa"))
   concatAA <- paste(unname(as.character(faa)), collapse = "")
   concatAA <- gsub("\\*","",concatAA)
   ctsW <- str_count(concatAA,"W")
   ctsG <- str_count(concatAA,"G")
-  df <- read.csv(gff, sep = "\t", header = FALSE)
+  df <- read.csv(gff, sep = "\t", header = FALSE, comment.char = "#")
   df <- df[!grepl("^#",df$V1),]
   contigs <- unique(names(fna))
-  contigs <-
-    cov <- lapply(contigs, function(contig) {
-      fnawidth <- width(fna[contig])
-      idx <- which(df$V1 == contig)
-      if(length(idx) > 0) {
-        tmpmat <- as.matrix(df[idx,c("V4","V5")], drop = FALSE)
-        ranges <- IRanges(start = apply(tmpmat,1,min),
-                          end = apply(tmpmat,1,max))
-        ranges <- reduce(ranges)
-        codinglength <- sum(width(ranges))
-        return(c(codinglength,fnawidth))
-      } else {
-        return(c(0, fnawidth))
-      }
-    })
+  cov <- lapply(contigs, function(contig) {
+    fnawidth <- width(fna[contig])
+    idx <- which(df$V1 == contig)
+    if(length(idx) > 0) {
+      tmpmat <- as.matrix(df[idx,c("V4","V5")], drop = FALSE)
+      ranges <- IRanges(start = apply(tmpmat,1,min),
+                        end = apply(tmpmat,1,max))
+      ranges <- reduce(ranges)
+      codinglength <- sum(width(ranges))
+      return(c(codinglength,fnawidth))
+    } else {
+      return(c(0, fnawidth))
+    }
+  })
   cov <- do.call("rbind",cov)
   cov <- sum(cov[,1])/sum(cov[,2])
   return(c(Coverage = round(cov*100),
