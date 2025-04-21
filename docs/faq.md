@@ -8,9 +8,8 @@ However, the reconstruction and gapfilling of metabolic networks is currently li
 Predicted pathways, reactions, and transporters are stored in tabulator-separated text files (.tbl) and the final metabolic network is saved as [systems biology markup language (SBML)](http://sbml.org) (.xml), which is an xml-based markup language for biological model exchange.
 In addition, final output and temporary files are stored in the [R Data Format (RDS)](http://www.sthda.com/english/wiki/saving-data-into-r-data-format-rds-and-rdata).
 
-# What are all these RDS output files for?
-Temporary files are stored in [R Data Format (RDS)](http://www.sthda.com/english/wiki/saving-data-into-r-data-format-rds-and-rdata) and serve as input for other substeps such as gapseq draft, fill, or adapt.
-Since we propagate the further analysis with R using for example [cobrar](https://github.com/Waschina/cobrar), the final output files are also kept in RDS format.
+# What are the RDS output files for?
+Temporary model files are stored in [R Data Format (RDS)](http://www.sthda.com/english/wiki/saving-data-into-r-data-format-rds-and-rdata) (files containing the R-object 'ModelOrg' from the R-package 'cobrar') and serve as input for other substeps such as gapseq fill and adapt. Since users can do further analysis with R, e.g. using [cobrar](https://github.com/Waschina/cobrar), the final output files are also in RDS format.
 
 # How is pathway completeness calculated in gapeq?
 

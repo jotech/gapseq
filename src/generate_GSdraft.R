@@ -5,6 +5,8 @@ suppressMessages(library(R.utils))
 library(methods)
 suppressMessages(library(IRanges))
 options(error=traceback)
+suppressMessages(library(cobrar))
+suppressMessages(require(data.table))
 
 # test data
 #blast.res <- "~/test/transl/HRGMv2_0240-all-Reactions.tbl"
@@ -15,9 +17,6 @@ options(error=traceback)
 
 build_draft_model_from_blast_results <- function(blast.res, transporter.res, biomass = "auto", model.name = NA,
                                                  script.dir, high.evi.rxn.BS = 200, pathway.pred = NA, min.bs.for.core = 50) {
-  suppressMessages(require(data.table))
-  suppressMessages(require(stringr))
-  suppressMessages(require(cobrar))
 
   # if biomass is "auto" get the taxonomy/Gram info from the input files
   findheader <- readLines(blast.res, n = 3)
@@ -320,7 +319,10 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   mod <- addReactAttr(mod)
   mod <- addGeneAttr(mod, dt_genes)
 
-  return(list(mod=mod, cand.rxns=dt.cand, rxn_x_genes=dt_genes))
+  mod@metadata <- list(rxnWeights = dt.cand,
+                       rxnXgenes = dt_genes)
+
+  return(mod)
 }
 
 # get current script path
@@ -415,17 +417,15 @@ if(!(biomass %in% c("auto","Auto","pos","neg","archaea","Archaea","bacteria",
                                               pathway.pred = pathway.pred)
 
   # remove empty subsystems
-  subsRm <- which(apply(mod$mod@subSys,2,FUN = function(x) all(x==FALSE)))
-  mod$mod <- cobrar::rmSubsystem(mod$mod, subsRm)
+  subsRm <- which(apply(mod@subSys,2,FUN = function(x) all(x==FALSE)))
+  mod <- cobrar::rmSubsystem(mod, subsRm)
 
-  # save draft model and reaction weights and rxn-gene-table
-  saveRDS(mod$mod,file = paste0(output.dir,"/",model.name, "-draft.RDS"))
-  saveRDS(mod$cand.rxns,file = paste0(output.dir,"/",model.name, "-rxnWeights.RDS"))
-  saveRDS(mod$rxn_x_genes,file = paste0(output.dir,"/",model.name, "-rxnXgenes.RDS"))
+  # save draft model
+  saveRDS(mod,file = paste0(output.dir,"/",model.name, "-draft.RDS"))
 
   # Write SBML
   if(!sbml.no.output) {
     source(paste0(script.dir,"/sbml_write.R"))
-    write_gapseq_sbml(mod$mod, paste0(output.dir,"/",model.name,"-draft"))
+    write_gapseq_sbml(mod, paste0(output.dir,"/",model.name,"-draft"))
   }
 }

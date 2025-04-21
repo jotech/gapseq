@@ -59,7 +59,7 @@ while getopts "h?b:i:c:l:t:m:f:v:T:K:A:" opt; do
     l)
         min_bs_core=$OPTARG
         ;;
-    t)  
+    t)
         taxonomy=$OPTARG
         ;;
     m)
@@ -68,7 +68,7 @@ while getopts "h?b:i:c:l:t:m:f:v:T:K:A:" opt; do
     f)
         output_dir=$OPTARG
         ;;
-    v)  
+    v)
         verbose=$OPTARG
         ;;
     T)
@@ -117,7 +117,7 @@ file=$(readlink -f $1)
 base=$(basename "$file")
 id="${base%.*}"
 [[ ! -s "$file" ]]  && usage
-[[ $file == *.gz ]] && id="${id%.*}" 
+[[ $file == *.gz ]] && id="${id%.*}"
 
 $dir/gapseq_find.sh -v $verbose -b $bitcutoff -p all -t $taxonomy -K $n_threads -A $aliTool -f $output_dir $user_temp_opt "$file"
 $dir/transporter.sh -v $verbose -b $bitcutoff -K $n_threads -A $aliTool -f $output_dir $user_temp_opt "$file"
@@ -126,6 +126,6 @@ if [ $medium == "auto" ]; then
     Rscript $dir/predict_medium.R -m "$output_dir/${id}-draft.RDS" -p "$output_dir/$id-all-Pathways.tbl" -f $output_dir
     medium="$output_dir/${id}-medium.csv"
 fi
-Rscript $dir/gf.suite.R -m "$output_dir/${id}-draft.RDS" -n "$medium" -c "$output_dir/${id}-rxnWeights.RDS" -b $min_bs_core -g "$output_dir/${id}-rxnXgenes.RDS" -f $output_dir
+Rscript $dir/gf.suite.R -m "$output_dir/${id}-draft.RDS" -n "$medium" -b $min_bs_core -f $output_dir
 
 

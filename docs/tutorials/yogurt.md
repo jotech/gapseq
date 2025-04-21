@@ -62,8 +62,8 @@ gapseq draft -r $modelA-all-Reactions.tbl -t $modelA-Transporter.tbl -p $modelA-
 gapseq draft -r $modelB-all-Reactions.tbl -t $modelB-Transporter.tbl -p $modelB-all-Pathways.tbl -u 200 -l 100
 
 # (4) Gapfilling
-gapseq fill -m $modelA-draft.RDS -n milk.csv -c $modelA-rxnWeights.RDS -g $modelA-rxnXgenes.RDS -b 100
-gapseq fill -m $modelB-draft.RDS -n milk.csv -c $modelB-rxnWeights.RDS -g $modelB-rxnXgenes.RDS -b 100
+gapseq fill -m $modelA-draft.RDS -n milk.csv -b 100
+gapseq fill -m $modelB-draft.RDS -n milk.csv -b 100
 ```
 
 

@@ -25,7 +25,7 @@ dependencies:
   - r-stringi
   - r-getopt
   - r-r.utils
-  - r-cobrar >=0.1.2
+  - r-cobrar >=0.2.0
   - r-biocmanager
   - bioconductor-biostrings
   - r-jsonlite

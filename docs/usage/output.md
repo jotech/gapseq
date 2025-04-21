@@ -32,20 +32,14 @@ Data about found transporter is listed in this tab-separated text file.
 
 ## gapseq draft
 
-### *-rxnWeights.RDS
-Reaction weights table (temporary file needed for gapseq fill).
-
-### *-rxnXgenes.RDS
-Table with gene-X-reaction association (temporary file needed for gapseq fill).
-
 ### *-draft.RDS
-Model draft file as R object.
+Model draft file as R object. The underlying R-object class is `ModelOrg` as defined by the R-package 'cobrar'.
 
 ### *-draft.xml
 Draft model in SBML format.
 
 ## gapseq fill
 ### *.RDS
-Final model saved as R object.
+Final model saved as R object. The underlying R-object class is `ModelOrg` as defined by the R-package 'cobrar'.
 ### *.xml
 Final model in SBML format.

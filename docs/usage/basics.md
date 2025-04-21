@@ -43,5 +43,5 @@ Creation of draft model
 ```
 Gap filling
 ```
-./gapseq fill -m toy/myb71-draft.RDS -c toy/myb71-rxnWeights.RDS -g toy/myb71-rxnXgenes.RDS -n dat/media/TSBmed.csv
+./gapseq fill -m toy/myb71-draft.RDS -n dat/media/TSBmed.csv
 ```
