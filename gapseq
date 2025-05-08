@@ -40,7 +40,7 @@ usage()
     echo "  gapseq find-transport toy/myb71.faa.gz"
     echo "  gapseq draft -r toy/ecoli-all-Reactions.tbl -t toy/ecoli-Transporter.tbl -p toy/ecoli-all-Pathways.tbl"
     echo "  gapseq medium -m toy/ecoli-draft.RDS -p toy/ecoli-all-Pathways.tbl"
-    echo "  gapseq fill -m toy/ecoli-draft.RDS -n dat/media/ALLmed.csv"
+    echo "  gapseq fill -m toy/ecoli-draft.RDS -n toy/ecoli-medium.csv"
     echo "  gapseq adapt -a 14DICHLORBENZDEG-PWY -m toy/myb71.RDS"
     echo "  gapseq adapt -m toy/myb71.RDS -w cpd00089:TRUE -b toy/myb71-all-Reactions.tbl"
     echo "  gapseq pan -m toy/MGYG000*-draft.RDS -w toy/MGYG000*.tbl.gz"
