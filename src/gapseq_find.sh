@@ -284,7 +284,7 @@ fi
 if [ $input_mode == "nucl" ]; then
     newtranslate=true
     # Check if genome was already translated
-    if [ -f $output_dir/${fastaID}.faa.gz ]; then
+    if [ -s "$output_dir/${fastaID}.faa.gz" ]; then
         # Check if contigs of found ORFs matches contig names in nucleotide fasta
         faacont=`zcat $output_dir/${fastaID}.faa.gz | grep "^>" | sed -E 's/^>(.+)_[0-9]+ # .*/\1/' | sort -u`
         fnacont=`cat $fasta | grep "^>" | sed -E 's/^>([^ ]+).*/\1/' | sort -u`

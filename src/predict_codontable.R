@@ -3,6 +3,7 @@ library(stringr)
 
 args <- commandArgs(trailingOnly = TRUE)
 genome <- args[1]
+prefix <- args[2]
 # genome <- "GCF_000350285.1_OR1_genomic.fna" # 25
 # genome <- "HRGMv2_2645.fna" # 4
 # genome <- "HRGMv2_2676.fna" # 11
@@ -10,7 +11,6 @@ genome <- args[1]
 
 codes <- c("4","11","25")
 
-prefix <- basename(sub("\\.fna$","",genome))
 fna <- readDNAStringSet(genome)
 names(fna) <- sub(" .*$","",names(fna))
 

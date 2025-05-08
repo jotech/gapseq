@@ -58,7 +58,7 @@ for code in "${codes[@]}"; do
 done
 
 if [ "${#codes[@]}" -gt 1 ]; then
-    Rscript $dir/predict_codontable.R $infna
+    Rscript $dir/predict_codontable.R $infna $outpfx
     code=`cat ${outpfx}_code`
 else
     code=$codes
