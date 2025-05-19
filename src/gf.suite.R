@@ -741,7 +741,7 @@ if(relaxed.constraints) {
 }
 
 # Save found carbon sources and fermentation products
-if(write.cs.ferm){
+if(write.cs.ferm & !quick.gf){
   fwrite(ferm.dt, paste0(output.dir,"/",out.id, "-ferm.tbl"), sep="\t")
   fwrite(cs.dt,   paste0(output.dir,"/",out.id, "-cs.tbl"),   sep="\t")
 }
