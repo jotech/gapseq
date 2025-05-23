@@ -16,6 +16,8 @@ getDBhit <- function(rea, reaName, ec, database, n_threads = 1) {
     dbhit <- c()
 
     ectmp <- unique(str_split(ec[i], "/")[[1]])
+    reatmp <- rea[i]
+    rntmp <- reaName[i]
 
     # Check if EC numbers are complete and valid
     EC_test <- grepl("^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$",ectmp)
@@ -24,7 +26,7 @@ getDBhit <- function(rea, reaName, ec, database, n_threads = 1) {
     ec_esc <- gsub(".","\\.", ectmp, fixed = TRUE)
 
     # get KEGG ID(s) for metacyc reaction (comma-separated)
-    kegg <- metaRea[id == paste0("|",rea[i],"|"), kegg]
+    kegg <- metaRea[id == paste0("|",reatmp,"|"), kegg]
 
     # 1) search in target reaction DB by query EC (works with multiple EC input)
     if(any(EC_test)) {
@@ -99,23 +101,23 @@ getDBhit <- function(rea, reaName, ec, database, n_threads = 1) {
     }
 
     # 4) search in target reaction DB by metacycID (only when target database is vmh)
-    if(database == "vmh" && length(rea[i]) == 1 && rea[i] != "") {
-      hittmp <- reaDB2[grepl(paste0("META:",rea[i],"($|;)"),database_links),bigg_id]
+    if(database == "vmh" && length(reatmp) == 1 && reatmp != "") {
+      hittmp <- reaDB2[grepl(paste0("META:",reatmp,"($|;)"),database_links),bigg_id]
       dbhit <- c(dbhit, hittmp)
     }
 
     # 5) match reaction using mnxref namespace
     if(database == "vmh") {
-      hittmp <- reaDB6[other == rea[i], bigg]
+      hittmp <- reaDB6[other == reatmp, bigg]
       dbhit <- c(dbhit, hittmp)
     } else if(database == "seed") {
-      hittmp <- reaDB5[other == rea[i], seed]
+      hittmp <- reaDB5[other == reatmp, seed]
       dbhit <- c(dbhit, hittmp)
     }
 
     # 6) match reaction using custom/alternative enzyme-name - seedID mapping only
-    if(database == "seed" && length(reaName[i]) == 1 && reaName[i] != "") {
-      hittmp <- seedEnzymesNames[enzyme.name == reaName[i], seed.rxn.id]
+    if(database == "seed" && length(rntmp) == 1 && rntmp != "") {
+      hittmp <- seedEnzymesNames[enzyme.name == rntmp, seed.rxn.id]
       dbhit <- c(dbhit, hittmp)
     }
 
