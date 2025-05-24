@@ -63,6 +63,7 @@ echo "#####################"
 echo "#Checking R packages#"
 echo "#####################"
 Rscript -e 'needed.packages <- c("data.table", "stringr", "cobrar", "getopt", "R.utils", "stringi", "BiocManager", "Biostrings", "jsonlite", "httr"); avail.packages <- installed.packages(); i=0; for( pkg in needed.packages ){; idx <- match(pkg, avail.packages[,"Package"]); if( ! is.na(idx) ){; cat(pkg, avail.packages[idx,"Version"], "\n"); }else{; cat(pkg, "NOT FOUND", "\n"); i=i+1; }; }; cat("\nMissing R packages: ", i, "\n\n\n")'
+Rscript -e 'if( packageVersion("cobrar") < "0.1.2" ) cat("WRONG cobrar version (>0.1.2 needed)\n\n\n")'
 
 echo "##############################"
 echo "#Checking basic functionality#"
