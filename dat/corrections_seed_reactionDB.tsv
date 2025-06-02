@@ -2712,3 +2712,6 @@ rxn01019	>			[SW] Formation of Citrulline strongly favoured	PMID: 14437038
 rxn28051		TRUE		[SW] duplicate reaction to rxn01019					
 rxn20493		TRUE		[SW] duplicate reaction to rxn01019					
 rxn05012	>			[SW] Formation of Citrulline strongly favoured	PMID: 14437038				
+									
+rxn90127	>		-1:cpd90024:0:0:"[DsrC]-dithiol";-1:cpd00081:0:0:"Sulfite";-1:cpd00004:0:0:"NADH";-3:cpd00067:0:0:"H+";1:cpd90025:0:0:"[DsrC]-trisulfide";1:cpd00003:0:0:"NAD";3:cpd00001:0:0:"H2O"		https://metacyc.org/pathway?orgid=META&id=DISSULFRED-PWY		dissimilatory sufite reductase	dissimilatory sufite reductase	
+rxn90128	>		-1:cpd90025:0:0:"[DsrC]-trisulfide";-2:cpd15499:0:0:"Menaquinol 8";1:cpd90024:0:0:"[DsrC]-dithiol";2:cpd15500:0:0:"Menaquinone 8";2:cpd00067:0:0:"H+";1:cpd00239:0:0:"H2S"		https://metacyc.org/pathway?orgid=META&id=DISSULFRED-PWY		DsrC-trisufide reductase	DsrC-trisufide reductase	
