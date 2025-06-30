@@ -740,7 +740,7 @@ cpd27519	Methylesterified-homogalacturonan	C21H32O19	0	MNXM12261
 cpd28763	Inulin (2,1-beta-D-fructan)	C72H122O61	0	MNXM57547
 cpd31356	(S)-2,3-Dihydroxypropane-1-sulfonate	C3H7O5S	-1	MNXM13761
 cpd35610	3alpha-hydroxy-7-oxo-5beta-cholan-24-oate	C24H37O4	-1	""
-cpd90001	2-fucosyllactose	C18H32O15	0	""
+cpd90001	2'-fucosyllactose	C18H32O15	0	""
 cpd90003	starch (n=27, 3xalpha1-6, 23xalpha1-4)	C162H272O136	0	MNXM1003
 cpd90004	starch (n=19, 3xalpha1-6, 15xalpha1-4)	C114H192O96	0	MNXM1003
 cpd90005	malto-8-ose	C48H82O41	0	""
@@ -751,3 +751,8 @@ cpd90017	Protein-Linked Serine Or Threonine Residue (O-Glycosylation Site)	HOR	0
 cpd90020	cellulose	C3000H5002O2501	0	MNXM733743
 cpd90021	Xylan-b-1-4	C2500H4002O2001	0	MNXM9242
 cpd90022	Xylooligo-b-1-4	C50H82O41	0	MNXM739294
+cpd90026	3-fucosyllactose	C18H32O15	0	MNXM734889
+cpd90027	Difucosyllactose	C24H42O19	0	MNXM1114819
+cpd90028	3'-sialyllactose	C23H38NO19	-1	MNXM1135181
+cpd90029	6'-sialyllactose	C23H38NO19	-1	MNXM732183
+cpd90030	Lacto-N-neotetraose	C26H45NO21	0	MNXM1107692
