@@ -77,7 +77,7 @@ if(length(args)==6) {
   uniref_id <- args[6]
 }
 
-# check if all required arguments as provided
+# check if all required arguments are provided
 if (query_type!="id" & length(args)!=6) {
   stop("")
 }

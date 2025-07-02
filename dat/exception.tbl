@@ -14,3 +14,9 @@ D-ribulose-1,5-bisphosphate cleaving dioxygenase	RuBisCo
 1.1.1.244	methanol dehydrogenase (high similarity to EC 1.1.1.1)
 1.1.1.26	glycolate dehydrogenase
 2.6.1.19	4-aminobutyrate aminotransferase
+1.1.1.52	3alphaHSDH
+1.1.1.391	3betaHSDH (high similarity to EC 1.1.1.21)
+1.1.1.159	7alphaHSDH
+1.1.1.201	7betaHSDH
+1.1.1.176	12alphaHSDH
+1.1.1.238	12betaHSDH
