@@ -30,7 +30,7 @@ usage()
     echo "  -c coverage cutoff for local alignment (default: $covcutoff)"
     echo "  -l Reactions with an associated blast-hit with a bitscore below this value will be considered just as reactions that have no blast hit."
     echo "  -t Taxonomic range for reference sequences to be used. (Bacteria, Archaea, auto; default: $taxonomy)."
-    echo "  -m tab- or komma separated table for media components. Requires three named columns: 1 - \"compounds\" (for metab. IDs), 2 - \"name\" (metab. name), 3 - \"maxFlux\" (maximum inflow flux). If \"auto\" (the default), a growth medium will be predicted."
+    echo "  -m tab- or comma-separated table for media components. Requires three named columns: 1 - \"compounds\" (for metab. IDs), 2 - \"name\" (metab. name), 3 - \"maxFlux\" (maximum inflow flux). If \"auto\" (the default), a growth medium will be predicted."
     echo "  -f Path to directory, where output files will be saved (default: current directory)"
     echo "  -v Verbose level, 0 for nothing, 1 for full (default $verbose)"
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
