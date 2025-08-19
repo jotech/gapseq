@@ -256,9 +256,9 @@ if(!force_offline) {
   seqfiles[, use_reanames := !any(type == "EC") || sum(file_size * (type == "EC" & fex), na.rm = TRUE) == 0,
            by = .(rea, reaName, ecs)]
   seqfiles[use_reanames == TRUE & type == "reaName" & (!fex | update_manually) & src == "rev" & reaName != "",
-           uniprot_query := paste0(script.dir,"/uniprot.sh -r \"",reaName,"\" -t \"",taxonomy,"\" -i 0.9 -o")]
+           uniprot_query := paste0(script.dir,"/uniprot.sh -r \"",gsub("\"","\\\\\"",reaName),"\" -t \"",taxonomy,"\" -i 0.9 -o")]
   seqfiles[use_reanames == TRUE & type == "reaName" & (!fex | update_manually) & src == "unrev" & reaName != "",
-           uniprot_query := paste0(script.dir,"/uniprot.sh -u -r \"",reaName,"\" -t \"",taxonomy,"\" -i 0.5 -o")]
+           uniprot_query := paste0(script.dir,"/uniprot.sh -u -r \"",gsub("\"","\\\\\"",reaName),"\" -t \"",taxonomy,"\" -i 0.5 -o")]
   seqfiles_dlRN <- seqfiles[type == "reaName" & !is.na(uniprot_query)][!duplicated(file)]
   ndl <- nrow(seqfiles_dlRN)
   if(ndl > 0) {
