@@ -25,7 +25,7 @@ if( "cobrarCPLEX" %in% rownames(installed.packages()) ){
 #setwd(script.dir)
 
 # Arguments:
-media.file       <- "../dat/media/TSBmed.csv"
+#media.file       <- "../dat/media/TSBmed.csv"
 media.org <- fread(paste0(script.dir,"/../dat/media/MM_glu.csv")) # use minimal medium
 #media.org <- fread(paste0(script.dir,"/../dat/media/MM_anaerobic_CO2_H2.csv")) # use minimal medium
 #media.org <- fread(paste0(script.dir,"/../dat/media/Mineral_salt.csv")) # use minimal medium
@@ -111,6 +111,58 @@ esp.mode <- function(model, media){
   model <- changeObjFunc(model, react=c("ESP1", "ESP2", "ESP3", "ESP4", "ESP5"), obj_coef=c(1,1,1,1,1))
 
   return(invisible(model))
+}
+
+rm_e_acc <- function(model.orig, add.met.id=NA, verbose=F, only.core=F, fullmod){
+  media.no.acc   <- media.org[compounds!="cpd00007"]
+  model.no.acc   <- constrain.model(model.orig, media = media.no.acc)
+  sol.no.acc    <- fba(model.no.acc)
+  if(sol.no.acc@stat %in% stat & sol.no.acc@obj >= 1e-7){
+    print(paste("Model is already growing without", add.met.id, seed.db.met[id==add.met.id, name]))
+  }else{
+    add.met.name <- seed.db.met[id==add.met.id, name]
+    cat("\nTry to gapfill", add.met.name, add.met.id, "\n")
+    rxn.weights <- model.orig@metadata$rxnWeights
+    rXg.tab     <- model.orig@metadata$rxnXgenes
+    #invisible(capture.output(
+    mod.adapt.lst <- gapfill4(mod.orig = model.no.acc,
+                              mod.full = fullmod,
+                              rxn.weights = copy(rxn.weights),
+                              min.gr = min.obj.val,
+                              bcore = bcore,
+                              dummy.weight = dummy.weight,
+                              script.dir = script.dir,
+                              core.only = only.core,
+                              verbose=verbose,
+                              gs.origin = 10,
+                              rXg.tab = rXg.tab) 
+    new.reactions <- mod.adapt.lst$rxns.added
+    if( length(new.reactions) > 0 ){
+      #if( verbose ) cat("Added reactions:", new.reactions, "\n")
+      mod.adapt <- mod.adapt.lst$model
+      rxn.added <- setdiff(mod.adapt@react_id, model.no.acc@react_id)
+      cat("Added reactions:", rxn.added, "\n")
+      printReaction(mod.adapt, react=rxn.added)
+      return(invisible( mod.adapt ))
+    }
+  }
+}
+
+add_e_acc <- function(model.orig, add.met.id=NA, verbose=F, only.core=F, fullmod){
+  media.no.acc   <- media.org[compounds!="cpd00007"]
+  media.with.acc <- rbind(media.no.acc, data.table(compounds=add.met.id, name=seed.db.met[id==add.met.id, name], maxFlux=10))
+  model.no.acc   <- constrain.model(model.orig, media = media.no.acc)
+  model.with.acc <- constrain.model(model.orig, media = media.with.acc)
+  sol.no.acc    <- fba(model.no.acc)
+  sol.with.acc  <- fba(model.with.acc)
+  cat("Growth without electron acceptor: ", sol.no.acc@stat %in% stat, "\t", round(sol.no.acc@obj,6), "\n")
+  cat("Growth with electron acceptor: ", sol.with.acc@stat %in% stat, "\t", round(sol.with.acc@obj,6), "\n")
+  if(sol.with.acc@obj > sol.no.acc@obj){
+    print(paste("Model is already growing with", add.met.id, seed.db.met[id==add.met.id, name]))
+  }else{
+    stop("No implemented yet")  
+  }
+  
 }
 
 add_growth <- function(model.orig, add.met.id=NA, verbose=F, only.core=F, fullmod){
@@ -284,7 +336,7 @@ rm_growth <- function(model.orig, del.met.id, use.media=NA, rxn.blast.file, verb
 
     # check also active reactions?
     # TODO!!!
-    rxn.lethal      <- check_lethal(model, rxn.active, med.file=media.file) # ???
+    rxn.lethal      <- check_lethal(model, rxn.active, med.file=media.org)
     rxn.stopsgrowth <- check_lethal(model, rxn.active, med=media)
 
     #check_lethal(model, "EX_cpd00076_e0", med=media)
@@ -321,7 +373,8 @@ check_theo_growth <- function(check.met.id, fullmod){
   mod.adapt    <- esp.mode(fullmod, media)
   mod.adapt    <- constrain.model(mod.adapt, media=media)
 
-  sol <- pfbaHeuristic(mod.adapt)
+  #sol <- pfbaHeuristic(mod.adapt)
+  sol <- fba(mod.adapt)
   cat("Check growth: ", sol@stat %in% stat, "\t", sol@obj, "\n")
 
   if(sol@stat %in% stat & sol@obj >= 1e-7){

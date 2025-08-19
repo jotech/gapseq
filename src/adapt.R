@@ -221,52 +221,62 @@ if( !is.null(ids.remove) ){
 
 
 if( !is.null(sub.growth) ){
-    print("adapt model to growth table")
-    growth.dt <- data.table()
-    for(check_input in unlist(str_split(sub.growth, ","), recursive=F)){
-        test <- unlist(str_split(check_input, ":"))
-        if(length(test)==2 && all(!is.na(str_match(test[1], "cpd[0-9]{5}"))) && !is.na(as.logical(test[2]))){
-            growth.dt <- rbind(growth.dt, data.table(sub=test[1], growth=as.logical(test[2])))
-        }else{
-            print(paste("Error in growth state of compound:", check_input))
-        }
+  print("adapt model to growth table")
+  growth.dt <- data.table()
+  for(check_input in unlist(str_split(sub.growth, ","), recursive=F)){
+    test <- unlist(str_split(check_input, ":"))
+    if(length(test)==2 && all(!is.na(str_match(test[1], "cpd[0-9]{5}"))) && !is.na(as.logical(test[2]))){
+      growth.dt <- rbind(growth.dt, data.table(sub=test[1], growth=as.logical(test[2])))
+    }else{
+      print(paste("Error in growth state of compound:", check_input))
     }
-    if(nrow(growth.dt)==0) quit()
+  }
+  if(nrow(growth.dt)==0) quit()
 
-    #source(paste0(script.dir, "/construct_full_model.R"))
-    #fullmod <- construct_full_model(script.dir)
-    source(paste0(script.dir, "/gf.adapt.R"))
+  #source(paste0(script.dir, "/construct_full_model.R"))
+  #fullmod <- construct_full_model(script.dir)
+  source(paste0(script.dir, "/gf.adapt.R"))
 
-    print(growth.dt)
-    mod.out <- mod.orig
-    for(i in 1:nrow(growth.dt)){
-        sub.id <- growth.dt[i, sub]
-        ex.id <- paste0("EX_", sub.id, "_e0")
-        growth <- growth.dt[i, growth]
-        if(growth){
-            if( !ex.id %in% mod.out@react_id) mod.out <- addReact(mod.out, id=ex.id, met=paste0(sub.id,"[e0]"),Scoef=-1,lb=0,ub=1000)
-            mod.out <- add_growth(mod.out, add.met.id=sub.id, fullmod=fullmod, verbose=verbose)
-        }else{
-            if( !ex.id %in% mod.out@react_id){
-                print(paste("Model is already not growing with", sub.id))
-                next
-            }
-            mod.out <- rm_growth(mod.out, del.met.id=sub.id, rxn.blast.file=rxn.blast.file, verbose=verbose)
-        }
+  print(growth.dt)
+  mod.out <- mod.orig
+  for(i in 1:nrow(growth.dt)){
+    sub.id <- growth.dt[i, sub]
+    ex.id <- paste0("EX_", sub.id, "_e0")
+    growth <- growth.dt[i, growth]
+    if(growth){
+      if(sub.id == "cpd00007"){ # special case for oxygen
+        print("Try to add o2 das electron acceptor")
+        add_e_acc(mod.out, add.met.id=sub.id, fullmod=fullmod, verbose=verbose)
+      }else{
+        #if( !ex.id %in% mod.out@react_id) mod.out <- addReact(mod.out, id=ex.id, met=paste0(sub.id,"[e0]"),Scoef=-1,lb=0,ub=1000) # already done in add_growth
+        mod.out <- add_growth(mod.out, add.met.id=sub.id, fullmod=fullmod, verbose=verbose)
+      }
+    }else{
+      if( !ex.id %in% mod.out@react_id){
+        print(paste("Model is already not growing with", sub.id))
+        next
+      }
+      if(sub.id == "cpd00007"){ # special case for oxygen
+        print("Add growth without o2")
+        mod.out <- rm_e_acc(mod.out, add.met.id=sub.id, fullmod=fullmod, verbose=verbose)
+      }else{
+        mod.out <- rm_growth(mod.out, del.met.id=sub.id, rxn.blast.file=rxn.blast.file, verbose=verbose)
+      }
+    }
         #print(paste(sub.id, growth))
-    }
+  }
 }
 
 if( !is.null(min.growth) ){
-    source(paste0(script.dir, "/gf.adapt.R"))
-    mod.out <- increase_growth(mod.orig, min.obj.val=min.growth, weights=rxn.weights.file, genes=rxnXgene.table, fullmod=fullmod, verbose=verbose)
-    mod.out <- add_missing_exchanges(mod.out)
+  source(paste0(script.dir, "/gf.adapt.R"))
+  mod.out <- increase_growth(mod.orig, min.obj.val=min.growth, weights=rxn.weights.file, genes=rxnXgene.table, fullmod=fullmod, verbose=verbose)
+  mod.out <- add_missing_exchanges(mod.out)
 }
 
 
 if(react_num(mod.out) == react_num(mod.orig) && all(mod.out@react_id == mod.orig@react_id)){
-    warning("No changes made")
-    quit()
+  warning("No changes made")
+  quit()
 }
 
 # add metabolite-, reaction-, and model attributes
