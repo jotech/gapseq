@@ -49,6 +49,7 @@ Installation
    /tutorials/crossfeeding
    /tutorials/yogurt
    /tutorials/archaea
+   /tutorials/pandraft
    /tutorials/traceability
 
 
