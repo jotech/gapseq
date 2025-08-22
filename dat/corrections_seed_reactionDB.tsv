@@ -232,7 +232,7 @@ rxn01226	>			[SW] irreversible accdording to several references. See BRENDA	http
 rxn14117	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUCONATE-2-DEHYDROGENASE-RXN				
 rxn14207	>			[SW] never reported reversible according to BRENDA, and irreversible according to MetaCyc.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.1.2.7#NATURAL%20SUBSTRATES # https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-2861				
 rxn05748	>			[SW] never reported reversible according to BRENDA, and irreversible according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-3501				
-rxn02260			-1:cpd00001:0:0:"H2O";-1:cpd03375:0:0:"3-Hydroxypropanoyl-CoA";1:cpd00010:0:0:"CoA";2:cpd00067:0:0:"H+";1:cpd00745:0:0:"Hydracrylic acid"	[SW] Reaction not coupled with ATP synthesis.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-13721				
+rxn02260	>		-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd00067:0:0:"H+";-1:cpd00745:0:0:"Hydracrylic acid";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd03375:0:0:"3-Hydroxypropanoyl-CoA"	[SW] Changed direction.	https://www.kegg.jp/entry/R03157		R03157	3-hydroxypropionyl-CoA synthetase (ADP-forming)	
 rxn15275	>			[SW] unsure, but highly exergonic reaction and never reported reversible.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.1.2.2#SUBSTRATE				
 rxn14369		TRUE		[SW] unspecified generic reaction.					
 rxn14386		TRUE		[SW] unspecified generic reaction.					
@@ -2726,3 +2726,7 @@ rxn90136	>		-1:cpd00067:1:0:"H+";-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:
 rxn90137	>		-1:cpd00067:1:0:"H+";-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd90029:1:0:"6'-sialyllactose";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd90029:0:0:"6'-sialyllactose";2:cpd00067:0:0:"H+"	[SW] new reaction for import of 6’-SL via ABC-transport.	10.1073/pnas.0809584105		6’-SL ABC transport	6’-SL ABC transporter	
 rxn90138	>		-1:cpd00001:0:0:"H2O";-1:cpd90030:0:0:"Lacto-N-neotetraose";1:cpd01354:0:0:"beta-Lactose";1:cpd00469:0:0:"N-Acetyllactosamine"	[SW] gut microbial HMO degradation (here: LNnT)	https://doi.org/10.1038/srep38560		beta-Lacto-N-biosidase	beta-Lacto-N-biosidase	
 rxn90139	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd90030:1:0:"Lacto-N-neotetraose";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd90030:0:0:"Lacto-N-neotetraose";1:cpd00067:0:0:"H+"	[SW] new reaction for import of DFL via ABC-transport.	10.1073/pnas.0809584105		DFL ABC transport	Difucosyllactose ABC transporter	
+									
+rxn90140	<		-1:cpd00239:0:0:"H2S";-1:cpd00006:0:0:"NADP";1:cpd27013:0:0:"Elemental-Sulfur";1:cpd00005:0:0:"NADPH"	[SW] New reaction for sulfur oxidation	https://biocyc.org/reaction?orgid=META&id=RXN-14537		NADPH sulfur oxidoreductase	NADPH sulfur oxidoreductase (CoA-dependent)	
+rxn90141	<		-1:cpd00239:0:0:"H2S";-1:cpd00003:0:0:"NAD";1:cpd27013:0:0:"Elemental-Sulfur";1:cpd00004:0:0:"NADH"	[SW] New reaction for sulfur oxidation	https://biocyc.org/reaction?orgid=META&id=RXN-14537		NADH sulfur oxidoreductase	NADH sulfur oxidoreductase (CoA-dependent)	
+rxn90142	=		-1:cpd27013:1:0:"Elemental-Sulfur";1:cpd27013:0:0:"Elemental-Sulfur"	[SW] Reaction for cross-membrane sulfur diffusion			S0diff	Elemental sulfur transport (diffusion)	
