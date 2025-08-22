@@ -927,7 +927,7 @@ rxn12645	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAG
 rxn12646	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN				
 rxn14121	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN				
 rxn14135	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN				
-rxn16621	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN				
+rxn16621	>		-1:cpd00001:0:0:"H2O";-1:cpd21129:0:0:"LysW-gamma-L-lysine";1:cpd00039:0:0:"L-Lysine";1:cpd21125:0:0:"alpha-Aminoadipate carrier protein LysW"	[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN				
 rxn18043	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN				
 									
 rxn12893		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might not be linked with reactions that utilize either L-lactate or D-lactate.					
@@ -2730,3 +2730,24 @@ rxn90139	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd90030:1:0:"Lacto-N
 rxn90140	<		-1:cpd00239:0:0:"H2S";-1:cpd00006:0:0:"NADP";1:cpd27013:0:0:"Elemental-Sulfur";1:cpd00005:0:0:"NADPH"	[SW] New reaction for sulfur oxidation	https://biocyc.org/reaction?orgid=META&id=RXN-14537		NADPH sulfur oxidoreductase	NADPH sulfur oxidoreductase (CoA-dependent)	
 rxn90141	<		-1:cpd00239:0:0:"H2S";-1:cpd00003:0:0:"NAD";1:cpd27013:0:0:"Elemental-Sulfur";1:cpd00004:0:0:"NADH"	[SW] New reaction for sulfur oxidation	https://biocyc.org/reaction?orgid=META&id=RXN-14537		NADH sulfur oxidoreductase	NADH sulfur oxidoreductase (CoA-dependent)	
 rxn90142	=		-1:cpd27013:1:0:"Elemental-Sulfur";1:cpd27013:0:0:"Elemental-Sulfur"	[SW] Reaction for cross-membrane sulfur diffusion			S0diff	Elemental sulfur transport (diffusion)	
+									
+rxn26454				[SW] NADH repair in archaea					TRUE
+rxn23414				[SW] NADPH repair in archaea				ADP-dependent NAD(P)H-hydrate dehydratase	TRUE
+rxn41791	>		-1:cpd00002:0:0:"ATP";-1:cpd00023:0:0:"L-Glutamate";-1:cpd21125:0:0:"alpha-Aminoadipate carrier protein LysW";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:”Phosphate";1:cpd00067:0:0:"H+";1:cpd36644:0:0:"LysW-L-glutamate"	[SW] Key reaction for Pathway PWY-7400 (L-arginine biosynthesis IV (archaebacteria))	https://metacyc.org/pathway?orgid=META&id=PWY-7400		glutamate--[amino group carrier protein] ligase	glutamate--[amino group carrier protein] ligase	
+rxn46460	>		-1:cpd00002:0:0:"ATP";-1:cpd36644:0:0:"LysW-L-glutamate";1:cpd00008:0:0:"ADP";1:cpd36810:0:0:"LysW-L-glutamate-5-phosphate"	[SW] Reaction for Pathway PWY-7400 (L-arginine biosynthesis IV (archaebacteria))	https://metacyc.org/pathway?orgid=META&id=PWY-7400		LysW-L-glutamate 5-kinase	[LysW]-L-glutamate 5-kinase	
+rxn16617	>		-1:cpd00002:0:0:"ATP";-1:cpd00705:0:0:"L-2-Aminoadipate";-1:cpd21125:0:0:"alpha-Aminoadipate carrier protein LysW";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd21126:0:0:"LysW-gamma-L-alpha-aminoadipate";1:cpd00067:0:0:"H+"	[SW] Mass and charge balanced					
+rxn16618	>		-1:cpd00002:0:0:"ATP";-1:cpd21126:0:0:"LysW-gamma-L-alpha-aminoadipate";1:cpd00008:0:0:"ADP";1:cpd21127:0:0:"LysW-gamma-L-alpha-aminoadipyl 6-phosphate"	[SW] Mass and charge balanced					
+rxn16619	>		-1:cpd00005:0:0:"NADPH";-1:cpd00067:0:0:"H+";-1:cpd21127:0:0:"LysW-gamma-L-alpha-aminoadipyl 6-phosphate";1:cpd00006:0:0:"NADP";1:cpd00009:0:0:"Phosphate";1:cpd21128:0:0:"LysW-gamma-L-alpha-aminoadipate 6-semialdehyde"	[SW] Mass and charge balanced					
+rxn16620			-1:cpd00023:0:0:"L-Glutamate";-1:cpd21128:0:0:"LysW-gamma-L-alpha-aminoadipate 6-semialdehyde";1:cpd00024:0:0:"2-Oxoglutarate";1:cpd21129:0:0:"LysW-gamma-L-lysine"	[SW] Mass and charge balanced					
+rxn44270	=		-1:cpd00006:0:0:"NADP";-1:cpd00009:0:0:" Phosphate";-1:cpd36277:0:0:"LysW-L-glutamate-5-semialdehyde";1:cpd00005:0:0:"NADPH";1:cpd00067:0:0:"H+";1:cpd36810:0:0:"LysW-L-glutamate-5-phosphate"	[SW] Reaction for Pathway PWY-7400 (L-arginine biosynthesis IV (archaebacteria))	https://metacyc.org/pathway?orgid=META&id=PWY-7400				
+rxn43092	=		-1:cpd00024:0:0:"2-Oxoglutarate";-1:cpd37020:0:0:"LysW-L-ornithine";1:cpd00023:0:0:"L-Glutamate";1:cpd36277:0:0:"LysW-L-glutamate-5-semialdehyde"	[SW] Reaction for Pathway PWY-7400 (L-arginine biosynthesis IV (archaebacteria))	https://metacyc.org/pathway?orgid=META&id=PWY-7400				
+rxn47731	=		-1:cpd00001:0:0:"H2O";-1:cpd37020:0:0:"LysW-L-ornithine";1:cpd00064:0:0:"Ornithine";1:cpd21125:0:0:"alpha-Aminoadipate carrier protein LysW"	[SW] Reaction for Pathway PWY-7400 (L-arginine biosynthesis IV (archaebacteria))	https://metacyc.org/pathway?orgid=META&id=PWY-7400				
+									
+rxn23850	>			[SW] NAD-dependent version of rxn00779	https://www.rhea-db.org/rhea/42760			glyceraldehyde-3-phosphate dehydrogenase [NAD]	
+rxn28272		TRUE		[SW] Duplicate to rxn23850	https://www.rhea-db.org/rhea/42760				
+									
+rxn22497	>			[SW] Approve succinate-forming direction of the reaction.	https://www.rhea-db.org/rhea/45820				
+rxn44493	>		-1:cpd00001:0:0:"H2O";-1:cpd32744:0:0:"2-iminopropanoate";1:cpd00013:0:0:"NH3";1:cpd00020:0:0:"Pyruvate"	[SW] Reaction for pathway PWY-3661	https://www.rhea-db.org/rhea/40671		2-iminopropanoate deaminase	2-iminopropanoate deaminase	
+rxn41492	>		-1:cpd01495:0:0:"Dehydroalanine";1:cpd32744:0:0:"2-iminopropanoate"	[SW] Reaction for pathway PWY-3661	https://www.rhea-db.org/rhea/40667				
+rxn45535	>		-1:cpd00003:0:0:"NAD";-1:cpd00033:0:0:"Glycine";-1:cpd00239:0:0:"H2S";3:cpd00001:0:0:"H2O";1:cpd00067:0:0:"H+";1:cpd00133:0:0:"Nicotinamide";1:cpd26630:0:0:"2-carboxylate-4-methyl-5-beta-(ethyl adenosine 5-diphosphate) thiazole"	[SW] Reaction for pathway PWY-8308	https://www.rhea-db.org/rhea/55704		sulfide-dependent adenosine diphosphate thiazole synthase	sulfide-dependent adenosine diphosphate thiazole synthase	
+rxn27030				[SW] Reaction for pathway PWY-8308					TRUE
