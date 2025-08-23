@@ -16,7 +16,7 @@ construct_full_model <- function(script.dir) {
   db_mets <- fread(paste0(script.dir,"/../dat/seed_metabolites_edited.tsv"))
   
   # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ #
-  # Constuct stoichiometrix matrix S  #
+  # Construct stoichiometrix matrix S #
   # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ #
   
   

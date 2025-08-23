@@ -2751,3 +2751,5 @@ rxn44493	>		-1:cpd00001:0:0:"H2O";-1:cpd32744:0:0:"2-iminopropanoate";1:cpd00013
 rxn41492	>		-1:cpd01495:0:0:"Dehydroalanine";1:cpd32744:0:0:"2-iminopropanoate"	[SW] Reaction for pathway PWY-3661	https://www.rhea-db.org/rhea/40667				
 rxn45535	>		-1:cpd00003:0:0:"NAD";-1:cpd00033:0:0:"Glycine";-1:cpd00239:0:0:"H2S";3:cpd00001:0:0:"H2O";1:cpd00067:0:0:"H+";1:cpd00133:0:0:"Nicotinamide";1:cpd26630:0:0:"2-carboxylate-4-methyl-5-beta-(ethyl adenosine 5-diphosphate) thiazole"	[SW] Reaction for pathway PWY-8308	https://www.rhea-db.org/rhea/55704		sulfide-dependent adenosine diphosphate thiazole synthase	sulfide-dependent adenosine diphosphate thiazole synthase	
 rxn27030				[SW] Reaction for pathway PWY-8308					TRUE
+									
+rxn90143	>		-1:cpd00038:0:0:"GTP";-1:cpd00655:0:0:"Dephospho-CoA";1:cpd00031:0:0:"GDP";1:cpd00010:0:0:"CoA";1:cpd00067:0:0:"H+"	[SW] Key reaction in archaeal coenzyme A biosynthesis	https://biocyc.org/pathway?orgid=META&id=PWY-8342		GTP-dependent dephospho-CoA kinase	GTP-dependent dephospho-CoA kinase	
