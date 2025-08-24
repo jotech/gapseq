@@ -57,3 +57,7 @@ rxn90125	aggregated reaction N-succinylglutamate synthase,N-succinylglutamate ki
 rxn90126	N-succinylcitrulline desuccinylase
 rxn90127	dissimilatory sulfite reductase
 rxn90128	DsrC-trisulfide reductase
+rxn00184	glutamate synthase
+rxn10469	threo-iso(homo)3citrate dehydrogenase
+rxn20684	R225-RXN
+rxn90144	CO dehydrogenase/acetyl-CoA synthase complex
