@@ -11,6 +11,7 @@ medium="auto"
 taxonomy="auto"
 user_temp_opt=""
 verbose=0
+force_offline=false
 
 OS=$(uname -s)
 if [ "$OS" = "Darwin" -o "$OS" = "FreeBSD" ]; then
@@ -34,6 +35,7 @@ usage()
     echo "  -f Path to directory, where output files will be saved (default: current directory)"
     echo "  -v Verbose level, 0 for nothing, 1 for full (default $verbose)"
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
+    echo "  -O Force offline mode (default: $force_offline)"
     echo "  -K Number of threads. If option is not provided, number of available CPUs will be automatically determined."
     echo "  -A Tool to be used for sequence alignments (blast, mmseqs2, diamond; default: $aliTool)"
     echo ""
@@ -41,7 +43,7 @@ exit 1
 }
 
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
-while getopts "h?b:i:c:l:t:m:f:v:T:K:A:" opt; do
+while getopts "h?b:i:c:l:t:m:f:v:OT:K:A:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -75,6 +77,9 @@ while getopts "h?b:i:c:l:t:m:f:v:T:K:A:" opt; do
         user_temp=true
         user_temp_folder=$OPTARG
         user_temp_opt="-T ${user_temp_folder}"
+        ;;
+    O)
+        force_offline=true
         ;;
     K)
         n_threads=$OPTARG
@@ -119,7 +124,7 @@ id="${base%.*}"
 [[ ! -s "$file" ]]  && usage
 [[ $file == *.gz ]] && id="${id%.*}"
 
-$dir/gapseq_find.sh -v $verbose -b $bitcutoff -p all -t $taxonomy -K $n_threads -A $aliTool -f $output_dir $user_temp_opt "$file"
+$dir/gapseq_find.sh -v $verbose -b $bitcutoff -p all -t $taxonomy -K $n_threads -A $aliTool -f $output_dir $user_temp_opt $([ "$force_offline" = true ] && echo -O) "$file"
 $dir/transporter.sh -v $verbose -b $bitcutoff -K $n_threads -A $aliTool -f $output_dir $user_temp_opt "$file"
 Rscript $dir/generate_GSdraft.R -r "$output_dir/$id-all-Reactions.tbl" -t "$output_dir/$id-Transporter.tbl" -u $bitcutoff -l $min_bs_core -p "$output_dir/$id-all-Pathways.tbl" -b $taxonomy -f $output_dir
 if [ $medium == "auto" ]; then
