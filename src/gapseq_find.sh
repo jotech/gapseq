@@ -12,7 +12,7 @@ bitcutoff=200 # cutoff blast: min bit score
 identcutoff=0   # cutoff blast: min identity
 identcutoff_exception=70  # min identity for enzymes marked as false friends (hight seq similarity but different function)
 covcutoff=75 # cutoff blast: min coverage
-subunit_cutoff=50 # more than this % of subunits must be found 
+subunit_cutoff=50 # more than this % of subunits must be found
 strictCandidates=false
 completenessCutoff=66 # consider pathway to be present if other hints (e.g. key enzyme present) are avaiable and pathway completeness is at least as high as completenessCutoff (requires strictCandidates=false)
 completenessCutoffNoHints=80 # consider pathway to be present if no hints are avaiable (requires stricCandidates=false)
@@ -56,7 +56,6 @@ usage()
     echo "  -c Coverage cutoff for local alignment (default: $covcutoff)"
     echo "  -s Strict candidate reaction handling (do _not_ use pathway completeness, key kenzymes and operon structure to infere if imcomplete pathway could be still present (default: $strictCandidates)"
     echo "  -u Suffix used for output files (default: pathway keyword)"
-    echo "  -a blast hits back against uniprot enzyme database"
     echo "  -n Consider superpathways of metacyc database"
     echo "  -l Select the pathway database (MetaCyc, KEGG, SEED, all; default: $pwyDatabase)"
     echo "  -o Only list pathways found for keyword (default: $onlyList)"
@@ -109,25 +108,25 @@ metaGenes=$dir/../dat/meta_genes.csv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:A:R:" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:nou:l:oxqkgz:m:ywjf:UT:OM:K:A:R:" opt; do
     case "$opt" in
     h|\?)
         usage
         exit 0
         ;;
-    p)  
+    p)
         pathways=$OPTARG
         ;;
-    e)  
+    e)
         ecnumber=$OPTARG
         ;;
-    r)  
+    r)
         reaname="$OPTARG"
         ;;
-    d)  
+    d)
         database=$OPTARG
         ;;
-    v)  
+    v)
         verbose=$OPTARG
         ;;
     b)
@@ -139,7 +138,7 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:A:R:" opt; do
     c)
         covcutoff=$OPTARG
         ;;
-    t)  
+    t)
         taxonomy=$OPTARG
         ;;
     s)
@@ -147,10 +146,6 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:A:R:" opt; do
         ;;
     u)
         output_suffix=$OPTARG
-        ;;
-    a)
-        blast_back=true
-        includeSeq=true
         ;;
     n)
         noSuperpathways=false
@@ -272,13 +267,13 @@ fastaID="${tmpvar%.*}"
 # Determine if fasta is nucl or prot
 if [ $input_mode == "auto" ]; then
     input_mode=`$dir/./nuclprot.sh $fasta`
-    
+
     if [ $input_mode == "prot" ]; then
         [[ $verbose -ge 1 ]] && echo "Protein fasta detected."
     else
         [[ $verbose -ge 1 ]] && echo "Nucleotide fasta detected."
     fi
-    
+
 fi
 
 if [ $input_mode == "nucl" ]; then
@@ -302,10 +297,10 @@ if [ $input_mode == "nucl" ]; then
             newtranslate=false
         fi
     fi
-    
+
     if [ $newtranslate == "true" ]; then
         [[ $verbose -ge 1 ]] && echo -n "Translating genomic nucleotide fasta to protein fasta..."
-        $dir/translate_genome.sh -i "$fasta" -o "$fastaID" -K $n_threads 
+        $dir/translate_genome.sh -i "$fasta" -o "$fastaID" -K $n_threads
         fasta="$fastaID.faa"
         transl_table=`cat ${fastaID}_code`
         rm ${fastaID}_code
@@ -388,9 +383,9 @@ if [ $taxonomy == "auto" ]; then
     taxonomy=`Rscript $dir/predict_domain.R "$dir" "$fastaID.tblout"`
     rm domain.hmm
     rm $fastaID.tblout
-    
+
     [[ $verbose -ge 1 ]] && echo Predicted taxonomy: $taxonomy
-    
+
 
 fi
 [[ "$taxonomy" == "bacteria" ]] && taxonomy=Bacteria
@@ -437,7 +432,7 @@ if [[ "$force_offline" = false ]]; then
     fi
 fi
 download_log=$(mktemp -p $tmpdir) # remember downloaded files
-function already_downloaded(){ 
+function already_downloaded(){
     if grep -q $1 $download_log; then
         return 0
     else
@@ -463,7 +458,7 @@ if [ -n "$ecnumber" ] || [ -n "$reaname" ]; then
         rea_count=$(echo $ecnumber | tr ',' '\n' | wc -l)
         reaname=$(echo $ecnumber | grep -o "," | tr -d '\n' | tr ',' ';') # get dummy empty colon seperated reaction names
         pwyname=$ecnumber
-    else  
+    else
         rea_count=$(echo $ecnumber | tr ',' '\n' | wc -l)
     fi
     rea_id=$(seq 1 $rea_count | awk '{print "reaction"$1}' | tr '\n' ',' | sed 's/,$//g')
@@ -588,7 +583,7 @@ fi
 Rscript $dir/analyse_alignments.R $bitcutoff $identcutoff $strictCandidates $identcutoff_exception $subunit_cutoff $completenessCutoffNoHints $completenessCutoff $n_threads $vagueCutoff $verbose $pwyDBfile
 
 #------------------------#
-# Exporting result files # 
+# Exporting result files #
 #------------------------#
 
 # add gapseq version and sequence database status to table comments head
