@@ -124,6 +124,7 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt <- resolve_common_EC_conflicts("1.2.1.87","1.2.1.10", dt) # propanal dehydrogenase VS acetaldehyde dehydrogenase
   dt <- resolve_common_EC_conflicts("2.1.2.1","4.1.2.48", dt) # glycine hydroxymethyltransferase VS threonine aldolase
   dt <- resolve_common_EC_conflicts("1.1.1.27","1.1.1.436", dt) # two lactate dehydrogenases, one with NADH one with bifurcation including NADH and Ferredoxin
+  dt <- resolve_common_EC_conflicts("1.1.2.5","1.1.1.436", dt) # two lactate dehydrogenases, one with Ferrocytochrome and one with bifurcation including NADH and Ferredoxin
   dt <- resolve_common_EC_conflicts("6.3.1.1","2.6.1.2", dt) # Asp:NH3 ligase vs ala-aminotransferase
   dt <- resolve_common_EC_conflicts("2.6.1.11","2.6.1.18", dt) # beta-alanine aminotransferase vs acetyl-ornithine aminotransferase
   dt <- resolve_common_EC_conflicts("2.6.1.66","2.6.1.83", dt) # valine-pyruvate aminotransferase vs L,L-diaminopimelate aminotransferase
