@@ -18,7 +18,7 @@ usage()
     echo -e " | (_| | (_| | |_) \__ \  __/ (_| |"
     echo -e "  \__, |\__,_| .__/|___/\___|\__, |"
     echo -e "  |___/      |_|                |_|"
-    echo -e "" 
+    echo -e ""
     echo -e "Informed prediction and analysis of bacterial metabolic pathways and genome-scale networks"
     echo -e "\nUsage:"
     echo "  gapseq test"
@@ -74,7 +74,7 @@ done
 # Set a parsing variable to use getops when either the (1) doall subcommand is given or (2) only gapseq command is given.
 parse_options=true
 
-if [[ "$1" =~ ^(test|test-long|find|find-transport|draft|adapt|medium|fill|pan|doall)$ ]]; then
+if [[ "$1" =~ ^(test|test-long|find|find-transport|draft|adapt|medium|fill|pan|doall|update-sequences)$ ]]; then
     # If another command line (like find), the options are not parsed with getopts (as they will be parsed in their own script).
     subcommand=$1
     parse_options=false
@@ -96,26 +96,6 @@ if [[ "$parse_options" == true ]]; then
                 cd $dir
                 git_rev=$(git rev-parse --short HEAD 2>/dev/null)
                 echo gapseq version: $version $git_rev
-                if [ -d "$dir/dat/seq/Bacteria/rev" ]; then
-                    Bseqdb_version=`md5sum $dir/dat/seq/Bacteria/rev/sequences.tar.gz | cut -c1-7`
-                    Bseqdb_date=$(stat -c %y $dir/dat/seq/Bacteria/rev/sequences.tar.gz | cut -c1-10)
-                    echo "Sequence DB md5sum: $Bseqdb_version ($Bseqdb_date, Bacteria)"
-                else
-                    echo """
-    The Bacteria Sequence Database has not yet been downloaded/updated (default version).
-    Get the latest version by running: 'bash ./src/update_sequences.sh' in your gapseq installation directory.
-                        """
-                fi
-                if [ -d "$dir/dat/seq/Archaea/rev" ]; then
-                    Aseqdb_version=`md5sum $dir/dat/seq/Archaea/rev/sequences.tar.gz | cut -c1-7`
-                    Aseqdb_date=$(stat -c %y $dir/dat/seq/Archaea/rev/sequences.tar.gz | cut -c1-10)
-                    echo "Sequence DB md5sum: $Aseqdb_version ($Aseqdb_date, Archaea)"
-                else
-                    echo """
-    The Archaea Sequence Database has not yet been downloaded/updated (default version).
-    Get the latest version by running: 'bash ./src/update_sequences.sh Archaea' in your gapseq installation directory.
-                        """
-                fi
                 exit 0
                 ;;
             esac
@@ -146,7 +126,7 @@ elif   [ "$subcommand" == "find" ]; then
 elif [ "$subcommand" == "find-transport" ]; then
     shift
     $dir/src/transporter.sh "$@"
-    
+
 elif [ "$subcommand" == "draft" ]; then
     shift
     Rscript $dir/src/generate_GSdraft.R "$@"
@@ -154,7 +134,7 @@ elif [ "$subcommand" == "draft" ]; then
 elif [ "$subcommand" == "adapt" ]; then
     shift
     Rscript $dir/src/adapt.R "$@"
-    
+
 elif [ "$subcommand" == "medium" ]; then
     shift
     Rscript $dir/src/predict_medium.R "$@"
@@ -170,6 +150,10 @@ elif [ "$subcommand" == "pan" ]; then
 elif [ "$subcommand" == "doall" ]; then
     shift
     $dir/src/doall.sh "$@"
+
+elif [ "$subcommand" == "update-sequences" ]; then
+    shift
+    $dir/src/update_sequences.sh "$@"
 
 else
     usage

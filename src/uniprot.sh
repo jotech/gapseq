@@ -3,6 +3,7 @@
 curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
+seqdb=$dir/../dat/seq
 #echo $dir
 metaPwy=$dir/../dat/meta_pwy.tbl
 identity=0.9 # clustered uniprot database (0.5 or 0.9)
@@ -27,10 +28,11 @@ usage()
     echo "  -u get unreviewed instead of reviewed sequences (default $get_unrev)"
     echo "  -g search by gene name"
     echo "  -d search by database reference (e.g. xref)"
+    echo "  -D Directory to the databse where the fasta file will be stored/updated. (default: $seqdb)"
 exit 1
 }
 
-while getopts "h?p:e:t:oi:r:ug:d:" opt; do
+while getopts "h?p:e:t:oi:r:ug:d:D:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -63,6 +65,9 @@ while getopts "h?p:e:t:oi:r:ug:d:" opt; do
     d)
         dbref=$OPTARG
         ;;
+    D)
+        seqdb=$OPTARG
+        ;;
     esac
 done
 shift $((OPTIND-1))
@@ -82,17 +87,17 @@ fi
 # path for saving sequences
 numeric_old=$LC_NUMERIC
 LC_NUMERIC="en_US.UTF-8" # must be set in order to get printf working with float numbers
-#seqpath=$dir/../dat/seq/$taxonomy/unipac$(printf %.0f $(echo "$identity * 100" | bc -l))
+#seqpath=$seqdb/$taxonomy/unipac$(printf %.0f $(echo "$identity * 100" | bc -l))
 if [ "$get_unrev" = false ]; then
-    seqpath=$dir/../dat/seq/$folder/rev
+    seqpath=$seqdb/$folder/rev
 else
-    seqpath=$dir/../dat/seq/$folder/unrev
+    seqpath=$seqdb/$folder/unrev
 fi
 LC_NUMERIC=$numeric_old
 mkdir -p $seqpath
 cd $seqpath
 
-[[ ! -f ../updating.log && "$overwrite" = true ]] && echo "date sequences change file status" > ../updating.log
+[[ ! -f ../updating.log && "$overwrite" = true ]] && echo "date sequences change file status dbpath" > ../updating.log
 
 if [ -n "$ecnumber" ]; then
     # create dummpy pwy template for given ec number
@@ -134,7 +139,7 @@ if [ -n "$ecnumber" ]; then
             fi
             newmd5=$(md5sum $ec.fasta | cut -d " " -f1)
             newcount=$(cat $ec.fasta | grep ">" | wc -l)
-            [[ "$oldmd5" != "$newmd5" ]] && echo "`date -u +"%Y-%m-%d_%H:%M:%SUTC"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$ec.fasta $stat" >> ../updating.log
+            [[ "$oldmd5" != "$newmd5" ]] && echo "`date -u +"%Y-%m-%d_%H:%M:%SUTC"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$ec.fasta $stat $seqdb" >> ../updating.log
         fi
     done
 fi
@@ -163,7 +168,7 @@ if [ -n "$reaNames" ]; then
         fi
         newmd5=$(md5sum $reaNameHash.fasta | cut -d " " -f1)
         newcount=$(cat $reaNameHash.fasta | grep ">" | wc -l)
-        [[ "$oldmd5" != "$newmd5" ]] && echo "`date -u +"%Y-%m-%d_%H:%M:%SUTC"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$reaNameHash.fasta $stat" >> ../updating.log
+        [[ "$oldmd5" != "$newmd5" ]] && echo "`date -u +"%Y-%m-%d_%H:%M:%SUTC"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$reaNameHash.fasta $stat $seqdb" >> ../updating.log
     done
 fi
 
@@ -182,7 +187,7 @@ if [ -n "$geneName" ]; then
         fi
         newmd5=$(md5sum $geneName.fasta | cut -d " " -f1)
         newcount=$(cat $geneName.fasta | grep ">" | wc -l)
-        [[ "$oldmd5" != "$newmd5" ]] && echo "`date -u +"%Y-%m-%d_%H:%M:%SUTC"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$geneName.fasta $stat" >> ../updating.log
+        [[ "$oldmd5" != "$newmd5" ]] && echo "`date -u +"%Y-%m-%d_%H:%M:%SUTC"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$geneName.fasta $stat $seqdb" >> ../updating.log
     fi
 fi
 
@@ -199,6 +204,6 @@ if [ -n "$dbref" ]; then
         Rscript $dir/uniprot_query.R id $dbref $dbref.fasta $taxonomy && stat=ok || stat=err
         newmd5=$(md5sum $dbref.fasta | cut -d " " -f1)
         newcount=$(cat $dbref.fasta | grep ">" | wc -l)
-        [[ "$oldmd5" != "$newmd5" ]] && echo "`date -u +"%Y-%m-%d_%H:%M:%SUTC"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$dbref.fasta $stat" >> ../updating.log
+        [[ "$oldmd5" != "$newmd5" ]] && echo "`date -u +"%Y-%m-%d_%H:%M:%SUTC"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$dbref.fasta $stat $seqdb" >> ../updating.log
      fi
 fi
