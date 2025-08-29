@@ -1199,7 +1199,7 @@ rxn00399	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NE
 rxn09304	>			[SW] Proton antiport only in the direction of proton flow into the cell. Ok 		transport			
 rxn05305	>			[SW] Proton antiport only in the direction of proton flow into the cell. Ok		transport			
 rxn09295	>			[SW] Hydride transfer only from NADH to NADP+.	DOI: 10.1016/j.bbabio.2012.04.006				
-rxn27378	>			[SW] Hydride transfer only from NADH to NADP+.	DOI: 10.1016/j.bbabio.2012.04.006				
+rxn27378		TRUE		[SW] Duplicate to rxn09295. Wrong stoichiometry.					
 rxn08154	>			[SW] Proton antiport only in the direction of proton flow into the cell. Ok		transport			
 rxn08730		TRUE		Proton diffusion across membrane should be omitted.					
 rxn27372		TRUE		Proton diffusion across membrane should be omitted.					
@@ -2764,3 +2764,12 @@ rxn45023	>		-6:cpd00023:0:0:"L-Glutamate";-1:cpd24820:0:0:"4-[N-gamma-L-glutamyl
 rxn47122	>		-1:cpd00035:0:0:"L-Alanine";-1:cpd24817:0:0:"2-furaldehyde phosphate";1:cpd00020:0:0:"Pyruvate";1:cpd24818:0:0:"2-methylamine-furan phosphate"	[SW] Reaction in methanofuran biosynthesis	https://metacyc.org/pathway?orgid=META&id=PWY-5254		(5-formylfuran-3-yl)methyl phosphate transaminase	(5-formylfuran-3-yl)methyl phosphate transaminase	
 rxn47516	>		-1:cpd00002:0:0:"ATP";-1:cpd00023:0:0:"L-Glutamate";-1:cpd00374:0:0:"Tyramine";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:" Phosphate";1:cpd00067:0:0:"H+";1:cpd31852:0:0:"gamma-glutamyltyramine"	[SW] Reaction in methanofuran biosynthesis	https://metacyc.org/pathway?orgid=META&id=PWY-5254		tyramine--L-glutamate ligase	tyramine--L-glutamate ligase	
 rxn48557	>		-1:cpd00002:0:0:"ATP";-1:cpd00067:0:0:"H+";-1:cpd24818:0:0:"2-methylamine-furan phosphate";1:cpd00008:0:0:"ADP";1:cpd32612:0:0:"5-(aminomethyl)-3-furanmethanol diphosphate"	[SW] Reaction in methanofuran biosynthesis	https://metacyc.org/pathway?orgid=META&id=PWY-5254		[5-(aminomethyl)furan-3-yl]methyl phosphate kinase	[5-(aminomethyl)furan-3-yl]methyl phosphate kinase	
+									
+rxn10125		TRUE		[SW] Duplicate to rxn09295					
+rxn90145	>		-1:cpd00007:0:0:"O2";-5:cpd00067:0:0:"H+";-2:cpd15561:0:0:"Ubiquinol-8";2:cpd00001:0:0:"H2O";5:cpd00067:1:0:"H+";2:cpd15560:0:0:"Ubiquinone-8"	[SW] EC 7.1.1.3. Same as rxn12494 (EC 7.1.1.7) but higher efficiency in terms of transported protons per reaction	https://iubmb.qmul.ac.uk/enzyme/EC7/1/1/3.html		ubiquinol oxidase (H+-transporting)	ubiquinol oxidase (H+-transporting)	
+rxn47403	>		-1:cpd00007:0:0:"O2";-4:cpd00067:0:0:"H+";-2:cpd31235:0:0:"Caldariellaquinol";2:cpd00001:0:0:"H2O";4:cpd00067:1:0:"H+";2:cpd25750:0:0:"Caldariellaquinone"	[SW] EC 7.1.1.4. Relevant for some thermophilic archaea.	https://iubmb.qmul.ac.uk/enzyme/EC7/1/1/4.html		caldariellaquinol oxidase (H+-transporting)	caldariellaquinol oxidase (H+-transporting)	
+rxn46068	=		-1:cpd00036:0:0:"Succinate";-1:cpd25750:0:0:"Caldariellaquinone";1:cpd00106:0:0:"Fumarate";1:cpd31235:0:0:"Caldariellaquinol"		https://biocyc.org/reaction?orgid=META&id=RXN-15378		succinate dehydrogenase (Caldariellaquinone)	succinate dehydrogenase (Caldariellaquinone)	
+rxn08288		TRUE		[SW] Duplicate to rxn12494					
+rxn10112		TRUE		[SW] Duplicate to rxn12494					
+rxn38529		TRUE		[SW] Duplicate to rxn12494					
+rxn35347				[SW] Reaction for EC 7.1.1.9	https://iubmb.qmul.ac.uk/enzyme/EC7/1/1/9.html				TRUE
