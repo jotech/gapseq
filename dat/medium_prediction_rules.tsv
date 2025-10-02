@@ -46,6 +46,7 @@ Pectin	cpd27519	"PWY-7246" | "PWY-7248"	1.67	TRUE		Saccharides
 Inulin	cpd28763	"INULIN-DEGRADATION-EXO" | "INULIN-DEGRADATION"	0.42	TRUE		Saccharides
 Xylan-b-1-4	cpd90021	"PWY-6717"	0.01	TRUE	1,4-D-beta-Xylan (n=500) degradation, extracellular	Saccharides
 2'-Fucosyllactose	cpd90001	"2FLHYD"	1.67	TRUE	Alpha-fucosidase & ABC transport	Saccharides
+sulfoquinovose	cpd22614	"PWY-7446" | "PWY-7722"	10	TRUE		Saccharides
 						
 L-Tryptophan	cpd00065	!("TRPSYN-PWY2" | "TRPSYN-PWY")	0.1	TRUE		Amino acids
 L-Histidine	cpd00119	!"HISTSYN-PWY"	0.1	TRUE		Amino acids
@@ -78,7 +79,6 @@ Succinate	cpd00036	"PWY-5677"	10	TRUE	Succinate fermentation to butyrate	Organic
 Succinate	cpd00036	(rxn00602 | rxn01996) & rxn90096 & rxn09174	10	TRUE	Succinate transformation to propionate (Na+ exporting). Part of PWY-8086	Organic acids
 Formate	cpd00047	"PWY-7868"	20	TRUE	coenzyme B/coenzyme M regeneration V (formate-dependent) involved in methanogenesis	Organic acids
 						
-sulfoquinovose	cpd22614	"PWY-7446" | "PWY-7722"	10	TRUE		Secondary plant metabolites
 Gallate	cpd01020	"GALLATE-DEGRADATION-II-PWY" | "GALLATE-DEGRADATION-I-PWY" | "P3-PWY"	10	TRUE		Secondary plant metabolites
 Quercetin	cpd00313	"QUERCETIN-ANAERO-DEG"	10	TRUE	Key-reaction: Taxifolin isomerase (EC 5.5.1.6)	Secondary plant metabolites
 Genistein	cpd03971	rxn90097	10	TRUE	Genistein reductase	Secondary plant metabolites
