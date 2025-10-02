@@ -135,6 +135,7 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt <- resolve_common_EC_conflicts("4.1.1.105","4.1.1.86", dt) # trp decarboxylase vs. diaminobutyrate decarboxylase
   dt <- resolve_common_EC_conflicts("4.1.1.28","4.1.1.18", dt) # aromatic AA decarboxylase vs. lysine decarboxylase
   dt <- resolve_common_EC_conflicts("4.1.1.28","4.1.1.86", dt) # aromatic AA decarboxylase vs. diaminobutyrate decarboxylase
+  dt <- resolve_common_EC_conflicts("1.1.2.3","1.1.3.2", dt) # Cytochrome-dependent lactate dehydrogenase vs. lactate oxidase (O2 as electon acceptor)
 
   # specific transporter conflict fixes
   dt.trans <- resolve_common_TC_conflicts("1.a.8.2.1","2.a.14.1.3", dt.trans)
