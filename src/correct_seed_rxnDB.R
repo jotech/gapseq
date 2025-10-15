@@ -5,12 +5,12 @@
 correct_seed_rxnDB <- function(script.path) {
   suppressMessages(require(data.table))
   suppressMessages(require(stringr))
-  
+
   cat("Correcting reaction table... ")
-  
+
   source(paste0(script.dir, "/generate_rxn_stoich_hash.R"))
-  
-  mseed <- fread(paste0(script.dir,"/../dat/seed_reactions.tsv"), header=T, stringsAsFactors = F, 
+
+  mseed <- fread(paste0(script.dir,"/../dat/seed_reactions.tsv"), header=T, stringsAsFactors = F,
                  colClasses = c("character","character","character","character","character","numeric",
                                 "character","character","character","character","numeric","character","character",
                                 "character","numeric","numeric",
@@ -18,7 +18,7 @@ correct_seed_rxnDB <- function(script.path) {
   mseed[, gs.hash := generate_rxn_stoich_hash(stoichiometry, direction)]
   mseed.obs <- copy(mseed[is_obsolete == 1])
   mseed <- mseed[(status %in% c("OK","CPDFORMERROR") & is_obsolete == 0) | grepl("^CI:",status) | grepl("^OK.*\\|CI",status) | grepl("^MI:",status)]
-  
+
   # duplicates with different reversibility as linked reactions (via hash)
   obs.map <- copy(mseed.obs[,.(id,is_obsolete,gs.hash,linked_reaction,name,abbreviation)])
   obs.map <- merge(obs.map,mseed[,.(id,gs.hash)],by="gs.hash", all.x = T)
@@ -36,7 +36,7 @@ correct_seed_rxnDB <- function(script.path) {
                    by.x="id.y",by.y="id")
   colnames(obs.map)[1:2] <- c("is_copy_of","id")
   dup.cor <- copy(obs.map)
-  
+
   # duplicates with identical reversibility in mseed table
   obs.map <- copy(mseed.obs[,.(id,is_obsolete,gs.hash,linked_reaction)])
   obs.map <- merge(obs.map,mseed[,.(id,gs.hash)],by="gs.hash")
@@ -50,7 +50,7 @@ correct_seed_rxnDB <- function(script.path) {
   mseed <- rbind(mseed,dup.cor)
   mseed[,gapseq.status:= "not.assessed"]
   mseed <- mseed[order(id)]
-  
+
   # apply correction
   mseed.corr <- fread(paste0(script.dir,"/../dat/corrections_seed_reactionDB.tsv"), header= T, stringsAsFactors = F, quote="")
   if(system(paste0("grep \\\"\\\" ",script.path,"/../dat/corrections_seed_reactionDB.tsv"), ignore.stdout = T)==0) {
@@ -61,12 +61,12 @@ correct_seed_rxnDB <- function(script.path) {
   for(i in 1:nrow(mseed.corr)) {
     # Change is reversibility
     if(mseed.corr[i, new.rev]!="" & !is.na(mseed.corr[i, new.rev])) {
-      mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id], 
+      mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id],
             reversibility := mseed.corr[i, new.rev]]
       tmp <- mseed[id==mseed.corr[i, rnx.id], stoichiometry] # stoichiometry of corrected reaction
-      mseed[is_copy_of==mseed.corr[i, rnx.id], 
+      mseed[is_copy_of==mseed.corr[i, rnx.id],
             stoichiometry := tmp]
-      mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id], 
+      mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id],
             gapseq.status := "corrected"]
     }
     # change in stoichiometry
@@ -74,29 +74,29 @@ correct_seed_rxnDB <- function(script.path) {
       mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id],
             stoichiometry := mseed.corr[i, new.stoichiometry]]
       tmp <- mseed[id==mseed.corr[i, rnx.id], reversibility] # reversibility of corrected reaction
-      mseed[is_copy_of==mseed.corr[i, rnx.id], 
+      mseed[is_copy_of==mseed.corr[i, rnx.id],
             reversibility := tmp]
-      mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id], 
+      mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id],
             gapseq.status := "corrected"]
     }
     # manually approved reaction?
     if(mseed.corr[i, forced.approval]==TRUE) {
-      mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id], 
+      mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id],
             gapseq.status := "approved"]
     }
     # remove reaction?
     if(mseed.corr[i, rm.rxn]==TRUE) {
-      mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id], 
+      mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id],
             gapseq.status := "removed"]
     }
     # new abbreviation?
     if(mseed.corr[i, abbreviation]!="" & !is.na(mseed.corr[i, abbreviation])) {
-      mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id], 
+      mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id],
             abbreviation := mseed.corr[i, abbreviation]]
     }
     # new name?
     if(mseed.corr[i, name]!="" & !is.na(mseed.corr[i, name])) {
-      mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id], 
+      mseed[id==mseed.corr[i, rnx.id] | is_copy_of==mseed.corr[i, rnx.id],
             name := mseed.corr[i, name]]
     }
     # New reaction?
@@ -118,7 +118,7 @@ correct_seed_rxnDB <- function(script.path) {
     }
   }
   mseed[reversibility=="?", reversibility := direction]
-  
+
   n.ind <- which(mseed$id=="rxn16318") # This is the reaction ID until which all reactions were tested/corrected to ensure that theres no futile cycle, that
                                        # would produce ATP from ADP + Pi without the consumtion of any energy source.
   tmp <- mseed[1:n.ind, id]
@@ -130,13 +130,15 @@ correct_seed_rxnDB <- function(script.path) {
   mseed[(grepl("^CI:",status) | grepl("^OK.*\\|CI",status) | grepl("^MI:",status)) & gapseq.status == "approved" & !(id %in% ci.rxns),
         gapseq.status := "not.assessed"]
   table(mseed$gapseq.status)
-  
+
   # re-generate definition and equation string for corrected reactions
   mseed[gapseq.status=="corrected",equation := getRxnEquaFromStoich(stoichiometry, reversibility, str.type = "equation")]
   mseed[gapseq.status=="corrected",definition := getRxnEquaFromStoich(stoichiometry, reversibility, str.type = "definition")]
-  
+
+  fwrite(mseed[,-"gs.hash"], file=paste0(script.path,"/../dat/seed_reactions_corrected.tsv"), sep = "\t", quote = F)
+
   cat("done\n")
-  
+
   # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ #
   # Identification of potential nutrients #
   # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ #
@@ -145,39 +147,38 @@ correct_seed_rxnDB <- function(script.path) {
   fmod <- construct_full_model(script.path)
   fmod@lowbnd[grep("^EX_cpd", fmod@react_id)] <- -1000
   ex_mets <- fmod@met_id[grep("\\[e0\\]", fmod@met_id)]
-  
+
   de_mets <- deadEndMetabolites(fmod)
   de_mets <- de_mets$dem
-  
+
   ex_mets_in <- ex_mets[!(ex_mets %in% de_mets)] # removing dead end metabolites
   ex_mets_in <- gsub("\\[e0\\]","",ex_mets_in)
-  
+
   all_mets <- fread(paste0(script.dir, "/../dat/seed_metabolites_edited.tsv"))
-  
+
   nutr_dt <- all_mets[id %in% ex_mets_in, .(id, name, formula, charge, MNX_ID)]
   nutr_dt <- nutr_dt[formula != "null"]
   fwrite(nutr_dt,
          paste0(script.dir, "/../dat/nutrients.tsv"),
          sep = "\t")
-  
+
   cat("done\n")
-  
+
   # Export of corrected database
   mseed <- mseed[,-"gs.hash"]
-  fwrite(mseed, file=paste0(script.path,"/../dat/seed_reactions_corrected.tsv"), sep = "\t", quote = F)
   if( "DT" %in% rownames(installed.packages()) ){
-    
-    
-    widget <- DT::datatable(mseed[gapseq.status %in% c("approved", "corrected"),.(id, name, equation, definition, reversibility)], 
+
+
+    widget <- DT::datatable(mseed[gapseq.status %in% c("approved", "corrected"),.(id, name, equation, definition, reversibility)],
                   options = list(autoWidth = TRUE, scrollX=TRUE,
                                  # column width definition doesn't work well yet ?!
                                  #columnDefs = list(list( targets = c(1), width = '25%')),
                                  #columnDefs = list(list( targets = 1, width = '100px'),
                                  #                 list( targets = c(2,3), width = '1000px')),
-                                 pageLength = 100), 
+                                 pageLength = 100),
                   rownames = FALSE)
-    widget$sizingPolicy$browser$fill <- TRUE 
-    
+    widget$sizingPolicy$browser$fill <- TRUE
+
     #DT::saveWidget(widget,
     #               file=paste0(script.path,"/../dat/gapseq_reactions.html"),
     #               title="gapseq reactions", selfcontained=TRUE)
@@ -189,40 +190,40 @@ getRxnEquaFromStoich <- function(stoichiometry, reversibility, str.type="definit
   out.strings <- c()
   for(i in 1:length(stoichiometry)) {
     rxn.info <- str_split(unlist(str_split(string = stoichiometry[i],pattern = ";")), pattern = ":", simplify = T)
-    
+
     met.comp  <- rxn.info[,3]
-    
+
     # stoichiometry
     met.scoef <- as.numeric(rxn.info[,1])
-    
+
     # Ids for "equation"
     met.ids   <- paste0(rxn.info[,2],"[",met.comp,"]")
     met.ids.o <- paste0("(",abs(met.scoef),") ",met.ids)
-    
+
     # Met names for reaction "definition"
     met.name  <- str_replace_all(rxn.info[,5],"\\\"","")
     met.name  <- paste0(met.name,"[",met.comp,"]")
     ind <- which(met.name=="" | is.na(met.name))
     met.name[ind] <- met.ids[ind]
     met.name.o <- paste0("(",abs(met.scoef),") ",met.name)
-    
+
     # Reaction reversibility
     rev.sign <- ifelse(reversibility[i] == "<","<=",ifelse(reversibility[i] == ">","=>","<=>"))
-    
+
     # LHS
     ind        <- which(met.scoef < 0)
     l.id.str   <- paste0(met.ids.o[ind], collapse = " + ")
     l.name.str <- paste0(met.name.o[ind], collapse = " + ")
-    
+
     # RHS
     ind        <- which(met.scoef > 0)
     r.id.str   <- paste0(met.ids.o[ind], collapse = " + ")
     r.name.str <- paste0(met.name.o[ind], collapse = " + ")
-    
+
     # final equation/definition assembly
     id.str   <- paste(l.id.str,rev.sign,r.id.str)
     name.str <- paste(l.name.str,rev.sign,r.name.str)
-    
+
     if(str.type == "definition")
       out.strings <- c(out.strings, name.str)
     if(str.type == "equation")

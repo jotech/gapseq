@@ -7,12 +7,12 @@ database="seed"
 pwyDatabase="metacyc,custom"
 verbose=1
 taxonomy="Bacteria"
-taxRange="all" # taxonomic range for pathways
+taxRange="auto" # taxonomic range for pathways
 bitcutoff=200 # cutoff blast: min bit score
 identcutoff=0   # cutoff blast: min identity
 identcutoff_exception=70  # min identity for enzymes marked as false friends (hight seq similarity but different function)
 covcutoff=75 # cutoff blast: min coverage
-subunit_cutoff=50 # more than this % of subunits must be found 
+subunit_cutoff=50 # more than this % of subunits must be found
 strictCandidates=false
 completenessCutoff=66 # consider pathway to be present if other hints (e.g. key enzyme present) are avaiable and pathway completeness is at least as high as completenessCutoff (requires strictCandidates=false)
 completenessCutoffNoHints=80 # consider pathway to be present if no hints are avaiable (requires stricCandidates=false)
@@ -40,6 +40,16 @@ else
     n_threads=`grep -c ^processor /proc/cpuinfo`
 fi
 
+# paths and variables
+curdir=$(pwd)
+path=$(readlink -f "$0")
+dir=$(dirname "$path")
+script_name=$(basename -- "$0")
+seqdb=$dir/../dat/seq
+userdir=false
+zenodoID=10047603
+dbversion=latest
+
 usage()
 {
     echo "gapseq - Reaction and pathway prediction"
@@ -56,7 +66,6 @@ usage()
     echo "  -c Coverage cutoff for local alignment (default: $covcutoff)"
     echo "  -s Strict candidate reaction handling (do _not_ use pathway completeness, key kenzymes and operon structure to infere if imcomplete pathway could be still present (default: $strictCandidates)"
     echo "  -u Suffix used for output files (default: pathway keyword)"
-    echo "  -a blast hits back against uniprot enzyme database"
     echo "  -n Consider superpathways of metacyc database"
     echo "  -l Select the pathway database (MetaCyc, KEGG, SEED, all; default: $pwyDatabase)"
     echo "  -o Only list pathways found for keyword (default: $onlyList)"
@@ -68,6 +77,8 @@ usage()
     echo "  -w Use additional sequences derived from gene names (default: $use_gene_seq)"
     echo "  -j Quit if output files already exist (default: $stop_on_files_exist)"
     echo "  -f Path to directory, where output files will be saved (default: current directory)"
+    echo "  -D path to directory, where reference sequence database will be saved (default: $seqdb)"
+    echo "  -Z Reference sequence database version as Zenodo ID (default: $dbversion)"
     echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default: $update_manually)"
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
     echo "  -O Force offline mode (default: $force_offline)"
@@ -78,16 +89,12 @@ usage()
     echo ""
     echo "Details:"
     echo "\"-t\": if 'auto', gapseq will predict the most likely domain (bacteria/archaea) based on specific protein-coding marker genes."
+    echo "\"-Z\": This option expects the the word 'latest' for the latest database version or the Zenodo record ID. All database records can be found here: https://doi.org/10.5281/zenodo.10047603 . The record ID is the last number in the DOI following the pattern 'zenodo.'"
 
 exit 1
 }
 
 
-# paths and variables
-curdir=$(pwd)
-path=$(readlink -f "$0")
-dir=$(dirname "$path")
-script_name=$(basename -- "$0")
 uniprotIdentity=0.9 # clustered uniprot database (0.5 or 0.9) # This variable has currently not effect. Reviewed cluster identity: 0.9, unreviews: 0.5. These values are hardcoded in 'src/uniprot.sh'
 metaPwy=$dir/../dat/meta_pwy.tbl
 keggPwy=$dir/../dat/kegg_pwy.tbl
@@ -109,25 +116,25 @@ metaGenes=$dir/../dat/meta_genes.csv
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:A:R:" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:nou:l:oxqkgz:m:ywjf:D:Z:UT:OM:K:A:R:" opt; do
     case "$opt" in
     h|\?)
         usage
         exit 0
         ;;
-    p)  
+    p)
         pathways=$OPTARG
         ;;
-    e)  
+    e)
         ecnumber=$OPTARG
         ;;
-    r)  
+    r)
         reaname="$OPTARG"
         ;;
-    d)  
+    d)
         database=$OPTARG
         ;;
-    v)  
+    v)
         verbose=$OPTARG
         ;;
     b)
@@ -139,7 +146,7 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:A:R:" opt; do
     c)
         covcutoff=$OPTARG
         ;;
-    t)  
+    t)
         taxonomy=$OPTARG
         ;;
     s)
@@ -147,10 +154,6 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:A:R:" opt; do
         ;;
     u)
         output_suffix=$OPTARG
-        ;;
-    a)
-        blast_back=true
-        includeSeq=true
         ;;
     n)
         noSuperpathways=false
@@ -182,6 +185,13 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:A:R:" opt; do
     f)
         output_dir=$OPTARG
         ;;
+    D)
+        seqdb=$OPTARG
+        userdir=true
+        ;;
+    Z)
+        dbversion=$OPTARG
+        ;;
     U)
         update_manually=true
         ;;
@@ -212,6 +222,36 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:al:oxqkgz:m:ywjf:UT:OM:K:A:R:" opt; do
 done
 shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
+
+# --- Sequence DB directory checks ---
+if [[ "$userdir" == true ]]; then
+    # user provided -D
+    seqdb=$(readlink -f "$seqdb")
+    mkdir -p "$seqdb" || {
+        echo "Error: could not create database directory '$seqdb'." >&2
+        exit 1
+    }
+    if [[ ! -w "$seqdb" ]]; then
+        echo "Error: directory '$seqdb' is not writable." >&2
+        exit 1
+    fi
+    echo "Using custom datbase directory: $seqdb"
+else
+    # no -D provided → check default
+    if [[ ! -w "$seqdb" ]]; then
+        # try fallback ~/.gapseq/seq
+        seqdb="$HOME/.gapseq/seq"
+        mkdir -p "$seqdb" || {
+            echo "Error: could not create fallback directory '$seqdb'." >&2
+            exit 1
+        }
+        echo "Using fallback directory: $seqdb"
+    fi
+fi
+
+if [[ "$dbversion" != "latest" ]]; then
+  zenodoID=$dbversion
+fi
 
 # after parsing arguments, only fasta file should be there
 [ "$#" -ne 1 ] && { usage; }
@@ -272,13 +312,13 @@ fastaID="${tmpvar%.*}"
 # Determine if fasta is nucl or prot
 if [ $input_mode == "auto" ]; then
     input_mode=`$dir/./nuclprot.sh $fasta`
-    
+
     if [ $input_mode == "prot" ]; then
         [[ $verbose -ge 1 ]] && echo "Protein fasta detected."
     else
         [[ $verbose -ge 1 ]] && echo "Nucleotide fasta detected."
     fi
-    
+
 fi
 
 if [ $input_mode == "nucl" ]; then
@@ -302,10 +342,10 @@ if [ $input_mode == "nucl" ]; then
             newtranslate=false
         fi
     fi
-    
+
     if [ $newtranslate == "true" ]; then
         [[ $verbose -ge 1 ]] && echo -n "Translating genomic nucleotide fasta to protein fasta..."
-        $dir/translate_genome.sh -i "$fasta" -o "$fastaID" -K $n_threads 
+        $dir/translate_genome.sh -i "$fasta" -o "$fastaID" -K $n_threads
         fasta="$fastaID.faa"
         transl_table=`cat ${fastaID}_code`
         rm ${fastaID}_code
@@ -388,9 +428,9 @@ if [ $taxonomy == "auto" ]; then
     taxonomy=`Rscript $dir/predict_domain.R "$dir" "$fastaID.tblout"`
     rm domain.hmm
     rm $fastaID.tblout
-    
+
     [[ $verbose -ge 1 ]] && echo Predicted taxonomy: $taxonomy
-    
+
 
 fi
 [[ "$taxonomy" == "bacteria" ]] && taxonomy=Bacteria
@@ -418,11 +458,11 @@ if [ "$taxRange" == "auto" ]; then
 fi
 
 
-# squence directory
+# sequence directory
 export LC_NUMERIC="en_US.UTF-8"
-seqpath=$dir/../dat/seq/$taxonomy
+seqpath=$seqdb/$taxonomy
+mkdir -p $seqpath/rev $seqpath/unrev $seqpath/rxn
 seqpath_user=$dir/../dat/seq/$taxonomy/user
-mkdir -p $seqpath/rev $seqpath/unrev $seqpath_user
 
 #check for updates if internet connection is available
 if [[ "$force_offline" = false ]]; then
@@ -430,21 +470,12 @@ if [[ "$force_offline" = false ]]; then
     is_online=$?
     [[ `pgrep -f $0` != "$$" ]] && is_running=yes
     if [[ $is_online -eq 0 && -z "$is_running" ]]; then
-        $dir/update_sequences.sh $taxonomy
+        $dir/update_sequences.sh -t $taxonomy -D $seqdb -Z $dbversion -q
     fi
     if [[ ! -f $seqpath/rev/sequences.tar.gz  ]] || [[ ! -f $seqpath/unrev/sequences.tar.gz ]] || [[ ! -f $seqpath/rxn/sequences.tar.gz ]]; then
-        echo ATTENTION: gapseq sequence archives are missing! Sequences will be needed to be downloaded from uniprot directly which is rather slow.
+        echo "ATTENTION: gapseq sequence archives are missing! Sequences will be needed to be downloaded from uniprot directly which is rather slow."
     fi
 fi
-download_log=$(mktemp -p $tmpdir) # remember downloaded files
-function already_downloaded(){ 
-    if grep -q $1 $download_log; then
-        return 0
-    else
-        return 1
-    fi
-}
-
 
 if [ -n "$ecnumber" ] || [ -n "$reaname" ]; then
     # create dummpy pwy template for given ec number
@@ -463,7 +494,7 @@ if [ -n "$ecnumber" ] || [ -n "$reaname" ]; then
         rea_count=$(echo $ecnumber | tr ',' '\n' | wc -l)
         reaname=$(echo $ecnumber | grep -o "," | tr -d '\n' | tr ',' ';') # get dummy empty colon seperated reaction names
         pwyname=$ecnumber
-    else  
+    else
         rea_count=$(echo $ecnumber | tr ',' '\n' | wc -l)
     fi
     rea_id=$(seq 1 $rea_count | awk '{print "reaction"$1}' | tr '\n' ',' | sed 's/,$//g')
@@ -482,9 +513,9 @@ else
     [[ "$pwyDatabase" =~ "custom" ]]  && cat $customPwy >> allPwy
     dupli=$(cat allPwy | cut -f1 | sort | uniq -d | tr -d 'id' | sed '/^$/d')
     if [ -n "$dupli" ]; then
-        [[ $verbose -ge 1 ]] && echo Duplicated pathway IDs found: $dupli will only use $customPwy
+        [[ $verbose -ge 1 ]] && echo Duplicated pathway IDs found: $dupli. gapseq will only use $customPwy
         dupli_search=$(echo "$dupli" | sed 's/|/\\|/g' |tr '\n' '|' | rev | cut -c2- | rev)
-        [[ $verbose -ge 1 ]] && echo "$dupli_search"
+        # [[ $verbose -ge 1 ]] && echo "$dupli_search"
         cat allPwy | grep -wEv "$dupli_search" > allPwy.tmp
         cat $customPwy | grep -wE "$dupli_search" >> allPwy.tmp
         mv allPwy.tmp allPwy
@@ -531,7 +562,7 @@ echo "$pwyDB" > $pwyDBfile
 
 
 
-Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy $seqSrc $force_offline $update_manually $use_gene_seq $n_threads $verbose $onlyList
+Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy $seqSrc $force_offline $update_manually $use_gene_seq $n_threads $verbose $onlyList $seqdb
 # the final reference sequences are stored by the above R-script in "query.faa"
 
 [[ $onlyList == true ]] && exit 0
@@ -588,13 +619,13 @@ fi
 Rscript $dir/analyse_alignments.R $bitcutoff $identcutoff $strictCandidates $identcutoff_exception $subunit_cutoff $completenessCutoffNoHints $completenessCutoff $n_threads $vagueCutoff $verbose $pwyDBfile
 
 #------------------------#
-# Exporting result files # 
+# Exporting result files #
 #------------------------#
 
 # add gapseq version and sequence database status to table comments head
 gapseq_version=$($dir/.././gapseq -v | head -n 1)
-seqdb_version=`md5sum $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1-7`
-seqdb_date=$(stat -c %y $dir/../dat/seq/$taxonomy/rev/sequences.tar.gz | cut -c1-10)
+seqdb_version=`md5sum $seqdb/$taxonomy/rev/sequences.tar.gz | cut -c1-7`
+seqdb_date=$(stat -c %y $seqdb/$taxonomy/rev/sequences.tar.gz | cut -c1-10)
 nORFs=$(grep -c "^>" "$fasta")
 nORFsMapped=$(cat nmappedORFs.tmp)
 ORFcov=`echo "scale=2; $nORFsMapped*100/$nORFs" | bc`

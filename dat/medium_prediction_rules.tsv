@@ -20,7 +20,7 @@ N2	cpd00528	"N2FIX-PWY" | "PWY-7576"	25	FALSE	Nitrogen fixation	Inorganics
 O2	cpd00007	"PWY-3781" | "PWY1YI0-3" | "PWY-7279" | "PWY1YI0-6"	12.5	FALSE	aerobic respiration (1 - I (cytochrome c); 2- NDH-1 to cytochrome c oxidase via plastocyanin; 3 - II (cytochrome c); 3 - ;4- in cyanobacteria)	Inorganics
 O2	cpd00007	"PWY0-1565" | "PWY0-1561" | "PWY0-1544" | "PWY-7545" | "PWY-7544" | "PWY0-1353" | "PWY0-1329"	12.5	FALSE	1 - D-Lactate to Cytochrome bo; 2 - glyc3p to cytochrome bo; 3 - Pro to Cytochom bo; 4 - Pyr to cytochrome bd; 5  - Pyr to cytochrome bo; 6 - Succ to cytochrome bd; 7  - Succ to cytochrome bo	Inorganics
 O2	cpd00007	"PWY0-1334" | "PWY0-1568" | "PWY0-1335" | "PWY0-1567"	12.5	FALSE	NADH to cytochrome	Inorganics
-O2	cpd00007	rxn05747 | rxn09272 | rxn08288 | rxn00145	12.5	FALSE	Reactions from respiration chain (complex I + II), a quinol oxidases and a lactate dehydrogenase (cytochrome) 	Inorganics
+O2	cpd00007	(rxn05747 | rxn09272) & rxn12494	12.5	FALSE	Reactions from respiration chain (complex I + II)	Inorganics
 CO2	cpd00011	"CALVIN-PWY" | "CODH-PWY" | "PWY-5789" | "PWY-7784" | "LWP-GS" | "METHANOGENESIS-PWY"	25	FALSE	CO2 fixation, methanogenesis	Inorganics
 H2	cpd11640	"CODH-PWY" | "LWP-GS" | "METHANOGENESIS-PWY" | "PWY-7867"	100	FALSE	Ljungdahl-Wood pathway, methanogenesis	Inorganics
 Photons	cpd11632	"PWY-101"	50	FALSE	photosynthesis light reactions	Inorganics
@@ -31,22 +31,22 @@ D-Glucose	cpd00027	rxn05226 | rxn08612	5	TRUE	D-glucose transport via PEP:Pyr PT
 D-Glucose	cpd00027	rxn05573 | rxn08616	5	TRUE	D-glucose transport in via proton symport	Saccharides
 D-Glucose	cpd00027	rxn05147 | rxn08606	5	TRUE	D-Glucose-ABC transport	Saccharides
 D-Fructose	cpd00082	rxn05560 | rxn08536	5	TRUE	D-Fructose-specific PTS-System	Saccharides
-Lactose	cpd00208	"LACTOSECAT-PWY" | "LACTOSEUTIL-PWY" | "BGALACT-PWY"	2.5	TRUE		Saccharides
-Starch (n=27)	cpd90003	rxn90043 & rxn90034	0.18	TRUE	Pullulanase-type debranching enzyme and alpha-amylase	Saccharides
-Starch (n=27)	cpd90003	"METHANOGENESIS-PWY" | "PWY-7867"	NA	TRUE	Do not add starch for methanogens, can stop methanogenesis to be predicted	Saccharides
-Maltose	cpd00179	"MALTOSECAT-PWY"	2.5	TRUE		Saccharides
-2'-Fucosyllactose	cpd90001	"2FLHYD"	1.67	TRUE	Alpha-fucosidase & ABC transport	Saccharides
-Pectin	cpd27519	"PWY-7246" | "PWY-7248"	1.67	TRUE		Saccharides
-Melitose/Raffinose	cpd00382	rxn05643 & (rxn00818 | rxn34781)	1.67	TRUE	Raffinose transporter AND galactohydrolase	Saccharides
-Sucrose	cpd00076	"SUCUTIL-PWY" | "PWY-621" | "PWY-5384" | "SUCROSEUTIL2-PWY"	2.5	TRUE		Saccharides
-Inulin	cpd28763	"INULIN-DEGRADATION-EXO" | "INULIN-DEGRADATION"	0.42	TRUE		Saccharides
 N-acetylneuraminate	cpd00232	"PWY0-1324" & "GLUAMCAT-PWY"	5	TRUE		Saccharides
 N-Acetyl-D-glucosamine	cpd00122	"GLUAMCAT-PWY" & (rxn05485 | rxn08041)	5	TRUE	Including PTS for uptake	Saccharides
-Xylan-b-1-4	cpd90021	"PWY-6717"	0.01	TRUE	1,4-D-beta-Xylan (n=500) degradation, extracellular	Saccharides
-Trehalose	cpd00794	"PWY0-1182" | "PWY0-1466" | "PWY-2721" | "PWY-2722" | "PWY-2723" | "TREDEGLOW-PWY"	2.5	TRUE		Saccharides
 Xylose	cpd00154	"XYLCAT-PWY" | "PWY-5516" | "PWY-6760" | "PWY-7294" | "PWY-7178" | "PWY-8020" | "PWY-8330"	5	TRUE		Saccharides
 Fucose	cpd00751	"FUCCAT-PWY" | "PWY-8444" | "PWY-8318"	5	TRUE		Saccharides
 Rhamnose	cpd00396	"RHAMCAT-PWY" | "PWY-6713" | "PWY-6714"	5	TRUE		Saccharides
+Maltose	cpd00179	"MALTOSECAT-PWY"	2.5	TRUE		Saccharides
+Lactose	cpd00208	"LACTOSECAT-PWY" | "LACTOSEUTIL-PWY" | "BGALACT-PWY"	2.5	TRUE		Saccharides
+Sucrose	cpd00076	"SUCUTIL-PWY" | "PWY-621" | "PWY-5384" | "SUCROSEUTIL2-PWY"	2.5	TRUE		Saccharides
+Trehalose	cpd00794	"PWY0-1182" | "PWY0-1466" | "PWY-2721" | "PWY-2722" | "PWY-2723" | "TREDEGLOW-PWY"	2.5	TRUE		Saccharides
+Melitose/Raffinose	cpd00382	rxn05643 & (rxn00818 | rxn34781)	1.67	TRUE	Raffinose transporter AND galactohydrolase	Saccharides
+Starch (n=27)	cpd90003	rxn90043 & rxn90034 & !("METHANOGENESIS-PWY") & !("PWY-7867")	0.18	TRUE	Pullulanase-type debranching enzyme and alpha-amylase and Do not add starch for methanogens, can stop methanogenesis to be predicted	Saccharides
+Pectin	cpd27519	"PWY-7246" | "PWY-7248"	1.67	TRUE		Saccharides
+Inulin	cpd28763	"INULIN-DEGRADATION-EXO" | "INULIN-DEGRADATION"	0.42	TRUE		Saccharides
+Xylan-b-1-4	cpd90021	"PWY-6717"	0.01	TRUE	1,4-D-beta-Xylan (n=500) degradation, extracellular	Saccharides
+2'-Fucosyllactose	cpd90001	"2FLHYD"	1.67	TRUE	Alpha-fucosidase & ABC transport	Saccharides
+sulfoquinovose	cpd22614	"PWY-7446" | "PWY-7722"	10	TRUE		Saccharides
 						
 L-Tryptophan	cpd00065	!("TRPSYN-PWY2" | "TRPSYN-PWY")	0.1	TRUE		Amino acids
 L-Histidine	cpd00119	!"HISTSYN-PWY"	0.1	TRUE		Amino acids
@@ -62,7 +62,7 @@ L-Leucine	cpd00107	!("LEUSYN-PWY" & (rxn00003 | rxn33164) & rxn02186 & rxn00898)
 L-Lysine	cpd00039	!("DAPLYSINESYN-PWY" | "PWY-2941" | "PWY-2942" | "PWY-3081" | "PWY-5097")	0.1	TRUE		Amino acids
 L-Methionine	cpd00060	!("HOMOSER-METSYN-PWY" | "PWY-702" | "HSERMETANA-PWY" | "PWY-7977")	0.1	TRUE		Amino acids
 L-Phenylalanine	cpd00066	!((rxn01256 & rxn01000 & (rxn00493 | rxn21134 | rxn28060 | rxn38254)) | "PWY-3462" | "PWY-7432")	0.1	TRUE		Amino acids
-L-Proline	cpd00129	!("PROSYN-PWY" | "PWY-3341")	0.1	TRUE		Amino acids
+L-Proline	cpd00129	!("PROSYN-PWY" | "PWY-3341" | rxn00471)	0.1	TRUE	Either one of the metacyc pathways "PROSYN-PWY”, "PWY-3341" or the biosynthesis from ornithine via EC 4.3.1.12 (ornithine cyclodeaminase)	Amino acids
 L-Threonine	cpd00161	!("HOMOSER-THRESYN-PWY" | "THRBIOSYN-GS")	0.1	TRUE	Either MetaCycs HOMOSER-THRESYN-PWY (from L-homoserine to Thr) or gapseq connected pathway of the same route but together with L-Homoserine synthesis.	Amino acids
 L-Tyrosine	cpd00069	!("TYRSYN" | "PWY-3461" | "PWY-6120" | "PWY-6134")	0.1	TRUE		Amino acids
 L-Valine	cpd00156	!"VALSYN-PWY"	0.1	TRUE		Amino acids
@@ -79,7 +79,6 @@ Succinate	cpd00036	"PWY-5677"	10	TRUE	Succinate fermentation to butyrate	Organic
 Succinate	cpd00036	(rxn00602 | rxn01996) & rxn90096 & rxn09174	10	TRUE	Succinate transformation to propionate (Na+ exporting). Part of PWY-8086	Organic acids
 Formate	cpd00047	"PWY-7868"	20	TRUE	coenzyme B/coenzyme M regeneration V (formate-dependent) involved in methanogenesis	Organic acids
 						
-sulfoquinovose	cpd22614	"PWY-7446" | "PWY-7722"	10	TRUE		Secondary plant metabolites
 Gallate	cpd01020	"GALLATE-DEGRADATION-II-PWY" | "GALLATE-DEGRADATION-I-PWY" | "P3-PWY"	10	TRUE		Secondary plant metabolites
 Quercetin	cpd00313	"QUERCETIN-ANAERO-DEG"	10	TRUE	Key-reaction: Taxifolin isomerase (EC 5.5.1.6)	Secondary plant metabolites
 Genistein	cpd03971	rxn90097	10	TRUE	Genistein reductase	Secondary plant metabolites

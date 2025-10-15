@@ -46,9 +46,9 @@ Installation
    :maxdepth: 1
    :caption: Tutorials
 
-   /tutorials/crossfeeding
    /tutorials/yogurt
    /tutorials/archaea
+   /tutorials/pandraft
    /tutorials/traceability
 
 

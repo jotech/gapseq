@@ -85,6 +85,11 @@ predict_medium <- function(mod, pathway.pred, manual.flux = NULL) {
   medium_rules[is.na(maxFlux_comb), maxFlux_comb:=0]
   medium_rules <- medium_rules[!duplicated(cpd.id), .(Nutrient, cpd.id, maxFlux = maxFlux_comb, Category, proton.balance)]
 
+  # If several saccharides were predicted as resources choose only the first
+  medium_rules[, tmp := 1:.N, by = Category]
+  medium_rules <- medium_rules[!(Category == "Saccharides" & tmp > 1)]
+  medium_rules[, tmp := NULL]
+
   # apply manual concentrations
   if(!is.null(manual.flux)) {
     manual.flux <- unlist(str_split(manual.flux, ";"))

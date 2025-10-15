@@ -37,6 +37,7 @@ use_gene_seq <- args[7] == "true"
 n_threads <- as.integer(args[8])
 verbose <- as.integer(args[9])
 onlyList <- args[10] == "true"
+seqdb <- args[11]
 
 # some hard-coded correction of syntax errors in reaction names that would break string parsing (remove when meta_pwy.tbl is corrected/updated)
 pwyDB[V1 %in% c("|PWY18C3-10|","|PWY18C3-12|"), V9 := sub("sucrose-3-isobutanoyl-4-isovaleryl-3;-isovaleroyltransferase",
@@ -207,9 +208,12 @@ identifySeqFiles <- function(reaID, reaName, ecs, altecs, spont) {
     fileDT <- fileDT[src != "rxn"]
   }
 
-  fileDT[, fex := file.exists(paste0(script.dir,"/../dat/seq/",taxonomy,"/",file))]
+  # set dir of sequence database
+  fileDT[, sdir := ifelse(src=="user",paste0(script.dir,"/../dat/seq"),seqdb)]
+
+  fileDT[, fex := file.exists(paste0(sdir,"/",taxonomy,"/",file))]
   fileDT <- fileDT[!(src == "user" & fex == FALSE)] # when user fasta does not exist, nothing to collect/use here
-  fileDT[fex == TRUE, file_size := file.size(paste0(script.dir,"/../dat/seq/",taxonomy,"/",file))]
+  fileDT[fex == TRUE, file_size := file.size(paste0(sdir,"/",taxonomy,"/",file))]
 
   return(fileDT)
 }
@@ -223,6 +227,7 @@ seqfiles <- mclapply(1:nrow(reaec_nospont), mc.cores = n_threads,
                                                altecs = reaec_nospont[i,altec]))
                      })
 seqfiles <- rbindlist(seqfiles)
+#print(seqfiles[sample(1:.N, 50)])
 rm(reaec_nospont)
 
 #-------------------------------------------------------------------------------
@@ -232,9 +237,9 @@ rm(reaec_nospont)
 seqfiles$uniprot_query <- NA_character_
 if(!force_offline) {
   seqfiles[type == "EC" & (!fex | update_manually) & src == "rev",
-           uniprot_query := paste0(script.dir,"/uniprot.sh -e \"",gsub("^rev/|\\.fasta$","",file),"\" -t \"",taxonomy,"\" -i 0.9 -o")]
+           uniprot_query := paste0(script.dir,"/uniprot.sh -e \"",gsub("^rev/|\\.fasta$","",file),"\" -t \"",taxonomy,"\" -i 0.9 -o -D ",seqdb)]
   seqfiles[type == "EC" & (!fex | update_manually) & src == "unrev",
-           uniprot_query := paste0(script.dir,"/uniprot.sh -u -e \"",gsub("^unrev/|\\.fasta$","",file),"\" -t \"",taxonomy,"\" -i 0.5 -o")]
+           uniprot_query := paste0(script.dir,"/uniprot.sh -u -e \"",gsub("^unrev/|\\.fasta$","",file),"\" -t \"",taxonomy,"\" -i 0.5 -o -D",seqdb)]
 
   # perform download for ECs
   seqfiles_dlEC <- seqfiles[!is.na(uniprot_query)][!duplicated(file)]
@@ -249,16 +254,16 @@ if(!force_offline) {
   }
 
   # update file existence and size columns
-  seqfiles[type == "EC" & !is.na(uniprot_query), fex := file.exists(paste0(script.dir,"/../dat/seq/",taxonomy,"/",file))]
-  seqfiles[type == "EC" & !is.na(uniprot_query) & fex == TRUE, file_size := file.size(paste0(script.dir,"/../dat/seq/",taxonomy,"/",file))]
+  seqfiles[type == "EC" & !is.na(uniprot_query), fex := file.exists(paste0(sdir,"/",taxonomy,"/",file))]
+  seqfiles[type == "EC" & !is.na(uniprot_query) & fex == TRUE, file_size := file.size(paste0(sdir,"/",taxonomy,"/",file))]
 
   # use reaction names for uniprot queries if no valid EC for reaction, or EC fastas are empty
   seqfiles[, use_reanames := !any(type == "EC") || sum(file_size * (type == "EC" & fex), na.rm = TRUE) == 0,
            by = .(rea, reaName, ecs)]
   seqfiles[use_reanames == TRUE & type == "reaName" & (!fex | update_manually) & src == "rev" & reaName != "",
-           uniprot_query := paste0(script.dir,"/uniprot.sh -r \"",gsub("\"","\\\\\"",reaName),"\" -t \"",taxonomy,"\" -i 0.9 -o")]
+           uniprot_query := paste0(script.dir,"/uniprot.sh -r \"",gsub("\"","\\\\\"",reaName),"\" -t \"",taxonomy,"\" -i 0.9 -o -D",seqdb)]
   seqfiles[use_reanames == TRUE & type == "reaName" & (!fex | update_manually) & src == "unrev" & reaName != "",
-           uniprot_query := paste0(script.dir,"/uniprot.sh -u -r \"",gsub("\"","\\\\\"",reaName),"\" -t \"",taxonomy,"\" -i 0.5 -o")]
+           uniprot_query := paste0(script.dir,"/uniprot.sh -u -r \"",gsub("\"","\\\\\"",reaName),"\" -t \"",taxonomy,"\" -i 0.5 -o -D",seqdb)]
   seqfiles_dlRN <- seqfiles[type == "reaName" & !is.na(uniprot_query)][!duplicated(file)]
   ndl <- nrow(seqfiles_dlRN)
   if(ndl > 0) {
@@ -271,8 +276,8 @@ if(!force_offline) {
   }
 
   # update file existence and size columns
-  seqfiles[type == "reaName" & !is.na(uniprot_query), fex := file.exists(paste0(script.dir,"/../dat/seq/",taxonomy,"/",file))]
-  seqfiles[type == "reaName" & !is.na(uniprot_query) & fex == TRUE, file_size := file.size(paste0(script.dir,"/../dat/seq/",taxonomy,"/",file))]
+  seqfiles[type == "reaName" & !is.na(uniprot_query), fex := file.exists(paste0(sdir,"/",taxonomy,"/",file))]
+  seqfiles[type == "reaName" & !is.na(uniprot_query) & fex == TRUE, file_size := file.size(paste0(sdir,"/",taxonomy,"/",file))]
 
   # perform sequence download for direct uniprot links from metacyc reaction IDs
   mc_uplinks <- merge(seqfiles[src=="rxn" & (!fex | update_manually),
@@ -284,15 +289,15 @@ if(!force_offline) {
     for(i in 1:ndl) {
       cat(" ",i,"/",ndl,"(",updlids[i],")\n")
       system(paste0(
-        script.dir,"/uniprot.sh -d ",updlids[i]," -t ",taxonomy," -i 0.9 -o"
+        script.dir,"/uniprot.sh -d ",updlids[i]," -t ",taxonomy," -i 0.9 -o -D",seqdb
       ), ignore.stdout = TRUE, ignore.stderr = FALSE)
     }
     cat("\n")
 
     for(reai in unique(mc_uplinks$file)) {
-      file.create(paste0(script.dir,"/../dat/seq/",taxonomy,"/",reai))
-      file.append(paste0(script.dir,"/../dat/seq/",taxonomy,"/",reai),
-                  paste0(script.dir,"/../dat/seq/",taxonomy,"/rxn/",mc_uplinks[file == reai,uniprot],".fasta"))
+      file.create(paste0(seqdb,"/",taxonomy,"/",reai))
+      file.append(paste0(seqdb,"/",taxonomy,"/",reai),
+                  paste0(seqdb,"/",taxonomy,"/rxn/",mc_uplinks[file == reai,uniprot],".fasta"))
     }
   }
   seqfiles[, use_reanames := NULL] # column not needed anymore
@@ -360,11 +365,13 @@ seqfiles[fex == FALSE | file_size == 0, use := FALSE]
 #-------------------------------------------------------------------------------
 # (6) Combine all fasta files into one (keeping track of file source in headers)
 #-------------------------------------------------------------------------------
-
-allseqfiles <- unique(seqfiles[use == TRUE, file])
+allseqfiles <- unique(seqfiles[use == TRUE, paste0(sdir,"/",taxonomy,"/",file)])
 allseqs <- mclapply(allseqfiles, mc.cores = n_threads, FUN = function(sf) {
-  tmpseqs <- readAAStringSet(paste0(script.dir,"/../dat/seq/",taxonomy,"/",sf))
-  names(tmpseqs) <- paste0(sf,"|",names(tmpseqs))
+  tmpseqs <- readAAStringSet(sf)
+  files <- basename(sf)
+  last_dir <- basename(dirname(sf))
+  sf_short <- file.path(last_dir, files)
+  names(tmpseqs) <- paste0(sf_short,"|",names(tmpseqs)) # TODO only e.g. rev/EC.fasta
   return(tmpseqs)
 })
 allseqs <- do.call("c",allseqs)

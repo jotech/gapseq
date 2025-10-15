@@ -123,7 +123,8 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt <- resolve_common_EC_conflicts("1.2.1.76","1.2.1.10", dt) # succinate semialdehyde dehydrogenase VS acetaldehyde dehydrogenase
   dt <- resolve_common_EC_conflicts("1.2.1.87","1.2.1.10", dt) # propanal dehydrogenase VS acetaldehyde dehydrogenase
   dt <- resolve_common_EC_conflicts("2.1.2.1","4.1.2.48", dt) # glycine hydroxymethyltransferase VS threonine aldolase
-  dt <- resolve_common_EC_conflicts("1.1.1.27","1.3.1.110", dt) # two hydrogenases, one with NADH one with bifurcation including NADH and Ferredoxin
+  dt <- resolve_common_EC_conflicts("1.1.1.27","1.1.1.436", dt) # two lactate dehydrogenases, one with NADH one with bifurcation including NADH and Ferredoxin
+  dt <- resolve_common_EC_conflicts("1.1.2.5","1.1.1.436", dt) # two lactate dehydrogenases, one with Ferrocytochrome and one with bifurcation including NADH and Ferredoxin
   dt <- resolve_common_EC_conflicts("6.3.1.1","2.6.1.2", dt) # Asp:NH3 ligase vs ala-aminotransferase
   dt <- resolve_common_EC_conflicts("2.6.1.11","2.6.1.18", dt) # beta-alanine aminotransferase vs acetyl-ornithine aminotransferase
   dt <- resolve_common_EC_conflicts("2.6.1.66","2.6.1.83", dt) # valine-pyruvate aminotransferase vs L,L-diaminopimelate aminotransferase
@@ -134,6 +135,7 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
   dt <- resolve_common_EC_conflicts("4.1.1.105","4.1.1.86", dt) # trp decarboxylase vs. diaminobutyrate decarboxylase
   dt <- resolve_common_EC_conflicts("4.1.1.28","4.1.1.18", dt) # aromatic AA decarboxylase vs. lysine decarboxylase
   dt <- resolve_common_EC_conflicts("4.1.1.28","4.1.1.86", dt) # aromatic AA decarboxylase vs. diaminobutyrate decarboxylase
+  dt <- resolve_common_EC_conflicts("1.1.2.3","1.1.3.2", dt) # Cytochrome-dependent lactate dehydrogenase vs. lactate oxidase (O2 as electon acceptor)
 
   # specific transporter conflict fixes
   dt.trans <- resolve_common_TC_conflicts("1.a.8.2.1","2.a.14.1.3", dt.trans)

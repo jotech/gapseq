@@ -69,9 +69,6 @@ if ( is.null(opt$min.rxn.freq.in.mods) ) { opt$min.rxn.freq.in.mods = 0.06 }
 # if ( is.null(opt$verbose) ) { opt$verbose = F }
 if ( is.null(opt$sbml.no.output) ) { opt$sbml.no.output = F } else { opt$sbml.no.output = T }
 if ( is.null(opt$only.binary.rxn.tbl) ) { opt$only.binary.rxn.tbl = F }
-if ( !opt$only.binary.rxn.tbl & ( is.null(opt$rxn.weights.files_path) | is.null(opt$rxnXgene.tables_path))) {
-  stop("MISSING INPUT, if 'only.binary.rxn.tbl' is FALSE you should define also 'rxn.weights.files_path' and 'rxnXgene.tables_path'", call. = FALSE)
-}
 
 # Arguments:
 mod.path              <- opt$models_path

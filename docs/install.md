@@ -14,8 +14,9 @@ R -e 'pak::pkg_install("Waschina/cobrar")'
 # Download latest gapseq version from github
 git clone https://github.com/jotech/gapseq && cd gapseq
 
-# Download latest reference sequence database
-bash ./src/update_sequences.sh
+# Download latest reference sequence database (Bacteria and Archaea)
+bash ./gapseq update-sequences -t Bacteria
+bash ./gapseq update-sequences -t Archaea
 ```
 
 Test your installation with:
@@ -36,8 +37,9 @@ R -e 'pak::pkg_install("Waschina/cobrar")'
 # Download latest gapseq version from github
 git clone https://github.com/jotech/gapseq && cd gapseq
 
-# Download latest reference sequence database
-bash ./src/update_sequences.sh
+# Download latest reference sequence database (Bacteria and Archaea)
+bash ./gapseq update-sequences -t Bacteria
+bash ./gapseq update-sequences -t Archaea
 ```
 
 Test your installation with:
@@ -59,8 +61,9 @@ R -e 'pak::pkg_install("Waschina/cobrar")'
 # Download latest gapseq version from github
 git clone https://github.com/jotech/gapseq && cd gapseq
 
-# Download latest reference sequence database
-bash ./src/update_sequences.sh
+# Download latest reference sequence database (Bacteria and Archaea)
+bash ./gapseq update-sequences -t Bacteria
+bash ./gapseq update-sequences -t Archaea
 ```
 
 Test your installation with:

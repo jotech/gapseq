@@ -232,7 +232,7 @@ rxn01226	>			[SW] irreversible accdording to several references. See BRENDA	http
 rxn14117	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=GLUCONATE-2-DEHYDROGENASE-RXN				
 rxn14207	>			[SW] never reported reversible according to BRENDA, and irreversible according to MetaCyc.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.1.2.7#NATURAL%20SUBSTRATES # https://biocyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-2861				
 rxn05748	>			[SW] never reported reversible according to BRENDA, and irreversible according to MetaCyc.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN0-3501				
-rxn02260			-1:cpd00001:0:0:"H2O";-1:cpd03375:0:0:"3-Hydroxypropanoyl-CoA";1:cpd00010:0:0:"CoA";2:cpd00067:0:0:"H+";1:cpd00745:0:0:"Hydracrylic acid"	[SW] Reaction not coupled with ATP synthesis.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-13721				
+rxn02260	>		-1:cpd00002:0:0:"ATP";-1:cpd00010:0:0:"CoA";-1:cpd00067:0:0:"H+";-1:cpd00745:0:0:"Hydracrylic acid";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd03375:0:0:"3-Hydroxypropanoyl-CoA"	[SW] Changed direction.	https://www.kegg.jp/entry/R03157		R03157	3-hydroxypropionyl-CoA synthetase (ADP-forming)	
 rxn15275	>			[SW] unsure, but highly exergonic reaction and never reported reversible.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.1.2.2#SUBSTRATE				
 rxn14369		TRUE		[SW] unspecified generic reaction.					
 rxn14386		TRUE		[SW] unspecified generic reaction.					
@@ -927,7 +927,7 @@ rxn12645	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAG
 rxn12646	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN				
 rxn14121	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN				
 rxn14135	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN				
-rxn16621	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN				
+rxn16621	>		-1:cpd00001:0:0:"H2O";-1:cpd21129:0:0:"LysW-gamma-L-lysine";1:cpd00039:0:0:"L-Lysine";1:cpd21125:0:0:"alpha-Aminoadipate carrier protein LysW"	[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN				
 rxn18043	>			[SW] Peptidases are irreversible.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=3.4.11.1-RXN				
 									
 rxn12893		TRUE		[SW] the term "Lactate" is too unspecific as is does not denote stereochemistry. Thus Lactate might not be linked with reactions that utilize either L-lactate or D-lactate.					
@@ -1170,7 +1170,7 @@ rxn05760	<		-2:cpd00023:0:0:"L-Glutamate";-2:cpd11621:0:0:"Oxidizedferredoxin";1
 rxn05902	<		-3:cpd00001:0:0:"H2O";-1:cpd00239:0:0:"H2S";-6:cpd11621:0:0:"Oxidizedferredoxin";6:cpd00067:0:0:"H+";1:cpd00081:0:0:"Sulfite";6:cpd11620:0:0:"Reducedferredoxin"	[JZ][SW] reaction not proton balanced. Changing stoichiometries	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=SULFITE-REDUCTASE-FERREDOXIN-RXN				
 rxn05937	>		-1:cpd00006:0:0:"NADP";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00005:0:0:"NADPH";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Reaction was incomplete. Here newly balanced full reaction.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=RXN-17897				
 rxn06990	>		-1:cpd00003:0:0:"NAD";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00004:0:0:"NADH";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Ferredoxin Stoichiometries corrected. Reverse direction possible, but only in the presense of sodium ion potential.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=FERREDOXIN--NAD%2b-REDUCTASE-RXN # Hess, V.; Schuchmann, K.; Mueller, V.; J. Biol. Chem. 288, 31496-31502 (2013)				
-rxn07849	>		-1:cpd00001:0:0:"H2O";-1:cpd00735:0:0:"Formylmethanofuran";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00643:0:0:"Methanofuran";2:cpd11620:0:0:"Reducedferredoxin";1:cpd00067:0:0:"H+"	[JZ][SW] Reaction was incomplete. Here new balances full reaction with correct oxidized/reduced state for ferredoxin	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=FORMYLMETHANOFURAN-DEHYDROGENASE-RXN				
+									
 rxn05938	=		-1:cpd00011:0:0:"CO2";-1:cpd00022:0:0:"Acetyl-CoA";-1:cpd00067:0:0:"H+";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00010:0:0:"CoA";1:cpd00020:0:0:"Pyruvate";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] Should be reversible.	https://www.brenda-enzymes.org/enzyme.php?ecno=3.5.4.27#NATURAL%20SUBSTRATES				
 rxn05939	=		-1:cpd00011:0:0:"CO2";-1:cpd00067:0:0:"H+";-1:cpd00078:0:0:"Succinyl-CoA";-2:cpd11620:0:0:"Reducedferredoxin";1:cpd00010:0:0:"CoA";1:cpd00024:0:0:"2-Oxoglutarate";2:cpd11621:0:0:"Oxidizedferredoxin"	[SW] reported for both directions.	http://www.brenda-enzymes.org/enzyme.php?ecno=1.2.7.3#NATURAL%20SUBSTRATES				
 rxn05940	>		-1:cpd00010:0:0:"CoA";-1:cpd00094:0:0:"2-Oxobutyrate";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00067:0:0:"H+";1:cpd00086:0:0:"Propionyl-CoA";2:cpd11620:0:0:"Reducedferredoxin"						
@@ -1199,7 +1199,7 @@ rxn00399	>			[SW] New direction according to Metacyc	https://metacyc.org/META/NE
 rxn09304	>			[SW] Proton antiport only in the direction of proton flow into the cell. Ok 		transport			
 rxn05305	>			[SW] Proton antiport only in the direction of proton flow into the cell. Ok		transport			
 rxn09295	>			[SW] Hydride transfer only from NADH to NADP+.	DOI: 10.1016/j.bbabio.2012.04.006				
-rxn27378	>			[SW] Hydride transfer only from NADH to NADP+.	DOI: 10.1016/j.bbabio.2012.04.006				
+rxn27378		TRUE		[SW] Duplicate to rxn09295. Wrong stoichiometry.					
 rxn08154	>			[SW] Proton antiport only in the direction of proton flow into the cell. Ok		transport			
 rxn08730		TRUE		Proton diffusion across membrane should be omitted.					
 rxn27372		TRUE		Proton diffusion across membrane should be omitted.					
@@ -2217,7 +2217,7 @@ rxn10528	>		-1:cpd00023:0:0:"L-Glutamate";-1:cpd00038:0:0:"GTP";-1:cpd20411:0:0:
 rxn10529	>			[SW] direction changed according to MetaCyc					
 rxn10530	>			[SW] direction changed according to MetaCyc					
 rxn10531	>			[SW] direction changed according to MetaCyc					
-rxn06294	<		-1:cpd00001:0:0:"H2O";-1:cpd00735:0:0:"Formylmethanofuran";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00643:0:0:"Methanofuran";2:cpd11620:0:0:"Reducedferredoxin";1:cpd00067:0:0:"H+"	[SW] Direction and stoichiometry changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=FORMYLMETHANOFURAN-DEHYDROGENASE-RXN				
+rxn06294	=		-1:cpd00001:0:0:"H2O";-1:cpd00735:0:0:"Formylmethanofuran";-2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00011:0:0:"CO2";1:cpd00643:0:0:"Methanofuran";2:cpd11620:0:0:"Reducedferredoxin";1:cpd00067:0:0:"H+"	[SW] Direction and stoichiometry changed according to MetaCyc	https://metacyc.org/META/NEW-IMAGE?type=REACTION-IN-PATHWAY&object=FORMYLMETHANOFURAN-DEHYDROGENASE-RXN				
 rxn15964	>			[SW] Unknown directionality but causes futile cycles in reverse direction.					
 rxn15963	>			[SW] Unknown directionality but causes futile cycles in reverse direction. Delta_r G indicated irreversibility ast physiological conditions.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=MTAMBARKMULTI-RXN				
 rxn10568	>			[SW] Unknown directionality but causes futile cycles in reverse direction. Delta_r G indicated irreversibility ast physiological conditions.	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=MTAMBARKMULTI-RXN				
@@ -2726,3 +2726,51 @@ rxn90136	>		-1:cpd00067:1:0:"H+";-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:
 rxn90137	>		-1:cpd00067:1:0:"H+";-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd90029:1:0:"6'-sialyllactose";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd90029:0:0:"6'-sialyllactose";2:cpd00067:0:0:"H+"	[SW] new reaction for import of 6’-SL via ABC-transport.	10.1073/pnas.0809584105		6’-SL ABC transport	6’-SL ABC transporter	
 rxn90138	>		-1:cpd00001:0:0:"H2O";-1:cpd90030:0:0:"Lacto-N-neotetraose";1:cpd01354:0:0:"beta-Lactose";1:cpd00469:0:0:"N-Acetyllactosamine"	[SW] gut microbial HMO degradation (here: LNnT)	https://doi.org/10.1038/srep38560		beta-Lacto-N-biosidase	beta-Lacto-N-biosidase	
 rxn90139	>		-1:cpd00001:0:0:"H2O";-1:cpd00002:0:0:"ATP";-1:cpd90030:1:0:"Lacto-N-neotetraose";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd90030:0:0:"Lacto-N-neotetraose";1:cpd00067:0:0:"H+"	[SW] new reaction for import of DFL via ABC-transport.	10.1073/pnas.0809584105		DFL ABC transport	Difucosyllactose ABC transporter	
+									
+rxn90140	<		-1:cpd00239:0:0:"H2S";-1:cpd00006:0:0:"NADP";1:cpd27013:0:0:"Elemental-Sulfur";1:cpd00005:0:0:"NADPH"	[SW] New reaction for sulfur oxidation	https://biocyc.org/reaction?orgid=META&id=RXN-14537		NADPH sulfur oxidoreductase	NADPH sulfur oxidoreductase (CoA-dependent)	
+rxn90141	<		-1:cpd00239:0:0:"H2S";-1:cpd00003:0:0:"NAD";1:cpd27013:0:0:"Elemental-Sulfur";1:cpd00004:0:0:"NADH"	[SW] New reaction for sulfur oxidation	https://biocyc.org/reaction?orgid=META&id=RXN-14537		NADH sulfur oxidoreductase	NADH sulfur oxidoreductase (CoA-dependent)	
+rxn90142	=		-1:cpd27013:1:0:"Elemental-Sulfur";1:cpd27013:0:0:"Elemental-Sulfur"	[SW] Reaction for cross-membrane sulfur diffusion			S0diff	Elemental sulfur transport (diffusion)	
+									
+rxn26454				[SW] NADH repair in archaea					TRUE
+rxn23414				[SW] NADPH repair in archaea				ADP-dependent NAD(P)H-hydrate dehydratase	TRUE
+rxn41791	>		-1:cpd00002:0:0:"ATP";-1:cpd00023:0:0:"L-Glutamate";-1:cpd21125:0:0:"alpha-Aminoadipate carrier protein LysW";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:”Phosphate";1:cpd00067:0:0:"H+";1:cpd36644:0:0:"LysW-L-glutamate"	[SW] Key reaction for Pathway PWY-7400 (L-arginine biosynthesis IV (archaebacteria))	https://metacyc.org/pathway?orgid=META&id=PWY-7400		glutamate--[amino group carrier protein] ligase	glutamate--[amino group carrier protein] ligase	
+rxn46460	>		-1:cpd00002:0:0:"ATP";-1:cpd36644:0:0:"LysW-L-glutamate";1:cpd00008:0:0:"ADP";1:cpd36810:0:0:"LysW-L-glutamate-5-phosphate"	[SW] Reaction for Pathway PWY-7400 (L-arginine biosynthesis IV (archaebacteria))	https://metacyc.org/pathway?orgid=META&id=PWY-7400		LysW-L-glutamate 5-kinase	[LysW]-L-glutamate 5-kinase	
+rxn16617	>		-1:cpd00002:0:0:"ATP";-1:cpd00705:0:0:"L-2-Aminoadipate";-1:cpd21125:0:0:"alpha-Aminoadipate carrier protein LysW";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd21126:0:0:"LysW-gamma-L-alpha-aminoadipate";1:cpd00067:0:0:"H+"	[SW] Mass and charge balanced					
+rxn16618	>		-1:cpd00002:0:0:"ATP";-1:cpd21126:0:0:"LysW-gamma-L-alpha-aminoadipate";1:cpd00008:0:0:"ADP";1:cpd21127:0:0:"LysW-gamma-L-alpha-aminoadipyl 6-phosphate"	[SW] Mass and charge balanced					
+rxn16619	>		-1:cpd00005:0:0:"NADPH";-1:cpd00067:0:0:"H+";-1:cpd21127:0:0:"LysW-gamma-L-alpha-aminoadipyl 6-phosphate";1:cpd00006:0:0:"NADP";1:cpd00009:0:0:"Phosphate";1:cpd21128:0:0:"LysW-gamma-L-alpha-aminoadipate 6-semialdehyde"	[SW] Mass and charge balanced					
+rxn16620			-1:cpd00023:0:0:"L-Glutamate";-1:cpd21128:0:0:"LysW-gamma-L-alpha-aminoadipate 6-semialdehyde";1:cpd00024:0:0:"2-Oxoglutarate";1:cpd21129:0:0:"LysW-gamma-L-lysine"	[SW] Mass and charge balanced					
+rxn44270	=		-1:cpd00006:0:0:"NADP";-1:cpd00009:0:0:" Phosphate";-1:cpd36277:0:0:"LysW-L-glutamate-5-semialdehyde";1:cpd00005:0:0:"NADPH";1:cpd00067:0:0:"H+";1:cpd36810:0:0:"LysW-L-glutamate-5-phosphate"	[SW] Reaction for Pathway PWY-7400 (L-arginine biosynthesis IV (archaebacteria))	https://metacyc.org/pathway?orgid=META&id=PWY-7400				
+rxn43092	=		-1:cpd00024:0:0:"2-Oxoglutarate";-1:cpd37020:0:0:"LysW-L-ornithine";1:cpd00023:0:0:"L-Glutamate";1:cpd36277:0:0:"LysW-L-glutamate-5-semialdehyde"	[SW] Reaction for Pathway PWY-7400 (L-arginine biosynthesis IV (archaebacteria))	https://metacyc.org/pathway?orgid=META&id=PWY-7400				
+rxn47731	=		-1:cpd00001:0:0:"H2O";-1:cpd37020:0:0:"LysW-L-ornithine";1:cpd00064:0:0:"Ornithine";1:cpd21125:0:0:"alpha-Aminoadipate carrier protein LysW"	[SW] Reaction for Pathway PWY-7400 (L-arginine biosynthesis IV (archaebacteria))	https://metacyc.org/pathway?orgid=META&id=PWY-7400				
+									
+rxn23850	>			[SW] NAD-dependent version of rxn00779	https://www.rhea-db.org/rhea/42760			glyceraldehyde-3-phosphate dehydrogenase [NAD]	
+rxn28272		TRUE		[SW] Duplicate to rxn23850	https://www.rhea-db.org/rhea/42760				
+									
+rxn22497	>			[SW] Approve succinate-forming direction of the reaction.	https://www.rhea-db.org/rhea/45820				
+rxn44493	>		-1:cpd00001:0:0:"H2O";-1:cpd32744:0:0:"2-iminopropanoate";1:cpd00013:0:0:"NH3";1:cpd00020:0:0:"Pyruvate"	[SW] Reaction for pathway PWY-3661	https://www.rhea-db.org/rhea/40671		2-iminopropanoate deaminase	2-iminopropanoate deaminase	
+rxn41492	>		-1:cpd01495:0:0:"Dehydroalanine";1:cpd32744:0:0:"2-iminopropanoate"	[SW] Reaction for pathway PWY-3661	https://www.rhea-db.org/rhea/40667				
+rxn45535	>		-1:cpd00003:0:0:"NAD";-1:cpd00033:0:0:"Glycine";-1:cpd00239:0:0:"H2S";3:cpd00001:0:0:"H2O";1:cpd00067:0:0:"H+";1:cpd00133:0:0:"Nicotinamide";1:cpd26630:0:0:"2-carboxylate-4-methyl-5-beta-(ethyl adenosine 5-diphosphate) thiazole"	[SW] Reaction for pathway PWY-8308	https://www.rhea-db.org/rhea/55704		sulfide-dependent adenosine diphosphate thiazole synthase	sulfide-dependent adenosine diphosphate thiazole synthase	
+rxn27030				[SW] Reaction for pathway PWY-8308					TRUE
+									
+rxn90143	>		-1:cpd00038:0:0:"GTP";-1:cpd00655:0:0:"Dephospho-CoA";1:cpd00031:0:0:"GDP";1:cpd00010:0:0:"CoA";1:cpd00067:0:0:"H+"	[SW] Key reaction in archaeal coenzyme A biosynthesis	https://biocyc.org/pathway?orgid=META&id=PWY-8342		GTP-dependent dephospho-CoA kinase	GTP-dependent dephospho-CoA kinase	
+rxn20684	>		-1:cpd00005:0:0:"NADPH";-2:cpd00067:0:0:"H+";-1:cpd15829:0:0:"7-oxoheptanoic acid";-1:cpd00239:0:0:"H2S";1:cpd00001:0:0:"H2O";1:cpd15827:0:0:"7-mercaptoheptanoic acid";1:cpd00006:0:0:"NADP"	[SW] Assuming NADPH as electron donor; charge balanced	https://biocyc.org/reaction?orgid=META&id=R225-RXN				
+rxn30153		TRUE		[SW] duplicate reaction to rxn01419					
+rxn90144	>		-1:cpd02737:0:0:"5-Methyl-H4MPT";-1:cpd00011:0:0:"CO2";-2:cpd00067:0:0:"H+";-1:cpd00010:0:0:"CoA";-2:cpd11620:0:0:"Reducedferredoxin";2:cpd11621:0:0:"Oxidizedferredoxin";1:cpd00895:0:0:"H4MPT";1:cpd00022:0:0:"Acetyl-CoA";1:cpd00001:0:0:"H2O"	[SW] Reaction for reductive acetyl coenzyme A pathway II (autotrophic methanogens)	https://metacyc.org/pathway?orgid=META&id=PWY-7784		ACDS	acetyl-CoA decarbonylase/synthase complex (ACDS) 	
+									
+rxn41725	>		-1:cpd31852:0:0:"gamma-glutamyltyramine";-1:cpd32612:0:0:"5-(aminomethyl)-3-furanmethanol diphosphate";1:cpd00012:0:0:"PPi";1:cpd00067:0:0:"H+";1:cpd24820:0:0:"4-[N-gamma-L-glutamyl-)-p-(beta-aminoethyl)phenoxy-methyl]-2-(aminomethyl)furan"	[SW] Reaction in methanofuran biosynthesis	https://metacyc.org/pathway?orgid=META&id=PWY-5254		(4-{4-[2-(gamma-L-glutamylamino)ethyl]phenoxymethyl}furan-2-yl)methanamine synthase	(4-{4-[2-(gamma-L-glutamylamino)ethyl]phenoxymethyl}furan-2-yl)methanamine synthase	
+rxn42902	>		-2:cpd00023:0:0:"L-Glutamate";-1:cpd24820:0:0:"4-[N-gamma-L-glutamyl-)-p-(beta-aminoethyl)phenoxy-methyl]-2-(aminomethyl)furan";2:cpd00001:0:0:"H2O";1:cpd15892:0:0:"methanofuran b"	[SW] Reaction in methanofuran biosynthesis	https://metacyc.org/pathway?orgid=META&id=PWY-5254		mfnB synthase	Methanofuran B synthase	
+rxn43971	>		-2:cpd00102:0:0:"Glyceraldehyde3-phosphate";2:cpd00001:0:0:"H2O";1:cpd00009:0:0:"Phosphate";1:cpd24817:0:0:"2-furaldehyde phosphate"	[SW] Reaction in methanofuran biosynthesis	https://metacyc.org/pathway?orgid=META&id=PWY-5254		(5-formylfuran-3-yl)methyl phosphate synthase	(5-formylfuran-3-yl)methyl phosphate synthase	
+rxn45023	>		-6:cpd00023:0:0:"L-Glutamate";-1:cpd24820:0:0:"4-[N-gamma-L-glutamyl-)-p-(beta-aminoethyl)phenoxy-methyl]-2-(aminomethyl)furan";6:cpd00001:0:0:"H2O";1:cpd34085:0:0:"methanofuran d"	[SW] Reaction in methanofuran biosynthesis	https://metacyc.org/pathway?orgid=META&id=PWY-5254		mfnD synthase	Methanofuran D synthase	
+rxn47122	>		-1:cpd00035:0:0:"L-Alanine";-1:cpd24817:0:0:"2-furaldehyde phosphate";1:cpd00020:0:0:"Pyruvate";1:cpd24818:0:0:"2-methylamine-furan phosphate"	[SW] Reaction in methanofuran biosynthesis	https://metacyc.org/pathway?orgid=META&id=PWY-5254		(5-formylfuran-3-yl)methyl phosphate transaminase	(5-formylfuran-3-yl)methyl phosphate transaminase	
+rxn47516	>		-1:cpd00002:0:0:"ATP";-1:cpd00023:0:0:"L-Glutamate";-1:cpd00374:0:0:"Tyramine";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:" Phosphate";1:cpd00067:0:0:"H+";1:cpd31852:0:0:"gamma-glutamyltyramine"	[SW] Reaction in methanofuran biosynthesis	https://metacyc.org/pathway?orgid=META&id=PWY-5254		tyramine--L-glutamate ligase	tyramine--L-glutamate ligase	
+rxn48557	>		-1:cpd00002:0:0:"ATP";-1:cpd00067:0:0:"H+";-1:cpd24818:0:0:"2-methylamine-furan phosphate";1:cpd00008:0:0:"ADP";1:cpd32612:0:0:"5-(aminomethyl)-3-furanmethanol diphosphate"	[SW] Reaction in methanofuran biosynthesis	https://metacyc.org/pathway?orgid=META&id=PWY-5254		[5-(aminomethyl)furan-3-yl]methyl phosphate kinase	[5-(aminomethyl)furan-3-yl]methyl phosphate kinase	
+									
+rxn10125		TRUE		[SW] Duplicate to rxn09295					
+rxn90145	>		-1:cpd00007:0:0:"O2";-5:cpd00067:0:0:"H+";-2:cpd15561:0:0:"Ubiquinol-8";2:cpd00001:0:0:"H2O";5:cpd00067:1:0:"H+";2:cpd15560:0:0:"Ubiquinone-8"	[SW] EC 7.1.1.3. Same as rxn12494 (EC 7.1.1.7) but higher efficiency in terms of transported protons per reaction	https://iubmb.qmul.ac.uk/enzyme/EC7/1/1/3.html		ubiquinol oxidase (H+-transporting)	ubiquinol oxidase (H+-transporting)	
+rxn47403	>		-1:cpd00007:0:0:"O2";-4:cpd00067:0:0:"H+";-2:cpd31235:0:0:"Caldariellaquinol";2:cpd00001:0:0:"H2O";4:cpd00067:1:0:"H+";2:cpd25750:0:0:"Caldariellaquinone"	[SW] EC 7.1.1.4. Relevant for some thermophilic archaea.	https://iubmb.qmul.ac.uk/enzyme/EC7/1/1/4.html		caldariellaquinol oxidase (H+-transporting)	caldariellaquinol oxidase (H+-transporting)	
+rxn46068	=		-1:cpd00036:0:0:"Succinate";-1:cpd25750:0:0:"Caldariellaquinone";1:cpd00106:0:0:"Fumarate";1:cpd31235:0:0:"Caldariellaquinol"		https://biocyc.org/reaction?orgid=META&id=RXN-15378		succinate dehydrogenase (Caldariellaquinone)	succinate dehydrogenase (Caldariellaquinone)	
+rxn08288		TRUE		[SW] Duplicate to rxn12494					
+rxn10112		TRUE		[SW] Duplicate to rxn12494					
+rxn38529		TRUE		[SW] Duplicate to rxn12494					
+rxn35347				[SW] Reaction for EC 7.1.1.9	https://iubmb.qmul.ac.uk/enzyme/EC7/1/1/9.html				TRUE
+rxn41759	>		-1:cpd00007:0:0:"O2";-1:cpd00159:0:0:"L-Lactate";1:cpd00020:0:0:"Pyruvate";1:cpd00025:0:0:"H2O2"	[SW] Reaction for Lactate oxidase	https://www.rhea-db.org/rhea/55868		lctO	L-Lactate oxidase	

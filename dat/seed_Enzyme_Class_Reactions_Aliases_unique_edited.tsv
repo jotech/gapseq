@@ -270,6 +270,7 @@ rxn00161|rxn00162	rxn00159|rxn00161	1.1.1.40	Enzyme Class
 rxn00505|rxn27954|rxn27955	rxn00505	1.1.1.41	Enzyme Class
 rxn00198|rxn00199|rxn01387|rxn05794|rxn15022|rxn15023|rxn15278|rxn15279	rxn00198|rxn00199|rxn01387|rxn05794	1.1.1.42	Enzyme Class
 rxn01474|rxn01475|rxn16890	rxn01474|rxn01475	1.1.1.43	Enzyme Class
+rxn90054|rxn90056		1.1.1.436	Enzyme Class
 rxn01115|rxn11040|rxn19016|rxn27623|rxn33859	rxn01115	1.1.1.44	Enzyme Class
 rxn01913	rxn01913	1.1.1.45	Enzyme Class
 rxn01289|rxn15236|rxn15237|rxn20002|rxn25137|rxn37366|rxn37367|rxn37368|rxn37369|rxn37370|rxn37371	rxn01289	1.1.1.46	Enzyme Class
@@ -348,6 +349,7 @@ rxn01707	rxn01707	1.1.3.16	Enzyme Class
 rxn00032|rxn00752|rxn11743|rxn11744	rxn00032|rxn00752|rxn11743|rxn11744	1.1.3.17	Enzyme Class
 rxn06147|rxn27102	rxn06147|rxn14369	1.1.3.18	Enzyme Class
 rxn01934	rxn01934	1.1.3.19	Enzyme Class
+rxn41759		1.1.3.2	Enzyme Class
 rxn05761|rxn20052	rxn05761	1.1.3.20	Enzyme Class
 rxn00614	rxn00614	1.1.3.21	Enzyme Class
 rxn00026|rxn00052|rxn01536	rxn00026|rxn00052|rxn01536	1.1.3.23	Enzyme Class
@@ -936,6 +938,8 @@ rxn28952|rxn37658|rxn37854		1.2.1	Enzyme Class
 rxn00154|rxn00532|rxn00653|rxn01053|rxn01851|rxn02107|rxn02687|rxn03365|rxn03366|rxn03598|rxn03618|rxn03921|rxn04270|rxn04271|rxn04658|rxn04723|rxn04727|rxn04737|rxn04744|rxn05126|rxn05127|rxn07875|rxn07876|rxn07885|rxn09944|rxn16312|rxn16619|rxn16625|rxn16646|rxn19115|rxn19342|rxn20656|rxn22302|rxn22477|rxn22781|rxn22959|rxn23006|rxn23181|rxn23198|rxn23374|rxn23520|rxn23548|rxn23550|rxn23643|rxn23773|rxn24214|rxn24584|rxn24715|rxn25507|rxn25848|rxn26069|rxn26348|rxn27019|rxn32844|rxn37162|rxn37163	rxn02107|rxn02687|rxn03365|rxn03366|rxn03915|rxn03921|rxn03970|rxn03971|rxn04270|rxn04271|rxn04658|rxn04723|rxn04727|rxn04737|rxn04744|rxn04789|rxn05126|rxn05127|rxn05142|rxn05143|rxn07875|rxn07876|rxn07885	1.2.1.-	Enzyme Class
 rxn09567	rxn09567	1.2.1.1	Enzyme Class
 rxn00171|rxn00869	rxn00171|rxn00869	1.2.1.10	Enzyme Class
+rxn16619		1.2.1.103	Enzyme Class
+rxn44270		1.2.1.106	Enzyme Class
 rxn01643|rxn33374|rxn33956	rxn01643	1.2.1.11	Enzyme Class
 rxn00781|rxn33210|rxn33842	rxn00781|rxn00782|rxn02931	1.2.1.12	Enzyme Class
 rxn00782|rxn33574|rxn33876	rxn00781|rxn00782	1.2.1.13	Enzyme Class
@@ -956,7 +960,7 @@ rxn00196|rxn25138|rxn37372	rxn00196	1.2.1.26	Enzyme Class
 rxn00671|rxn15094|rxn17200|rxn17201|rxn32555|rxn02424	rxn00671|rxn02424	1.2.1.27	Enzyme Class
 rxn00957|rxn01032|rxn03601|rxn03934|rxn03935|rxn07482|rxn25930	rxn00957|rxn01032|rxn07482	1.2.1.28	Enzyme Class
 rxn01032|rxn01918|rxn01943|rxn02364|rxn03550|rxn19189|rxn20713	rxn01918|rxn01943|rxn02364|rxn03550|rxn06006	1.2.1.29	Enzyme Class
-rxn00196|rxn00506|rxn00653|rxn01286|rxn01459|rxn01851|rxn01937|rxn02106|rxn02122|rxn02350|rxn02364|rxn02729|rxn02853|rxn03106|rxn03335|rxn03343|rxn03354|rxn03423|rxn03552|rxn03553|rxn03598|rxn04234|rxn05853|rxn05879|rxn06890|rxn09975|rxn15053|rxn19111|rxn19121|rxn19124|rxn23850|rxn23892|rxn24151|rxn24152|rxn25819|rxn28278|rxn28320|rxn28322|rxn31363|rxn31371|rxn31647|rxn32113|rxn33160|rxn38859|rxn38860|rxn38861|rxn38862	rxn00506|rxn00507|rxn00653|rxn01286|rxn01459|rxn01851|rxn01937|rxn02106|rxn02122|rxn02350|rxn02729|rxn02853|rxn03106|rxn03354|rxn03423|rxn03468|rxn03552|rxn03553|rxn03598|rxn04234|rxn05853|rxn05879|rxn06890	1.2.1.3	Enzyme Class
+rxn00196|rxn00506|rxn00653|rxn01286|rxn01459|rxn01851|rxn01937|rxn02106|rxn02122|rxn02350|rxn02364|rxn02729|rxn02853|rxn03106|rxn03335|rxn03343|rxn03354|rxn03423|rxn03552|rxn03553|rxn03598|rxn04234|rxn05853|rxn05879|rxn06890|rxn09975|rxn15053|rxn19111|rxn19121|rxn19124|rxn23892|rxn24151|rxn24152|rxn25819|rxn28278|rxn28320|rxn28322|rxn31363|rxn31371|rxn31647|rxn32113|rxn33160|rxn38859|rxn38860|rxn38861|rxn38862	rxn00506|rxn00507|rxn00653|rxn01286|rxn01459|rxn01851|rxn01937|rxn02106|rxn02122|rxn02350|rxn02729|rxn02853|rxn03106|rxn03354|rxn03423|rxn03468|rxn03552|rxn03553|rxn03598|rxn04234|rxn05853|rxn05879|rxn06890	1.2.1.3	Enzyme Class
 rxn06010|rxn14326|rxn19188	rxn06010|rxn14326	1.2.1.30	Enzyme Class
 rxn02224|rxn02226|rxn02227|rxn06675|rxn06802|rxn17202|rxn21159|rxn21161|rxn33800|rxn37033	rxn02224|rxn02226|rxn02227|rxn06675|rxn06802|rxn09637|rxn09638	1.2.1.31	Enzyme Class
 rxn02744|rxn03654	rxn02744|rxn03654	1.2.1.32	Enzyme Class
@@ -1012,6 +1016,7 @@ rxn01993		1.2.1.85	Enzyme Class
 rxn09944	rxn09944	1.2.1.87	Enzyme Class
 rxn00183|rxn00503|rxn00504|rxn03071|rxn03072|rxn03424|rxn06840|rxn22005|rxn28336|rxn28900|rxn31682|rxn31683|rxn32266|rxn33493|rxn33582	rxn00183|rxn00503|rxn00504|rxn02356|rxn02358|rxn02359|rxn03071|rxn03072|rxn03424|rxn06840|rxn09487	1.2.1.88	Enzyme Class
 rxn00779	rxn00779	1.2.1.9	Enzyme Class
+rxn00779|rxn23850		1.2.1.90	Enzyme Class
 rxn30563		1.2.1.9-	Enzyme Class
 rxn02254|rxn08465|rxn08466|rxn10114|rxn10115|rxn11978|rxn13639|rxn13640|rxn13700|rxn13701|rxn19716	rxn02254|rxn08465|rxn08466|rxn09525|rxn10114|rxn10115|rxn11978|rxn13639|rxn13640|rxn13700|rxn13701	1.2.2.1	Enzyme Class
 rxn09167|rxn28122	rxn02253|rxn09167	1.2.2.2	Enzyme Class
@@ -1045,7 +1050,7 @@ rxn07190|rxn07191|rxn17209	rxn07190	1.2.7.5	Enzyme Class
 rxn07191|rxn17211	rxn07191	1.2.7.6	Enzyme Class
 rxn05940|rxn13962|rxn14109|rxn14152|rxn17212	rxn13962|rxn14109|rxn14152	1.2.7.7	Enzyme Class
 rxn07193|rxn17213	rxn07193	1.2.7.8	Enzyme Class
-rxn06294		1.2.7.12	Enzyme Class
+rxn06294|rxn10521		1.2.7.12	Enzyme Class
 rxn20639|rxn22632|rxn23238		1.2.99.-	Enzyme Class
 rxn05803|rxn06847|rxn07824|rxn15962|rxn16153|rxn16164|rxn19251	rxn05803|rxn06847|rxn07824	1.2.99.2	Enzyme Class
 rxn00749|rxn02520|rxn05857|rxn15054|rxn17214|rxn24944|rxn31991|rxn32931	rxn00749|rxn02520|rxn03469|rxn05857	1.2.99.3	Enzyme Class
@@ -1084,7 +1089,6 @@ rxn05351|rxn05352|rxn05353|rxn05354|rxn05355|rxn05356|rxn05357|rxn05995|rxn08387
 rxn10444|rxn10556		1.3.1.101	Enzyme Class
 rxn90001	rxn90001	1.3.1.109	Enzyme Class
 rxn02633	rxn02633|rxn14383	1.3.1.11	Enzyme Class
-rxn90056|rxn90054		1.3.1.110	Enzyme Class
 rxn43871|rxn90082		1.3.1.114	Enzyme Class
 rxn19220|rxn41945		1.3.1.115	Enzyme Class
 rxn41554|rxn90081		1.3.1.116	Enzyme Class
@@ -1391,7 +1395,7 @@ rxn01401|rxn06061|rxn27209	rxn01401|rxn06061|rxn09414	1.5.99.6	Enzyme Class
 rxn03424|rxn05947|rxn06358|rxn06840|rxn24693|rxn33333	rxn02359|rxn03424|rxn05947|rxn06358|rxn06840|rxn09188	1.5.99.8	Enzyme Class
 rxn03079|rxn17255	rxn03079	1.5.99.9	Enzyme Class
 rxn16080		1.6.-.-	Enzyme Class
-rxn00083|rxn09295	rxn00083|rxn09295|rxn10125	1.6.1.1	Enzyme Class
+rxn00083	rxn00083|rxn09295|rxn10125	1.6.1.1	Enzyme Class
 rxn00083|rxn27378	rxn00083	1.6.1.2	Enzyme Class
 rxn90018	rxn90018	1.6.1.4	Enzyme Class
 rxn09295|rxn10125|rxn27378		1.6.1.5	Enzyme Class
@@ -1473,6 +1477,7 @@ rxn00067|rxn04960|rxn19318	rxn00067|rxn04960	1.8.1.14	Enzyme Class
 rxn03981|rxn03982|rxn07095|rxn17268	rxn03981|rxn03982|rxn07095	1.8.1.15	Enzyme Class
 rxn16405		1.8.1.16	Enzyme Class
 rxn16340		1.8.1.17	Enzyme Class
+rxn90140|rxn90141		1.8.1.18	Enzyme Class
 rxn00623|rxn02570|rxn06418|rxn34008	rxn00623|rxn02570|rxn06418	1.8.1.2	Enzyme Class
 rxn90127		1.8.1.22	Enzyme Class
 rxn01230	rxn01230	1.8.1.3	Enzyme Class
@@ -1524,7 +1529,7 @@ rxn03702|rxn03703		1.8.99.-	Enzyme Class
 rxn05904|rxn06419|rxn11986|rxn22233|rxn22254|rxn27267	rxn05904|rxn06419|rxn11986	1.8.99.1	Enzyme Class
 rxn03371|rxn05903|rxn11934|rxn13994|rxn19074|rxn27687	rxn03371|rxn05903|rxn11934|rxn13994	1.8.99.2	Enzyme Class
 rxn05802|rxn07825|rxn19910	rxn05802|rxn07825|rxn11417	1.8.99.3	Enzyme Class
-rxn00058|rxn05771|rxn10043|rxn10947|rxn13688|rxn19357|rxn32937	rxn00058|rxn09527|rxn10043|rxn10947|rxn13688	1.9.3.1	Enzyme Class
+rxn35347	rxn00058|rxn09527|rxn10043|rxn10947|rxn13688	1.9.3.1	Enzyme Class
 rxn02205|rxn05895|rxn11973|rxn20277	rxn02205|rxn05895|rxn11973	1.9.6.1	Enzyme Class
 rxn03628|rxn19937	rxn03628	1.9.99.1	Enzyme Class
 rxn08288|rxn10112|rxn12494|rxn38529		1.10.3.14	Enzyme Class
@@ -1834,7 +1839,7 @@ rxn05358|rxn05359|rxn05363|rxn05367|rxn05371|rxn05375|rxn05379|rxn05383|rxn05384
 rxn00192|rxn33986	rxn00192|rxn05457	2.3.1.1	Enzyme Class
 rxn01349	rxn01349	2.3.1.10	Enzyme Class
 rxn06559|rxn17444	rxn06559	2.3.1.100	Enzyme Class
-rxn02431|rxn17445	rxn02431	2.3.1.101	Enzyme Class
+rxn02431|rxn17445|rxn10522	rxn02431	2.3.1.101	Enzyme Class
 rxn02266	rxn02266	2.3.1.102	Enzyme Class
 rxn00046|rxn15014|rxn15015	rxn00046	2.3.1.103	Enzyme Class
 rxn06313|rxn17448	rxn06313	2.3.1.104	Enzyme Class
@@ -2363,6 +2368,7 @@ rxn16615|rxn16616|rxn16623|rxn25998		2.4.2.43	Enzyme Class
 rxn16511		2.4.2.44	Enzyme Class
 rxn14266		2.4.2.5	Enzyme Class
 rxn42137		2.4.2.54	Enzyme Class
+rxn45535		2.4.2.59	Enzyme Class
 rxn06247	rxn06247|rxn14046	2.4.2.6	Enzyme Class
 rxn00139|rxn00915|rxn03039|rxn12778	rxn00139|rxn00915|rxn03039|rxn12778	2.4.2.7	Enzyme Class
 rxn00139|rxn00836|rxn00915|rxn01544|rxn11765|rxn11766|rxn11773|rxn32380|rxn33365	rxn00139|rxn00836|rxn00915|rxn01544|rxn11765|rxn11766|rxn11773	2.4.2.8	Enzyme Class
@@ -2391,6 +2397,7 @@ rxn01213|rxn19872|rxn24264|rxn28334|rxn28335|rxn28366|rxn28367|rxn28368|rxn34022
 rxn01466|rxn32442|rxn34023	rxn01213|rxn01466	2.5.1.10	Enzyme Class
 rxn46822		2.5.1.105	Enzyme Class
 rxn03890|rxn06941	rxn03890|rxn05028|rxn06941	2.5.1.11	Enzyme Class
+rxn41725		2.5.1.131	Enzyme Class
 rxn42355		2.5.1.147	Enzyme Class
 rxn02200|rxn02201|rxn33974	rxn02200|rxn02201	2.5.1.15	Enzyme Class
 rxn01406|rxn02061|rxn12049	rxn01406|rxn02061|rxn12049	2.5.1.16	Enzyme Class
@@ -2486,6 +2493,7 @@ rxn07263	rxn07263	2.6.-.-	Enzyme Class
 rxn37767|rxn37768		2.6.1	Enzyme Class
 rxn02830|rxn02844|rxn03066|rxn03086|rxn03797|rxn04288|rxn04659|rxn04786|rxn06724|rxn11632|rxn14037|rxn14055|rxn14077|rxn14118|rxn14125|rxn14151|rxn14175|rxn14290|rxn14366|rxn14382|rxn14384|rxn15844|rxn15845|rxn15851|rxn15857|rxn15872|rxn15956|rxn16214|rxn16620|rxn19024|rxn19210|rxn20881|rxn21136|rxn21145|rxn21158|rxn21621|rxn21841|rxn22081|rxn22312|rxn22466|rxn23168|rxn23242|rxn23406|rxn23419|rxn23443|rxn23472|rxn23587|rxn23780|rxn24212|rxn25237|rxn25419|rxn25432|rxn26139|rxn27069|rxn27070|rxn27071|rxn27072|rxn27073|rxn27437|rxn28265|rxn38839|rxn38840	rxn02830|rxn02844|rxn03086|rxn03797|rxn04659|rxn06724|rxn07474|rxn14003|rxn14037|rxn14055|rxn14077|rxn14118|rxn14125|rxn14151|rxn14175|rxn14290|rxn14366|rxn14382|rxn14384	2.6.1.-	Enzyme Class
 rxn00260|rxn00493|rxn00527|rxn00647|rxn01757|rxn01906|rxn15507|rxn31662|rxn31663|rxn33947|rxn33948	rxn00260|rxn00493|rxn00527|rxn00647|rxn01757|rxn01906|rxn02339	2.6.1.1	Enzyme Class
+rxn47122		2.6.1.108	Enzyme Class
 rxn01637|rxn33986|rxn33990	rxn01637	2.6.1.11	Enzyme Class
 rxn00282|rxn05951|rxn19081	rxn00282|rxn05951	2.6.1.12	Enzyme Class
 rxn00467|rxn00468|rxn05981|rxn15055|rxn20494|rxn29001|rxn38905|rxn38906|rxn38907|rxn38908	rxn00467|rxn05981	2.6.1.13	Enzyme Class
@@ -2495,7 +2503,9 @@ rxn00555|rxn15064	rxn00555	2.6.1.16	Enzyme Class
 rxn03087	rxn03087	2.6.1.17	Enzyme Class
 rxn00656|rxn02925	rxn00656|rxn02925	2.6.1.18	Enzyme Class
 rxn00657|rxn01204|rxn28328	rxn00657|rxn01204	2.6.1.19	Enzyme Class
+rxn16620		2.6.1.118	Enzyme Class
 rxn00657		2.6.1.120	Enzyme Class
+rxn43092		2.6.1.124	Enzyme Class
 rxn00191|rxn33940	rxn00191	2.6.1.2	Enzyme Class
 rxn00849|rxn01156|rxn03426|rxn05982|rxn06168|rxn06264|rxn06281|rxn06302|rxn11943|rxn11968	rxn00849|rxn01156|rxn03426|rxn06168|rxn06264|rxn06281|rxn06302|rxn11943|rxn11968	2.6.1.21	Enzyme Class
 rxn02926	rxn02926	2.6.1.22	Enzyme Class
@@ -2652,6 +2662,7 @@ rxn01143|rxn01518|rxn11761	rxn01143|rxn01518|rxn11761	2.7.1.21	Enzyme Class
 rxn41476		2.7.1.212	Enzyme Class
 rxn01671|rxn02401	rxn01671	2.7.1.22	Enzyme Class
 rxn00077|rxn10056|rxn10057|rxn10058|rxn10059|rxn10060	rxn00077|rxn10056|rxn10057|rxn10058|rxn10059|rxn10060	2.7.1.23	Enzyme Class
+rxn90143		2.7.1.237	Enzyme Class
 rxn00100	rxn00100	2.7.1.24	Enzyme Class
 rxn00361|rxn03372|rxn34004	rxn00361|rxn03372	2.7.1.25	Enzyme Class
 rxn00392	rxn00392	2.7.1.26	Enzyme Class
@@ -2768,6 +2779,8 @@ rxn00230	rxn00230	2.7.2.12	Enzyme Class
 rxn00181	rxn00180|rxn00181	2.7.2.13	Enzyme Class
 rxn02812	rxn02812	2.7.2.14	Enzyme Class
 rxn00985	rxn00985	2.7.2.15	Enzyme Class
+rxn16618		2.7.2.17	Enzyme Class
+rxn46460		2.7.2.19	Enzyme Class
 rxn00114|rxn01016|rxn29996|rxn37674	rxn00114|rxn01016	2.7.2.2	Enzyme Class
 rxn01100|rxn32521|rxn33845	rxn01100	2.7.2.3	Enzyme Class
 rxn00337|rxn33955	rxn00337	2.7.2.4	Enzyme Class
@@ -2805,6 +2818,7 @@ rxn14185|rxn17703|rxn21271|rxn21273|rxn21279|rxn38852	rxn14185	2.7.4.24	Enzyme C
 rxn00364|rxn01219		2.7.4.25	Enzyme Class
 rxn20839		2.7.4.26	Enzyme Class
 rxn00097|rxn01127	rxn00097|rxn01127|rxn08067|rxn10052	2.7.4.3	Enzyme Class
+rxn48557		2.7.4.31	Enzyme Class
 rxn00119|rxn01517|rxn05814|rxn20463	rxn00119|rxn01517|rxn05814|rxn14391	2.7.4.4	Enzyme Class
 rxn00107|rxn00117|rxn00237|rxn00238|rxn00409|rxn00515|rxn00839|rxn01353|rxn01512|rxn01673|rxn01678|rxn02517|rxn14003|rxn20458|rxn28041|rxn34032|rxn34036|rxn34038|rxn34044|rxn34048|rxn34061|rxn34062|rxn34066	rxn00117|rxn00237|rxn00238|rxn00409|rxn00515|rxn00839|rxn01353|rxn01512|rxn01673|rxn01678|rxn02517|rxn14111	2.7.4.6	Enzyme Class
 rxn03108|rxn32320	rxn03108	2.7.4.7	Enzyme Class
@@ -2997,6 +3011,7 @@ rxn25164		2.8.3.18	Enzyme Class
 rxn00286|rxn01734|rxn02121|rxn02258		2.8.3.22	Enzyme Class
 rxn42773		2.8.3.24	Enzyme Class
 rxn90079|rxn90080		2.8.3.25	Enzyme Class
+rxn22497		2.8.3.26	Enzyme Class
 rxn01136	rxn01136	2.8.3.2	Enzyme Class
 rxn00534	rxn00534	2.8.3.3	Enzyme Class
 rxn00290|rxn06039|rxn17769	rxn00290|rxn06039	2.8.3.5	Enzyme Class
@@ -3153,7 +3168,7 @@ rxn05049|rxn14344	rxn05049|rxn14344	3.1.2.27	Enzyme Class
 rxn05023		3.1.2.28	Enzyme Class
 rxn16487		3.1.2.29	Enzyme Class
 rxn00287	rxn00287	3.1.2.3	Enzyme Class
-rxn02260|rxn02261|rxn02406|rxn03433|rxn15401|rxn17759|rxn28324	rxn02260|rxn02261|rxn02406|rxn03433	3.1.2.4	Enzyme Class
+rxn02261|rxn02406|rxn03433|rxn15401|rxn17759|rxn28324	rxn02260|rxn02261|rxn02406|rxn03433	3.1.2.4	Enzyme Class
 rxn01502	rxn01502	3.1.2.5	Enzyme Class
 rxn01274|rxn06584|rxn24519|rxn38442	rxn01274|rxn06584	3.1.2.6	Enzyme Class
 rxn05858|rxn19844	rxn05858	3.1.2.7	Enzyme Class
@@ -3744,6 +3759,8 @@ rxn02871|rxn06112|rxn10063|rxn20507	rxn02871|rxn06112|rxn10063	3.5.1.11	Enzyme C
 rxn05064|rxn16794|rxn16795|rxn16796|rxn16797|rxn16826		3.5.1.110	Enzyme Class
 rxn00794|rxn00795	rxn00794|rxn00795	3.5.1.12	Enzyme Class
 rxn06058|rxn19184	rxn06058	3.5.1.13	Enzyme Class
+rxn16621		3.5.1.130	Enzyme Class
+rxn47731		3.5.1.132	Enzyme Class
 rxn00469|rxn05953|rxn19160|rxn36655|rxn36656|rxn38863|rxn38864|rxn38865|rxn38866	rxn00469|rxn05953	3.5.1.14	Enzyme Class
 rxn00345|rxn00376|rxn00390|rxn19212	rxn00345|rxn00376|rxn00390	3.5.1.15	Enzyme Class
 rxn00469|rxn15972|rxn29983|rxn33990	rxn00469	3.5.1.16	Enzyme Class
@@ -3921,6 +3938,7 @@ rxn03659|rxn18181	rxn03659	3.5.5.7	Enzyme Class
 rxn04031	rxn04031	3.5.5.8	Enzyme Class
 rxn03012|rxn03858|rxn03859|rxn04778|rxn23409	rxn03858|rxn03859|rxn04778	3.5.99.-	Enzyme Class
 rxn01271	rxn01271	3.5.99.1	Enzyme Class
+rxn44493		3.5.99.10	Enzyme Class
 rxn01537|rxn16839	rxn01537	3.5.99.2	Enzyme Class
 rxn03845|rxn04775|rxn07177	rxn03845|rxn04775|rxn07177	3.5.99.3	Enzyme Class
 rxn03846|rxn04776	rxn03846|rxn04776	3.5.99.4	Enzyme Class
@@ -4232,6 +4250,7 @@ rxn05998|rxn06250|rxn16200|rxn22085|rxn22086		4.1.2.47	Enzyme Class
 rxn04142		4.1.2.49	Enzyme Class
 rxn00541|rxn04142|rxn28676	rxn00541|rxn04142	4.1.2.5	Enzyme Class
 rxn16806		4.1.2.50	Enzyme Class
+rxn15750		4.1.2.51	Enzyme Class
 rxn42916		4.1.2.57	Enzyme Class
 rxn39252		4.1.2.62	Enzyme Class
 rxn01682	rxn01682	4.1.2.8	Enzyme Class
@@ -4326,6 +4345,7 @@ rxn08659		4.2.1.130	Enzyme Class
 rxn07347|rxn07350|rxn07353|rxn07359|rxn07363|rxn07367|rxn07370|rxn07374|rxn16632|rxn23131		4.2.1.131	Enzyme Class
 rxn16807		4.2.1.132	Enzyme Class
 rxn22126		4.2.1.133	Enzyme Class
+rxn26454|rxn23414		4.2.1.136	Enzyme Class
 rxn16048		4.2.1.141	Enzyme Class
 rxn02167|rxn02168|rxn03874|rxn27538|rxn19669		4.2.1.150	Enzyme Class
 rxn43902		4.2.1.157	Enzyme Class
@@ -4468,6 +4488,7 @@ rxn16822		4.2.3.123	Enzyme Class
 rxn01661	rxn01661	4.2.3.13	Enzyme Class
 rxn06074	rxn04018|rxn04019|rxn06074	4.2.3.14	Enzyme Class
 rxn01471	rxn01471	4.2.3.15	Enzyme Class
+rxn43971		4.2.3.153	Enzyme Class
 rxn01473	rxn01473	4.2.3.16	Enzyme Class
 rxn39093		4.2.3.16-	Enzyme Class
 rxn04179	rxn04179	4.2.3.17	Enzyme Class
@@ -5035,8 +5056,10 @@ rxn16437		6.3.2.35	Enzyme Class
 rxn16218		6.3.2.36	Enzyme Class
 rxn16438|rxn22343		6.3.2.37	Enzyme Class
 rxn00851	rxn00851	6.3.2.4	Enzyme Class
+rxn16617		6.3.2.43	Enzyme Class
 rxn02953|rxn02954|rxn02955|rxn09177|rxn12512	rxn02953|rxn02954|rxn02955|rxn09177|rxn10003|rxn12512	6.3.2.5	Enzyme Class
 rxn03147|rxn28980|rxn34058|rxn35571	rxn03147	6.3.2.6	Enzyme Class
+rxn41791		6.3.2.60	Enzyme Class
 rxn02009	rxn02009|rxn02010	6.3.2.7	Enzyme Class
 rxn02286	rxn02286	6.3.2.8	Enzyme Class
 rxn02008	rxn02008	6.3.2.9	Enzyme Class
@@ -5061,6 +5084,7 @@ rxn16439|rxn23756		6.3.4.19	Enzyme Class
 rxn00410|rxn00412	rxn00410|rxn00412	6.3.4.2	Enzyme Class
 rxn16824		6.3.4.20	Enzyme Class
 rxn04784	rxn04784	6.3.4.23	Enzyme Class
+rxn47516		6.3.4.24	Enzyme Class
 rxn00690|rxn24148	rxn00690|rxn01211	6.3.4.3	Enzyme Class
 rxn00838|rxn34059	rxn00838	6.3.4.4	Enzyme Class
 rxn01434|rxn20795|rxn29991|rxn33988	rxn01434	6.3.4.5	Enzyme Class
@@ -5101,10 +5125,13 @@ rxn02733|rxn34013	rxn02733	6.6.1.1	Enzyme Class
 rxn03542	rxn03542	6.6.1.2	Enzyme Class
 rxn09295|rxn10125|rxn27378		7.1.1.1	Enzyme Class
 rxn13726		7.1.1.2	Enzyme Class
+rxn90145		7.1.1.3	Enzyme Class
+rxn47403		7.1.1.4	Enzyme Class
 rxn08287|rxn90021		7.1.1.5	Enzyme Class
 rxn37613|rxn20595|rxn11995|rxn12059		7.1.1.6	Enzyme Class
+rxn12494		7.1.1.7	Enzyme Class
 rxn13689		7.1.1.8	Enzyme Class
-rxn00058		7.1.1.9	Enzyme Class
+rxn35347		7.1.1.9	Enzyme Class
 rxn90019	rxn90019	7.1.1.rnf	Enzyme Class
 rxn90055		7.2.2.1	Enzyme Class
 rxn13753		7.2.1.1	Enzyme Class
