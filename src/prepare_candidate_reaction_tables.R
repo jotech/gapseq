@@ -205,7 +205,7 @@ prepare_candidate_reaction_tables <- function(blast.res, transporter.res, high.e
     dt.cand.clpx[is.na(complex.status), min.diff.bs := min(diff.median.bs, na.rm = T), by = "seed"]
     dt.cand.clpx <- dt.cand.clpx[diff.median.bs == min.diff.bs | is.na(min.diff.bs)]
     dt.cand.clpx <- dt.cand.clpx[order(seed, bitscore)]
-    dt.cand.clpx <- dt.cand.clpx[!duplicated(paste0(seed, diff.median.bs, sep = "$"))] # This is for the case of ties (same distance of bitscore to median). Chossing the hit with the lower bitscore.
+    dt.cand.clpx <- dt.cand.clpx[!duplicated(paste0(seed, diff.median.bs, sep = "$"))] # This is for the case of ties (same distance of bitscore to median). Choosing the hit with the lower bitscore.
     dt.cand.clpx[, diff.median.bs := NULL]
     dt.cand.clpx[, min.diff.bs := NULL]
     dt.cand.clpx[, median.bs := NULL]

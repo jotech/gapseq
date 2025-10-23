@@ -5,7 +5,7 @@ library(stringr)
 #-------------------------------------------------------------------------------
 # (0) Read pre-alignment data and alignment stats
 #-------------------------------------------------------------------------------
-load("prealignment_data.RData") # load("~/tmp/prealignment_data.RData")
+load("prealignment_data.RData") # load("~/temp/prealignment_data.RData")
 setnames(seqfiles,"ecs","ec")
 
 alicols <- c("qseqid","pident","evalue","bitscore","qcovs","stitle","sstart","send","sseq")
@@ -14,7 +14,7 @@ if(file.size("alignments.tsv") == 0) {
   alignments[, V1 := as.character(V1)]
   alignments[, V6 := as.character(V6)]
 } else {
-  alignments <- fread("alignments.tsv") # alignments <- fread("~/tmp/alignments.tsv")
+  alignments <- fread("alignments.tsv") # alignments <- fread("~/temp/alignments.tsv")
 }
 setnames(alignments, alicols[1:ncol(alignments)])
 alignments[, file := sub("\\|.+$","",qseqid)]
@@ -122,6 +122,23 @@ rxndt[(subunits_found / subunit_count > subunit_cutoff) | (subunits_found / subu
 # remove duplicate hits (same reaction & complex & gene in target genome)
 rxndt <- rxndt[order(rxn, name, ec, stitle, complex, -bitscore)]
 rxndt <- unique(rxndt, by = c("rxn", "name", "ec", "stitle", "complex"))
+
+# Add (mainly empty) rows for complex subunits that have no hits (no_blast rows)
+cplx_bin_long <- cplx_bin[is_complex == TRUE, .(complex = unlist(strsplit(subunits, ","))), by = .(rea, reaName, ec, is_complex, subunit_count, subunits)]
+setnames(cplx_bin_long, c("rea", "reaName"), c("rxn", "name"))
+rxndt <- merge(rxndt, cplx_bin_long, all.x = TRUE, all.y = TRUE, by = c("rxn", "name", "ec", "is_complex", "subunit_count", "subunits", "complex"), allow.cartesian = TRUE)
+fill_na <- function(v) {
+  if(all(is.na(v)))
+    return(NA)
+
+  return(v[!is.na(v)][1])
+}
+rxndt[is_complex == TRUE, complex.status := fill_na(complex.status), by = .(rxn, name, ec, is_complex, subunit_count, subunits)]
+rxndt[is_complex == TRUE, subunit_undefined_found := fill_na(subunit_undefined_found), by = .(rxn, name, ec, is_complex, subunit_count, subunits)]
+rxndt[is_complex == TRUE, subunits_found := fill_na(subunits_found), by = .(rxn, name, ec, is_complex, subunit_count, subunits)]
+rxndt[is_complex == TRUE, dbhit := fill_na(dbhit), by = .(rxn, name, ec, is_complex, subunit_count, subunits)]
+rxndt[is_complex == TRUE, spont := fill_na(spont), by = .(rxn, name, ec, is_complex, subunit_count, subunits)]
+rxndt[is_complex == TRUE & is.na(status), status := "no_blast"]
 
 # merge in pathway info
 rxndt <- merge(pwyrea[, .(rxn = rea, name = reaName, ec, pathway = pwyID, keyrea)],
