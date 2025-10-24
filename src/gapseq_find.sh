@@ -235,7 +235,7 @@ if [[ "$userdir" == true ]]; then
         echo "Error: directory '$seqdb' is not writable." >&2
         exit 1
     fi
-    echo "Using custom datbase directory: $seqdb"
+    echo "Using custom database directory: $seqdb"
 else
     # no -D provided → check default
     if [[ ! -w "$seqdb" ]]; then
@@ -469,7 +469,7 @@ if [[ "$force_offline" = false ]]; then
     wget -q --spider https://zenodo.org
     is_online=$?
     [[ `pgrep -f $0` != "$$" ]] && is_running=yes
-    if [[ $is_online -eq 0 && -z "$is_running" ]]; then
+    if [[ $is_online -eq 0 && -z "$is_running" && "$update_manually" = false ]]; then
         $dir/update_sequences.sh -t $taxonomy -D $seqdb -Z $dbversion -q
     fi
     if [[ ! -f $seqpath/rev/sequences.tar.gz  ]] || [[ ! -f $seqpath/unrev/sequences.tar.gz ]] || [[ ! -f $seqpath/rxn/sequences.tar.gz ]]; then
