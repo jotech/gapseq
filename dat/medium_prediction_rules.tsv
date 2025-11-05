@@ -47,6 +47,7 @@ Inulin	cpd28763	"INULIN-DEGRADATION-EXO" | "INULIN-DEGRADATION"	0.42	TRUE		Sacch
 Xylan-b-1-4	cpd90021	"PWY-6717"	0.01	TRUE	1,4-D-beta-Xylan (n=500) degradation, extracellular	Saccharides
 2'-Fucosyllactose	cpd90001	"2FLHYD"	1.67	TRUE	Alpha-fucosidase & ABC transport	Saccharides
 sulfoquinovose	cpd22614	"PWY-7446" | "PWY-7722"	10	TRUE		Saccharides
+Pyruvate	cpd00020	rxn05469 & ("PWY-8274" | "P108-PWY" | "PWY-5480" | "PWY-5481" | "PWY-5482" | "PWY-5486" | "PWY-5938" | "PWY-5939" | "PWY-6389" | "PWY-6583" | "PWY-6587" | "PWY-6588" | "PWY3O-440" | "PYRUVDEHYD-PWY" | "CENTFERM-PWY")	10	TRUE		Saccharides
 						
 L-Tryptophan	cpd00065	!("TRPSYN-PWY2" | "TRPSYN-PWY")	0.1	TRUE		Amino acids
 L-Histidine	cpd00119	!"HISTSYN-PWY"	0.1	TRUE		Amino acids
