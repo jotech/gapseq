@@ -47,7 +47,6 @@ Inulin	cpd28763	"INULIN-DEGRADATION-EXO" | "INULIN-DEGRADATION"	0.42	TRUE		Sacch
 Xylan-b-1-4	cpd90021	"PWY-6717"	0.01	TRUE	1,4-D-beta-Xylan (n=500) degradation, extracellular	Saccharides
 2'-Fucosyllactose	cpd90001	"2FLHYD"	1.67	TRUE	Alpha-fucosidase & ABC transport	Saccharides
 sulfoquinovose	cpd22614	"PWY-7446" | "PWY-7722"	10	TRUE		Saccharides
-Pyruvate	cpd00020	rxn05469 & ("PWY-8274" | "P108-PWY" | "PWY-5480" | "PWY-5481" | "PWY-5482" | "PWY-5486" | "PWY-5938" | "PWY-5939" | "PWY-6389" | "PWY-6583" | "PWY-6587" | "PWY-6588" | "PWY3O-440" | "PYRUVDEHYD-PWY" | "CENTFERM-PWY")	10	TRUE		Saccharides
 						
 L-Tryptophan	cpd00065	!("TRPSYN-PWY2" | "TRPSYN-PWY")	0.1	TRUE		Amino acids
 L-Histidine	cpd00119	!"HISTSYN-PWY"	0.1	TRUE		Amino acids
@@ -75,10 +74,12 @@ Riboflavin	cpd00220	!("RIBOSYN2-PWY" | "PWY-6167")	0.025	TRUE		Vitamins
 L-Lactate	cpd00159	rxn90054	15	TRUE	Electron-bifurcating lactate dehydrogenase forming pyruvate (EC 1.3.1.110)	Organic acids
 L-Lactate	cpd00159	"PWY-5494" | "PWY-8086" | "PWY-8086-GS"	15	TRUE	acrylate pathway or lactate fermentation to propionate, acetate and h2	Organic acids
 Acetate	cpd00029	rxn00875 & rxn00225 & rxn00173 & rxn90001	20	TRUE	EC 2.8.3.8, EC 2.7.2.1, EC 2.3.1.8, EC 1.3.1.109	Organic acids
+Acetate	cpd00029	rxn05488 & "PWY0-1313"	20	TRUE		Organic acids
 Acetate	cpd00029	"METH-ACETATE-PWY"	25	TRUE	Methanogenisis from acetate	Organic acids
 Succinate	cpd00036	"PWY-5677"	10	TRUE	Succinate fermentation to butyrate	Organic acids
 Succinate	cpd00036	(rxn00602 | rxn01996) & rxn90096 & rxn09174	10	TRUE	Succinate transformation to propionate (Na+ exporting). Part of PWY-8086	Organic acids
 Formate	cpd00047	"PWY-7868"	20	TRUE	coenzyme B/coenzyme M regeneration V (formate-dependent) involved in methanogenesis	Organic acids
+Pyruvate	cpd00020	rxn05469 & ("PWY-8274" | "P108-PWY" | "PWY-5480" | "PWY-5481" | "PWY-5482" | "PWY-5486" | "PWY-5938" | "PWY-5939" | "PWY-6389" | "PWY-6583" | "PWY-6587" | "PWY-6588" | "PWY3O-440" | "PYRUVDEHYD-PWY" | "CENTFERM-PWY")	10	TRUE		Organic acids
 						
 Gallate	cpd01020	"GALLATE-DEGRADATION-II-PWY" | "GALLATE-DEGRADATION-I-PWY" | "P3-PWY"	10	TRUE		Secondary plant metabolites
 Quercetin	cpd00313	"QUERCETIN-ANAERO-DEG"	10	TRUE	Key-reaction: Taxifolin isomerase (EC 5.5.1.6)	Secondary plant metabolites
