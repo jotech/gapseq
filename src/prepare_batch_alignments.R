@@ -127,8 +127,10 @@ reaec <- cbind(reaec,
 # for some metacyc reactions, there are already uniprot accessions assigned.
 metaGenes <- fread(paste0(script.dir,"/../dat/meta_genes.csv"))
 metaGenes[, rxn := gsub("^\\||\\|$","",rxn)]
-setkey(metaGenes, "rxn")
 metaGenes <- metaGenes[uniprot != ""]
+metaGenes <- metaGenes[, .(uniprot = unlist(strsplit(uniprot,";"))), by = .(rxn,genes,pwy,ncbi,location,go,org)]
+metaGenes <- metaGenes[uniprot != "Q91194"] # This is a wrong uniprot ID in the metaGenes table. THe correct one is "Q9I194" and it's also listed.
+setkey(metaGenes, "rxn")
 
 # md5sums of reaction names
 rnuniq <- unique(reaec$reaName)
@@ -239,7 +241,7 @@ if(!force_offline) {
   seqfiles[type == "EC" & (!fex | update_manually) & src == "rev",
            uniprot_query := paste0(script.dir,"/uniprot.sh -e \"",gsub("^rev/|\\.fasta$","",file),"\" -t \"",taxonomy,"\" -i 0.9 -o -D ",seqdb)]
   seqfiles[type == "EC" & (!fex | update_manually) & src == "unrev",
-           uniprot_query := paste0(script.dir,"/uniprot.sh -u -e \"",gsub("^unrev/|\\.fasta$","",file),"\" -t \"",taxonomy,"\" -i 0.5 -o -D",seqdb)]
+           uniprot_query := paste0(script.dir,"/uniprot.sh -u -e \"",gsub("^unrev/|\\.fasta$","",file),"\" -t \"",taxonomy,"\" -i 0.5 -o -D ",seqdb)]
 
   # perform download for ECs
   seqfiles_dlEC <- seqfiles[!is.na(uniprot_query)][!duplicated(file)]
@@ -261,9 +263,9 @@ if(!force_offline) {
   seqfiles[, use_reanames := !any(type == "EC") || sum(file_size * (type == "EC" & fex), na.rm = TRUE) == 0,
            by = .(rea, reaName, ecs)]
   seqfiles[use_reanames == TRUE & type == "reaName" & (!fex | update_manually) & src == "rev" & reaName != "",
-           uniprot_query := paste0(script.dir,"/uniprot.sh -r \"",gsub("\"","\\\\\"",reaName),"\" -t \"",taxonomy,"\" -i 0.9 -o -D",seqdb)]
+           uniprot_query := paste0(script.dir,"/uniprot.sh -r \"",gsub("\"","\\\\\"",reaName),"\" -t \"",taxonomy,"\" -i 0.9 -o -D ",seqdb)]
   seqfiles[use_reanames == TRUE & type == "reaName" & (!fex | update_manually) & src == "unrev" & reaName != "",
-           uniprot_query := paste0(script.dir,"/uniprot.sh -u -r \"",gsub("\"","\\\\\"",reaName),"\" -t \"",taxonomy,"\" -i 0.5 -o -D",seqdb)]
+           uniprot_query := paste0(script.dir,"/uniprot.sh -u -r \"",gsub("\"","\\\\\"",reaName),"\" -t \"",taxonomy,"\" -i 0.5 -o -D ",seqdb)]
   seqfiles_dlRN <- seqfiles[type == "reaName" & !is.na(uniprot_query)][!duplicated(file)]
   ndl <- nrow(seqfiles_dlRN)
   if(ndl > 0) {
@@ -289,7 +291,7 @@ if(!force_offline) {
     for(i in 1:ndl) {
       cat(" ",i,"/",ndl,"(",updlids[i],")\n")
       system(paste0(
-        script.dir,"/uniprot.sh -d ",updlids[i]," -t ",taxonomy," -i 0.9 -o -D",seqdb
+        script.dir,"/uniprot.sh -d ",updlids[i]," -t ",taxonomy," -i 0.9 -o -D ",seqdb
       ), ignore.stdout = TRUE, ignore.stderr = FALSE)
     }
     cat("\n")
