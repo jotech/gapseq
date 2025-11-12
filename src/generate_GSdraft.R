@@ -49,9 +49,10 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   #seed_x_metCyc <- fread(paste0(script.dir,"/../dat/mnxref_seed-other.tsv"), header = T)
   seed_x_aliases <- fread(paste0(script.dir,"/../dat/seed_Enzyme_Name_Reactions_Aliases.tsv"), header=T)
   seed_x_mets   <- fread(paste0(script.dir,"/../dat/seed_metabolites_edited.tsv"), header=T, stringsAsFactors = F, na.strings = c("null","","NA"))
+  conflicts_tab <- fread(paste0(script.dir,"/../dat/ec_conflicts.tsv"))
 
   # Prepare candidate reaction tables for draft network and gapfilling
-  dt.cand.tmp <- prepare_candidate_reaction_tables(blast.res, transporter.res, high.evi.rxn.BS, min.bs.for.core)
+  dt.cand.tmp <- prepare_candidate_reaction_tables(blast.res, transporter.res, high.evi.rxn.BS, min.bs.for.core, conflicts_tab)
   dt      <- dt.cand.tmp$dt
   dt.cand <- dt.cand.tmp$dt.cand
 
