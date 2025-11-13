@@ -514,12 +514,13 @@ else
     dupli=$(cat allPwy | cut -f1 | sort | uniq -d | tr -d 'id' | sed '/^$/d')
     if [ -n "$dupli" ]; then
         [[ $verbose -ge 1 ]] && echo Duplicated pathway IDs found: $dupli. gapseq will only use $customPwy
-        dupli_search=$(echo "$dupli" | sed 's/|/\\|/g' |tr '\n' '|' | rev | cut -c2- | rev)
-        # [[ $verbose -ge 1 ]] && echo "$dupli_search"
-        cat allPwy | grep -wEv "$dupli_search" > allPwy.tmp
-        cat $customPwy | grep -wE "$dupli_search" >> allPwy.tmp
+        echo "$dupli" | awk '{ids[$0]=1}
+            NR==FNR {next}
+            !($1 in ids)' - allPwy > allPwy.tmp
+        echo "$dupli" | awk '
+            NR==FNR { ids[$0]=1; next }
+            ($1 in ids)' - $customPwy >> allPwy.tmp
         mv allPwy.tmp allPwy
-        #cat allPwy | grep -wE "$dupli_search"
     fi
     # cat allPwy | grep -wEi $pwyKey | wc -l
     pwyDB=$(cat allPwy | grep -wEi $pwyKey | awk -F "\t" '{if ($6) print $0;}')
