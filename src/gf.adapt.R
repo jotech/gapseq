@@ -142,7 +142,7 @@ rm_e_acc <- function(model.orig, add.met.id=NA, verbose=F, only.core=F, fullmod)
       mod.adapt <- mod.adapt.lst$model
       rxn.added <- setdiff(mod.adapt@react_id, model.no.acc@react_id)
       cat("Added reactions:", rxn.added, "\n")
-      printReaction(mod.adapt, react=rxn.added)
+      #printReaction(mod.adapt, react=rxn.added)
       return(invisible( mod.adapt ))
     }
   }
@@ -244,7 +244,7 @@ add_growth <- function(model.orig, add.met.id=NA, verbose=F, only.core=F, fullmo
 
   check <- check_lethal(mod.adapt, rxn_list = setdiff(mod.adapt@react_id, model.orig@react_id), med = media)
   check$status <- rxn.weights$status[match(str_extract(check$rxn, "rxn[0-9]+"), rxn.weights$seed)]
-  print(check)
+  if(verbose) print(check)
   mod.adapt <- rmReact(mod.adapt, react=check[lethal==F, rxn])
   rm.idx <- na.omit(match(c("ESP1","ESP2"), mod.adapt@react_id))
   if( length(rm.idx) > 0 ) mod.adapt <- rmReact(mod.adapt, react=rm.idx)
