@@ -124,9 +124,13 @@ rxndt <- rxndt[order(rxn, name, ec, stitle, complex, -bitscore)]
 rxndt <- unique(rxndt, by = c("rxn", "name", "ec", "stitle", "complex"))
 
 # Add (mainly empty) rows for complex subunits that have no hits (no_blast rows)
-cplx_bin_long <- cplx_bin[is_complex == TRUE, .(complex = unlist(strsplit(subunits, ","))), by = .(rea, reaName, ec, is_complex, subunit_count, subunits)]
-setnames(cplx_bin_long, c("rea", "reaName"), c("rxn", "name"))
-rxndt <- merge(rxndt, cplx_bin_long, all.x = TRUE, all.y = TRUE, by = c("rxn", "name", "ec", "is_complex", "subunit_count", "subunits", "complex"), allow.cartesian = TRUE)
+if(any(cplx_bin$is_complex)) {
+  cplx_bin_long <- cplx_bin[is_complex == TRUE, .(complex = unlist(strsplit(subunits, ","))), by = .(rea, reaName, ec, is_complex, subunit_count, subunits)]
+  setnames(cplx_bin_long, c("rea", "reaName"), c("rxn", "name"))
+  rxndt <- merge(rxndt, cplx_bin_long, all.x = TRUE, all.y = TRUE, by = c("rxn", "name", "ec", "is_complex", "subunit_count", "subunits", "complex"), allow.cartesian = TRUE)
+} else {
+  rxndt[, complex := NA_character_]
+}
 fill_na <- function(v) {
   if(all(is.na(v)))
     return(NA)
