@@ -4225,7 +4225,7 @@ rxn00102	rxn00102	4.2.1.1	Enzyme Class		FALSE
 rxn02213	rxn02213	4.2.1.10	Enzyme Class		FALSE
 rxn03876	rxn03876	4.2.1.100	Enzyme Class		FALSE
 rxn04023	rxn04023	4.2.1.103	Enzyme Class		FALSE
-rxn02529|rxn05063|rxn05064|rxn23233	rxn02529|rxn05063|rxn05064	4.2.1.104	Enzyme Class		FALSE
+rxn02529|rxn05063|rxn05064|rxn08277	rxn02529|rxn05063|rxn05064	4.2.1.104	Enzyme Class		FALSE
 rxn04608|rxn05065|rxn07537	rxn04608|rxn05065|rxn07537	4.2.1.105	Enzyme Class		FALSE
 rxn05066|rxn19214|rxn43831	rxn05066	4.2.1.106	Enzyme Class		FALSE
 rxn03286|rxn03290|rxn15496|rxn18932|rxn25885	rxn03290	4.2.1.107	Enzyme Class		FALSE
