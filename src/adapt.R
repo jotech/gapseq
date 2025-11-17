@@ -86,6 +86,7 @@ source(paste0(script.dir,"/add_missing_exRxns.R"))
 source(paste0(script.dir,"/addMetAttr.R"))
 source(paste0(script.dir,"/addReactAttr.R"))
 source(paste0(script.dir,"/construct_full_model.R"))
+source(paste0(script.dir,"/getDBhit.R"))
 
 # create output directory if not already there
 dir.create(output.dir, recursive = TRUE, showWarnings = FALSE)
@@ -113,9 +114,6 @@ if ( toupper(file_ext(mod.file)) == "RDS" ){
   mod.orig <- readSBMLmod(mod.file)
 }
 
-#print(ids.add)
-#ids <- c("|RIBOSYN2-PWY|", "rxn00023", "14DICHLORBENZDEG-PWY", "rxn05683", "1.1.1.2", "purine hydroxylase", "PYRUVDEH-RXN", "Ammonia-oxidation")
-
 ids2seed <- function(ids){
   id.seed   <- str_extract(ids, "rxn[0-9]+")
   idx.pwy   <- match(gsub("\\|","",ids), gsub("\\|","",all.pwy$id))
@@ -123,7 +121,7 @@ ids2seed <- function(ids){
   idx.rxn   <- match(gsub("\\|","",ids), gsub("\\|","",meta.rxn$id))
   idx.sub   <- unname(sapply(ids, function(id){ hit <- grep(gsub("\\|","",id), all.pwy$hierarchy, ignore.case = T); ifelse(length(hit)>0, paste0(hit, collapse = ","), NA) }))
   id.kegg   <- str_extract(ids, "R[0-9]+")
-
+  
   ids2seed.dt <- data.table()
   for(i in seq_along(ids)){
     if( !is.na(id.seed[i]) ){
@@ -134,17 +132,17 @@ ids2seed <- function(ids){
       rxn.name <- unlist(str_split(all.pwy[idx.pwy[i], reaName], ";"))
       rxn.str <- c()
       for(j in seq_along(rxn)){
-        rxn.str <- c(rxn.str, system(paste0(script.dir, "/getDBhit.sh ", paste(rxn[j], paste0("'",rxn.name[j],"'"), ec[j], "seed")), intern=T))
+        rxn.str <- c(rxn.str, getDBhit(rea=rxn[j], reaName=rxn.name[j], ec=ec[j], database="seed")$dbhit)
       }
       ids2seed.dt <- rbind(ids2seed.dt, data.table(id=ids[i], id.type="metacyc pwy", db.rxn=rxn, seed=rxn.str))
     } else if ( !is.na(idx.ec[i]) ){
-      rxn.str <- system(paste0(script.dir, "/getDBhit.sh ", paste("''", "''", idx.ec[i], "seed")), intern=T)
+      rxn.str <- getDBhit(ec=idx.ec[i], database="seed")$dbhit
       ids2seed.dt <- rbind(ids2seed.dt, data.table(id=ids[i], id.type="EC number", db.rxn="", seed=rxn.str))
     }else if ( !is.na(idx.rxn[i]) ){
       rxn <- gsub("\\|","",meta.rxn[idx.rxn[i], id])
       ec  <- str_remove(meta.rxn[idx.rxn[i], ec], "^EC-")
       rxn.name <- meta.rxn[idx.rxn[i], name]
-      rxn.str <- system(paste0(script.dir, "/getDBhit.sh ", paste(rxn, paste0("'",rxn.name,"'"), ec, "seed")), intern=T)
+      rxn.str <- getDBhit(rea=rxn, reaName=rxn.name, ec=ec, database="seed")$dbhit
       ids2seed.dt <- rbind(ids2seed.dt, data.table(id=ids[i], id.type="metacyc rxn", db.rxn=ids[i], seed=rxn.str))
     }else if ( !is.na(idx.sub[i]) ){
       idx.sub.split <- as.numeric(unlist(str_split(idx.sub[i], ",")))
@@ -153,24 +151,23 @@ ids2seed <- function(ids){
       rxn.name <- unlist(str_split(all.pwy[idx.sub.split, reaName], ";"))
       rxn.str <- c()
       for(j in seq_along(rxn)){
-        rxn.str <- c(rxn.str, system(paste0(script.dir, "/getDBhit.sh ", paste(rxn[j], paste0("'",rxn.name[j],"'"), ec[j], "seed")), intern=T))
+        rxn.str <- c(rxn.str, getDBhit(rea=rxn[j], reaName=rxn.name[j], ec=ec[j], database="seed")$dbhit)
       }
       ids2seed.dt <- rbind(ids2seed.dt, unique(data.table(id=ids[i], id.type="metacyc sub", db.rxn=rxn, seed=rxn.str)))
     } else if ( !is.na(id.kegg[i]) ){
-      rxn.str <- system(paste0(script.dir, "/getDBhit.sh ", paste(id.kegg[i], "''", "''", "seed")), intern=T)
+      rxn.str <- getDBhit(rea=id.kegg[i], database="seed")$dbhit
       ids2seed.dt <- rbind(ids2seed.dt, data.table(id=ids[i], id.type="kegg rxn", db.rxn=ids[i], seed=rxn.str))
     }else {
-      rxn.str <- system(paste0(script.dir, "/getDBhit.sh ", paste("''", ids[i], "''", "seed")), intern=T)
+      rxn.str <- getDBhit(reaName=ids[i], database="seed")$dbhit
       ids2seed.dt <- rbind(ids2seed.dt, data.table(id=ids[i], id.type="other", db.rxn="", seed=rxn.str))
     }
   }
-
   return(ids2seed.dt)
 }
 
 if( !is.null(ids.add) ){
   rxn.add.dt <- ids2seed(unlist(str_split(ids.add, ",")))
-  print(rxn.add.dt)
+  if(verbose) print(rxn.add.dt)
   rxn.add <- sort(unique(unlist(str_split(rxn.add.dt$seed, " "))))
   rxn.add <- rxn.add[which(rxn.add!="")]
   if( length(rxn.add)==0 ) stop("No model reactions found")
@@ -233,11 +230,9 @@ if( !is.null(sub.growth) ){
   }
   if(nrow(growth.dt)==0) quit()
 
-  #source(paste0(script.dir, "/construct_full_model.R"))
-  #fullmod <- construct_full_model(script.dir)
   source(paste0(script.dir, "/gf.adapt.R"))
 
-  print(growth.dt)
+  if(verbose) print(growth.dt)
   mod.out <- mod.orig
   for(i in 1:nrow(growth.dt)){
     sub.id <- growth.dt[i, sub]
@@ -263,7 +258,6 @@ if( !is.null(sub.growth) ){
         mod.out <- rm_growth(mod.out, del.met.id=sub.id, rxn.blast.file=rxn.blast.file, verbose=verbose)
       }
     }
-        #print(paste(sub.id, growth))
   }
 }
 

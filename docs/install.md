@@ -100,7 +100,8 @@ conda env create -n gapseq-dev --file gapseq_env.yml
 conda activate gapseq-dev
 
 # Download reference sequence data
-bash ./src/update_sequences.sh
+bash ./gapseq update-sequences -t Bacteria
+bash ./gapseq update-sequences -t Archaea
 ```
 
 ## Optional dependencies
