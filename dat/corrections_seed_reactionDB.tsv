@@ -2776,3 +2776,5 @@ rxn35347				[SW] Reaction for EC 7.1.1.9	https://iubmb.qmul.ac.uk/enzyme/EC7/1/1
 rxn41759	>		-1:cpd00007:0:0:"O2";-1:cpd00159:0:0:"L-Lactate";1:cpd00020:0:0:"Pyruvate";1:cpd00025:0:0:"H2O2"	[SW] Reaction for Lactate oxidase	https://www.rhea-db.org/rhea/55868		lctO	L-Lactate oxidase	
 									
 rxn23233		TRUE		[SW] Duplicate reaction to rxn08277					
+rxn90146	>		-1:cpd00703:0:0:"Indoleacetate";-1:cpd00067:0:0:"H+";1:cpd05228:0:0:"Skatole";1:cpd00011:0:0:"CO2"	[SW] Production of Skatole has been described by several gut bacteria. Reaction was not part of DB before.	https://www.rhea-db.org/rhea/59216		Indoleacetate decarboxylase	Indoleacetate decarboxylase	
+rxn90147	=		-1:cpd05228:1:0:"Skatole";1:cpd05228:0:0:"Skatole"	[SW] Transport/diffusion reaction for skatole			skatole diffusion	skatole diffusion	
