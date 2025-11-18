@@ -250,13 +250,14 @@ correctEC_seedrxn <- function(ecdb) {
   }
 
   # Since we are here: Sort entries nicely
-  dtec[, L1 := str_match(`External ID`,"^([0-9]?)")[,2]]
-  dtec[, L2 := str_match(`External ID`,"^[0-9]\\.([0-9]+?)")[,2]]
-  dtec[, L3 := str_match(`External ID`,"^[0-9]\\.[0-9]+\\.([0-9]+?)")[,2]]
-  dtec[, L4 := str_match(`External ID`,"^[0-9]\\.[0-9]+\\.[0-9]+\\.([0-9]+)$")[,2]]
+  dtec[, L1 := as.numeric(str_match(`External ID`,"^([0-9]?)")[,2])]
+  dtec[, L2 := as.numeric(str_match(`External ID`,"^[0-9]\\.([0-9]+?)\\.")[,2])]
+  dtec[, L3 := as.numeric(str_match(`External ID`,"^[0-9]\\.[0-9]+\\.([0-9]+?)\\.")[,2])]
+  dtec[, L4 := as.numeric(str_match(`External ID`,"^[0-9]\\.[0-9]+\\.[0-9]+\\.([0-9]+)$")[,2])]
 
   dtec <- dtec[order(L1, L2, L3, L4, `External ID`)]
   dtec[, L1 := NULL];dtec[, L2 := NULL];dtec[, L3 := NULL];dtec[, L4 := NULL]
+  dtec[, new_ec := NULL]; dtec[, new_ec_exists := NULL]
 
   fwrite(dtec, fileOI, sep = "\t", quote = FALSE)
 
