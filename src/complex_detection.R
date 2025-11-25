@@ -1,7 +1,9 @@
-complex_detection <- function(seq.id) {
+complex_detection <- function(seq.id, rxnq) {
   if(length(seq.id) == 0) {
     return(character(0L))
   }
+
+  rxnq <- rxnq[1]
 
   require(stringr)
 
@@ -24,6 +26,16 @@ complex_detection <- function(seq.id) {
   hits <- str_replace(hits, "(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma) Subunit", "Subunit \\1")
   hits <- str_replace(hits, "(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|my|ny|omikron|pi|rho|sigma)-Subunit", "Subunit \\1")
   hits <- str_replace(hits, "(small|medium|large) Subunit", "Subunit \\1")
+
+  # if subunit ID dictionary for synonyms exist, translate them to a common identifier set
+  if(rxnq %in% subunit_dict$rxn) {
+    dicttmp <- subunit_dict[rxn == rxnq]
+    dict <- paste0("Subunit ",dicttmp$subunit)
+    names(dict) <- paste0("Subunit ",dicttmp$subunit_synonym)
+    if(any(hits %in% names(dict))) {
+      hits[hits %in% names(dict)] <- dict[hits[hits %in% names(dict)]]
+    }
+  }
 
   # latin numbers
   latin <- c("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV")
@@ -67,10 +79,12 @@ complex_detection <- function(seq.id) {
     hits[which(!hits %in% hits.sel)] <- NA
   }
 
-  # if 20% or less of the sequences have now subunit info in header, set all subunits to NA
+  # if 20% or less of the sequences have no subunit info in header, set all subunits to NA
   if(sum(!is.na(hits))/length(hits) <= 0.2) {
     hits <- rep(NA_character_, length(hits))
   }
 
   return(hits)
 }
+
+subunit_dict <- fread(paste0(script.dir,"/../dat/complex_subunit_dict.tsv"))

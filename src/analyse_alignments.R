@@ -67,7 +67,7 @@ if(any(cplx$is_complex == TRUE)) {
   cplx_sub <- cplx[is_complex == TRUE]
   split_groups <- split(cplx_sub, by = c("rea", "reaName", "ec"))
   results_list <- mclapply(split_groups, function(dt_group) {
-    dt_group[, complex := complex_detection(header)]
+    dt_group[, complex := complex_detection(header, rea)]
     return(dt_group)
   }, mc.cores = n_threads)
   cplx_result <- rbindlist(results_list)
@@ -75,8 +75,6 @@ if(any(cplx$is_complex == TRUE)) {
 } else {
   cplx[, complex := NA_character_]
 }
-
-#cplx[is_complex == TRUE, complex := complex_detection(header), by = .(rea, reaName, ec)]
 
 cplx[, subunit_count := length(unique(complex[!is.na(complex)])), by = .(rea, reaName, ec)]
 cplx[subunit_count < 2, is_complex := FALSE]
