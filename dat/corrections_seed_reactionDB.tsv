@@ -2778,3 +2778,4 @@ rxn41759	>		-1:cpd00007:0:0:"O2";-1:cpd00159:0:0:"L-Lactate";1:cpd00020:0:0:"Pyr
 rxn23233		TRUE		[SW] Duplicate reaction to rxn08277					
 rxn90146	>		-1:cpd00703:0:0:"Indoleacetate";-1:cpd00067:0:0:"H+";1:cpd05228:0:0:"Skatole";1:cpd00011:0:0:"CO2"	[SW] Production of Skatole has been described by several gut bacteria. Reaction was not part of DB before.	https://www.rhea-db.org/rhea/59216		Indoleacetate decarboxylase	Indoleacetate decarboxylase	
 rxn90147	=		-1:cpd05228:1:0:"Skatole";1:cpd05228:0:0:"Skatole"	[SW] Transport/diffusion reaction for skatole			skatole diffusion	skatole diffusion	
+rxn07441	=			[SW] Reaction should be bidirectional. Glutamate-consuming direction required for Lysine biosynthesis in some Archaea and Bacteria	https://www.rhea-db.org/rhea/23988				
