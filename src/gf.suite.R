@@ -208,13 +208,6 @@ if(any(grepl("tax_domain:", mod.orig@mod_attr[,"annotation"], fixed = T))) {
   }
 }
 
-# This here is needed if another draft than gapseq's own draft networks are gapfilled
-if((!"gs.origin" %in% colnames(mod.orig@react_attr))) {
-  mod.orig@react_attr <- data.frame(seed      = gsub("_.0","",mod.orig@react_id),
-                                    gs.origin = 0,
-                                    stringsAsFactors = F)
-}
-
 mod.orig   <- add_missing_exchanges(mod.orig)
 
 # add diffusion reactions
