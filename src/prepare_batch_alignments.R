@@ -377,6 +377,7 @@ allseqs <- mclapply(allseqfiles, mc.cores = n_threads, FUN = function(sf) {
   return(tmpseqs)
 })
 allseqs <- do.call("c",allseqs)
+allseqs <- allseqs[width(allseqs) >= 80]
 
 if(verbose >= 1)
   cat("Number of reference sequences used for alignments:",length(allseqs),"\n")
