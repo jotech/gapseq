@@ -101,17 +101,6 @@ keggPwy=$dir/../dat/kegg_pwy.tbl
 seedPwy=$dir/../dat/seed_pwy.tbl
 customPwy=$dir/../dat/custom_pwy.tbl
 metaRea=$dir/../dat/meta_rea.tbl
-reaDB1=$dir/../dat/vmh_reactions.tsv
-reaDB2=$dir/../dat/bigg_reactions.tbl
-reaDB3=$dir/../dat/seed_reactions_corrected.tsv
-reaDB4=$dir/../dat/mnxref_seed.tsv
-reaDB5=$dir/../dat/mnxref_seed-other.tsv
-reaDB6=$dir/../dat/mnxref_bigg-other.tsv
-brenda=$dir/../dat/brenda_ec_edited.csv
-seedEC=$dir/../dat/seed_Enzyme_Class_Reactions_Aliases_unique_edited.tsv
-seedEnzymesNames=$dir/../dat/seed_Enzyme_Name_Reactions_Aliases.tsv
-altecdb=$dir/../dat/altec.csv
-metaGenes=$dir/../dat/meta_genes.csv
 
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
