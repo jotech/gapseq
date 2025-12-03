@@ -47,8 +47,6 @@ dir=$(dirname "$path")
 script_name=$(basename -- "$0")
 seqdb=$dir/../dat/seq
 userdir=false
-zenodoID=10047603
-dbversion=latest
 
 usage()
 {
@@ -78,7 +76,6 @@ usage()
     echo "  -j Quit if output files already exist (default: $stop_on_files_exist)"
     echo "  -f Path to directory, where output files will be saved (default: current directory)"
     echo "  -D path to directory, where reference sequence database will be saved (default: $seqdb)"
-    echo "  -Z Reference sequence database version as Zenodo ID (default: $dbversion)"
     echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default: $update_manually)"
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
     echo "  -O Force offline mode (default: $force_offline)"
@@ -89,7 +86,6 @@ usage()
     echo ""
     echo "Details:"
     echo "\"-t\": if 'auto', gapseq will predict the most likely domain (bacteria/archaea) based on specific protein-coding marker genes."
-    echo "\"-Z\": This option expects the the word 'latest' for the latest database version or the Zenodo record ID. All database records can be found here: https://doi.org/10.5281/zenodo.10047603 . The record ID is the last number in the DOI following the pattern 'zenodo.'"
 
 exit 1
 }
@@ -105,7 +101,7 @@ metaRea=$dir/../dat/meta_rea.tbl
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:nou:l:oxqkgz:m:ywjf:D:Z:UT:OM:K:A:R:" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:st:nou:l:oxqkgz:m:ywjf:D:UT:OM:K:A:R:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -178,9 +174,6 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:l:oxqkgz:m:ywjf:D:Z:UT:OM:K:A:R:" opt; d
         seqdb=$OPTARG
         userdir=true
         ;;
-    Z)
-        dbversion=$OPTARG
-        ;;
     U)
         update_manually=true
         ;;
@@ -214,32 +207,34 @@ shift $((OPTIND-1))
 
 # --- Sequence DB directory checks ---
 if [[ "$userdir" == true ]]; then
-    # user provided -D
+    # user provided -D:
     seqdb=$(readlink -f "$seqdb")
-    mkdir -p "$seqdb" || {
-        echo "Error: could not create database directory '$seqdb'." >&2
-        exit 1
-    }
     if [[ ! -w "$seqdb" ]]; then
-        echo "Error: directory '$seqdb' is not writable." >&2
-        exit 1
+        # If user-provided database directory is not writable, check if a
+        # pre-installed database exist. If not: stop with error
+        if [ ! -f "$seqdb/$taxonomy/version_seqDB.json" ]; then
+            echo "Error: directory '$seqdb' does not contain sequences for $taxonomy and is not writable. Please provide a path to a pre-existing database or a path where you have write permissions." >&2
+            exit 1
+        fi
+        if [[ "$force_offline" == false ]]; then
+            $dir/update_sequences.sh -t $taxonomy -D $seqdb -Z latest -c -q
+        fi
+        force_offline=true # forcing offline mode, because seqdb path is not writable
     fi
     echo "Using custom database directory: $seqdb"
 else
-    # no -D provided → check default
-    if [[ ! -w "$seqdb" ]]; then
+    # no -D provided → check if database exists in default directory and if this directory is writable
+    if [[ ! -w "$seqdb" ]] && [[ ! -f "$seqdb/$taxonomy/version_seqDB.json" ]]; then
         # try fallback ~/.gapseq/seq
         seqdb="$HOME/.gapseq/seq"
-        mkdir -p "$seqdb" || {
-            echo "Error: could not create fallback directory '$seqdb'." >&2
-            exit 1
-        }
-        echo "Using fallback directory: $seqdb"
+        echo "Note: The default directory for the sequence database is not writable and contains no sequences for $taxonomy."
+        echo "      Using fallback directory for reference sequence database: $seqdb"
     fi
-fi
 
-if [[ "$dbversion" != "latest" ]]; then
-  zenodoID=$dbversion
+    if [[ ! -w "$seqdb" ]] && [[ -f "$seqdb/$taxonomy/version_seqDB.json" ]]; then
+        echo "Note: The default directory for the sequence database is not writable but already contains sequences for $taxonomy."
+        force_offline=true # forcing offline mode, because seqdb path is not writable
+    fi
 fi
 
 # after parsing arguments, only fasta file should be there
@@ -458,9 +453,15 @@ if [[ "$force_offline" = false ]]; then
     wget -q --spider https://zenodo.org
     is_online=$?
     [[ `pgrep -f $0` != "$$" ]] && is_running=yes
-    if [[ $is_online -eq 0 && -z "$is_running" && "$update_manually" = false ]]; then
-        $dir/update_sequences.sh -t $taxonomy -D $seqdb -Z $dbversion -q
+
+    if [[ $is_online -eq 0 && -z "$is_running" && "$update_manually" = false ]] && [[ ! -f $seqpath/rev/sequences.tar.gz  ]] || [[ ! -f $seqpath/unrev/sequences.tar.gz ]] || [[ ! -f $seqpath/rxn/sequences.tar.gz ]]; then
+        # Case: No sequence DB yet in DB path $seqdb -> Download gapseq version-specific sequence DB
+        $dir/update_sequences.sh -t $taxonomy -D $seqdb -q
+    elif [[ $is_online -eq 0 && -z "$is_running" && "$update_manually" = false ]]; then
+        # Case: Local sequence DB exists and we are online and alone: Check if a newer sequence DB is available.
+        $dir/update_sequences.sh -t $taxonomy -D $seqdb -Z latest -c -q
     fi
+
     if [[ ! -f $seqpath/rev/sequences.tar.gz  ]] || [[ ! -f $seqpath/unrev/sequences.tar.gz ]] || [[ ! -f $seqpath/rxn/sequences.tar.gz ]]; then
         echo "ATTENTION: gapseq sequence archives are missing! Sequences will be needed to be downloaded from uniprot directly which is rather slow."
     fi
