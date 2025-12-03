@@ -122,6 +122,8 @@ if [[ "$update_check" == true ]]; then
     if [[ "$latest_version" !=  "$current_version" ]]; then
         zen_record_summary=$(mktemp)
         wget -q -O "$zen_record_summary" $url_zenodocurrent
+        zencommunity=$(Rscript -e 'args <- commandArgs(trailingOnly = TRUE); zenjs <- jsonlite::read_json(args[1]); cat(zenjs$metadata$communities[[1]]$id)' "$zen_record_summary")
+        [[ "$zencommunity" != "gapseq" ]] && echo "Provided Zenodo-ID is not a valid gapseq record." && exit 1
         Rscript -e 'args <- commandArgs(trailingOnly = TRUE); zenjs <- jsonlite::read_json(args[1]); cat(jsonlite::toJSON(list(zenodoID = zenjs$id, version = zenjs$metadata$version, date = zenjs$created)))' "$zen_record_summary" > ${zen_record_summary}_2
         latest_version=`Rscript $dir/parse_seqDBjson.R "${zen_record_summary}_2" zenodoID`
         latest_versionNum=`Rscript $dir/parse_seqDBjson.R "${zen_record_summary}_2" version`
@@ -190,6 +192,8 @@ done < $zen_sums.$taxonomy
 # get zenodo record info
 zen_record_summary=$(mktemp)
 wget -q -O "$zen_record_summary" $url_zenodocurrent
+zencommunity=$(Rscript -e 'args <- commandArgs(trailingOnly = TRUE); zenjs <- jsonlite::read_json(args[1]); cat(zenjs$metadata$communities[[1]]$id)' "$zen_record_summary")
+[[ "$zencommunity" != "gapseq" ]] && echo "Provided Zenodo-ID is not a valid gapseq record." && exit 1
 Rscript -e 'args <- commandArgs(trailingOnly = TRUE); zenjs <- jsonlite::read_json(args[1]); cat(jsonlite::toJSON(list(zenodoID = zenjs$id, version = zenjs$metadata$version, date = zenjs$created)))' "$zen_record_summary" > ${zen_record_summary}_2
 zen_version=`Rscript $dir/parse_seqDBjson.R "${zen_record_summary}_2" zenodoID`
 zen_versionNum=`Rscript $dir/parse_seqDBjson.R "${zen_record_summary}_2" version`
