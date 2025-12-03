@@ -37,6 +37,7 @@ Installation
    :maxdepth: 2
    :caption: Database
 
+   /database/ReferenceSequences
    /database/biochemistry
    /database/biomassReaction
 

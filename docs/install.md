@@ -14,7 +14,7 @@ R -e 'pak::pkg_install("Waschina/cobrar")'
 # Download latest gapseq version from github
 git clone https://github.com/jotech/gapseq && cd gapseq
 
-# Download latest reference sequence database (Bacteria and Archaea)
+# Download reference sequence database (Bacteria and Archaea)
 bash ./gapseq update-sequences -t Bacteria
 bash ./gapseq update-sequences -t Archaea
 ```
@@ -37,7 +37,7 @@ R -e 'pak::pkg_install("Waschina/cobrar")'
 # Download latest gapseq version from github
 git clone https://github.com/jotech/gapseq && cd gapseq
 
-# Download latest reference sequence database (Bacteria and Archaea)
+# Download reference sequence database (Bacteria and Archaea)
 bash ./gapseq update-sequences -t Bacteria
 bash ./gapseq update-sequences -t Archaea
 ```
@@ -61,7 +61,7 @@ R -e 'pak::pkg_install("Waschina/cobrar")'
 # Download latest gapseq version from github
 git clone https://github.com/jotech/gapseq && cd gapseq
 
-# Download latest reference sequence database (Bacteria and Archaea)
+# Download reference sequence database (Bacteria and Archaea)
 bash ./gapseq update-sequences -t Bacteria
 bash ./gapseq update-sequences -t Archaea
 ```
@@ -99,7 +99,7 @@ cd gapseq
 conda env create -n gapseq-dev --file gapseq_env.yml
 conda activate gapseq-dev
 
-# Download reference sequence data
+# Download reference sequence database (Bacteria and Archaea)
 bash ./gapseq update-sequences -t Bacteria
 bash ./gapseq update-sequences -t Archaea
 ```
