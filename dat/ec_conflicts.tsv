@@ -28,5 +28,6 @@ ec	4.1.1.28	4.1.1.86	aromatic AA decarboxylase vs. diaminobutyrate decarboxylase
 ec	1.1.2.3	1.1.3.2	Cytochrome-dependent lactate dehydrogenase vs. lactate oxidase (O2 as electon acceptor)
 ec	1.12.1.4	1.12.1.3	Ferredoxin- vs. NADP-dependent hydrogenase
 ec	1.12.1.4	1.12.1.5	Ferredoxin- vs. NAD(P)-dependent hydrogenase
+ec	1.1.1.2	1.1.1.21	alcohol dehydrogenase vs. aldose reductase
 tc	1.a.8.2.1	2.a.14.1.3	
 tc	1.a.8.2.7	2.a.14.1.3	
