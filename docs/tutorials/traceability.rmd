@@ -1,5 +1,5 @@
 # Reaction tracing
-2025-12-04
+`r Sys.Date()`
 
 Keyword: **"Traceability"**
 
@@ -7,22 +7,9 @@ Automatic metabolic network reconstruction is a multi-step process. Reactions an
 
 gapseq stores the reaction tracing information in the reaction's attributes data.frame of the *cobrar::ModelOrg* R-object, which is saved by gapseq in the *model.RDS* file. Here's a short code-snippet to access the reaction tracing information in R:
 
-
-``` r
+```{r, echo=TRUE, eval=TRUE}
 library(cobrar)
-```
 
-```
-## Loading required package: Matrix
-```
-
-```
-## cobrar uses...
-##  - libSBML (v. 5.20.4)
-##  - glpk (v. 5.0)
-```
-
-``` r
 mod <- readRDS("../../toy/ecoli.RDS") # adjust with the respective model name
 
 # data.frame for reaction attributes (it's a big table) is here: mod@react_attr
@@ -33,15 +20,7 @@ df_trace <- mod@react_attr[,c("seed", "name", "ec", "gs.origin")]
 
 # Short summary of the distribution of reactions origins:
 table(df_trace$gs.origin)
-```
 
-```
-## 
-##    0    1    3    4    6    7    8 
-## 2718   21   13    4    1  209   32
-```
-
-``` r
 # In case you wish to save this table to a csv-file:
 write.csv(df_trace,
           file = "model_reaction_tracing.csv")
@@ -85,4 +64,6 @@ Addition to code `5`: For instance, if an organism harbors the genes for the [de
 - Phloretate transport if [PWY-8016](https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-8016) is present
 - Butyrate transport if Butyryl-CoA dehydrogenase (Etf complex)) is present (rxn90001)
 
-
+```{sh, include=FALSE}
+rm model_reaction_tracing.csv
+```
