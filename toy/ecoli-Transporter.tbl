@@ -1,5 +1,5 @@
-# gapseq version: 1.5.0 31dfe429
-# Transporter sequence DB md5sum: b99a77e (2024-11-09)
+# gapseq version: 1.5.0 43d3d597
+# Transporter sequence DB md5sum: b99a77e (2024-08-26)
 # genome_format=prot
 id	tc	sub	sub_gapseq	exid	rea	qseqid	pident	evalue	bitscore	qcovs	stitle	sstart	send	comment
 gnl|TC-DB|AET84893|1.A.1.12.5	1.A.1.12.5	Potassium	K+	EX_cpd00205_e0	rxn05206,rxn27350	gnl|TC-DB|AET84893|1.A.1.12.5	31.4	3.39e-05	37.4	82.6	NP_415766.1 K(+) channel Kch [Escherichia coli str. K-12 substr. MG1655]	142	226	transporter
@@ -2713,7 +2713,6 @@ gnl|TC-DB|A8AGW0|2.A.49.5.4	2.A.49.5.4	Chloride	Cl-	EX_cpd00099_e0	rxn08233,rxn3
 gnl|TC-DB|A8AGW0|2.A.49.5.4	2.A.49.5.4	Chloride	Cl-	EX_cpd00099_e0	rxn08233,rxn30474	gnl|TC-DB|A8AGW0|2.A.49.5.4	27.9	4.25e-24	100	95.4	NP_414697.1 chloride:H(+) antiporter ClcA [Escherichia coli str. K-12 substr. MG1655]	36	437	transporter
 gnl|TC-DB|A8ALD3|2.A.49.5.5	2.A.49.5.5	Chloride	Cl-	EX_cpd00099_e0	rxn08233,rxn30474	gnl|TC-DB|A8ALD3|2.A.49.5.5	77.8	9.99e-258	706	100	NP_414697.1 chloride:H(+) antiporter ClcA [Escherichia coli str. K-12 substr. MG1655]	1	473	transporter
 gnl|TC-DB|H5KWQ5|2.A.49.7.1	2.A.49.7.1	Chloride	Cl-	EX_cpd00099_e0	rxn08233,rxn30474	gnl|TC-DB|H5KWQ5|2.A.49.7.1	99.8	2.25e-293	792	100	NP_416890.1 putative transport protein YfeO [Escherichia coli str. K-12 substr. MG1655]	1	418	transporter
-gnl|TC-DB|H8G8F4|2.A.49.7.2	2.A.49.7.2	Chloride	Cl-	EX_cpd00099_e0	rxn08233,rxn30474	gnl|TC-DB|H8G8F4|2.A.49.7.2	28.1	1.5e-13	68.9	76.9	NP_416890.1 putative transport protein YfeO [Escherichia coli str. K-12 substr. MG1655]	19	349	transporter
 gnl|TC-DB|A3CXC7|2.A.49.8.1	2.A.49.8.1	Chloride	Cl-	EX_cpd00099_e0	rxn08233,rxn30474	gnl|TC-DB|A3CXC7|2.A.49.8.1	25.9	3.48e-07	48.9	79.3	NP_416890.1 putative transport protein YfeO [Escherichia coli str. K-12 substr. MG1655]	19	354	transporter
 gnl|TC-DB|M2XWR6|2.A.49.8.2	2.A.49.8.2	Chloride	Cl-	EX_cpd00099_e0	rxn08233,rxn30474	gnl|TC-DB|M2XWR6|2.A.49.8.2	20.5	1.13e-10	60.1	82.7	NP_416890.1 putative transport protein YfeO [Escherichia coli str. K-12 substr. MG1655]	14	365	transporter
 gnl|TC-DB|D2QXG0|2.A.49.9.1	2.A.49.9.1	Chloride	Cl-	EX_cpd00099_e0	rxn08233,rxn30474	gnl|TC-DB|D2QXG0|2.A.49.9.1	27.7	2.1e-16	77.8	88.2	NP_416109.2 putative chloride:H(+) antiporter ClcB [Escherichia coli str. K-12 substr. MG1655]	6	411	transporter
