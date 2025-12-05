@@ -345,45 +345,57 @@ fi
 case $pathways in
     all)
         pwyKey="Pathways|Enzyme-Test|seed|kegg"
+        pwyKeyCol=hierarchy
         ;;
     amino)
         pwyKey=Amino-Acid-Biosynthesis
+        pwyKeyCol=hierarchy
         ;;
     nucl)
         pwyKey=Nucleotide-Biosynthesis
+        pwyKeyCol=hierarchy
         ;;
     cofactor)
         pwyKey=Cofactor-Biosynthesis
+        pwyKeyCol=hierarchy
         ;;
     carbo)
         pwyKey=CARBO-BIOSYNTHESIS
+        pwyKeyCol=hierarchy
         ;;
     carbo-deg)
         pwyKey=Carbohydrates-Degradation
+        pwyKeyCol=hierarchy
         ;;
     polyamine)
         pwyKey=Polyamine-Biosynthesis
         ;;
     fatty)
         pwyKey=Fatty-acid-biosynthesis
+        pwyKeyCol=hierarchy
         ;;
     energy)
         pwyKey=Energy-Metabolism
+        pwyKeyCol=hierarchy
         ;;
     terpenoid)
         pwyKey=Terpenoid-Biosynthesis
+        pwyKeyCol=hierarchy
         ;;
     degradation)
         pwyKey=Degradation
+        pwyKeyCol=hierarchy
         ;;
     core)
         pwyKey="Amino-Acid-Biosynthesis|Nucleotide-Biosynthesis|Cofactor-Biosynthesis|Carbohydrates-Degradation|CARBO-BIOSYNTHESIS|Polyamine-Biosynthesis|Fatty-acid-biosynthesis|Energy-Metabolism|Terpenoid-Biosynthesis|Chorismate-Biosynthesis"
+        pwyKeyCol=hierarchy
         ;;
     min)
-        pwyKey="\\|ETOH-ACETYLCOA-ANA-PWY\\||\\|GLNSYN-PWY\\||\\|GLUCONEO-PWY\\||\\|GLUGLNSYN-PWY\\||\\|GLUTAMATE-DEG1-PWY\\||\\|GLUTAMATE-SYN2-PWY\\||\\|GLUTAMINEFUM-PWY\\||\\|GLUTSYNIII-PWY\\||\\|GLYCOLYSIS\\||\\|GLYOXYLATE-BYPASS\\||\\|NONOXIPENT-PWY\\||\\|OXIDATIVEPENT-PWY\\||\\|P185-PWY\\||\\|P21-PWY\\||\\|PWY0-1312\\||\\|PWY0-1315\\||\\|PWY0-1329\\||\\|PWY0-1334\\||\\|PWY0-1335\\||\\|PWY0-1353\\||\\|PWY0-1517\\||\\|PWY0-1565\\||\\|PWY0-1567\\||\\|PWY0-1568\\||\\|PWY-4341\\||\\|PWY-5084\\||\\|PWY-5480\\||\\|PWY-5482\\||\\|PWY-5484\\||\\|PWY-5690\\||\\|PWY-5766\\||\\|PWY-5913\\||\\|PWY-6028\\||\\|PWY-6333\\||\\|PWY-6543\\||\\|PWY-6549\\||\\|PWY66-21\\||\\|PWY66-398\\||\\|PWY-6697\\||\\|PWY-6964\\||\\|PWY-7167\\||\\|PWY-7685\\||\\|PWY-7686\\||\\|PWY-7980\\||\\|PWY-8178\\||\\|PWY-8215\\||\\|PWY-8274\\||\\|PWY-8404\\||\\|PYRUVDEHYD-PWY\\||\\|TCA-1\\||\\|TCA\\|"
+        pwyKey="ETOH-ACETYLCOA-ANA-PWY|GLNSYN-PWY|GLUCONEO-PWY|GLUGLNSYN-PWY|GLUTAMATE-DEG1-PWY|GLUTAMATE-SYN2-PWY|GLUTAMINEFUM-PWY|GLUTSYNIII-PWY|GLYCOLYSIS|GLYOXYLATE-BYPASS|NONOXIPENT-PWY|OXIDATIVEPENT-PWY|P185-PWY|P21-PWY|PWY0-1312|PWY0-1315|PWY0-1329|PWY0-1334|PWY0-1335|PWY0-1353|PWY0-1517|PWY0-1565|PWY0-1567|PWY0-1568|PWY-4341|PWY-5084|PWY-5480|PWY-5482|PWY-5484|PWY-5690|PWY-5766|PWY-5913|PWY-6028|PWY-6333|PWY-6543|PWY-6549|PWY66-21|PWY66-398|PWY-6697|PWY-6964|PWY-7167|PWY-7685|PWY-7686|PWY-7980|PWY-8178|PWY-8215|PWY-8274|PWY-8404|PYRUVDEHYD-PWY|TCA-1|TCA"
+        pwyKeyCol=id
         ;;
     small)
-        tca="\\|TCA\\||P105-PWY"
+        tca="TCA|P105-PWY"
         resp="PWY-7544|PWY0-1334"
         ferm="PYR-TO-BUT-NADPH|2FLHYD|PWY-7385|PWY-6344|PWY-5938|PWY-5494|PWY-5497|P164-PWY|PWY-8086|PWY-5677|PWY-8014|P162-PWY|CENTFERM-PWY|P122-PWY|PWY-6130|P108-PWY|PYR-ACCOA-FROX|BIFIDOSHUNT2|LNT-DEGRADATION|PWY-6583|PWY-5437|FERMENTATION-PWY"
         glyc="ANAGLYCOLYSIS-PWY|PWY-1042"
@@ -395,12 +407,15 @@ case $pathways in
         carboxdeg="GLUCONSUPER-PWY|IDNCAT-PWY|PWY-7247|PWY-7948|2FLHYD|PWY0-1313|PROPIONMET-PWY|PWY0-42|PWY-7242|PWY-8134|PWY-5177|GALACTARDEG-PWY|GALACTUROCAT-PWY|GLYCOLATEMET-PWY|PWY-6518|GALACTCAT-PWY|BIFIDOSHUNT2|PWY-7754|LNT-DEGRADATION|PWY-6697"
         pwyKey="$tca|$resp|$ferm|$glyc|$ppp|$aasyn|$cosyn|$nusyn|$carbodeg|$carboxdeg"
         noSuperpathways=false # some listed pathways are superpathways
+        pwyKeyCol=id
         ;;
     kegg)
         pwyKey=kegg
+        pwyKeyCol=hierarchy
         ;;
     *)
         pwyKey=$pathways
+        pwyKeyCol=pattern
         ;;
 esac
 
@@ -513,11 +528,8 @@ else
         mv allPwy.tmp allPwy
     fi
     # cat allPwy | grep -wEi $pwyKey | wc -l
-    pwyDB=$(cat allPwy | grep -wEi $pwyKey | awk -F "\t" '{if ($6) print $0;}')
-    NApwy=$(cat allPwy | grep -wEi $pwyKey | awk -F "\t" '{if (!$6) print $1, $2;}')
-    [[ -n "$NApwy" ]] && echo Pathways ignored because no reactions found: $(echo "$NApwy" | wc -l)
-    [[ -n "$NApwy" ]] && [[ $verbose -ge 2 ]] && echo "$NApwy"
-    [[ "$noSuperpathways" = true ]] && pwyDB=$(echo "$pwyDB" | grep -v 'Super-Pathways')
+    Rscript $dir/filter_pathways.R allPwy "$pwyKey" $pwyKeyCol $noSuperpathways
+    pwyDB=$(cat allPwy)
     [ -z "$ecnumber" ] && [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
 fi
 [ -z "$output_suffix" ] && output_suffix=$pathways
