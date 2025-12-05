@@ -14,7 +14,6 @@ verbose=0
 force_offline=false
 
 userdir=false
-dbversion=latest
 
 OS=$(uname -s)
 if [ "$OS" = "Darwin" -o "$OS" = "FreeBSD" ]; then
@@ -22,6 +21,11 @@ if [ "$OS" = "Darwin" -o "$OS" = "FreeBSD" ]; then
 else
 	n_threads=`grep -c ^processor /proc/cpuinfo`
 fi
+
+curdir=$(pwd)
+path=$(readlink -f "$0")
+dir=$(dirname "$path")
+seqdb=$dir/../dat/seq
 
 usage()
 {
@@ -38,19 +42,16 @@ usage()
     echo "  -f Path to directory, where output files will be saved (default: current directory)"
     echo "  -v Verbose level, 0 for nothing, 1 for full (default $verbose)"
     echo "  -D path to directory, where reference sequence database will be saved (default: $seqdb)"
-    echo "  -Z Reference sequence database version as Zenodo ID (default: $dbversion)"
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
     echo "  -O Force offline mode (default: $force_offline)"
     echo "  -K Number of threads. If option is not provided, number of available CPUs will be automatically determined."
     echo "  -A Tool to be used for sequence alignments (blast, mmseqs2, diamond; default: $aliTool)"
     echo ""
-    echo "Details:"
-    echo "\"-Z\": This option expects the the word 'latest' for the latest database version or the Zenodo record ID. All database records can be found here: https://doi.org/10.5281/zenodo.10047603 . The record ID is the last number in the DOI following the pattern 'zenodo.'"
 exit 1
 }
 
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
-while getopts "h?b:i:c:l:t:m:f:v:OD:Z:T:K:A:" opt; do
+while getopts "h?b:i:c:l:t:m:f:v:OD:T:K:A:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -84,9 +85,6 @@ while getopts "h?b:i:c:l:t:m:f:v:OD:Z:T:K:A:" opt; do
         seqdb=$OPTARG
         userdir=true
         ;;
-    Z)
-        dbversion=$OPTARG
-        ;;
     T)
         user_temp=true
         user_temp_folder=$OPTARG
@@ -112,9 +110,6 @@ shift $((OPTIND-1))
 # after parsing arguments, only fasta file shoud be there
 [ "$#" -ne 1 ] && { usage; }
 
-curdir=$(pwd)
-path=$(readlink -f "$0")
-dir=$(dirname "$path")
 
 # set output directory
 case $output_dir in
@@ -138,7 +133,7 @@ id="${base%.*}"
 [[ ! -s "$file" ]]  && usage
 [[ $file == *.gz ]] && id="${id%.*}"
 
-$dir/gapseq_find.sh -v $verbose -b $bitcutoff -p all -t $taxonomy -K $n_threads -A $aliTool -f $output_dir $user_temp_opt $([ "$force_offline" = true ] && echo -O) $([ "$userdir" = true ] && echo -D $seqdb) -Z $dbversion "$file"
+$dir/gapseq_find.sh -v $verbose -b $bitcutoff -p all -t $taxonomy -K $n_threads -A $aliTool -f $output_dir $user_temp_opt $([ "$force_offline" = true ] && echo -O) $([ "$userdir" = true ] && echo -D $seqdb) "$file"
 $dir/transporter.sh -v $verbose -b $bitcutoff -K $n_threads -A $aliTool -f $output_dir $user_temp_opt "$file"
 Rscript $dir/generate_GSdraft.R -r "$output_dir/$id-all-Reactions.tbl" -t "$output_dir/$id-Transporter.tbl" -u $bitcutoff -l $min_bs_core -p "$output_dir/$id-all-Pathways.tbl" -b $taxonomy -f $output_dir
 if [ $medium == "auto" ]; then

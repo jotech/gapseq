@@ -281,7 +281,7 @@ else
     tmpdir=$(mktemp -d)
 fi
 trap 'rm -rf "$tmpdir"' EXIT
-[[ $verbose -ge 1 ]] && echo $tmpdir
+[[ $verbose -ge 2 ]] && echo $tmpdir
 cd $tmpdir
 
 # get fasta file
@@ -495,7 +495,7 @@ if [ -n "$ecnumber" ] || [ -n "$reaname" ]; then
 else
     pwyDatabase=$(echo $pwyDatabase | tr '[:upper:]' '[:lower:]')
     # get entries for pathways from databases
-    [[ $verbose -ge 1 ]] && { echo $pwyDatabase; }
+    [[ $verbose -ge 2 ]] && { echo $pwyDatabase; }
     [[ "$pwyDatabase" =~ "all" ]]     && cat $metaPwy $keggPwy $seedPwy $customPwy > allPwy
     [[ "$pwyDatabase" =~ "metacyc" ]] && cat $metaPwy >> allPwy
     [[ "$pwyDatabase" =~ "kegg" ]]    && cat $keggPwy >> allPwy
@@ -503,7 +503,7 @@ else
     [[ "$pwyDatabase" =~ "custom" ]]  && cat $customPwy >> allPwy
     dupli=$(cat allPwy | cut -f1 | sort | uniq -d | tr -d 'id' | sed '/^$/d')
     if [ -n "$dupli" ]; then
-        [[ $verbose -ge 1 ]] && echo Duplicated pathway IDs found: $dupli. gapseq will only use $customPwy
+        [[ $verbose -ge 2 ]] && echo Duplicated pathway IDs found: $dupli. gapseq will only use $customPwy
         echo "$dupli" | awk '{ids[$0]=1}
             NR==FNR {next}
             !($1 in ids)' - allPwy > allPwy.tmp
