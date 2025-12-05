@@ -1,4 +1,4 @@
-# gapseq version: 1.5.0 43d3d597
+# gapseq version: 2.0.0 43d3d597
 # Transporter sequence DB md5sum: b99a77e (2024-08-26)
 # genome_format=prot
 id	tc	sub	sub_gapseq	exid	rea	qseqid	pident	evalue	bitscore	qcovs	stitle	sstart	send	comment

@@ -1,4 +1,4 @@
-# gapseq version: 1.5.0 43d3d597
+# gapseq version: 2.0.0 43d3d597
 # Sequence DB md5sum: ae174b5 (2025-12-01, Bacteria)
 # genome_format=prot;taxonomy=Bacteria;ORF_coverage=30.61;gram=neg
 ID	Name	Prediction	Completeness	Status	NrReaction	NrSpontaneous	NrVague	NrKeyReaction	NrReactionFound	NrKeyReactionFound	ReactionsFound	SpontaneousReactions	KeyReactions
