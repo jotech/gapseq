@@ -1,25 +1,49 @@
 # Reaction tracing
+2025-12-04
 
 Keyword: **"Traceability"**
 
-Automatic metabolic network reconstruction is a multi-step process. Reactions and metabolites are added to a metabolic network model in various steps and based on different criteria. ***gapseq* records for each reaction, why and at which stage it was added to the network.** While this tracing of reactions was originally intended for debugging, we believe that this information is also highly relevant for users to understand their output network and for potential manual refinement / curation efforts. 
+Automatic metabolic network reconstruction is a multi-step process. Reactions and metabolites are added to a metabolic network model in various steps and based on different criteria. ***gapseq* records for each reaction, why and at which stage it was added to the network.** While this tracing of reactions was originally intended for debugging, we believe that this information is also relevant for users to understand their output network and for potential manual refinement / curation efforts. 
 
 gapseq stores the reaction tracing information in the reaction's attributes data.frame of the *cobrar::ModelOrg* R-object, which is saved by gapseq in the *model.RDS* file. Here's a short code-snippet to access the reaction tracing information in R:
 
-```R
+
+``` r
 library(cobrar)
+```
 
-mod <- readRDS("model.RDS") # adjust with the respective model name
+```
+## Loading required package: Matrix
+```
 
-# Retrieve data.frame for reaction attriubutes (it's a big table)
-mod@react_attr
+```
+## cobrar uses...
+##  - libSBML (v. 5.20.4)
+##  - glpk (v. 5.0)
+```
+
+``` r
+mod <- readRDS("../../toy/ecoli.RDS") # adjust with the respective model name
+
+# data.frame for reaction attributes (it's a big table) is here: mod@react_attr
 
 # Retrieve only reaction IDs, name, ec and the reactions'  
 # sources/origin in the reconstruction process
-mod@react_attr[,c("seed", "name", "ec", "gs.origin")]
+df_trace <- mod@react_attr[,c("seed", "name", "ec", "gs.origin")]
 
+# Short summary of the distribution of reactions origins:
+table(df_trace$gs.origin)
+```
+
+```
+## 
+##    0    1    3    4    6    7    8 
+## 2718   21   13    4    1  209   32
+```
+
+``` r
 # In case you wish to save this table to a csv-file:
-write.csv(mod@react_attr[,c("seed", "name", "ec", "gs.origin")],
+write.csv(df_trace,
           file = "model_reaction_tracing.csv")
 ```
 
@@ -52,7 +76,7 @@ write.csv(mod@react_attr[,c("seed", "name", "ec", "gs.origin")],
 
 
 
-Please note: The reaction tracing information is currently not included in the output SBML-files of the models. This will be included in a future update of *gapseq*.
+<mark>Please note</mark>: The reaction tracing information is currently not included in the output SBML-files of the models.
 
 Addition to code `5`: For instance, if an organism harbors the genes for the [degradation of Tryptophan to Indole-3-Propionic Acid (IPA)](https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-8017), the transport reaction for IPA is automatically added to the model. This automatism is meant to allow the production of metabolites, where the producing-pathways and the cellular export is known from experiments, but where the transport mechanism (i.e. transporter protein) remains unknown. Currently only a few transporters are added based on this rule:
 
@@ -60,3 +84,5 @@ Addition to code `5`: For instance, if an organism harbors the genes for the [de
 - Phenypropanoate (cpd03343) transport if [PWY-8014](https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-8014) is present
 - Phloretate transport if [PWY-8016](https://metacyc.org/META/NEW-IMAGE?type=PATHWAY&object=PWY-8016) is present
 - Butyrate transport if Butyryl-CoA dehydrogenase (Etf complex)) is present (rxn90001)
+
+

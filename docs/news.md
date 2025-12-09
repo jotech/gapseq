@@ -1,10 +1,27 @@
 # News
 
+#### Reference sequence database for Bacteria and Archaea v1.4 released
+
+*2024-12-01*
+
+The database for reference protein sequences (bacteria and archaea) was updated. To update your reference sequence database run:
+
+```R
+gapseq update-sequences -t Bacteria -Z latest # For Bacteria
+gapseq update-sequences -t Archaea -Z latest # For Archaea
+```
+
+The sequences were retrieved from [UniProt](https://www.uniprot.org/).
+
+DOI of Zenodo data set: https://doi.org/10.5281/zenodo.16908828
+
+---
+
 #### Reference sequence database for Bacteria and Archaea v1.3 released
 
 *2024-11-06*
 
-The database for reference protein sequenes (bacteria and archaea) was updated. gapseq should automatically download the latest version. The sequences were retrieved from [UniProt](https://www.uniprot.org/) Release 2024_05.
+The database for reference protein sequences (bacteria and archaea) was updated. gapseq should automatically download the latest version. The sequences were retrieved from [UniProt](https://www.uniprot.org/) Release 2024_05.
 
 DOI of Zenodo data set: https://doi.org/10.5281/zenodo.14046824
 

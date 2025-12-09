@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version=1.4.0
+version=2.0.0
 
 curdir=$(pwd)
 path=$(readlink -f "$0")
@@ -9,6 +9,7 @@ dir=$(dirname "$path")
 medium=$dir/dat/media/ALLmed.csv
 verbose=0
 n_threads=1
+aliTool="blast"
 
 usage()
 {
@@ -17,47 +18,45 @@ usage()
     echo -e " | (_| | (_| | |_) \__ \  __/ (_| |"
     echo -e "  \__, |\__,_| .__/|___/\___|\__, |"
     echo -e "  |___/      |_|                |_|"
-    echo -e "" 
+    echo -e ""
     echo -e "Informed prediction and analysis of bacterial metabolic pathways and genome-scale networks"
     echo -e "\nUsage:"
     echo "  gapseq test"
-    echo "  gapseq (find | find-transport | draft | fill | doall | adapt) (...)"
-    echo "  gapseq doall (genome) [medium] [Bacteria|Archaea]"
-    echo "  gapseq find (-p pathways | -e enzymes) [-b bitscore] (genome)"
+    echo "  gapseq (find | find-transport | draft | fill | doall | adapt | medium | pan) (...)"
+    echo "  gapseq doall [-A aligner] (genome)"
+    echo "  gapseq find (-p pathways | -e enzymes | -r reaction) [-b bitscore] (genome)"
     echo "  gapseq find-transport [-b bitscore] (genome)"
-    echo "  gapseq draft (-r reactions | -t transporter -c genome -p pathways) [-b pos|neg|archaea|auto]"
+    echo "  gapseq draft (-r reactions | -t transporter -p pathways) [-b pos|neg|archaea|auto]"
     echo "  gapseq medium (-m draft -p pathways) [-c manual_fluxes -o output_file]"
-    echo "  gapseq fill (-m draft -n medium -c rxn_weights -g rxn_genes)"
-    echo "  gapseq adapt (-a reactions/pathways | -r reactions/pathways| -w growh_compounds) -m model (-g rxn_genes, -c rxn_weights, -b reaction_blast_file)"
-    echo "  gapseq pan (-m draft_list -c rxn_weights_list -g rxn_genes_list -w pathways_list)"
+    echo "  gapseq fill (-m draft -n medium)"
+    echo "  gapseq adapt (-a reactions/pathways | -r reactions/pathways | -w growth_compounds) -m model (-b reaction_blast_file)"
+    echo "  gapseq pan (-m draft_list -w pathways_list)"
     echo -e "\nExamples:"
     echo "  gapseq test"
     echo "  gapseq doall toy/ecoli.faa.gz"
-    echo "  gapseq doall toy/myb71.fna.gz dat/media/TSBmed.csv"
-    echo "  gapseq find -p chitin toy/myb71.fna.gz"
-    echo "  gapseq find -p all toy/myb71.fna.gz"
-    echo "  gapseq find-transport toy/myb71.fna.gz"
-    echo "  gapseq draft -r toy/ecoli-all-Reactions.tbl -t toy/ecoli-Transporter.tbl -c toy/ecoli.faa.gz -p toy/ecoli-all-Pathways.tbl"
+    echo "  gapseq doall -m dat/media/TSBmed.csv toy/myb71.faa.gz"
+    echo "  gapseq find -p chitin toy/myb71.faa.gz"
+    echo "  gapseq find -p all toy/myb71.faa.gz"
+    echo "  gapseq find-transport toy/myb71.faa.gz"
+    echo "  gapseq draft -r toy/ecoli-all-Reactions.tbl -t toy/ecoli-Transporter.tbl -p toy/ecoli-all-Pathways.tbl"
     echo "  gapseq medium -m toy/ecoli-draft.RDS -p toy/ecoli-all-Pathways.tbl"
-    echo "  gapseq fill -m toy/ecoli-draft.RDS -n dat/media/ALLmed.csv -c toy/ecoli-rxnWeights.RDS -g toy/ecoli-rxnXgenes.RDS"
+    echo "  gapseq fill -m toy/ecoli-draft.RDS -n toy/ecoli-medium.csv"
     echo "  gapseq adapt -a 14DICHLORBENZDEG-PWY -m toy/myb71.RDS"
-    echo "  gapseq adapt -m toy/myb71.RDS -w cpd00089:TRUE -c toy/myb71-rxnWeights.RDS -g toy/myb71-rxnXgenes.RDS -b toy/myb71-all-Reactions.tbl"
-    echo "  gapseq pan -m toy/MGYG000*-draft.RDS -c toy/MGYG000*-rxnWeights.RDS -g toy/MGYG000*-rxnXgenes.RDS -w toy/MGYG000*.tbl.gz"
+    echo "  gapseq adapt -m toy/myb71.RDS -w cpd00089:TRUE -b toy/myb71-all-Reactions.tbl"
     echo -e "\nOptions:"
-    echo "  test            Testing dependencies and basic functionality of gapseq."
-    echo "  test-long       Testing model reconstruction for a E. coli core genome."
-    echo "  find            Pathway analysis, try to find enzymes based on homology."
-    echo "  find-transport  Search for transporters based on homology."
-    echo "  draft           Draft model construction based on results from find and find-transport."
-    echo "  medium          (gapfill-)Medium prediction based on results from find and draft"
-    echo "  fill            Gap filling of a model."
-    echo "  doall           Combine find, find-transport, draft, (medium,) and fill."
-    echo "  adapt           Add or remove reactions or pathways."
-    echo "  pan             Reconstruct a pan-Draft from a list of models."
-    echo "  -v              Show version."
-    echo "  -h              Show this screen."
-    echo "  -n              Enable noisy verbose mode."
-    echo "  -K              Number of threads for sequence alignments. If option is not provided, number of available CPUs will be automatically determined."
+    echo "  test              Testing dependencies and basic functionality of gapseq."
+    echo "  test-long         Testing model reconstruction for a E. coli core genome."
+    echo "  find              Pathway analysis, try to find enzymes based on homology."
+    echo "  find-transport    Search for transporters based on homology."
+    echo "  draft             Draft model construction based on results from find and find-transport."
+    echo "  medium            (gapfill-)Medium prediction based on results from find and draft"
+    echo "  fill              Gap filling of a model."
+    echo "  doall             Combine find, find-transport, draft, (medium,) and fill."
+    echo "  adapt             Add or remove reactions or pathways."
+    echo "  pan               Reconstruct a pan-Draft from a list of models."
+    echo "  update-sequences  Update the reference sequence database."
+    echo "  -v                Show version."
+    echo "  -h                Show this screen."
 
 exit 1
 }
@@ -75,11 +74,7 @@ done
 # Set a parsing variable to use getops when either the (1) doall subcommand is given or (2) only gapseq command is given.
 parse_options=true
 
-if [[ "$1" == "doall" ]]; then
-    # If yes set OPTIND 2 to avoid reading "gapseq doall" and to parse all the options in the following while.
-    subcommand=$1
-    OPTIND=2
-elif [[ "$1" =~ ^(test|test-long|find|find-transport|draft|adapt|medium|fill|pan)$ ]]; then
+if [[ "$1" =~ ^(test|test-long|find|find-transport|draft|adapt|medium|fill|pan|doall|update-sequences)$ ]]; then
     # If another command line (like find), the options are not parsed with getopts (as they will be parsed in their own script).
     subcommand=$1
     parse_options=false
@@ -91,7 +86,7 @@ else
 fi
 
 if [[ "$parse_options" == true ]]; then
-    while getopts "hvnK:" opt; do
+    while getopts "hv" opt; do
         case "$opt" in
             h|\?)
                 usage
@@ -101,45 +96,14 @@ if [[ "$parse_options" == true ]]; then
                 cd $dir
                 git_rev=$(git rev-parse --short HEAD 2>/dev/null)
                 echo gapseq version: $version $git_rev
-                if [ -d "$dir/dat/seq/Bacteria/rev" ]; then
-                    Bseqdb_version=`md5sum $dir/dat/seq/Bacteria/rev/sequences.tar.gz | cut -c1-7`
-                    Bseqdb_date=$(stat -c %y $dir/dat/seq/Bacteria/rev/sequences.tar.gz | cut -c1-10)
-                    echo "Sequence DB md5sum: $Bseqdb_version ($Bseqdb_date, Bacteria)"
-                else
-                    echo """
-    The Bacteria Sequence Database has not yet been downloaded/updated (default version).
-    Get the latest version by running: 'bash ./src/update_sequences.sh' in your gapseq installation directory.
-                        """
-                fi
-                if [ -d "$dir/dat/seq/Archaea/rev" ]; then
-                    Aseqdb_version=`md5sum $dir/dat/seq/Archaea/rev/sequences.tar.gz | cut -c1-7`
-                    Aseqdb_date=$(stat -c %y $dir/dat/seq/Archaea/rev/sequences.tar.gz | cut -c1-10)
-                    echo "Sequence DB md5sum: $Aseqdb_version ($Aseqdb_date, Archaea)"
-                else
-                    echo """
-    The Archaea Sequence Database has not yet been downloaded/updated (default version).
-    Get the latest version by running: 'bash ./src/update_sequences.sh Archaea' in your gapseq installation directory.
-                        """
-                fi
                 exit 0
-                ;;
-            n)
-                verbose=1
-                ;;
-            K)
-                n_threads=$OPTARG
                 ;;
             esac
     done
 fi
 
-if [[ "$subcommand" == "doall" ]]; then
-    # Remove the options parsed with getopts and keep "gapseq doall" and genome/medium filenames.
-    shift "$((OPTIND-2))"
-else
-    # Do not remove anything.
-    shift "$((OPTIND-1))"
-fi
+
+shift "$((OPTIND-1))"
 
 [ "$subcommand" = "--" ] && shift
 [ "$#" -eq 0 ]  && usage
@@ -151,9 +115,9 @@ elif   [ "$subcommand" == "test-long" ]; then
     shift
     $dir/src/gapseq_find.sh -v 0 -p min $dir/toy/ecore.faa.gz
     $dir/src/transporter.sh -v 0 $dir/toy/ecore.faa.gz
-    Rscript $dir/src/generate_GSdraft.R -r ecore-min-Reactions.tbl -t ecore-Transporter.tbl -c $dir/toy/ecore.faa.gz -p ecore-min-Pathways.tbl
+    Rscript $dir/src/generate_GSdraft.R -r ecore-min-Reactions.tbl -t ecore-Transporter.tbl -p ecore-min-Pathways.tbl
     Rscript $dir/src/predict_medium.R -m ecore-draft.RDS -p ecore-min-Pathways.tbl
-    Rscript $dir/src/gf.suite.R -m ecore-draft.RDS -n ecore-medium.csv -c ecore-rxnWeights.RDS -g ecore-rxnXgenes.RDS -q
+    Rscript $dir/src/gf.suite.R -m ecore-draft.RDS -n ecore-medium.csv -q
 
 elif   [ "$subcommand" == "find" ]; then
     shift
@@ -162,7 +126,7 @@ elif   [ "$subcommand" == "find" ]; then
 elif [ "$subcommand" == "find-transport" ]; then
     shift
     $dir/src/transporter.sh "$@"
-    
+
 elif [ "$subcommand" == "draft" ]; then
     shift
     Rscript $dir/src/generate_GSdraft.R "$@"
@@ -170,7 +134,7 @@ elif [ "$subcommand" == "draft" ]; then
 elif [ "$subcommand" == "adapt" ]; then
     shift
     Rscript $dir/src/adapt.R "$@"
-    
+
 elif [ "$subcommand" == "medium" ]; then
     shift
     Rscript $dir/src/predict_medium.R "$@"
@@ -184,22 +148,12 @@ elif [ "$subcommand" == "pan" ]; then
     Rscript $dir/src/pan-draft.R "$@"
 
 elif [ "$subcommand" == "doall" ]; then
-    parm=$(echo $@ | sed 's/doall//')
-    file=$(readlink -f $2)
-    base=$(basename "$file")
-    id="${base%.*}"
-    [[ ! -s "$file" ]]  && usage
-    [[ $file == *.gz ]] && id="${id%.*}" 
-    medium=${id}-medium.csv
-    [[ -s "$3" ]]       && medium=$3
-    taxonomy=auto
-    [[ ("$3" == "Bacteria" || "$4" == "Bacteria") ]] && taxonomy=Bacteria
-    [[ ("$3" == "Archaea" || "$4" == "Archaea") ]] && taxonomy=Archaea
-    $dir/src/gapseq_find.sh -v $verbose -b 200 -p all -t $taxonomy -K $n_threads "$file"
-    $dir/src/transporter.sh -v $verbose -b 200 -K $n_threads "$file"
-    Rscript $dir/src/generate_GSdraft.R -r "$id-all-Reactions.tbl" -t "$id-Transporter.tbl" -c "$file" -u 200 -l 100 -p "$id-all-Pathways.tbl" -b $taxonomy
-    [[ ! -s "$3" ]] && Rscript $dir/src/predict_medium.R -m "./${id}-draft.RDS" -p "$id-all-Pathways.tbl"
-    Rscript $dir/src/gf.suite.R -m "./${id}-draft.RDS" -n "$medium" -c "./${id}-rxnWeights.RDS" -b 100 -g "./${id}-rxnXgenes.RDS"
+    shift
+    $dir/src/doall.sh "$@"
+
+elif [ "$subcommand" == "update-sequences" ]; then
+    shift
+    $dir/src/update_sequences.sh "$@"
 
 else
     usage

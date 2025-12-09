@@ -31,6 +31,8 @@ vignettes/*.pdf
 *.tbl
 *.lst
 *.fasta
+!dat/seq/Bacteria/user/*.fasta
+!dat/seq/Archaea/user/*.fasta
 *.old
 *.tmp
 *.fai
@@ -58,3 +60,5 @@ unit/genomes
 unit/out
 # pandraft toy intermediates
 toy/panDraft
+dat/seq/Archaea/version_seqDB.json
+dat/seq/Bacteria/version_seqDB.json

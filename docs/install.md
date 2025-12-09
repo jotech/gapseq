@@ -1,9 +1,10 @@
 # Installation
 
 ## Ubuntu/Debian/Mint
-```
+
+```sh
 # Installation of main system dependencies
-sudo apt install ncbi-blast+ git libglpk-dev r-base-core exonerate bedtools barrnap bc parallel curl libcurl4-openssl-dev libssl-dev libsbml5-dev bc
+sudo apt install ncbi-blast+ git libglpk-dev r-base-core bc curl libcurl4-openssl-dev libssl-dev libsbml5-dev
 
 # installation of required R-packages
 R -e 'install.packages(c("data.table", "stringr", "getopt", "R.utils", "stringi", "jsonlite", "httr", "pak"))'
@@ -13,8 +14,9 @@ R -e 'pak::pkg_install("Waschina/cobrar")'
 # Download latest gapseq version from github
 git clone https://github.com/jotech/gapseq && cd gapseq
 
-# Download latest reference sequence database
-bash ./src/update_sequences.sh
+# Download reference sequence database (Bacteria and Archaea)
+bash ./gapseq update-sequences -t Bacteria
+bash ./gapseq update-sequences -t Archaea
 ```
 
 Test your installation with:
@@ -23,11 +25,9 @@ Test your installation with:
 ```
 
 ## Centos/Fedora/RHEL
-```
+```sh
 # Installation of main system dependencies
-sudo yum install ncbi-blast+ git glpk-devel BEDTools exonerate hmmer bc parallel libcurl-devel curl openssl-devel libsbml-devel bc
-git clone https://github.com/tseemann/barrnap.git
-export PATH=$PATH:barrnap/bin/barrnap # needs to be permanent => .bashrc ?
+sudo yum install ncbi-blast+ git glpk-devel hmmer bc libcurl-devel curl openssl-devel libsbml-devel
 
 # installation of required R-packages
 R -e 'install.packages(c("data.table", "stringr", "getopt", "R.utils", "stringi", "jsonlite", "httr", "pak"))'
@@ -37,8 +37,9 @@ R -e 'pak::pkg_install("Waschina/cobrar")'
 # Download latest gapseq version from github
 git clone https://github.com/jotech/gapseq && cd gapseq
 
-# Download latest reference sequence database
-bash ./src/update_sequences.sh
+# Download reference sequence database (Bacteria and Archaea)
+bash ./gapseq update-sequences -t Bacteria
+bash ./gapseq update-sequences -t Archaea
 ```
 
 Test your installation with:
@@ -50,7 +51,7 @@ Test your installation with:
 Using [homebrew](https://brew.sh). Please note: Some Mac-Users reported difficulties to install gapseq on MacOS using the following commands. The issues are mainly due to some Mac-specific functioning of central programs such as sed, awk, and grep. If you are experiencing issues, we recommend to try to install gapseq in an own conda environment using the steps described [below](#conda).
 ```
 # Installation of main system dependencies
-brew install coreutils binutils git glpk blast bedtools r brewsci/bio/barrnap grep bc gzip parallel curl bc brewsci/bio/libsbml
+brew install coreutils binutils git glpk blast r grep bc gzip curl bc brewsci/bio/libsbml
 
 # installation of required R-packages
 R -e 'install.packages(c("data.table", "stringr", "getopt", "R.utils", "stringi", "jsonlite", "httr"))'
@@ -60,8 +61,9 @@ R -e 'pak::pkg_install("Waschina/cobrar")'
 # Download latest gapseq version from github
 git clone https://github.com/jotech/gapseq && cd gapseq
 
-# Download latest reference sequence database
-bash ./src/update_sequences.sh
+# Download reference sequence database (Bacteria and Archaea)
+bash ./gapseq update-sequences -t Bacteria
+bash ./gapseq update-sequences -t Archaea
 ```
 
 Test your installation with:
@@ -97,11 +99,45 @@ cd gapseq
 conda env create -n gapseq-dev --file gapseq_env.yml
 conda activate gapseq-dev
 
-# Download reference sequence data
-bash ./src/update_sequences.sh
+# Download reference sequence database (Bacteria and Archaea)
+bash ./gapseq update-sequences -t Bacteria
+bash ./gapseq update-sequences -t Archaea
 ```
 
+## Optional dependencies
+
+### Alternative aligners
+
+In addition, gapseq can use the sequence alignment tools [**diamond**](https://github.com/bbuchfink/diamond) and **[mmseqs2](https://mmseqs.com/)**. Using one of these tools can reduce the runtime of the modules `gapseq find` and `gapseq find-transport`. On Ubuntu/Debian/Mint Linux systems, these tools can be installed via `apt`:
+
+```sh
+sudo apt install mmseqs2 diamond-aligner
+```
+
+For other installation options, please follow the installation instructions provided on the websites of the two tools. Once installed you can specify the alignment tool using the option `-A`, e.g.:
+
+```sh
+# diamond
+gapseq find -p all -A diamond genome.faa.gz
+gapseq find-transport -p all -A diamond genome.faa.gz
+
+# mmseqs2
+gapseq find -p all -A mmseqs2 genome.faa.gz
+gapseq find-transport -p all -A mmseqs2 genome.faa.gz
+```
+
+### Nucleotide genome to protein genome translation
+
+gapseq expects the input genome as protein amino acid sequences. If the input sequence is a genomic nucleotide fasta file, gapseq can automatically predict open reading frames (ORFs) and translates these to the respective amino acid sequences. For this, gapseq uses [**pyrodigal**](https://pyrodigal.readthedocs.io/en/stable/). It can be easily installed from PyPi:
+
+```sh
+pip install pyrodigal
+```
+
+For other installation options, please follow [these instructions](https://pyrodigal.readthedocs.io/en/stable/guide/install.html).
+
 ## SBML support
+
 The Systems Biology markup Language (SBML) can be used to exchange model files between gapseq and other programs.
 
 The above installation instructions for linux systems, MacOS, and using conda should already include the SBML support. If there were no errors during the installation, you should be all set using gapseq with SBML format exports.

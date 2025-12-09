@@ -1,0 +1,113 @@
+# Reconstruction of metabolic networks for archaea 
+`r Sys.Date()`
+
+Archaea are prokaryotes with important unique characteristics which separate them from the other domains of life.
+Certain environmental process such as the production of methane is only described for archaea and there are estimates that they could make up to more than 10% of the human gut microbiome[[1](https://doi.org/10.1016/j.anaerobe.2011.03.001)].
+
+This tutorial is about the reconstruction and analysis of methane-producing archaea.
+
+##### *Methanosarcina barkeri*
+
+*Methanosarcina barkeri* is a methane-producing archaea that lives in sewage, mud, and rumen and is able to catabolize a variety of carbon sources.
+A genome of *M. barkeri* is available on NCBI:
+
+```{sh, eval=TRUE, echo=TRUE}
+wget -q -O mbar.fna.gz https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/970/025/GCF_000970025.1_ASM97002v1/GCF_000970025.1_ASM97002v1_genomic.fna.gz
+```
+
+The following gapseq commands will search for pathways, transporters and will create a metabolic model for *M. barkeri*:
+
+```{sh, eval=TRUE, echo=TRUE, results='hide'}
+gapseq find -p all -t Archaea -m Archaea -A diamond mbar.fna.gz
+gapseq find-transport -A diamond mbar.fna.gz
+gapseq draft -r mbar-all-Reactions.tbl -t mbar-Transporter.tbl -u 200 -l 100 -p mbar-all-Pathways.tbl
+gapseq fill -m mbar-draft.RDS -n ../../dat/media/MM_anaerobic_CO2_H2.csv -b 100 -e highH2
+```
+
+The metabolic model is created as SBML and RDS file and can further be used for constraint-based analysis. The following example is using R and the extension package cobrar.
+
+```{r, eval=TRUE, echo=TRUE}
+library(cobrar)
+library(data.table)
+
+mod <- readRDS("mbar.RDS")
+mtf <- pfba(mod); print(mtf)
+ex.dt <- data.table(getExchanges(mod, mtf))
+print("Substrates:"); ex.dt[flux<0][order(flux)] # substrate: h2+co2
+print("Products:"); ex.dt[flux>0][order(-flux)] # products: h2o+ch4
+```
+As you can see, the metabolic model of *M. barkeri* predicts, beside a growth rate of `r round(mtf@obj, digits=2)`/h, the uptake of H<sub>2</sub> (`r round(ex.dt[ID == "EX_cpd11640_e0", flux])` mmol/gDW/h) and CO<sub>2</sub> (`r round(ex.dt[ID == "EX_cpd00011_e0", flux])` mmol/gDW/h) to produce methane (`r round(ex.dt[ID == "EX_cpd01024_e0", flux])` mmol/gDW/h) and water (`r round(ex.dt[ID == "EX_cpd00001_e0", flux])` mmol/gDW/h).
+
+##### Methanogens with and without cytochromes
+
+An interesting criterion for distinguishing methanogens is the presence of cytochromes[[2](http://dx.doi.org/10.1038/nrmicro1931)].
+Methanogens with cytochromes use methanophenanzine (a menaquinone analogue) to build up a membrane potential for energy conservation via electron transport phosphorylation.
+
+Methanogens without cytochromes on the other hand do not use methanophenanzine. Instead, they rely on flavin-based electron bifurcation for energy conservation.
+
+*M. barkeri* is a methanogen with cytochromes and the reactions that used methanophenanzine carry active fluxes:
+
+```{r, include=FALSE}
+options(width = 600)
+```
+
+```{r, out.width=c('1000px','600px','100px'), eval=TRUE, echo=TRUE}
+sol.dt <- data.table(rxn=mod@react_id, name=mod@react_name, flux=mtf@fluxes, equation = printReaction(mod, mod@react_id))
+sol.dt[grepl("rxn90059|rxn90058", rxn)] # methanophenanzine-using reactions
+```
+
+```{r, include=FALSE}
+options(width = 133)
+```
+
+Let's consider another methanogenic archaeon which does not possess cytochromes. *Methanothermobacter thermautotrophicus* is a thermophilic methanogen found in sewage sludge[[3](https://microbewiki.kenyon.edu/index.php/Methanothermobacter_thermautotrophicus)].
+
+The model reconstruction with gapseq is just like before: 
+
+```{sh, eval=TRUE, echo=TRUE, results='hide'}
+wget -q -O mthe.fna.gz ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/008/645/GCF_000008645.1_ASM864v1/GCF_000008645.1_ASM864v1_genomic.fna.gz
+
+gapseq find -p all -t Archaea -m Archaea -A diamond mthe.fna.gz
+gapseq find-transport -A diamond mthe.fna.gz
+gapseq draft -r mthe-all-Reactions.tbl -t mthe-Transporter.tbl -u 200 -l 100 -p mthe-all-Pathways.tbl
+gapseq fill -m mthe-draft.RDS -n ../../dat/media/MM_anaerobic_CO2_H2.csv -b 100 -e highH2
+```
+
+The prediction of substrates and products for *M. thermautotrophicus* is the same as for *M. barkeri*:
+
+```{r, eval=TRUE, echo=TRUE}
+mod2 <- readRDS("mthe.RDS")
+mtf2 <- pfba(mod2); print(mtf2)
+ex2.dt <- data.table(getExchanges(mod2, mtf2))
+print("Substrates:"); ex2.dt[flux<0][order(flux)] # substrate: h2+co2
+print("Products:"); ex2.dt[flux>0][order(-flux)] # products: h2o+ch4
+```
+
+Altough the main substrates and metabolic products are the same, the underlying energy conserving process is completely different. The model of *M. thermautotrophicus* uses an electron bifurcating reaction that couples the energetic unfavorable electron transfer from H<sub>2</sub> to ferredoxin with the energetic favorable reduction of CoM-S-S-CoB:
+
+```{r, eval=TRUE, echo=TRUE}
+sol2.dt <- data.table(rxn=mod2@react_id, name=mod2@react_name, flux=mtf2@fluxes, equation = printReaction(mod2, mod2@react_id))
+sol2.dt[grepl("rxn42401", rxn)] # electron bifurcating reaction
+```
+
+Interestingly, the growth yield $Y_{CH_4}$ (i.e, gramm dry weight (gDW) per mole of produced methane) of methanogens with cytochromes are is reported to be higher than the growth yield of methanogens without cytochromes[[4](http://dx.doi.org/10.1038/nrmicro1931)].
+
+This can be reproduced by the metabolic models. Let's calculate the growth yields $Y_{CH_4}$ for both methanogens:
+
+```{r, eval=TRUE, echo=TRUE}
+yield_mbar <- mtf@obj / mtf@fluxes[react_pos(mod,"EX_cpd01024_e0")] * 1000
+yield_mbar
+
+yield_mthe <- mtf2@obj / mtf2@fluxes[react_pos(mod2,"EX_cpd01024_e0")] * 1000
+yield_mthe
+```
+
+The models predict, that the growth yield of *M. barkeri* is with `r round(yield_mbar, digits=1)` gDW/mol about `r round(yield_mbar/yield_mthe, digits=1)` times higher than the growth yield of *M. thermautotrophicus* (`r round(yield_mthe, digits=1)` gDW/mol), which is close to the ratio observed in experimental studies[[4](http://dx.doi.org/10.1038/nrmicro1931)].
+
+
+
+```{sh, include=FALSE}
+rm mbar*
+rm mthe*
+```
+

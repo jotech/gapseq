@@ -37,6 +37,7 @@ Installation
    :maxdepth: 2
    :caption: Database
 
+   /database/ReferenceSequences
    /database/biochemistry
    /database/biomassReaction
 
@@ -46,9 +47,9 @@ Installation
    :maxdepth: 1
    :caption: Tutorials
 
-   /tutorials/crossfeeding
    /tutorials/yogurt
    /tutorials/archaea
+   /tutorials/pandraft
    /tutorials/traceability
 
 

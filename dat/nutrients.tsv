@@ -166,7 +166,7 @@ cpd00224	L-Arabinose	C5H10O5	0	MNXM461
 cpd00226	Hypoxanthine	C5H4N4O	0	MNXM213
 cpd00227	L-Homoserine	C4H9NO3	0	MNXM353
 cpd00229	Glycolaldehyde	C2H4O2	0	MNXM349
-cpd00232	Neu5Ac	C11H18NO9	-1	MNXM227
+cpd00232	N-acetylneuraminate	C11H18NO9	-1	MNXM227
 cpd00235	D-mannose-6-phosphate	C6H11O9P	-2	MNXM427
 cpd00239	H2S	HS	-1	MNXM89582
 cpd00241	dGTP	C10H13N5O13P3	-3	MNXM344
@@ -494,6 +494,7 @@ cpd04533	Isoamyl alcohol	C5H12O	0	MNXM1670
 cpd04534	3-Methylbutanal	C5H10O	0	MNXM1711
 cpd04945	Ursodeoxycholate	C24H39O4	-1	MNXM146506
 cpd05190	Djenkolate	C7H14N2O4S2	0	MNXM11409
+cpd05228	Skatole	C9H9N	0	MNXM5299
 cpd05235	tetracosanoate	C24H47O2	-1	MNXM3297
 cpd05262	galacturonate	C6H9O7	-1	MNXM114564
 cpd05267	Ribose	C5H10O5	0	MNXM3224
@@ -735,12 +736,13 @@ cpd22614	sulfoquinovose	C6H11O8S	-1	MNXM83070
 cpd23430	isocholate	C24H39O5	-1	MNXM18754
 cpd23431	3-dehydrocholate	C24H37O5	-1	MNXM9997
 cpd25730	6,6-kestotetraose	C24H42O21	0	MNXM10354
+cpd27013	Elemental-Sulfur	S	0	MNXM1107418
 cpd27289	indole-3-propionate	C11H10NO2	-1	MNXM57347
 cpd27519	Methylesterified-homogalacturonan	C21H32O19	0	MNXM12261
 cpd28763	Inulin (2,1-beta-D-fructan)	C72H122O61	0	MNXM57547
 cpd31356	(S)-2,3-Dihydroxypropane-1-sulfonate	C3H7O5S	-1	MNXM13761
 cpd35610	3alpha-hydroxy-7-oxo-5beta-cholan-24-oate	C24H37O4	-1	""
-cpd90001	2-fucosyllactose	C18H32O15	0	""
+cpd90001	2'-fucosyllactose	C18H32O15	0	""
 cpd90003	starch (n=27, 3xalpha1-6, 23xalpha1-4)	C162H272O136	0	MNXM1003
 cpd90004	starch (n=19, 3xalpha1-6, 15xalpha1-4)	C114H192O96	0	MNXM1003
 cpd90005	malto-8-ose	C48H82O41	0	""
@@ -751,3 +753,8 @@ cpd90017	Protein-Linked Serine Or Threonine Residue (O-Glycosylation Site)	HOR	0
 cpd90020	cellulose	C3000H5002O2501	0	MNXM733743
 cpd90021	Xylan-b-1-4	C2500H4002O2001	0	MNXM9242
 cpd90022	Xylooligo-b-1-4	C50H82O41	0	MNXM739294
+cpd90026	3-fucosyllactose	C18H32O15	0	MNXM734889
+cpd90027	Difucosyllactose	C24H42O19	0	MNXM1114819
+cpd90028	3'-sialyllactose	C23H38NO19	-1	MNXM1135181
+cpd90029	6'-sialyllactose	C23H38NO19	-1	MNXM732183
+cpd90030	Lacto-N-neotetraose	C26H45NO21	0	MNXM1107692
