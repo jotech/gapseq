@@ -4,7 +4,7 @@
 
 ```sh
 # Installation of main system dependencies
-sudo apt install ncbi-blast+ git libglpk-dev r-base-core bc curl libcurl4-openssl-dev libssl-dev libsbml5-dev bc
+sudo apt install ncbi-blast+ git libglpk-dev r-base-core bc curl libcurl4-openssl-dev libssl-dev libsbml5-dev
 
 # installation of required R-packages
 R -e 'install.packages(c("data.table", "stringr", "getopt", "R.utils", "stringi", "jsonlite", "httr", "pak"))'
@@ -27,7 +27,7 @@ Test your installation with:
 ## Centos/Fedora/RHEL
 ```sh
 # Installation of main system dependencies
-sudo yum install ncbi-blast+ git glpk-devel hmmer bc libcurl-devel curl openssl-devel libsbml-devel bc
+sudo yum install ncbi-blast+ git glpk-devel hmmer bc libcurl-devel curl openssl-devel libsbml-devel
 
 # installation of required R-packages
 R -e 'install.packages(c("data.table", "stringr", "getopt", "R.utils", "stringi", "jsonlite", "httr", "pak"))'
