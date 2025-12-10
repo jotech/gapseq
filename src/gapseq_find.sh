@@ -57,7 +57,6 @@ usage()
     echo "  -p keywords such as pathways or subsystems (for example amino,nucl,cofactor,carbo,polyamine)"
     echo "  -e Search by ec numbers (comma separated)"
     echo "  -r Search by enzyme name (colon separated)"
-    echo "  -d Database: vmh or seed (default: $database)"
     echo "  -t Taxonomic range for reference sequences to be used. (Bacteria, Archaea, auto; default: $taxonomy). See Details."
     echo "  -b Bit score cutoff for local alignment (default: $bitcutoff)"
     echo "  -i Identity cutoff for local alignment (default: $identcutoff)"
@@ -103,7 +102,7 @@ metaRea=$dir/../dat/meta_rea.tbl
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:sa:k:t:nou:l:oxqkgz:m:ywjf:D:UT:OM:K:A:R:" opt; do
+while getopts "h?p:e:r:i:b:c:v:sa:k:t:nou:l:oxqkgz:m:ywjf:D:UT:OM:K:A:R:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -117,9 +116,6 @@ while getopts "h?p:e:r:d:i:b:c:v:sa:k:t:nou:l:oxqkgz:m:ywjf:D:UT:OM:K:A:R:" opt;
         ;;
     r)
         reaname="$OPTARG"
-        ;;
-    d)
-        database=$OPTARG
         ;;
     v)
         verbose=$OPTARG
