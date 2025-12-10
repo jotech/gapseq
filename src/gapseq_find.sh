@@ -63,6 +63,8 @@ usage()
     echo "  -i Identity cutoff for local alignment (default: $identcutoff)"
     echo "  -c Coverage cutoff for local alignment (default: $covcutoff)"
     echo "  -s Strict candidate reaction handling (do _not_ use pathway completeness, key kenzymes and operon structure to infere if imcomplete pathway could be still present (default: $strictCandidates)"
+    echo "  -a Pathway completeness threshold; in percent (default: $completenessCutoffNoHints)"
+    echo "  -k Pathway completeness threshold for pathways with additional hints (i.e., key enzyme detection); in percent (default: $completenessCutoff)"
     echo "  -u Suffix used for output files (default: pathway keyword)"
     echo "  -n Consider superpathways of metacyc database"
     echo "  -l Select the pathway database (MetaCyc, KEGG, SEED, all; default: $pwyDatabase)"
@@ -75,7 +77,7 @@ usage()
     echo "  -w Use additional sequences derived from gene names (default: $use_gene_seq)"
     echo "  -j Quit if output files already exist (default: $stop_on_files_exist)"
     echo "  -f Path to directory, where output files will be saved (default: current directory)"
-    echo "  -D path to directory, where reference sequence database will be saved (default: $seqdb)"
+    echo "  -D Path to directory, where reference sequence database will be saved (default: $seqdb)"
     echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default: $update_manually)"
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
     echo "  -O Force offline mode (default: $force_offline)"
@@ -101,7 +103,7 @@ metaRea=$dir/../dat/meta_rea.tbl
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
-while getopts "h?p:e:r:d:i:b:c:v:st:nou:l:oxqkgz:m:ywjf:D:UT:OM:K:A:R:" opt; do
+while getopts "h?p:e:r:d:i:b:c:v:sa:k:t:nou:l:oxqkgz:m:ywjf:D:UT:OM:K:A:R:" opt; do
     case "$opt" in
     h|\?)
         usage
@@ -136,6 +138,12 @@ while getopts "h?p:e:r:d:i:b:c:v:st:nou:l:oxqkgz:m:ywjf:D:UT:OM:K:A:R:" opt; do
         ;;
     s)
         strictCandidates=true
+        ;;
+    a)
+        completenessCutoffNoHints=$OPTARG
+        ;;
+    k)
+        completenessCutoff=$OPTARG
         ;;
     u)
         output_suffix=$OPTARG
