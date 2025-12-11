@@ -27,7 +27,6 @@ In addition, reactions of entire pathways can be integrated.
 For example, the photosynthesis pathway could be integrated into E. coli:
 ```
 ./gapseq adapt -a PHOTOALL-PWY -m toy/ecoli.RDS
-Loading model files toy/ecoli.RDS
 ```
 Or removed
 ```
@@ -41,15 +40,15 @@ This is be done by either adding reactions to allow growth under one known speci
 
 By using `gapseq adapt`, a substance can be defined which a model should be able to use. To enable butyrate (cpd00211) uptake for example try the following:
 ```
-./gapseq adapt -m toy/myb71.RDS -w cpd00211:TRUE -c toy/myb71-rxnWeights.RDS -g toy/myb71-rxnXgenes.RDS -b toy/myb71-all-Reactions.tbl
+./gapseq adapt -m toy/myb71.RDS -w cpd00211:TRUE -b toy/myb71-all-Reactions.tbl
 ```
 
 Similarly, the ability to metabolize a substance can also be removed from a model. To remove the usage of glucose use:
 ```
-./gapseq adapt -m toy/myb71.RDS -w cpd00027:FALSE -c toy/myb71-rxnWeights.RDS -g toy/myb71-rxnXgenes.RDS -b toy/myb71-all-Reactions.tbl
+./gapseq adapt -m toy/myb71.RDS -w cpd00027:FALSE -b toy/myb71-all-Reactions.tbl
 ```
 
 Both, enabling and disabling of growth phenotypes can be combined in a single command providing a list of substances with there growth state:
 ```
-./gapseq adapt -m toy/myb71.RDS -w cpd00211:TRUE,cpd00027:FALSE -c toy/myb71-rxnWeights.RDS -g toy/myb71-rxnXgenes.RDS -b toy/myb71-all-Reactions.tbl
+./gapseq adapt -m toy/myb71.RDS -w cpd00211:TRUE,cpd00027:FALSE -b toy/myb71-all-Reactions.tbl
 ```
