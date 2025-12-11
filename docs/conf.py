@@ -31,7 +31,20 @@ extensions = [
         'sphinx_rtd_theme',
         'myst_parser',
         'sphinx_markdown_tables',
+        'sphinx.ext.mathjax',
 ]
+
+myst_enable_extensions = [
+    "dollarmath",   # enables $...$ and $$...$$
+    "amsmath",      # nicer environments like align, etc.
+]
+
+mathjax3_config = {
+    "tex": {
+        "inlineMath": [["$", "$"], ["\\(", "\\)"]],
+        "displayMath": [["$$", "$$"], ["\\[", "\\]"]],
+    }
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
