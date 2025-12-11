@@ -29,10 +29,9 @@ author = 'Johannes Zimmermann and Silvio Waschina'
 # ones.
 extensions = [
         'sphinx_rtd_theme',
+        'myst_parser',
         'recommonmark',
         'sphinx_markdown_tables',
-        'myst_parser',
-        'sphinx.ext.mathjax',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
