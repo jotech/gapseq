@@ -30,7 +30,6 @@ author = 'Johannes Zimmermann and Silvio Waschina'
 extensions = [
         'sphinx_rtd_theme',
         'myst_parser',
-        'recommonmark',
         'sphinx_markdown_tables',
 ]
 
