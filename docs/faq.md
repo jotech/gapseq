@@ -18,12 +18,15 @@ The `gapseq find` output file "[...]-Pathways.tbl" contains a column named 'Comp
 $$
 C = \frac{N_{found}}{N_{pwy} - N_{vague} - N_{spont}}
 $$
-Where, $N_{found}$ is the number of reactions found, $N_{pwy}$ is the total number of reactions in the pathway, $N_{vague}$ is the number of reactions without reference sequences, and $N_{spont}$ is the number of spontaneous reactions in the pathway.
 
-In cases, where the number of vague reactions ($N_{vague}$) accounts for 30% or more of all pathway reactions, the formula is modified to:
+Where, :math:`N_{found}` is the number of reactions found, :math:`N_{pwy}` is the total number of reactions in the pathway, :math:`N_{vague}` is the number of reactions without reference sequences, and $N_{spont}$ is the number of spontaneous reactions in the pathway.
+
+In cases, where the number of vague reactions (:math:`N_{vague}`) accounts for 30% or more of all pathway reactions, the formula is modified to:
+
 $$
 C = \frac{N_{found}}{N_{pwy} - N_{spont}}
 $$
+
 This prevents over-prediction of pathways where the majority of reactions cannot be predicted due to missing reference sequences.
 
 # Which codon table does gapseq use when translating a nucleotide genome?
