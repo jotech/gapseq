@@ -31,6 +31,7 @@ extensions = [
         'sphinx_rtd_theme',
         'recommonmark',
         'sphinx_markdown_tables',
+        'myst_parser',
         'sphinx.ext.mathjax',
 ]
 
