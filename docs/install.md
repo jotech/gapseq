@@ -4,7 +4,7 @@
 
 ```sh
 # Installation of main system dependencies
-sudo apt install ncbi-blast+ git libglpk-dev r-base-core bc curl libcurl4-openssl-dev libssl-dev libsbml5-dev
+sudo apt install ncbi-blast+ git libglpk-dev r-base-core bc curl libcurl4-openssl-dev libssl-dev libsbml5-dev diamond-aligner mmseqs2
 
 # installation of required R-packages
 R -e 'install.packages(c("data.table", "stringr", "getopt", "R.utils", "stringi", "jsonlite", "httr", "pak"))'
@@ -25,6 +25,10 @@ Test your installation with:
 ```
 
 ## Centos/Fedora/RHEL
+
+> [!NOTE]
+> The recommended aligners diamond and mmseqs2 are not installed with the following commands, because these tools are currently not available in the YUM package manager. To use diamond/mmseqs2 with gapseq, please follow the installation instructions here: ([diamond](https://diamond.readthedocs.io/en/latest/Getting-Started/Installation/), [mmseqs2](https://github.com/soedinglab/MMseqs2?tab=readme-ov-file#installation)).
+
 ```sh
 # Installation of main system dependencies
 sudo yum install ncbi-blast+ git glpk-devel hmmer bc libcurl-devel curl openssl-devel libsbml-devel
@@ -51,7 +55,7 @@ Test your installation with:
 Using [homebrew](https://brew.sh). Please note: Some Mac-Users reported difficulties to install gapseq on MacOS using the following commands. The issues are mainly due to some Mac-specific functioning of central programs such as sed, awk, and grep. If you are experiencing issues, we recommend to try to install gapseq in an own conda environment using the steps described [below](#conda).
 ```
 # Installation of main system dependencies
-brew install coreutils binutils git glpk blast r grep bc gzip curl bc brewsci/bio/libsbml
+brew install coreutils binutils git glpk blast r grep bc gzip curl bc brewsci/bio/libsbml diamond mmseqs2
 
 # installation of required R-packages
 R -e 'install.packages(c("data.table", "stringr", "getopt", "R.utils", "stringi", "jsonlite", "httr"))'
