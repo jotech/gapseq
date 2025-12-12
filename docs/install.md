@@ -26,8 +26,8 @@ Test your installation with:
 
 ## Centos/Fedora/RHEL
 
-> [!NOTE]
-> The recommended aligners diamond and mmseqs2 are not installed with the following commands, because these tools are currently not available in the YUM package manager. To use diamond/mmseqs2 with gapseq, please follow the installation instructions here: ([diamond](https://diamond.readthedocs.io/en/latest/Getting-Started/Installation/), [mmseqs2](https://github.com/soedinglab/MMseqs2?tab=readme-ov-file#installation)).
+```{note} The recommended aligners diamond and mmseqs2 are not installed with the following commands, because these tools are currently not available in the YUM package manager. To use diamond/mmseqs2 with gapseq, please follow the installation instructions here: ([diamond](https://diamond.readthedocs.io/en/latest/Getting-Started/Installation/), [mmseqs2](https://github.com/soedinglab/MMseqs2?tab=readme-ov-file#installation)).
+```
 
 ```sh
 # Installation of main system dependencies
