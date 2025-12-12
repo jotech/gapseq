@@ -8,8 +8,17 @@
 # `ec` - Enzyme Commission (EC) number
 # `database` - Target database. "seed" or "vmh" (Support for vmh might be stopped soon)
 #
-getDBhit <- function(rea, reaName, ec, database, n_threads = 1) {
+getDBhit <- function(rea = NULL, reaName = NULL, ec = NULL, database, n_threads = 1) {
   require(parallel)
+  stopifnot(!is.null(rea) || !is.null(reaName) || !is.null(ec))
+  
+  if(is.null(rea))
+    rea <- ""
+  if(is.null(reaName))
+    reaName <- ""
+  if(is.null(ec))
+    ec <- ""
+  
   stopifnot(length(rea) == length(reaName), length(rea) == length(ec))
 
   res <- mclapply(seq(length(rea)), mc.cores = n_threads, FUN = function(i) {
