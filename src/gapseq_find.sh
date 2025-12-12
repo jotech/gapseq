@@ -315,7 +315,7 @@ if [ $input_mode == "nucl" ]; then
     if [ -s "$output_dir/${fastaID}.faa.gz" ]; then
         # Check if contigs of found ORFs matches contig names in nucleotide fasta
         faacont=`zcat $output_dir/${fastaID}.faa.gz | grep "^>" | sed -E 's/^>(.+)_[0-9]+ # .*/\1/' | sort -u`
-        fnacont=`cat $fasta | grep "^>" | sed -E 's/^>([^ ]+).*/\1/' | sort -u`
+        fnacont=`cat $fasta | grep "^>" | sed -E 's/^>([^[:space:]]+).*/\1/' | sort -u`
         reusefaa=true
         for entry in $faacont; do
             if ! echo "$fnacont" | grep -qx "$entry"; then

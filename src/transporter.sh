@@ -71,7 +71,7 @@ while getopts "h?i:b:c:qakm:f::v:T:M:K:A:R:" opt; do
     f)
         output_dir=$OPTARG
         ;;
-    v)  
+    v)
         verbose=$OPTARG
         ;;
     T)
@@ -160,13 +160,13 @@ fastaID="${tmpvar%.*}"
 # Determine if fasta is nucl or prot
 if [ $input_mode == "auto" ]; then
     input_mode=`$dir/./nuclprot.sh $fasta`
-    
+
     if [ $input_mode == "prot" ]; then
         echo "Protein fasta detected."
     else
         echo "Nucleotide fasta detected."
     fi
-    
+
 fi
 
 if [ $input_mode == "nucl" ]; then
@@ -175,7 +175,7 @@ if [ $input_mode == "nucl" ]; then
     if [ -f $output_dir/${fastaID}.faa.gz ]; then
         # Check if contigs of found ORFs matches contig names in nucleotide fasta
         faacont=`zcat $output_dir/${fastaID}.faa.gz | grep "^>" | sed -E 's/^>(.+)_[0-9]+ # .*/\1/' | sort -u`
-        fnacont=`cat $fasta | grep "^>" | sed -E 's/^>([^ ]+).*/\1/' | sort -u`
+        fnacont=`cat $fasta | grep "^>" | sed -E 's/^>([^[:space:]]+).*/\1/' | sort -u`
         reusefaa=true
         for entry in $faacont; do
             if ! echo "$fnacont" | grep -qx "$entry"; then
@@ -190,10 +190,10 @@ if [ $input_mode == "nucl" ]; then
             newtranslate=false
         fi
     fi
-    
+
     if [ $newtranslate == "true" ]; then
         [[ $verbose -ge 1 ]] && echo -n "Translating genomic nucleotide fasta to protein fasta..."
-        $dir/translate_genome.sh -i "$fasta" -o "$fastaID" -K $n_threads 
+        $dir/translate_genome.sh -i "$fasta" -o "$fastaID" -K $n_threads
         fasta="$fastaID.faa"
         transl_table=`cat ${fastaID}_code`
         rm ${fastaID}_code
@@ -233,7 +233,7 @@ grep -Fiwf SUBkey tcdb_all | cut -f1 > TCkey
 grep -Fivf TCkey fasta_header > fasta_header.noTCkey
 grep -Fivf SUBkey fasta_header.noTCkey > fasta_header.noKey
 comm -23 fasta_header fasta_header.noKey > fasta_header.small
-awk 'BEGIN{while((getline<"fasta_header.small")>0)l[$1]=1}/^>/{f=l[$1]}f' all.fasta > small.fasta 
+awk 'BEGIN{while((getline<"fasta_header.small")>0)l[$1]=1}/^>/{f=l[$1]}f' all.fasta > small.fasta
 
 #----------------------#
 # Calculate Alignments #
@@ -271,7 +271,7 @@ if [ -s small.fasta ]; then
           -c 0.$covcutoff >> aligner.log 2>&1
         mmseqs convertalis queryDB targetDB resultDB out.tsv \
           --format-output "$mmseqs_format" >> aligner.log 2>&1
-          
+
         sed -Ei 's/^([^ ]+) [^\t]+/\1/' out.tsv # get the fastq sequence identifier from query header (everything between the leading ">" and the first space).
     fi
 else
@@ -286,7 +286,7 @@ Rscript $dir/analyse_alignments_transport.R $bitcutoff $identcutoff $nouse_alter
 
 
 #-------------------------#
-# Exporting results table # 
+# Exporting results table #
 #-------------------------#
 
 # add gapseq version and sequence database status to table comments head
