@@ -2,7 +2,7 @@ library(data.table)
 library(stringr)
 
 media_check <- function(media.file, mod.orig, seed_x_mets){
-  media   <- fread(media.file, stringsAsFactors = F, header = T, col.names = c("compounds", "name", "maxFlux"))
+  media   <- fread(media.file, stringsAsFactors = F, header = T, select=1:3, col.names = c("compounds", "name", "maxFlux"))
   bm.idx  <- grep("bio1", mod.orig@react_id)
 
   #

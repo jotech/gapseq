@@ -4,7 +4,7 @@ constrain.model <- function(mod, media.file=NA, media=NA, scaling.fac = 1, ub = 
   if( !all(is.na(media)) & !all(is.na(media.file)))
     warning("Media file and media data frame provided. Data frame will be used.")
   if( all(is.na(media)) )
-    media <- fread(media.file, stringsAsFactors = F, header = T, col.names = c("compounds", "name", "maxFlux"))
+    media <- fread(media.file, stringsAsFactors = F, header = T, select=1:3, col.names = c("compounds", "name", "maxFlux"))
   if( is.na(media.file) ) media <- copy(media) # copy data.table before changing it
   
   ex.rxns <- grep("^EX_",mod@react_id, fixed = F)
