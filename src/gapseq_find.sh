@@ -631,8 +631,13 @@ Rscript $dir/analyse_alignments.R $bitcutoff $identcutoff $strictCandidates $ide
 
 # add gapseq version and sequence database status to table comments head
 gapseq_version=$($dir/.././gapseq -v | head -n 1)
-seqdb_version=`md5sum $seqdb/$taxonomy/rev/sequences.tar.gz | cut -c1-7`
-seqdb_date=$(stat -c %y $seqdb/$taxonomy/rev/sequences.tar.gz | cut -c1-10)
+seqdb_version=custom
+seqdb_date=NA
+if [ -f "$seqpath/version_seqDB.json" ]; then
+    seqdb_version=`Rscript $dir/parse_seqDBjson.R "$seqdb/$taxonomy/version_seqDB.json" version`
+    seqdb_date=`Rscript $dir/parse_seqDBjson.R "$seqdb/$taxonomy/version_seqDB.json" date`
+fi
+
 nORFs=$(grep -c "^>" "$fasta")
 nORFsMapped=$(cat nmappedORFs.tmp)
 ORFcov=`echo "scale=2; $nORFsMapped*100/$nORFs" | bc`
@@ -648,10 +653,10 @@ genome_info="genome_format=${input_mode};taxonomy=${taxonomy};ORF_coverage=${ORF
 [[ $input_mode == "nucl" ]] && [[ $newtranslate == "true" ]] && genome_info="${genome_info};translation_table=${transl_table}"
 
 sed -i "1s/^/# $gapseq_version\n/" output.tbl
-sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" output.tbl
+sed -i "2s/^/# Sequence DB version: $seqdb_version ($taxonomy, $seqdb_date)\n/" output.tbl
 sed -i "3s/^/# $genome_info\n/" output.tbl
 sed -i "1s/^/# $gapseq_version\n/" output_pwy.tbl
-sed -i "2s/^/# Sequence DB md5sum: $seqdb_version ($seqdb_date, $taxonomy)\n/" output_pwy.tbl
+sed -i "2s/^/# Sequence DB version: $seqdb_version ($taxonomy, $seqdb_date)\n/" output_pwy.tbl
 sed -i "3s/^/# $genome_info\n/" output_pwy.tbl
 
 cp aligner.log $output_dir/${fastaID}-$output_suffix-find_aligner.log

@@ -148,7 +148,7 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
 
   # add gapseq version info to model object
   gapseq_version <- system(paste0(script.dir,"/.././gapseq -v"), intern = T)[1]
-  blast.header <- str_match(readLines(blast.res, n=2),"# Sequence DB md5sum: .*")
+  blast.header <- str_match(readLines(blast.res, n=2),"# Sequence DB version: .*")
   if( any(!is.na(blast.header)) ){
       mod@mod_desc <- paste0(gapseq_version,"; ", na.omit(gsub("# ","",blast.header)))
   }else mod@mod_desc <- gapseq_version
