@@ -134,14 +134,12 @@ setkey(metaGenes, "rxn")
 
 # md5sums of reaction names
 rnuniq <- unique(reaec$reaName)
-temp_file <- tempfile()
-writeLines(rnuniq, temp_file, useBytes = TRUE)
-md5_hashes <- system(sprintf(("while IFS= read -r line; do
-                  echo -n \"$line\" | md5sum
-                done < %s"), temp_file), intern = TRUE)
-md5_hashes <- sub(" .*$","", md5_hashes)
+md5_hashes <- vapply(
+  rnuniq,
+  function(x) tools::md5sum(bytes = charToRaw(x)),
+  character(1)
+)
 names(md5_hashes) <- rnuniq
-unlink(temp_file) # Clean up the temp file
 rm(rnuniq)
 
 identifySeqFiles <- function(reaID, reaName, ecs, altecs, spont) {
