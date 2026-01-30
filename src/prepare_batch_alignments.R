@@ -134,11 +134,16 @@ setkey(metaGenes, "rxn")
 
 # md5sums of reaction names
 rnuniq <- unique(reaec$reaName)
+tf <- tempfile()
 md5_hashes <- vapply(
   rnuniq,
-  function(x) tools::md5sum(bytes = charToRaw(x)),
+  function(x) {
+    writeBin(charToRaw(x), tf)
+    tools::md5sum(tf)
+  },
   character(1)
 )
+unlink(tf)
 names(md5_hashes) <- rnuniq
 rm(rnuniq)
 
