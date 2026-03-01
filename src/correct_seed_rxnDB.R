@@ -243,3 +243,13 @@ if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
 }
 
 correct_seed_rxnDB(script.path = script.dir)
+
+# test for futile cycles in udpated database
+
+source(paste0(script.dir,"/construct_full_model.R"))
+
+cat("Testing for futile cycles... ")
+cat(futile_cycle_test(script.dir),"\n")
+cat("Testing for futile cycles (high H2)... ")
+cat(futile_cycle_test(script.dir, env = "highH2"),"\n")
+

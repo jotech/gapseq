@@ -202,7 +202,7 @@ futile_cycle_test <- function(script.dir, env = "") {
   dt[, id.backup := NULL]
   dt[]
   
-  fwrite(dt, paste0(script.dir,"/../Futile_cycle.csv"))
+  fwrite(dt, paste0(script.dir,"/../Futile_cycle",env,".csv"))
   
   return(paste0("At least one futile cycle found. See file: Futile_cycle.csv"))
 }
