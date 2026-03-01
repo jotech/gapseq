@@ -2779,3 +2779,9 @@ rxn23233		TRUE		[SW] Duplicate reaction to rxn08277
 rxn90146	>		-1:cpd00703:0:0:"Indoleacetate";-1:cpd00067:0:0:"H+";1:cpd05228:0:0:"Skatole";1:cpd00011:0:0:"CO2"	[SW] Production of Skatole has been described by several gut bacteria. Reaction was not part of DB before.	https://www.rhea-db.org/rhea/59216		Indoleacetate decarboxylase	Indoleacetate decarboxylase	
 rxn90147	=		-1:cpd05228:1:0:"Skatole";1:cpd05228:0:0:"Skatole"	[SW] Transport/diffusion reaction for skatole			skatole diffusion	skatole diffusion	
 rxn07441	=			[SW] Reaction should be bidirectional. Glutamate-consuming direction required for Lysine biosynthesis in some Archaea and Bacteria	https://www.rhea-db.org/rhea/23988				
+									
+rxn60283	>		-1:cpd00002:0:0:"ATP";-1:cpd00033:0:0:"Glycine";-1:cpd04063:0:0:"Clavaminate";1:cpd00008:0:0:"ADP";1:cpd00009:0:0:"Phosphate";1:cpd00067:0:0:"H+";1:cpd47127:0:0:"N-glycylclavaminate"	[SW] Reaction is part of clavulanate biosynthesis	https://doi.org/10.1074/jbc.m507711200		clavaminate-glycine ligase	clavaminate-glycine ligase	
+rxn57352	>		-1:cpd00022:0:0:"Acetyl-CoA";-1:cpd47127:0:0:"N-glycylclavaminate";1:cpd47606:0:0:"N-acetylglycylclavaminate";1:cpd00010:0:0:"CoA";1:cpd00067:0:0:"H+"	[SW] Reaction is part of clavulanate biosynthesis	https://journals.asm.org/doi/10.1128/aem.01701-18		N-glycylclavaminate N-acetyltransferase	N-glycylclavaminate N-acetyltransferase	
+rxn18865				[SW] ABC transport of Clavulanate			Clavulanate-exporting ATPase	Clavulanate-exporting ATPase	TRUE
+rxn90148	=		-1:cpd04065:0:0:"Clavulanate";-1:cpd00067:0:0:"H+";1:cpd04065:1:0:"Clavulanate";1:cpd00067:1:0:"H+"	[SW] Cross-membrane transport of Clavulanate			Clavulanate transport	Clavulanate transport	
+rxn90149	=		-1:cpd04063:0:0:"Clavaminate";1:cpd04063:1:0:"Clavaminate"	[SW] Cross-membrane transport of Clavaminate			Clavaminate transport	Clavaminate transport	
