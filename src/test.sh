@@ -134,5 +134,6 @@ echo "    mmseqs `check_cmd mmseqs "version"`"
 
 echo "(Nucleotide genome to protein genome translation)"
 echo "    `check_cmd pyrodigal "--version "`"
-echo ""
 
+Rscript -e 'opt.packages <- c("cobrarCPLEX"); avail.packages <- installed.packages(); i=0; for( pkg in opt.packages ){; idx <- match(pkg, avail.packages[,"Package"]); if( ! is.na(idx) ){; cat(pkg, avail.packages[idx,"Version"], "\n"); }else{; cat(pkg, "NOT FOUND", "\n") }; }'
+echo ""
