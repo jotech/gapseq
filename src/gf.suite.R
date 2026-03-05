@@ -17,7 +17,8 @@ spec <- matrix(c(
   'relaxed.constraints', 'r', 2, "logical", "Save final model as unconstraint network (i.e. all exchange reactions are open). Default: FALSE",
   'environment', 'e', 2, "character", "Adjusting reaction directions according to specific environmental conditions. See documentation for details. CAUTION: experimental option!",
   'write.cs.ferm', 'w', 2, "logical", "Write a list with found carbon sources and fermentation products",
-  'min.obj.val', 'k', 2, "numeric", "Minimum growth rate that should be achieved by gap-filling. Default: 0.01"
+  'min.obj.val', 'k', 2, "numeric", "Minimum growth rate that should be achieved by gap-filling. Default: 0.01",
+  'solver', 'z', 2, "character", "External solver for linear programming. Can be 'cplex' or 'glpk'. (if not specified it uses cplex if avaiable otherwise glpk)"
 ), ncol = 5, byrow = T)
 
 opt <- getopt(spec)
@@ -46,14 +47,6 @@ suppressMessages(library(stringr))
 suppressMessages(library(methods))
 suppressMessages(library(tools))
 
-# select solver
-if( "cobrarCPLEX" %in% rownames(installed.packages()) ){
-  COBRAR_SETTINGS("SOLVER","cplex"); stat <- c(1,2)
-}else{
-  COBRAR_SETTINGS("SOLVER","glpk"); stat <- c(2,5)
-}
-# COBRAR_SETTINGS("SOLVER","glpk"); stat <- c(2,5)
-cat("LP solver:",COBRAR_SETTINGS("SOLVER"),"\n")
 
 # Setting defaults if required
 if ( is.null(opt$target.metabolite) ) { opt$target.metabolite = "cpd11416" }
@@ -69,6 +62,7 @@ if ( is.null(opt$relaxed.constraints) ) { opt$relaxed.constraints = F }
 if ( is.null(opt$environment) ) { opt$environment = "" }
 if ( is.null(opt$write.cs.ferm) ) { opt$write.cs.ferm = F }
 if ( is.null(opt$min.obj.val) ) { opt$min.obj.val = 0.01 }
+if ( is.null(opt$solver) ) { opt$solver = "" }
 
 # deprecation notice for flag '-o'
 if(!is.null(opt$depr.output.dir)) {
@@ -91,6 +85,18 @@ relaxed.constraints <- opt$relaxed.constraints
 env                 <- opt$environment
 write.cs.ferm       <- opt$write.cs.ferm
 min.obj.val         <- opt$min.obj.val
+solver              <- opt$solver
+
+# select solver
+if(!solver %in% c("","glpk","cplex"))
+   warning("Unknown solver selected, falling back to default")
+if( "cobrarCPLEX" %in% rownames(installed.packages()) & solver != "glpk" ){
+  COBRAR_SETTINGS("SOLVER","cplex"); stat <- c(1,2)
+}else{
+  COBRAR_SETTINGS("SOLVER","glpk"); stat <- c(2,5)
+}
+# COBRAR_SETTINGS("SOLVER","glpk"); stat <- c(2,5)
+cat("LP solver:",COBRAR_SETTINGS("SOLVER"),"\n")
 
 # Parameters:
 dummy.weight <- 100
