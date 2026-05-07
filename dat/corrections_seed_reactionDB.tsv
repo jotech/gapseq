@@ -2785,3 +2785,11 @@ rxn57352	>		-1:cpd00022:0:0:"Acetyl-CoA";-1:cpd47127:0:0:"N-glycylclavaminate";1
 rxn18865				[SW] ABC transport of Clavulanate			Clavulanate-exporting ATPase	Clavulanate-exporting ATPase	TRUE
 rxn90148	=		-1:cpd04065:0:0:"Clavulanate";-1:cpd00067:0:0:"H+";1:cpd04065:1:0:"Clavulanate";1:cpd00067:1:0:"H+"	[SW] Cross-membrane transport of Clavulanate			Clavulanate transport	Clavulanate transport	
 rxn90149	=		-1:cpd04063:0:0:"Clavaminate";1:cpd04063:1:0:"Clavaminate"	[SW] Cross-membrane transport of Clavaminate			Clavaminate transport	Clavaminate transport	
+									
+rxn26013		TRUE		[SW] Duplicate reaction to rxn00474					
+rxn26100		TRUE		[SW] Duplicate reaction to rxn00420					
+rxn29975		TRUE		[SW] Duplicate reaction to rxn00420					
+rxn20630		TRUE		[SW] Duplicate reaction to rxn02914					
+rxn43399	>		-1:cpd00002:0:0:"ATP";-1:cpd00054:0:0:"L-Serine";1:cpd00008:0:0:"ADP";1:cpd00067:0:0:"H+";1:cpd00738:0:0:"phosphoserine"	[SW] New Reaction for phosphoserine biosynthesis	https://www.rhea-db.org/rhea/59112		L-serine kinase (ATP)	L-serine kinase (ATP)	
+rxn11963		TRUE		[SW] Duplicate reaction to rxn06214					
+rxn29230				[SW] Cross-membrane transport of p-cresol			p-cresol diffusion	p-cresol diffusion	TRUE
