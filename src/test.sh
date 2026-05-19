@@ -79,7 +79,6 @@ check_cmd grep "-V | head -n 1"
 check_cmd blastp "-version | head -n 1"
 check_cmd R "--version | head -n 1"
 check_cmd Rscript "--version | head -n 1" false
-check_cmd git "--version"
 check_cmd hmmsearch "-h | grep \"# HMMER\" | cut -c 3-"
 check_cmd bc "-v | head -n 1"
 echo -e "\nMissing dependencies: $i\n\n"

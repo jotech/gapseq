@@ -88,6 +88,13 @@ Using conda, you can either install a specific release of gapseq or the latest d
 Thanks to @cmkobel, a gapseq conda package is available for linux and osx platforms:
 ```sh
 conda create -c conda-forge -c bioconda -n gapseq gapseq
+
+# activate gapseq environment
+conda activate gapseq
+
+# Download reference sequence database
+gapseq update-sequences -t Bacteria
+gapseq update-sequences -t Archaea
 ```
 
 ### Development version using conda

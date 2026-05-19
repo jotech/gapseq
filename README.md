@@ -31,9 +31,14 @@ Detailed information on [installation and troubleshooting](https://github.com/jo
 Gapseq has a [bioconda](https://anaconda.org/bioconda/gapseq) package. You must have conda/miniconda/[miniforge](https://github.com/conda-forge/miniforge#install) installed already.
 ```bash
 conda create -c conda-forge -c bioconda -n gapseq gapseq
-```
 
-Hint: _When installing with bioconda, the gapseq binary will reside in your PATH, so you will not have to prepend "./" in front of gapseq. (Use "gapseq" instead of "./gapseq")._
+# activate gapseq environment
+conda activate gapseq
+
+# Download reference sequence database
+gapseq update-sequences -t Bacteria
+gapseq update-sequences -t Archaea
+```
 
 
 ## Quickstart
@@ -41,11 +46,11 @@ For detailed use cases and full tutorials, see the [documentation](https://gapse
 
 Prediction of network candidate reactions, building of a draft model and gap filling:
 ```
-./gapseq doall toy/myb71.faa.gz
+gapseq doall toy/myb71.faa.gz
 ```
 Do the same but with a defined medium for gap filling:
 ```
-./gapseq doall -m dat/media/MM_glu.csv toy/ecoli.faa.gz
+gapseq doall -m dat/media/MM_glu.csv toy/ecoli.faa.gz
 ```
 
 
