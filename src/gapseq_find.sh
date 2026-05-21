@@ -462,7 +462,8 @@ fi
 
 
 # sequence directory
-export LC_NUMERIC="en_US.UTF-8"
+export LC_NUMERIC="C"
+export TZ=UTC
 seqpath=$seqdb/$taxonomy
 mkdir -p $seqpath/rev $seqpath/unrev $seqpath/rxn
 seqpath_user=$dir/../dat/seq/$taxonomy/user
@@ -668,6 +669,5 @@ cp output_pwy.tbl $output_dir/${fastaID}-$output_suffix-Pathways.tbl
 [[ $verbose -ge 1 ]] && echo "ORF coverage: $ORFcov %"
 
 
-ps -q $$ -o %cpu,%mem,args
 end_time=`date +%s`
 echo Running time: `expr $end_time - $start_time` s.

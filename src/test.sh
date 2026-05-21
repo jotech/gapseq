@@ -6,9 +6,6 @@ curdir=$(pwd)
 path=$(readlink -f "$0")
 dir=$(dirname "$path")
 
-# get path to ldconfig (missing in e.g. debian)
-ldconfig2=$(whereis -b ldconfig | cut -f2 -d " ")
-
 # temporary working directory
 cd $(mktemp -d)
 
@@ -45,33 +42,9 @@ check_cmd(){
     fi
 }
 
-# file-based library check for mac os
-get_lib_ver_macos() { otool -L "$1" 2>/dev/null | sed -n '2p' | sed -E 's/.*current version ([^,)]+).*/\1/'; }
-
-check_lib_macos() {
-    libname=$1
-    for d in /usr/lib /usr/local/lib /opt/homebrew/lib $CONDA_PREFIX/lib ${LD_LIBRARY_PATH//:/ }; do
-        if [[ -d "$d" ]]; then
-            libfile=$(find -L "$d" -name "${libname}.dylib" -type f -maxdepth 1 2>/dev/null | head -n 1)
-            if [[ -n "$libfile" ]]; then
-                version=$(get_lib_ver_macos "$libfile")
-                echo "$libname ${version:-found} ($libfile)"
-                return 0
-            fi
-        fi
-    done
-    echo "$libname NOT FOUND"
-    i=$((i+1))
-}
-
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    check_lib_macos "libsbml"
-    check_lib_macos "libglpk"
     check_cmd awk "--version | head -n 1" # one true awk (macos/bsd)
 else
-    check_cmd $ldconfig2 "-V | head -n 1"
-    check_cmd $ldconfig2 "-N -v $(sed 's/:/ /g' <<< $LD_LIBRARY_PATH:$CONDA_PREFIX/lib) 2>/dev/null | grep sbml.so" true libsbml
-    check_cmd $ldconfig2 "-N -v $(sed 's/:/ /g' <<< $LD_LIBRARY_PATH:$CONDA_PREFIX/lib) 2>/dev/null | grep glpk.so" true libglpk
     check_cmd awk "-W version 2>/dev/null | head -n 1" # works with both GNU awk and mawk
 fi
 check_cmd sed "--version | head -n 1"
@@ -86,7 +59,42 @@ echo -e "\nMissing dependencies: $i\n\n"
 echo "#####################"
 echo "#Checking R packages#"
 echo "#####################"
-Rscript -e 'needed.packages <- c("data.table", "stringr", "cobrar", "getopt", "R.utils", "stringi", "BiocManager", "Biostrings", "jsonlite", "httr"); avail.packages <- installed.packages(); i=0; for( pkg in needed.packages ){; idx <- match(pkg, avail.packages[,"Package"]); if( ! is.na(idx) ){; cat(pkg, avail.packages[idx,"Version"], "\n"); }else{; cat(pkg, "NOT FOUND", "\n"); i=i+1; }; }; cat("\nMissing R packages: ", i, "\n\n\n")'
+Rscript - <<'EOF'
+needed.packages <- c(
+    "data.table",
+    "stringr",
+    "cobrar",
+    "getopt",
+    "R.utils",
+    "stringi",
+    "BiocManager",
+    "Biostrings",
+    "jsonlite",
+    "httr"
+)
+
+avail.packages <- installed.packages()
+
+i <- 0
+for (pkg in needed.packages) {
+    idx <- match(pkg, avail.packages[, "Package"])
+    if (!is.na(idx)) {
+        if(pkg != "cobrar") {
+            cat(pkg, avail.packages[idx, "Version"], "\n")
+        } else {
+            cat(pkg, avail.packages[idx, "Version"], "(",
+                "libsbml", cobrar:::getSBMLVersion(), "and",
+                "glpk", cobrar:::getGLPKVersion(),
+                ")\n")
+        }
+    } else {
+        cat(pkg, "NOT FOUND", "\n")
+        i <- i + 1
+    }
+}
+cat("\nMissing R packages:", i, "\n\n")
+EOF
+
 Rscript -e 'if( packageVersion("cobrar") < "0.1.2" ) cat("WRONG cobrar version (>0.1.2 needed)\n\n\n")'
 
 echo "##############################"
