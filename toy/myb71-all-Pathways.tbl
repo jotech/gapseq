@@ -1,6 +1,6 @@
-# gapseq version: 2.0.0 e7b7f876
-# Sequence DB version: 1.4 (Bacteria, 2025-12-01)
-# genome_format=prot;taxonomy=Bacteria;ORF_coverage=21.57;gram=neg
+# gapseq version: 2.1.0 0779b300
+# Sequence DB version: 1.5 (Bacteria, 2026-05-29)
+# genome_format=prot;taxonomy=Bacteria;ORF_coverage=21.49;gram=neg
 ID	Name	Prediction	Completeness	Status	NrReaction	NrSpontaneous	NrVague	NrKeyReaction	NrReactionFound	NrKeyReactionFound	ReactionsFound	SpontaneousReactions	KeyReactions
 12DICHLORETHDEG-PWY	1,2-dichloroethane degradation	FALSE	50		4	0	0	1	2	0	ALDXANAU-RXN DHLBXANAU-RXN		DHLAXANAU-RXN
 14DICHLORBENZDEG-PWY	1,4-dichlorobenzene degradation	FALSE	14.2857142857143		9	2	0	2	1	0	MALEYLACETATE-REDUCTASE-RXN	RXN-18361 RXN-18362	CHLOROBENDDH-RXN DIOXYXANFL-RXN
@@ -212,7 +212,7 @@ P241-PWY	coenzyme B biosynthesis	FALSE	0		16	1	8	0	0	0		RXN3O-1983
 P261-PWY	coenzyme M biosynthesis I	FALSE	0		7	0	3	0	0	0			
 P282-PWY	nitrite oxidation	TRUE	100	full	1	0	0	0	1	0	R247-RXN		
 P283-PWY	hydrogen oxidation I (aerobic)	FALSE	0		1	0	0	0	0	0			
-P3-PWY	gallate degradation III (anaerobic)	FALSE	50		11	0	1	0	5	0	ACETATEKIN-RXN PHOSACETYLTRANS-RXN R11-RXN R8-RXN RXN-11667		
+P3-PWY	gallate degradation III (anaerobic)	FALSE	55.5555555555556		11	0	2	0	5	0	ACETATEKIN-RXN PHOSACETYLTRANS-RXN R11-RXN R8-RXN RXN-11667		
 P301-PWY	galena oxidation	FALSE	0		1	0	1	0	0	0			
 P302-PWY	L-sorbose degradation	FALSE	0		2	0	0	1	0	0			R262-RXN
 P303-PWY	ammonia oxidation II (anaerobic)	FALSE	33.3333333333333		3	0	0	0	1	0	NITRITE-REDUCTASE-CYTOCHROME-RXN		
@@ -577,7 +577,7 @@ PWY-5946	&alpha;-carotene biosynthesis	FALSE	0		2	0	1	0	0	0
 PWY-5947	lutein biosynthesis	FALSE	0		3	0	1	0	0	0			
 PWY-5950	geosmin biosynthesis	FALSE	0		3	0	0	0	0	0			
 PWY-5951	(R,R)-butanediol biosynthesis	FALSE	0		1	0	0	0	0	0			
-PWY-5963	molybdenum cofactor sulfulylation (eukaryotes)	TRUE	100	full	1	0	0	0	1	0	RXN-8351		
+PWY-5963	molybdenum cofactor sulfulylation (eukaryotes)	FALSE	0		1	0	0	0	0	0			
 PWY-5964	guanylyl molybdenum cofactor biosynthesis	TRUE	100	full	1	0	0	0	1	0	RXN0-262		
 PWY-5971	palmitate biosynthesis II (type II fatty acid synthase)	TRUE	96.7741935483871	threshold	31	0	0	1	30	1	3.1.2.21-RXN 4.2.1.58-RXN 4.2.1.59-RXN 4.2.1.61-RXN RXN-16393 RXN-9514 RXN-9516 RXN-9518 RXN-9520 RXN-9523 RXN-9524 RXN-9527 RXN-9528 RXN-9531 RXN-9532 RXN-9533 RXN-9535 RXN-9536 RXN-9537 RXN-9539 RXN-9540 RXN-9623 RXN-9655 RXN-9657 RXN-9658 RXN-9659 RXN-9660 RXN-9661 RXN-9662 RXN-9663		RXN-9657
 PWY-5973	cis-vaccenate biosynthesis	TRUE	80	threshold	5	0	0	0	4	0	2.3.1.179-RXN RXN-9556 RXN-9557 RXN-9558		
@@ -872,7 +872,7 @@ PWY-6789	(1,3)-&beta;-D-xylan degradation	FALSE	0		2	0	0	0	0	0
 PWY-6790	L-arabinan degradation	FALSE	0		2	0	2	0	0	0			
 PWY-6795	diacylglyceryl-N,N,N-trimethylhomoserine biosynthesis	FALSE	50		2	0	0	0	1	0	RXN-12347		
 PWY-6805	cellulose degradation I (cellulosome)	FALSE	0		2	0	2	0	0	0			
-PWY-6806	carotenoid cleavage	FALSE	0		11	0	6	0	0	0			
+PWY-6806	carotenoid cleavage	FALSE	0		11	0	11	0	0	0			
 PWY-6808	dTDP-&alpha;-D-forosamine biosynthesis	FALSE	25		9	1	0	1	2	0	DTDPGLUCDEHYDRAT-RXN DTDPGLUCOSEPP-RXN	RXN-12943	RXN-12408
 PWY-681	dibenzothiophene desulfurization	FALSE	0		5	0	0	0	0	0			
 PWY-6813	glucuronoarabinoxylan degradation	FALSE	0		1	0	1	0	0	0			
@@ -949,9 +949,9 @@ PWY-6989	(S)-camphor degradation	FALSE	0		8	2	3	0	0	0		R547-RXN RXN-13044
 PWY-6992	1,5-anhydrofructose degradation	FALSE	60		5	0	0	1	3	1	1.1.1.292-RXN MANNPISOM-RXN PGLUCISOM-RXN		1.1.1.292-RXN
 PWY-6993	nicotine degradation II (pyrrolidine pathway)	FALSE	22.2222222222222		11	1	1	0	2	0	RXN-13089 SUCCSEMIALDDEHYDROG-RXN	RXN-13077	
 PWY-6994	L-pyrrolysine biosynthesis	FALSE	0		3	0	2	0	0	0			
-PWY-6995	5-hydroxymethylfurfural degradation	FALSE	71.4285714285714		10	2	1	0	5	0	2-FUROATE--COA-LIGASE-RXN RXN-13090 RXN-13091 RXN-13092 RXN-13093	RXN-15852 RXN-15853	
+PWY-6995	5-hydroxymethylfurfural degradation	FALSE	57.1428571428571		10	2	1	0	4	0	RXN-13090 RXN-13091 RXN-13092 RXN-13093	RXN-15852 RXN-15853	
 PWY-6996	daidzin and daidzein degradation	FALSE	0		5	0	2	0	0	0			
-PWY-6997	furfural degradation	FALSE	20		8	3	2	0	1	0	2-FUROATE--COA-LIGASE-RXN	RXN-13095 RXN-13097 RXN-15854	
+PWY-6997	furfural degradation	FALSE	0		8	3	2	0	0	0		RXN-13095 RXN-13097 RXN-15854	
 PWY-6998	CDP-D-arabitol biosynthesis	FALSE	0		2	0	0	0	0	0			
 PWY-6999	theophylline degradation	FALSE	11.1111111111111		9	0	3	0	1	0	XANTHINE-OXIDASE-RXN		
 PWY-7002	4-hydroxyacetophenone degradation	FALSE	40		5	0	0	1	2	0	1.2.1.61-RXN MALEYLACETATE-REDUCTASE-RXN		RXN-13129
@@ -1039,7 +1039,7 @@ PWY-722	nicotinate degradation I	FALSE	0		6	0	0	0	0	0
 PWY-7220	adenosine deoxyribonucleotides de novo biosynthesis II	FALSE	75		4	0	0	2	3	1	ADPREDUCT-RXN DADPKIN-RXN RXN0-747		RXN0-745 RXN0-747
 PWY-7221	guanosine ribonucleotides de novo biosynthesis	TRUE	100	full	4	0	0	0	4	0	GDPKIN-RXN GMP-SYN-GLUT-RXN GUANYL-KIN-RXN IMP-DEHYDROG-RXN		
 PWY-7222	guanosine deoxyribonucleotides de novo biosynthesis II	FALSE	75		4	0	0	2	3	1	DGDPKIN-RXN GDPREDUCT-RXN RXN0-748		RXN0-746 RXN0-748
-PWY-7224	purine deoxyribonucleosides salvage	FALSE	66.6666666666667		6	0	0	0	4	0	DADPKIN-RXN DEOXYADENYLATE-KINASE-RXN DGDPKIN-RXN GMKALT-RXN		
+PWY-7224	purine deoxyribonucleosides salvage	FALSE	33.3333333333333		6	0	0	0	2	0	DADPKIN-RXN DGDPKIN-RXN		
 PWY-7226	guanosine deoxyribonucleotides de novo biosynthesis I	TRUE	100	full	2	0	0	0	2	0	DGDPKIN-RXN GDPREDUCT-RXN		
 PWY-7227	adenosine deoxyribonucleotides de novo biosynthesis I	TRUE	100	full	2	0	0	0	2	0	ADPREDUCT-RXN DADPKIN-RXN		
 PWY-7236	mycocyclosin biosynthesis	FALSE	0		2	0	0	0	0	0			
@@ -1308,7 +1308,7 @@ PWY-7823	chlorzoxazone degradation	FALSE	0		2	1	0	0	0	0		RXN-18091
 PWY-7825	juglone degradation	FALSE	0		3	0	3	0	0	0			
 PWY-7828	cyclobis-(1&rarr;6)-&alpha;-nigerosyl degradation	FALSE	0		3	0	0	0	0	0			
 PWY-7833	biosynthesis of Lewis epitopes (H. pylori)	FALSE	0		9	0	1	0	0	0			
-PWY-7842	UDP-yelosamine biosynthesis	FALSE	33.3333333333333		3	0	1	0	1	0	RXN-13252		
+PWY-7842	UDP-yelosamine biosynthesis	FALSE	33.3333333333333		3	0	0	0	1	0	RXN-13252		
 PWY-7843	heme degradation IV	TRUE	100	full	1	0	0	0	1	0	RXN-17522		
 PWY-7844	heme degradation III	FALSE	0		2	0	0	0	0	0			
 PWY-7845	heme degradation II	FALSE	0		1	0	0	0	0	0			
@@ -1331,7 +1331,7 @@ PWY-7866	coenzyme B/coenzyme M regeneration III (coenzyme F420-dependent)	FALSE	
 PWY-7867	coenzyme B/coenzyme M regeneration IV (H2-dependent)	FALSE	0		1	0	1	0	0	0			
 PWY-7868	coenzyme B/coenzyme M regeneration V (formate-dependent)	FALSE	0		1	0	1	0	0	0			
 PWY-7869	cis-alkene biosynthesis	FALSE	0		4	0	0	0	0	0			
-PWY-7870	L-cysteine biosynthesis VII (from S-sulfo-L-cysteine)	TRUE	66.6666666666667	keyenzyme	4	1	0	1	2	1	SERINE-O-ACETTRAN-RXN SULFOCYS-RXN	PRODISULFREDUCT-A-RXN	SULFOCYS-RXN
+PWY-7870	L-cysteine biosynthesis VII (from S-sulfo-L-cysteine)	FALSE	33.3333333333333		4	1	0	1	1	0	SERINE-O-ACETTRAN-RXN	PRODISULFREDUCT-A-RXN	SULFOCYS-RXN
 PWY-7871	D-threonate degradation	FALSE	33.3333333333333		3	0	0	0	1	0	RXN-18599		
 PWY-7872	D-erythronate degradation I	FALSE	33.3333333333333		3	0	0	0	1	0	RXN-18598		
 PWY-7873	D-erythronate degradation II	FALSE	50		4	0	0	0	2	0	RXN-18591 RXN-18593		

@@ -1,5 +1,5 @@
-# gapseq version: 2.0.0 e7b7f876
-# Sequence DB version: 1.4 (Bacteria, 2025-12-01)
+# gapseq version: 2.1.0 0779b300
+# Sequence DB version: 1.5 (Bacteria, 2026-05-29)
 # genome_format=prot;taxonomy=Bacteria;ORF_coverage=30.61;gram=neg
 ID	Name	Prediction	Completeness	Status	NrReaction	NrSpontaneous	NrVague	NrKeyReaction	NrReactionFound	NrKeyReactionFound	ReactionsFound	SpontaneousReactions	KeyReactions
 12DICHLORETHDEG-PWY	1,2-dichloroethane degradation	FALSE	25		4	0	0	1	1	0	ALDXANAU-RXN		DHLAXANAU-RXN
@@ -33,7 +33,7 @@ ARG-PRO-PWY	L-arginine degradation VI (arginase 2 pathway)	FALSE	66.666666666666
 ARGASEDEG-PWY	L-arginine degradation I (arginase pathway)	FALSE	66.6666666666667		3	0	0	0	2	0	ORNITHINE-GLU-AMINOTRANSFERASE-RXN RXN-14116		
 ARGDEG-III-PWY	L-arginine degradation IV (arginine decarboxylase/agmatine deiminase pathway)	FALSE	33.3333333333333		3	0	0	0	1	0	ARGDECARBOX-RXN		
 ARGDEG-IV-PWY	L-arginine degradation VIII (arginine oxidase pathway)	FALSE	75		4	0	0	1	3	0	1.2.1.54-RXN 4.1.1.75-RXN GUANIDINOBUTYRASE-RXN		ARG-OXIDATION-RXN
-ARGDEG-V-PWY	L-arginine degradation X (arginine monooxygenase pathway)	TRUE	66.6666666666667	keyenzyme	3	0	0	1	2	1	ARGININE-2-MONOOXYGENASE-RXN GUANIDINOBUTYRASE-RXN		ARGININE-2-MONOOXYGENASE-RXN
+ARGDEG-V-PWY	L-arginine degradation X (arginine monooxygenase pathway)	FALSE	33.3333333333333		3	0	0	1	1	0	GUANIDINOBUTYRASE-RXN		ARGININE-2-MONOOXYGENASE-RXN
 ARGDEGRAD-PWY2	L-arginine degradation V (arginine deiminase pathway)	TRUE	66.6666666666667	keyenzyme	4	1	0	1	2	1	ORNCARBAMTRANSFER-RXN RXN-14196	RXN0-5222	ORNCARBAMTRANSFER-RXN
 ARGSPECAT-PWY	spermine biosynthesis	TRUE	100	full	2	0	0	1	2	1	SAMDECARB-RXN SPERMINE-SYNTHASE-RXN		SPERMINE-SYNTHASE-RXN
 ARGSYN-PWY	L-arginine biosynthesis I (via L-ornithine)	TRUE	100	full	9	0	0	1	9	1	ACETYLGLUTKIN-RXN ACETYLORNDEACET-RXN ACETYLORNTRANSAM-RXN ARGSUCCINLYA-RXN ARGSUCCINSYN-RXN CARBPSYN-RXN N-ACETYLGLUTPREDUCT-RXN N-ACETYLTRANSFER-RXN ORNCARBAMTRANSFER-RXN		ACETYLORNDEACET-RXN
@@ -153,7 +153,7 @@ LACTOSEUTIL-PWY	lactose degradation II	FALSE	0		3	0	1	1	0	0			KETOLACTOSE-RXN
 LARABITOLUTIL-PWY	xylitol degradation I	TRUE	100	full	2	0	0	1	2	1	D-XYLULOSE-REDUCTASE-RXN XYLULOKIN-RXN		D-XYLULOSE-REDUCTASE-RXN
 LCYSDEG-PWY	L-cysteine degradation II	TRUE	100	full	3	2	0	1	1	1	RXN-15129	RXN-15124 RXN-15127	RXN-15129
 LDH-ETF-PWY	Electron bifurcating LDH/Etf complex	FALSE	0		1	0	0	0	0	0			
-LEU-DEG2-PWY	L-leucine degradation I	FALSE	50		6	0	0	1	3	0	2KETO-4METHYL-PENTANOATE-DEHYDROG-RXN BRANCHED-CHAINAMINOTRANSFERLEU-RXN RXN0-2301		METHYLCROTONYL-COA-CARBOXYLASE-RXN
+LEU-DEG2-PWY	L-leucine degradation I	TRUE	66.6666666666667	keyenzyme	6	0	0	1	4	1	2KETO-4METHYL-PENTANOATE-DEHYDROG-RXN BRANCHED-CHAINAMINOTRANSFERLEU-RXN METHYLCROTONYL-COA-CARBOXYLASE-RXN RXN0-2301		METHYLCROTONYL-COA-CARBOXYLASE-RXN
 LEUSYN-PWY	L-leucine biosynthesis	TRUE	100	full	6	1	0	0	5	0	2-ISOPROPYLMALATESYN-RXN 3-ISOPROPYLMALDEHYDROG-RXN 3-ISOPROPYLMALISOM-RXN BRANCHED-CHAINAMINOTRANSFERLEU-RXN RXN-8991	RXN-7800	
 LIPA-CORESYN-PWY	lipid A-core biosynthesis (E. coli K-12)	TRUE	100	full	10	0	1	0	9	0	RXN-22461 RXN-22462 RXN-22463 RXN0-5061 RXN0-5118 RXN0-5123 RXN0-5124 RXN0-5125 RXN0-5126		
 LIPAS-PWY	triacylglycerol degradation	FALSE	0		3	0	0	1	0	0			TRIACYLGLYCEROL-LIPASE-RXN
@@ -212,11 +212,11 @@ P241-PWY	coenzyme B biosynthesis	FALSE	6.66666666666667		16	1	8	0	1	0	RXN-7970	R
 P261-PWY	coenzyme M biosynthesis I	FALSE	0		7	0	3	0	0	0			
 P282-PWY	nitrite oxidation	TRUE	100	full	1	0	0	0	1	0	R247-RXN		
 P283-PWY	hydrogen oxidation I (aerobic)	TRUE	100	full	1	0	0	0	1	0	RXN0-4141		
-P3-PWY	gallate degradation III (anaerobic)	FALSE	40		11	0	1	0	4	0	ACETATEKIN-RXN PHOSACETYLTRANS-RXN R11-RXN R8-RXN		
+P3-PWY	gallate degradation III (anaerobic)	FALSE	44.4444444444444		11	0	2	0	4	0	ACETATEKIN-RXN PHOSACETYLTRANS-RXN R11-RXN R8-RXN		
 P301-PWY	galena oxidation	FALSE	0		1	0	1	0	0	0			
 P302-PWY	L-sorbose degradation	TRUE	100	full	2	0	0	1	2	1	R262-RXN SORB6PDEHYDROG-RXN		R262-RXN
 P303-PWY	ammonia oxidation II (anaerobic)	FALSE	0		3	0	0	0	0	0			
-P321-PWY	benzoyl-CoA degradation III (anaerobic)	FALSE	62.5		9	0	1	0	5	0	R266-RXN R267-RXN R268-RXN RXN-8031 RXN-8032		
+P321-PWY	benzoyl-CoA degradation III (anaerobic)	FALSE	50		9	0	1	0	4	0	R267-RXN R268-RXN RXN-8031 RXN-8032		
 P342-PWY	orcinol degradation	FALSE	0		4	0	4	0	0	0			
 P343-PWY	resorcinol degradation	FALSE	66.6666666666667		3	0	0	0	2	0	MALEYLACETATE-REDUCTASE-RXN RXN-17557		
 P345-PWY	aldoxime degradation	FALSE	33.3333333333333		3	0	0	1	1	0	NICOTINAMID-RXN		R312-RXN
@@ -225,7 +225,7 @@ P42-PWY	incomplete reductive TCA cycle	FALSE	57.1428571428571		7	0	0	0	4	0	FUMHY
 P421-PWY	4-nitrotoluene degradation I	FALSE	66.6666666666667		3	0	0	0	2	0	R362-RXN R363-RXN		
 P481-PWY	adamantanone degradation	FALSE	0		4	0	0	0	0	0			
 P482-PWY	arsonoacetate degradation	FALSE	0		2	0	1	0	0	0			
-P483-PWY	phosphonoacetate degradation	FALSE	0		1	0	0	0	0	0			
+P483-PWY	phosphonoacetate degradation	TRUE	100	full	1	0	0	0	1	0	3.11.1.2-RXN		
 P541-PWY	glycine betaine biosynthesis IV (from glycine)	FALSE	0		3	0	0	0	0	0			
 P561-PWY	proline betaine degradation I	FALSE	33.3333333333333		3	0	0	0	1	0	R502-RXN		
 P562-PWY	myo-inositol degradation I	FALSE	28.5714285714286		7	0	0	1	2	0	4.1.2.29-RXN RXN-2902		MYO-INOSITOL-2-DEHYDROGENASE-RXN
@@ -872,7 +872,7 @@ PWY-6789	(1,3)-&beta;-D-xylan degradation	FALSE	50		2	0	0	0	1	0	3.2.1.72-RXN
 PWY-6790	L-arabinan degradation	FALSE	0		2	0	2	0	0	0			
 PWY-6795	diacylglyceryl-N,N,N-trimethylhomoserine biosynthesis	FALSE	0		2	0	0	0	0	0			
 PWY-6805	cellulose degradation I (cellulosome)	FALSE	0		2	0	2	0	0	0			
-PWY-6806	carotenoid cleavage	FALSE	0		11	0	6	0	0	0			
+PWY-6806	carotenoid cleavage	FALSE	0		11	0	11	0	0	0			
 PWY-6808	dTDP-&alpha;-D-forosamine biosynthesis	FALSE	25		9	1	0	1	2	0	DTDPGLUCDEHYDRAT-RXN DTDPGLUCOSEPP-RXN	RXN-12943	RXN-12408
 PWY-681	dibenzothiophene desulfurization	FALSE	20		5	0	0	0	1	0	RXN-9510		
 PWY-6813	glucuronoarabinoxylan degradation	FALSE	0		1	0	1	0	0	0			
@@ -908,7 +908,7 @@ PWY-6898	thiamine diphosphate salvage III	FALSE	0		1	0	0	0	0	0
 PWY-6899	base-degraded thiamine salvage	FALSE	0		2	0	0	1	0	0			RXN-12613
 PWY-6902	chitin degradation II (Vibrio)	FALSE	60		6	0	1	1	3	1	3.2.1.14-RXN RXN-12625 RXN-12626		3.2.1.14-RXN
 PWY-6906	chitin derivatives degradation	FALSE	71.4285714285714		8	0	1	0	5	0	GLUCOSAMINE-6-P-DEAMIN-RXN GLUCOSAMINE-KINASE-RXN N-ACETYLGLUCOSAMINE-KINASE-RXN NAG6PDEACET-RXN RXN-12629		
-PWY-6907	thiamine diphosphate biosynthesis III (Staphylococcus)	FALSE	66.6666666666667		3	0	0	0	2	0	RXN-12610 RXNQT-4191		
+PWY-6907	thiamine diphosphate biosynthesis III (Staphylococcus)	FALSE	33.3333333333333		3	0	0	0	1	0	RXN-12610		
 PWY-6909	thiazole component of thiamine diphosphate biosynthesis III	FALSE	0		2	0	2	0	0	0			
 PWY-6910	hydroxymethylpyrimidine salvage	TRUE	100	full	2	0	0	0	2	0	OHMETPYRKIN-RXN PYRIMSYN3-RXN		
 PWY-6915	pentalenolactone biosynthesis	FALSE	0		10	0	0	0	0	0			
@@ -1039,7 +1039,7 @@ PWY-722	nicotinate degradation I	FALSE	0		6	0	0	0	0	0
 PWY-7220	adenosine deoxyribonucleotides de novo biosynthesis II	TRUE	100	full	4	0	0	2	4	2	ADPREDUCT-RXN DADPKIN-RXN RXN0-745 RXN0-747		RXN0-745 RXN0-747
 PWY-7221	guanosine ribonucleotides de novo biosynthesis	TRUE	100	full	4	0	0	0	4	0	GDPKIN-RXN GMP-SYN-GLUT-RXN GUANYL-KIN-RXN IMP-DEHYDROG-RXN		
 PWY-7222	guanosine deoxyribonucleotides de novo biosynthesis II	TRUE	100	full	4	0	0	2	4	2	DGDPKIN-RXN GDPREDUCT-RXN RXN0-746 RXN0-748		RXN0-746 RXN0-748
-PWY-7224	purine deoxyribonucleosides salvage	FALSE	66.6666666666667		6	0	0	0	4	0	DADPKIN-RXN DEOXYADENYLATE-KINASE-RXN DGDPKIN-RXN GMKALT-RXN		
+PWY-7224	purine deoxyribonucleosides salvage	FALSE	50		6	0	0	0	3	0	DADPKIN-RXN DGDPKIN-RXN GMKALT-RXN		
 PWY-7226	guanosine deoxyribonucleotides de novo biosynthesis I	TRUE	100	full	2	0	0	0	2	0	DGDPKIN-RXN GDPREDUCT-RXN		
 PWY-7227	adenosine deoxyribonucleotides de novo biosynthesis I	TRUE	100	full	2	0	0	0	2	0	ADPREDUCT-RXN DADPKIN-RXN		
 PWY-7236	mycocyclosin biosynthesis	FALSE	0		2	0	0	0	0	0			
@@ -1080,7 +1080,7 @@ PWY-7347	sucrose biosynthesis III	FALSE	33.3333333333333		3	0	0	0	1	0	PGLUCISOM-
 PWY-7352	daunorubicin biosynthesis	FALSE	5.55555555555556		19	1	0	0	1	0	RXN-14846	RXN-14827	
 PWY-7354	aclacinomycin biosynthesis	FALSE	7.69230769230769		13	0	0	0	1	0	RXN-14846		
 PWY-7355	doxorubicin biosynthesis	FALSE	0		1	0	0	0	0	0			
-PWY-7356	thiamine diphosphate salvage IV (yeast)	FALSE	71.4285714285714		7	0	0	1	5	0	OHMETPYRKIN-RXN PYRIMSYN3-RXN RXNQT-4191 THI-P-SYN-RXN THIAZOLSYN3-RXN		THIAMINASE-RXN
+PWY-7356	thiamine diphosphate salvage IV (yeast)	FALSE	57.1428571428571		7	0	0	1	4	0	OHMETPYRKIN-RXN PYRIMSYN3-RXN THI-P-SYN-RXN THIAZOLSYN3-RXN		THIAMINASE-RXN
 PWY-7367	phosphatidylcholine resynthesis via glycerophosphocholine	FALSE	0		2	0	1	0	0	0			
 PWY-7369	thiamine triphosphate metabolism	FALSE	0		2	0	1	0	0	0			
 PWY-7371	1,4-dihydroxy-6-naphthoate biosynthesis II	FALSE	0		5	0	0	1	0	0			RXN-12346
@@ -1308,7 +1308,7 @@ PWY-7823	chlorzoxazone degradation	FALSE	0		2	1	0	0	0	0		RXN-18091
 PWY-7825	juglone degradation	FALSE	0		3	0	3	0	0	0			
 PWY-7828	cyclobis-(1&rarr;6)-&alpha;-nigerosyl degradation	FALSE	0		3	0	0	0	0	0			
 PWY-7833	biosynthesis of Lewis epitopes (H. pylori)	FALSE	0		9	0	1	0	0	0			
-PWY-7842	UDP-yelosamine biosynthesis	FALSE	0		3	0	1	0	0	0			
+PWY-7842	UDP-yelosamine biosynthesis	FALSE	0		3	0	0	0	0	0			
 PWY-7843	heme degradation IV	FALSE	0		1	0	0	0	0	0			
 PWY-7844	heme degradation III	FALSE	0		2	0	0	0	0	0			
 PWY-7845	heme degradation II	FALSE	0		1	0	0	0	0	0			
