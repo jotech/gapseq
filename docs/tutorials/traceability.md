@@ -1,5 +1,5 @@
 # Reaction tracing
-2025-12-04
+2026-05-29
 
 Keyword: **"Traceability"**
 
@@ -18,7 +18,7 @@ library(cobrar)
 
 ```
 ## cobrar uses...
-##  - libSBML (v. 5.20.4)
+##  - libSBML (v. 5.20.5)
 ##  - glpk (v. 5.0)
 ```
 

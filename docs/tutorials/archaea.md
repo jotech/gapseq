@@ -1,5 +1,5 @@
 # Reconstruction of metabolic networks for archaea 
-2025-12-04
+2026-05-29
 
 Archaea are prokaryotes with important unique characteristics which separate them from the other domains of life.
 Certain environmental process such as the production of methane is only described for archaea and there are estimates that they could make up to more than 10% of the human gut microbiome[[1](https://doi.org/10.1016/j.anaerobe.2011.03.001)].
@@ -31,19 +31,6 @@ The metabolic model is created as SBML and RDS file and can further be used for 
 
 ``` r
 library(cobrar)
-```
-
-```
-## Loading required package: Matrix
-```
-
-```
-## cobrar uses...
-##  - libSBML (v. 5.20.4)
-##  - glpk (v. 5.0)
-```
-
-``` r
 library(data.table)
 
 mod <- readRDS("mbar.RDS")
@@ -55,7 +42,7 @@ mtf <- pfba(mod); print(mtf)
 ## Solver status:          solution is optimal 
 ## Optimization status:    optimization process was successful 
 ## Objective fct. value:   0.3560925 
-## Secondary objective:    811.9304
+## Secondary objective:    811.4508
 ```
 
 ``` r
@@ -154,7 +141,7 @@ mtf2 <- pfba(mod2); print(mtf2)
 ## Solver status:          solution is optimal 
 ## Optimization status:    optimization process was successful 
 ## Objective fct. value:   0.1225659 
-## Secondary objective:    747.8264
+## Secondary objective:    747.6732
 ```
 
 ``` r

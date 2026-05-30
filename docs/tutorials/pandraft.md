@@ -1,5 +1,5 @@
 # Example Workflow for pan-draft
-2025-12-04
+2026-05-29
 
 ### Background
 
@@ -122,11 +122,11 @@ gapseq pan -m models/ -w models/ -f pan_model/
 ## The sizes of input lists are consistent, the number of loaded model is 117 
 ## 
 ## 
-## The total # of rxn is: 2026 
-## The # of strict core rxn (all mod) is: 205 
-## The # of core rxn ( >= 95 % mod) is: 213 
+## The total # of rxn is: 2031 
+## The # of strict core rxn (all mod) is: 174 
+## The # of core rxn ( >= 95 % mod) is: 247 
 ## The # of shell rxn ( >= 5 % mod) is: 1185 
-## The # of cloud rxn ( < 5 % mod) is: 423 
+## The # of cloud rxn ( < 5 % mod) is: 425 
 ## 
 ## Let's standardize the name of the duplicated compounds:
 ## modifying 5-Methyltetrahydrofolate-c0 
