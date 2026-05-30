@@ -1,6 +1,6 @@
 #!/bin/bash
 zenodoID=10047603
-zenodoRecord=16908828
+zenodoRecord=20446806
 taxonomy=Bacteria
 
 quite=false

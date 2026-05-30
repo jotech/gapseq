@@ -1,5 +1,5 @@
 download_ecdb <- function() {
-  tmpxml <- tempfile()
+  tmpxml <- paste0(tempfile(),".gz")
   message("Downloading latest EC database from enzyme-database.org")
   fdl <- download.file("https://www.enzyme-database.org/downloads/enzyme-data.xml.gz", tmpxml)
   if(fdl != 0)
