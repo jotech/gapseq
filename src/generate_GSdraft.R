@@ -83,14 +83,14 @@ build_draft_model_from_blast_results <- function(blast.res, transporter.res, bio
   new.stitle <- gsub(" .*$","", contig.names.full) # (1)
   new.stitle <- gsub("\\(|\\)|\\+|,|/|\\:|\\||\\&|\\[|\\]|\\{|\\}|'|\"","_", new.stitle) # (2)
   # (3)
-  ind.toolong <- which(str_length(new.stitle) > 40)
+  ind.toolong <- which(str_length(new.stitle) > 1e5)
   if(length(ind.toolong) > 0) {
     warning(paste0(length(ind.toolong)," genome contig/gene/protein sequence titles are very long. E.g.:\n\"",
-                   contig.names.full[ind.toolong[1]], "\"\n",
-                   "These titles are truncated to a maximum length of 40 characters. ",
+                   new.stitle[ind.toolong[1]], "\"\n",
+                   "These titles are truncated to a maximum length of 100 000 characters. ",
                    "Please consider to adjust sequence titles to shorter identifiers before running gapseq.\n"))
     for(itl in ind.toolong)
-      new.stitle[itl] <- substr(new.stitle[itl],1,40)
+      new.stitle[itl] <- substr(new.stitle[itl],1,1e5)
   }
   # (4)
   if(length(unique(new.stitle)) != n.contigs) {
