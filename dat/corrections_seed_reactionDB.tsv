@@ -1212,7 +1212,6 @@ rxn08750		TRUE		[SW] Indole can pass without proton motion		transport
 rxn09731	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn05687	>			[SW] ptrc:H+ symport only described for import	https://metacyc.org/META/NEW-IMAGE?type=REACTION&object=TRANS-RXN-69	transport			
 									
-rxn10560	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn12526	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn12527	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
 rxn12567	<			H+-coupled transport w/o chemical transformation of transported molecule should work only in the direction where protons are imported.		transport			
@@ -2793,3 +2792,4 @@ rxn20630		TRUE		[SW] Duplicate reaction to rxn02914
 rxn43399	>		-1:cpd00002:0:0:"ATP";-1:cpd00054:0:0:"L-Serine";1:cpd00008:0:0:"ADP";1:cpd00067:0:0:"H+";1:cpd00738:0:0:"phosphoserine"	[SW] New Reaction for phosphoserine biosynthesis	https://www.rhea-db.org/rhea/59112		L-serine kinase (ATP)	L-serine kinase (ATP)	
 rxn11963		TRUE		[SW] Duplicate reaction to rxn06214					
 rxn29230				[SW] Cross-membrane transport of p-cresol			p-cresol diffusion	p-cresol diffusion	TRUE
+rxn90150	=		-1:cpd01394:0:0:"Indolelactate";-1:cpd00067:0:0:"H+";1:cpd01394:1:0:"Indolelactate";1:cpd00067:1:0:"H+"	[SW] Transport reaction for ILA (indole-3-lactate)			ILA-transport	Indole-3-Lactate transport	
