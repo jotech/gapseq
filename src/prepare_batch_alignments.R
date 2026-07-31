@@ -1,4 +1,4 @@
-suppressMessages(library(data.table))
+suppressPackageStartupMessages(library(data.table))
 library(stringr)
 suppressMessages(library(Biostrings))
 library(parallel)

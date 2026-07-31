@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 
-library(data.table)
+suppressPackageStartupMessages(library(data.table))
 library(stringr)
 
 # first argument: scriptdir

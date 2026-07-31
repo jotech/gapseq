@@ -1,6 +1,6 @@
 library(XML)
 library(xml2)
-library(data.table)
+suppressPackageStartupMessages(library(data.table))
 library(stringr)
 
 
