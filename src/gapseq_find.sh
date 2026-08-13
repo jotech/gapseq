@@ -209,37 +209,6 @@ done
 shift $((OPTIND-1))
 [ "$1" = "--" ] && shift
 
-# --- Sequence DB directory checks ---
-if [[ "$userdir" == true ]]; then
-    # user provided -D:
-    seqdb=$(readlink -f "$seqdb")
-    if [[ ! -w "$seqdb" ]]; then
-        # If user-provided database directory is not writable, check if a
-        # pre-installed database exist. If not: stop with error
-        if [ ! -f "$seqdb/$taxonomy/version_seqDB.json" ]; then
-            echo "Error: directory '$seqdb' does not contain sequences for $taxonomy and is not writable. Please provide a path to a pre-existing database or a path where you have write permissions." >&2
-            exit 1
-        fi
-        if [[ "$force_offline" == false ]]; then
-            $dir/update_sequences.sh -t $taxonomy -D $seqdb -Z latest -c -q
-        fi
-        force_offline=true # forcing offline mode, because seqdb path is not writable
-    fi
-    echo "Using custom database directory: $seqdb"
-else
-    # no -D provided → check if database exists in default directory and if this directory is writable
-    if [[ ! -w "$seqdb" ]] && [[ ! -f "$seqdb/$taxonomy/version_seqDB.json" ]]; then
-        # try fallback ~/.gapseq/seq
-        seqdb="$HOME/.gapseq/seq"
-        echo "Note: The default directory for the sequence database is not writable and contains no sequences for $taxonomy."
-        echo "      Using fallback directory for reference sequence database: $seqdb"
-    fi
-
-    if [[ ! -w "$seqdb" ]] && [[ -f "$seqdb/$taxonomy/version_seqDB.json" ]]; then
-        echo "Note: The default directory for the sequence database is not writable but already contains sequences for $taxonomy."
-        force_offline=true # forcing offline mode, because seqdb path is not writable
-    fi
-fi
 
 # after parsing arguments, only fasta file should be there
 [ "$#" -ne 1 ] && { usage; }
@@ -453,12 +422,43 @@ if [ "$taxonomy" == "Bacteria" ]; then
 
 fi
 
-
-
 # Follow taxonomy prediction for pathway tax range if set to "auto"
 if [ "$taxRange" == "auto" ]; then
     taxRange=$taxonomy
 fi
+
+# --- Sequence DB directory checks ---
+if [[ "$userdir" == true ]]; then
+    # user provided -D:
+    seqdb=$(readlink -f "$seqdb")
+    if [[ ! -w "$seqdb" ]]; then
+        # If user-provided database directory is not writable, check if a
+        # pre-installed database exist. If not: stop with error
+        if [ ! -f "$seqdb/$taxonomy/version_seqDB.json" ]; then
+            echo "Error: directory '$seqdb' does not contain sequences for $taxonomy and is not writable. Please provide a path to a pre-existing database or a path where you have write permissions." >&2
+            exit 1
+        fi
+        if [[ "$force_offline" == false ]]; then
+            $dir/update_sequences.sh -t $taxonomy -D $seqdb -Z latest -c -q
+        fi
+        force_offline=true # forcing offline mode, because seqdb path is not writable
+    fi
+    echo "Using custom database directory: $seqdb"
+else
+    # no -D provided → check if database exists in default directory and if this directory is writable
+    if [[ ! -w "$seqdb" ]] && [[ ! -f "$seqdb/$taxonomy/version_seqDB.json" ]]; then
+        # try fallback ~/.gapseq/seq
+        seqdb="$HOME/.gapseq/seq"
+        echo "Note: The default directory for the sequence database is not writable and contains no sequences for $taxonomy."
+        echo "      Using fallback directory for reference sequence database: $seqdb"
+    fi
+
+    if [[ ! -w "$seqdb" ]] && [[ -f "$seqdb/$taxonomy/version_seqDB.json" ]]; then
+        echo "Note: The default directory for the sequence database is not writable but already contains sequences for $taxonomy."
+        force_offline=true # forcing offline mode, because seqdb path is not writable
+    fi
+fi
+
 
 
 # sequence directory
