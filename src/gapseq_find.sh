@@ -76,7 +76,7 @@ usage()
     echo "  -w Use additional sequences derived from gene names (default: $use_gene_seq)"
     echo "  -j Quit if output files already exist (default: $stop_on_files_exist)"
     echo "  -f Path to directory, where output files will be saved (default: current directory)"
-    echo "  -D Path to directory, where reference sequence database will be saved (default: $seqdb)"
+    echo "  -D Path to directory, where reference sequence database is stored (default: $seqdb)"
     echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default: $update_manually)"
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
     echo "  -O Force offline mode (default: $force_offline)"
