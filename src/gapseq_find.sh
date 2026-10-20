@@ -52,38 +52,90 @@ usage()
 {
     echo "gapseq - Reaction and pathway prediction"
     echo ""
-    echo "Usage"
-    echo "$0 -p <keyword> / -e <EC> [-d <database>] [-t <taxonomy>] file.fasta"
-    echo "  -p keywords such as pathways or subsystems (for example amino,nucl,cofactor,carbo,polyamine)"
-    echo "  -e Search by ec numbers (comma separated)"
+    echo "Usage:"
+    echo "gapseq find <options> file.fasta"
+    echo ""
+    echo "Options:"
+    echo "  -p keywords such as pathways or subsystems (for example amino,nucl,"
+    echo "     cofactor,carbo,polyamine)"
+    echo ""
+    echo "  -e Search by EC numbers (comma separated)"
+    echo ""
     echo "  -r Search by enzyme name (colon separated)"
-    echo "  -t Taxonomic range for reference sequences to be used. (Bacteria, Archaea, auto; default: $taxonomy). See Details."
+    echo ""
+    echo "  -t Taxonomic range (taxon name or NCBI taxonomy ID) for reference"
+    echo "     sequences to be used. (Bacteria, Archaea, auto;"
+    echo "     default: $taxonomy). See Details."
+    echo ""
     echo "  -b Bit score cutoff for local alignment (default: $bitcutoff)"
+    echo ""
     echo "  -i Identity cutoff for local alignment (default: $identcutoff)"
+    echo ""
     echo "  -c Coverage cutoff for local alignment (default: $covcutoff)"
-    echo "  -s Strict candidate reaction handling (do _not_ use pathway completeness, key kenzymes and operon structure to infere if imcomplete pathway could be still present (default: $strictCandidates)"
+    echo ""
+    echo "  -s Strict candidate reaction handling (do _not_ use pathway"
+    echo "     completeness, key kenzymes and operon structure to infere if"
+    echo "     imcomplete pathway could be still present (default: $strictCandidates)"
+    echo ""
     echo "  -a Pathway completeness threshold; in percent (default: $completenessCutoffNoHints)"
-    echo "  -k Pathway completeness threshold for pathways with additional hints (i.e., key enzyme detection); in percent (default: $completenessCutoff)"
+    echo ""
+    echo "  -k Pathway completeness threshold for pathways with additional hints"
+    echo "     (i.e., key enzyme detection); in percent (default: $completenessCutoff)"
+    echo ""
     echo "  -u Suffix used for output files (default: pathway keyword)"
+    echo ""
     echo "  -n Consider superpathways of metacyc database"
-    echo "  -l Select the pathway database (MetaCyc, KEGG, SEED, all; default: $pwyDatabase)"
+    echo ""
+    echo "  -l Select the pathway database (MetaCyc, KEGG, SEED, all;"
+    echo "     default: $pwyDatabase)"
+    echo ""
     echo "  -o Only list pathways found for keyword (default: $onlyList)"
-    echo "  -x Do not blast only list pathways, reactions and check for available sequences (default: $skipBlast)"
+    echo ""
+    echo "  -x Skip sequence alignments. Instead, only list pathways, reactions"
+    echo "     and check for available sequences (default: $skipBlast)"
+    echo ""
     echo "  -q Include sequences of hits in log files (default: $includeSeq)"
-    echo "  -v Verbose level, 0 for nothing, 1 for pathway infos, 2 for full (default: $verbose)"
-    echo "  -z Quality of sequences for homology search: 1:only reviewed (swissprot), 2:unreviewed only if reviewed not available, 3:reviewed+unreviewed, 4:only unreviewed (default: $seqSrc)"
-    echo "  -m Limit pathways to taxonomic range (default: $taxRange)"
+    echo ""
+    echo "  -v Verbose level, 0 for nothing, 1 for pathway infos, 2 for full"
+    echo "     (default: $verbose)"
+    echo ""
+    echo "  -z Quality of sequences for homology search: 1:only reviewed"
+    echo "     (swissprot), 2:unreviewed only if reviewed not available,"
+    echo "     3:reviewed+unreviewed, 4:only unreviewed (default: $seqSrc)"
+    echo ""
+    echo "  -m Limit pathways to taxonomic range provided as taxon name or NCBI"
+    echo "     taxonomy ID (default: $taxRange)"
+    echo ""
     echo "  -w Use additional sequences derived from gene names (default: $use_gene_seq)"
+    echo ""
     echo "  -j Quit if output files already exist (default: $stop_on_files_exist)"
-    echo "  -f Path to directory, where output files will be saved (default: current directory)"
-    echo "  -D Path to directory, where reference sequence database is stored (default: $seqdb)"
-    echo "  -U Do not use gapseq sequence archive and update sequences from uniprot manually (very slow) (default: $update_manually)"
+    echo ""
+    echo "  -f Path to directory, where output files will be saved (default:"
+    echo "     current directory)"
+    echo ""
+    echo "  -D Path to directory, where reference sequence database is stored"
+    echo "     (default: $seqdb)"
+    echo ""
+    echo "  -U Do not use gapseq sequence archive and update sequences from"
+    echo "     uniprot manually (very slow) (default: $update_manually)"
+    echo ""
     echo "  -T Set user-defined temporary folder (default: $user_temp)"
+    echo ""
     echo "  -O Force offline mode (default: $force_offline)"
-    echo "  -M Input genome mode. Either 'nucl', 'prot', or 'auto' (default '$input_mode')"
-    echo "  -K Number of threads for sequence alignments. If option is not provided, number of available CPUs will be automatically determined."
-    echo "  -A Tool to be used for sequence alignments (blast, mmseqs2, diamond; default: $aliTool)"
-    echo "  -R Extra parameters to provide to the alignment tool. Note that using this parameter may have security implications if untrusted input is specified."
+    echo ""
+    echo "  -M Input genome mode. Either 'nucl', 'prot', or 'auto'"
+    echo "     (default '$input_mode')"
+    echo ""
+    echo "  -K Number of threads for sequence alignments. If option is not"
+    echo "     provided, number of available CPUs will be automatically"
+    echo "     determined."
+    echo ""
+    echo "  -A Tool to be used for sequence alignments (blast, mmseqs2, diamond;"
+    echo "     default: $aliTool)"
+    echo ""
+    echo "  -R Extra parameters to provide to the alignment tool. Note that"
+    echo "     using this parameter may have security implications if untrusted"
+    echo "     input is specified."
     echo ""
     echo "Details:"
     echo "\"-t\": if 'auto', gapseq will predict the most likely domain (bacteria/archaea) based on specific protein-coding marker genes."
@@ -392,6 +444,15 @@ case $pathways in
         ;;
 esac
 
+
+# Get taxonomy name or id if one of them is provided
+if ! taxdb_entry=$(Rscript "$dir/taxonomy.R" get_entry "$taxonomy"); then
+    echo "Error: Taxonomy (`-t`) lookup failed" >&2
+    exit 1
+fi
+
+IFS=$'\t' read -r taxonomy taxid <<< "$taxdb_entry"
+
 # predict taxonomy (Bacteria or Archaea?)
 if [ $taxonomy == "auto" ]; then
     cp $dir/../dat/seq/hmm/domain.hmm.gz .
@@ -405,9 +466,8 @@ if [ $taxonomy == "auto" ]; then
 
 
 fi
-[[ "$taxonomy" == "bacteria" ]] && taxonomy=Bacteria
-[[ "$taxonomy" == "archaea" ]] &&  taxonomy=Archaea
-
+[[ "$taxonomy" == [bB]acteria ]] && taxonomy=Bacteria && taxid=2
+[[ "$taxonomy" == [aA]rchaea ]]  && taxonomy=Archaea  && taxid=2157
 
 # Predict Gram staining
 if [ "$taxonomy" == "Bacteria" ]; then
@@ -425,6 +485,17 @@ fi
 # Follow taxonomy prediction for pathway tax range if set to "auto"
 if [ "$taxRange" == "auto" ]; then
     taxRange=$taxonomy
+    taxRange_id=$taxid
+elif [ "$taxRange" == "all" ]; then
+    taxRange_id=0
+else
+    # Get taxonomy name or id if one of them is provided
+    if ! taxdb_entry=$(Rscript "$dir/taxonomy.R" get_entry "$taxRange"); then
+        echo "Error: Taxonomy (`-m`) lookup failed" >&2
+        exit 1
+    fi
+
+    IFS=$'\t' read -r taxRange taxRange_id <<< "$taxdb_entry"
 fi
 
 # --- Sequence DB directory checks ---
@@ -533,7 +604,7 @@ else
         mv allPwy.tmp allPwy
     fi
     # cat allPwy | grep -wEi $pwyKey | wc -l
-    Rscript $dir/filter_pathways.R allPwy "$pwyKey" $pwyKeyCol $noSuperpathways
+    Rscript $dir/filter_pathways.R allPwy "$pwyKey" $pwyKeyCol $noSuperpathways $taxRange_id
     pwyDB=$(cat allPwy)
     [ -z "$ecnumber" ] && [ -z "$pwyDB" ] && { echo "No pathways found for key $pwyKey"; exit 1; }
 fi
@@ -549,17 +620,10 @@ fi
 
 cand=""     #list of candidate reactions to be added
 bestPwy=""  # list of found pathways
-echo -e "ID\tName\tPrediction\tCompleteness\tVagueReactions\tKeyReactions\tKeyReactionsFound\tReactionsFound" > output.tbl # pahtway statistics file
+echo -e "ID\tName\tPrediction\tCompleteness\tVagueReactions\tKeyReactions\tKeyReactionsFound\tReactionsFound" > output.tbl # pathway statistics file
 
-#taxRange=Proteobacteria
-if [ -n "$taxRange" ] && [ "$taxRange" != "all" ] && [ "$pathways" != "custom" ]; then
-    validTax=$(grep -i $taxRange $dir/../dat/taxonomy.tbl | cut -f1 | tr '\n' '|' | sed 's/.$//')
-    [[ -z "$validTax" ]] && { echo "Taxonomic range not found: $taxRange (available ranges: $dir/../dat/taxonomy.tbl)"; exit 0; }
-    pwyDB_new=$(echo "$pwyDB" | grep -wE `echo "TAX-($validTax)"`)
-    pwyDB_old=$(echo "$pwyDB" | awk -F '\t' 'BEGIN {OFS=FS="\t"} $5=="" {print $0}')
-    pwyDB=$(echo -e "$pwyDB_new\n$pwyDB_old")
-    [[ -z "$pwyDB" ]] && { echo "No pathways found"; exit 0; }
-fi
+[[ -z "$pwyDB" ]] && { echo "No pathways found"; exit 0; }
+
 
 pwyNr=$(echo "$pwyDB" | wc -l)
 [[ $verbose -ge 1 ]] && echo Checking for pathways and reactions in: $1 $pwyKey
@@ -569,8 +633,7 @@ pwyDBfile=$(mktemp -p $tmpdir)
 echo "$pwyDB" > $pwyDBfile
 
 
-
-Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database $taxonomy $seqSrc $force_offline $update_manually $use_gene_seq $n_threads $verbose $onlyList $seqdb
+Rscript $dir/prepare_batch_alignments.R $pwyDBfile $database "${taxonomy};${taxid}" $seqSrc $force_offline $update_manually $use_gene_seq $n_threads $verbose $onlyList $seqdb
 # the final reference sequences are stored by the above R-script in "query.faa"
 
 [[ $onlyList == true ]] && exit 0
@@ -648,7 +711,7 @@ if [ $input_mode == "nucl" ] && [ $newtranslate == "true" ]; then
     mv ${fastaID}.gff "$output_dir/${fastaID}.gff"
 fi
 
-genome_info="genome_format=${input_mode};taxonomy=${taxonomy};ORF_coverage=${ORFcov}"
+genome_info="genome_format=${input_mode};taxonomy=${taxonomy};taxid=${taxid};ORF_coverage=${ORFcov}"
 [[ $taxonomy == "Bacteria" ]] && genome_info="${genome_info};gram=${gramstaining}"
 [[ $input_mode == "nucl" ]] && faamd5=`md5sum $output_dir/${fastaID}.faa.gz | cut -c1-7` && genome_info="${genome_info};translation_md5=${faamd5}"
 [[ $input_mode == "nucl" ]] && [[ $newtranslate == "true" ]] && genome_info="${genome_info};translation_table=${transl_table}"

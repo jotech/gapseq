@@ -51,12 +51,13 @@ GET_retries <- function(url) {
 # uniref_id <- "0.5"
 # output_fasta_file <- "test.fasta"
 # taxonomy <- "Bacteria"
+# taxid <- "2"
 
 # positional arguments:
 # 1: query type (EC, protein_name, gene_exact)
 # 2: query term
 # 3: output file name
-# 4: taxonomy
+# 4: taxonomy (comes as "<name>;<id>")
 # 5: reviewed status (true or false)
 # 6: UniRef identity clustering cutoff (0.9 or 0.5)
 
@@ -71,7 +72,9 @@ if(query_type == "protein_name") {
 }
 
 output_fasta_file <- args[3]
-taxonomy <- args[4]
+
+taxid <- sub("^.+;","", args[4])
+taxonomy <- sub(";.+$","", args[4])
 if(length(args)==6) {
   rev_status <- args[5]
   uniref_id <- args[6]
@@ -85,16 +88,16 @@ if (query_type=="id" & length(args)!=4) {
   stop("")
 }
 
-# parse taxonomy term
-taxonomy <- unlist(strsplit(taxonomy, ","))
-taxonomy <- paste0("%28taxonomy_name:",taxonomy,"%29", collapse = "%20OR%20")
-taxonomy <- paste0("%28",taxonomy,"%29")
+# parse taxonomy ID term
+taxid <- unlist(strsplit(taxid, ","))
+taxid <- paste0("%28taxonomy_id:",taxid,"%29", collapse = "%20OR%20")
+taxid <- paste0("%28",taxid,"%29")
 
 if(query_type != "id") {
   # (0) - Build uniprot entry URL
-  # urli <- "https://rest.uniprot.org/uniprotkb/search?fields=accession&format=list&query=%28%28ec%3A1.4.4.2%29+AND+%28%28taxonomy_name:Bacteria%29%29+AND+%28reviewed%3Afalse%29%29&size=500"
+  # urli <- "https://rest.uniprot.org/uniprotkb/search?fields=accession&format=list&query=%28%28ec%3A1.4.4.2%29+AND+%28%28taxonomy_id:2%29%29+AND+%28reviewed%3Afalse%29%29&size=500"
   urli <- paste0("https://rest.uniprot.org/uniprotkb/search?fields=accession&format=list&query=%28%28",
-                 query_type,"%3A",query_term,"%29+AND+",taxonomy,"+AND+%28reviewed%3A",rev_status,"%29%29&size=500")
+                 query_type,"%3A",query_term,"%29+AND+",taxid,"+AND+%28reviewed%3A",rev_status,"%29%29&size=500")
 
   # (1) - Find uniprot accession numbers of matching entries
   # Note: This uses pagination
@@ -183,7 +186,7 @@ if(query_type == "id") {
   for(qti in query_term) {
     # (0) - Build uniprot entry URL
     urli <- paste0("https://rest.uniprot.org/uniprotkb/search?compressed=false&format=fasta&query=%28%28accession%3A",
-                   qti,"%29%20AND%20",taxonomy,"%29")
+                   qti,"%29%20AND%20",taxid,"%29")
 
     ri <- GET_retries(urli)
 

@@ -8,7 +8,7 @@ seqdb=$dir/../dat/seq
 metaPwy=$dir/../dat/meta_pwy.tbl
 identity=0.9 # clustered uniprot database (0.5 or 0.9)
 identity_unrev=0.5
-taxonomy=Bacteria
+taxonomy="Bacteria;2"
 overwrite=false
 get_unrev=false
 
@@ -22,7 +22,7 @@ usage()
     echo "  -p keywords such as pathways or susbstem (default: core metabolism; 'Pathways' for all)"
     echo "  -e search by ec numbers (comma separated)"
     echo "  -r search by reaction names (colon separated)"
-    echo "  -t taxonomic range (default: $taxonomy)"
+    echo "  -t taxonomic range stated as \"<name>;<id>\" (default: $taxonomy)"
     echo "  -o Should existing files be overwritten (default: $overwrite)"
     echo "  -i identity of clustered uniprot database (0.5 or 0.9; default: $identity)"
     echo "  -u get unreviewed instead of reviewed sequences (default $get_unrev)"
@@ -77,17 +77,16 @@ shift $((OPTIND-1))
 [ "$#" -ne 0 ] && { usage; }
 
 # consider special case of eg. prokaryotes which are not supported by uniprot taxonomy
-if [ "$taxonomy" = "Prokaryota" ]; then
+if [ "$taxonomy" = "Prokaryota;NA" ]; then
     folder=Prokaryota
-    taxonomy="Bacteria,Archaea"
+    taxonomy="Bacteria,Archaea;2,2157"
 else
-    folder=$taxonomy
+    folder="${taxonomy%%;*}"
 fi
 
 # path for saving sequences
 numeric_old=$LC_NUMERIC
 LC_NUMERIC="en_US.UTF-8" # must be set in order to get printf working with float numbers
-#seqpath=$seqdb/$taxonomy/unipac$(printf %.0f $(echo "$identity * 100" | bc -l))
 if [ "$get_unrev" = false ]; then
     seqpath=$seqdb/$folder/rev
 else
@@ -132,10 +131,10 @@ if [ -n "$ecnumber" ]; then
             echo -en " ... Downloading $ec \t\t"
             if [ "$get_unrev" = false ]; then
                 #swissprot
-                Rscript $dir/uniprot_query.R ec $ec $ec.fasta $taxonomy true 0.9 && stat=ok || stat=err
+                Rscript $dir/uniprot_query.R ec $ec $ec.fasta "${taxonomy}" true 0.9 && stat=ok || stat=err
             else
                 # unreviewed
-                Rscript $dir/uniprot_query.R ec $ec $ec.fasta $taxonomy false 0.5 && stat=ok || stat=err
+                Rscript $dir/uniprot_query.R ec $ec $ec.fasta "${taxonomy}" false 0.5 && stat=ok || stat=err
             fi
             newmd5=$(md5sum $ec.fasta | cut -d " " -f1)
             newcount=$(cat $ec.fasta | grep ">" | wc -l)
@@ -162,9 +161,9 @@ if [ -n "$reaNames" ]; then
         rea="${rea//\"/}"
         echo -en " ... Downloading $rea\t\t"
         if [ "$get_unrev" = false ]; then
-            Rscript $dir/uniprot_query.R protein_name "$rea" $reaNameHash.fasta $taxonomy true 0.9 && stat=ok || stat=err
+            Rscript $dir/uniprot_query.R protein_name "$rea" $reaNameHash.fasta "$taxonomy" true 0.9 && stat=ok || stat=err
         else
-            Rscript $dir/uniprot_query.R protein_name "$rea" $reaNameHash.fasta $taxonomy false 0.5 && stat=ok || stat=err
+            Rscript $dir/uniprot_query.R protein_name "$rea" $reaNameHash.fasta "$taxonomy" false 0.5 && stat=ok || stat=err
         fi
         newmd5=$(md5sum $reaNameHash.fasta | cut -d " " -f1)
         newcount=$(cat $reaNameHash.fasta | grep ">" | wc -l)
@@ -181,9 +180,9 @@ if [ -n "$geneName" ]; then
         rm -f $geneName.fasta
         echo -en " ... Downloading $geneName\t\t"
         if [ "$get_unrev" = false ]; then
-            Rscript $dir/uniprot_query.R gene "$geneName" $reaNameHash.fasta $taxonomy true 0.9 && stat=ok || stat=err
+            Rscript $dir/uniprot_query.R gene "$geneName" $reaNameHash.fasta "$taxonomy" true 0.9 && stat=ok || stat=err
         else
-            Rscript $dir/uniprot_query.R gene "$geneName" $reaNameHash.fasta $taxonomy false 0.5 && stat=ok || stat=err
+            Rscript $dir/uniprot_query.R gene "$geneName" $reaNameHash.fasta "$taxonomy" false 0.5 && stat=ok || stat=err
         fi
         newmd5=$(md5sum $geneName.fasta | cut -d " " -f1)
         newcount=$(cat $geneName.fasta | grep ">" | wc -l)
@@ -201,7 +200,7 @@ if [ -n "$dbref" ]; then
         oldcount=$(cat $dbref.fasta | grep ">" | wc -l)
         rm -f $dbref.fasta
         echo -en " ... Downloading $dbref\t\t"
-        Rscript $dir/uniprot_query.R id $dbref $dbref.fasta $taxonomy && stat=ok || stat=err
+        Rscript $dir/uniprot_query.R id $dbref $dbref.fasta "$taxonomy" && stat=ok || stat=err
         newmd5=$(md5sum $dbref.fasta | cut -d " " -f1)
         newcount=$(cat $dbref.fasta | grep ">" | wc -l)
         [[ "$oldmd5" != "$newmd5" ]] && echo "`date -u +"%Y-%m-%d_%H:%M:%SUTC"` `echo $newcount` `echo $newcount-$oldcount | bc` $seqpath/$dbref.fasta $stat $seqdb" >> ../updating.log

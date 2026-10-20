@@ -17,10 +17,10 @@ for(i in seq_along(seedPwy)){
   rea.noec      <- length(na.omit(rea.ec))
   rea.ec        <- ifelse(is.na(rea.ec),"", rea.ec)
   rea.name      <- str_remove(rea.name.full, " \\(EC.*\\)")
-  hierarchy     <- paste0(pwy.dat$Class[1], ";",pwy.dat$`Sub-class`[1])
+  hierarchy     <- paste0("seed;",pwy.dat$Class[1], ";",pwy.dat$`Sub-class`[1])
   seedPwy.dt    <- rbind(seedPwy.dt,
-                         data.table(id=pwy.id, name=pwy, altname="", hierarchy=hierarchy, taxrange="", reaId=paste(rea.id, collapse = ","), 
-                         reaEc=paste(rea.ec, collapse = ","), keyRea="", reaName=paste(rea.name, collapse = ";"), 
+                         data.table(id=pwy.id, name=pwy, altname="", hierarchy=hierarchy, taxrange="", reaId=paste(rea.id, collapse = ","),
+                         reaEc=paste(rea.ec, collapse = ","), keyRea="", reaName=paste(rea.name, collapse = ";"),
                          reaNr=length(rea.id), ecNr= rea.noec, superpathway="False", status="True"))
 }
 seedPwy.dt[reaNr!=ecNr]

@@ -1,5 +1,5 @@
 # Lactic acid bacteria in yogurt production
-2026-05-29
+2026-10-16
 
 *Lactobacillus delbrueckii* subsp. *bulgaricus* and *Streptococcus thermophilus* are both lactic acid bacteria, which are frequently used for the production of yogurt. The organisms differ in their lactose degradation and their fermentation end products. In this tutorial, genome-scale metabolic models will be reconstructed using **gapseq** starting from the organisms' genomes in multi-protein sequences fasta file (translated sequences of protein-coding genes).
 
@@ -70,9 +70,9 @@ library(cobrar)
 ```
 
 ```
-## cobrar uses...
-##  - libSBML (v. 5.20.5)
-##  - glpk (v. 5.0)
+## This is cobrar (version 0.3.0) with...
+##  - libSBML (5.21.2)
+##  - glpk (5.0)
 ```
 
 ``` r
@@ -80,11 +80,14 @@ library(data.table)
 ```
 
 ```
-## data.table 1.18.2.1 using 12 threads (see ?getDTthreads).
+## 
+## Attaching package: 'data.table'
 ```
 
 ```
-## Latest news: r-datatable.com
+## The following object is masked from 'package:base':
+## 
+##     %notin%
 ```
 
 ``` r
@@ -110,16 +113,16 @@ getMetaboliteProduction(ld)[1:10]
 ```
 ##                 ID                   name       flux
 ##             <char>                 <char>      <num>
-##  1: EX_cpd00067_e0         H+-e0 Exchange 4.63686883
-##  2: EX_cpd00221_e0  D-Lactate-e0 Exchange 4.53457792
+##  1: EX_cpd00067_e0         H+-e0 Exchange 4.65237700
+##  2: EX_cpd00221_e0  D-Lactate-e0 Exchange 4.55008609
 ##  3: EX_cpd00108_e0  Galactose-e0 Exchange 2.50000000
-##  4: EX_cpd00011_e0        CO2-e0 Exchange 0.32459589
+##  4: EX_cpd00011_e0        CO2-e0 Exchange 0.30908772
 ##  5: EX_cpd00141_e0 Propionate-e0 Exchange 0.16793023
 ##  6: EX_cpd00047_e0    Formate-e0 Exchange 0.16350912
-##  7: EX_cpd00239_e0        H2S-e0 Exchange 0.09359205
-##  8: EX_cpd00324_e0       MTTL-e0 Exchange 0.08642149
-##  9: EX_cpd00013_e0        NH3-e0 Exchange 0.08501252
-## 10: EX_cpd00029_e0    Acetate-e0 Exchange 0.02261739
+##  7: EX_cpd00013_e0        NH3-e0 Exchange 0.10052069
+##  8: EX_cpd00239_e0        H2S-e0 Exchange 0.09359205
+##  9: EX_cpd00324_e0       MTTL-e0 Exchange 0.08642149
+## 10: EX_cpd00130_e0   L-Malate-e0 Exchange 0.02223483
 ```
 
 

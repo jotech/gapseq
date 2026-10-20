@@ -29,7 +29,8 @@ pwyDB <- fread(args[1], sep="\t", quote=FALSE)
 pwyDB[, V9 := gsub("  "," ",V9)] # remove double spaces in reaction names
 setkey(pwyDB, "V1")
 database <- args[2]
-taxonomy <- args[3]
+taxid <- sub("^.+;","", args[3])
+taxonomy <- sub(";.+$","", args[3])
 seqSrc <- args[4]
 force_offline <- args[5] == "true"
 update_manually <- args[6] == "true"
@@ -38,6 +39,7 @@ n_threads <- as.integer(args[8])
 verbose <- as.integer(args[9])
 onlyList <- args[10] == "true"
 seqdb <- args[11]
+
 
 # some hard-coded correction of syntax errors in reaction names that would break string parsing (remove when meta_pwy.tbl is corrected/updated)
 pwyDB[V1 %in% c("|PWY18C3-10|","|PWY18C3-12|"), V9 := sub("sucrose-3-isobutanoyl-4-isovaleryl-3;-isovaleroyltransferase",
@@ -242,9 +244,9 @@ rm(reaec_nospont)
 seqfiles$uniprot_query <- NA_character_
 if(!force_offline) {
   seqfiles[type == "EC" & (!fex | update_manually) & src == "rev",
-           uniprot_query := paste0(script.dir,"/uniprot.sh -e \"",gsub("^rev/|\\.fasta$","",file),"\" -t \"",taxonomy,"\" -i 0.9 -o -D ",seqdb)]
+           uniprot_query := paste0(script.dir,"/uniprot.sh -e \"",gsub("^rev/|\\.fasta$","",file),"\" -t \"",taxonomy,";",taxid,"\" -i 0.9 -o -D ",seqdb)]
   seqfiles[type == "EC" & (!fex | update_manually) & src == "unrev",
-           uniprot_query := paste0(script.dir,"/uniprot.sh -u -e \"",gsub("^unrev/|\\.fasta$","",file),"\" -t \"",taxonomy,"\" -i 0.5 -o -D ",seqdb)]
+           uniprot_query := paste0(script.dir,"/uniprot.sh -u -e \"",gsub("^unrev/|\\.fasta$","",file),"\" -t \"",taxonomy,";",taxid,"\" -i 0.5 -o -D ",seqdb)]
 
   # perform download for ECs
   seqfiles_dlEC <- seqfiles[!is.na(uniprot_query)][!duplicated(file)]
@@ -266,9 +268,9 @@ if(!force_offline) {
   seqfiles[, use_reanames := !any(type == "EC") || sum(file_size * (type == "EC" & fex), na.rm = TRUE) == 0,
            by = .(rea, reaName, ecs)]
   seqfiles[use_reanames == TRUE & type == "reaName" & (!fex | update_manually) & src == "rev" & reaName != "",
-           uniprot_query := paste0(script.dir,"/uniprot.sh -r \"",gsub("\"","\\\\\"",reaName),"\" -t \"",taxonomy,"\" -i 0.9 -o -D ",seqdb)]
+           uniprot_query := paste0(script.dir,"/uniprot.sh -r \"",gsub("\"","\\\\\"",reaName),"\" -t \"",taxonomy,";",taxid,"\" -i 0.9 -o -D ",seqdb)]
   seqfiles[use_reanames == TRUE & type == "reaName" & (!fex | update_manually) & src == "unrev" & reaName != "",
-           uniprot_query := paste0(script.dir,"/uniprot.sh -u -r \"",gsub("\"","\\\\\"",reaName),"\" -t \"",taxonomy,"\" -i 0.5 -o -D ",seqdb)]
+           uniprot_query := paste0(script.dir,"/uniprot.sh -u -r \"",gsub("\"","\\\\\"",reaName),"\" -t \"",taxonomy,";",taxid,"\" -i 0.5 -o -D ",seqdb)]
   seqfiles_dlRN <- seqfiles[type == "reaName" & !is.na(uniprot_query)][!duplicated(file)]
   ndl <- nrow(seqfiles_dlRN)
   if(ndl > 0) {
@@ -294,7 +296,7 @@ if(!force_offline) {
     for(i in 1:ndl) {
       cat(" ",i,"/",ndl,"(",updlids[i],")\n")
       system(paste0(
-        script.dir,"/uniprot.sh -d ",updlids[i]," -t ",taxonomy," -i 0.9 -o -D ",seqdb
+        script.dir,"/uniprot.sh -d ",updlids[i]," -t \"",taxonomy,";",taxid,"\" -i 0.9 -o -D ",seqdb
       ), ignore.stdout = TRUE, ignore.stderr = FALSE)
     }
     cat("\n")
