@@ -2795,3 +2795,8 @@ rxn29230				[SW] Cross-membrane transport of p-cresol			p-cresol diffusion	p-cre
 rxn90150	=		-1:cpd01394:0:0:"Indolelactate";-1:cpd00067:0:0:"H+";1:cpd01394:1:0:"Indolelactate";1:cpd00067:1:0:"H+"	[SW] Transport reaction for ILA (indole-3-lactate)			ILA-transport	Indole-3-Lactate transport	
 									
 rxn90151	>		-1:cpd00738:0:0:"phosphoserine";-1:cpd00359:0:0:"Indole";1:cpd00065:0:0:"L-Tryptophan";1:cpd00009:0:0:"Phosphate"	[SW] phosphoserine-dependent TrpB (trpB2)	https://doi.org/10.1021/bi500977y		Indole-salvaging and phosphoserine- dependent trytophan synthase	Indole-salvaging and phosphoserine- dependent trytophan synthase	
+									
+rxn25493		TRUE		[SW] Duplicate to rxn05023					
+rxn25494		TRUE		[SW] Duplicate to rxn05023					
+rxn20471		TRUE		[SW] Duplicate to rxn02832					
+rxn25492		TRUE		[SW] Duplicate to rxn11703					
