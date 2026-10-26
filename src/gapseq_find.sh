@@ -149,6 +149,7 @@ metaPwy=$dir/../dat/meta_pwy.tbl
 keggPwy=$dir/../dat/kegg_pwy.tbl
 seedPwy=$dir/../dat/seed_pwy.tbl
 customPwy=$dir/../dat/custom_pwy.tbl
+plantcycPwy=$dir/../dat/plantcyc_pwy.tbl
 metaRea=$dir/../dat/meta_rea.tbl
 
 # A POSIX variable
@@ -315,7 +316,7 @@ if [[ "$fasta" == *.gz ]]; then # in case fasta is in a archive
     fasta="$tmp_fasta"
 fi
 [[ ! -s "$fasta" ]] && { echo Invalid file: $1; exit 0; }
-tmpvar=$(basename "$fasta")
+tmpvar=$(basename "$1" .gz | tr ' ' '_')
 fastaID="${tmpvar%.*}"
 
 # Determine if fasta is nucl or prot
@@ -587,11 +588,12 @@ else
     pwyDatabase=$(echo $pwyDatabase | tr '[:upper:]' '[:lower:]')
     # get entries for pathways from databases
     [[ $verbose -ge 2 ]] && { echo $pwyDatabase; }
-    [[ "$pwyDatabase" =~ "all" ]]     && cat $metaPwy $keggPwy $seedPwy $customPwy > allPwy
-    [[ "$pwyDatabase" =~ "metacyc" ]] && cat $metaPwy >> allPwy
-    [[ "$pwyDatabase" =~ "kegg" ]]    && cat $keggPwy >> allPwy
-    [[ "$pwyDatabase" =~ "seed" ]]    && cat $seedPwy >> allPwy
-    [[ "$pwyDatabase" =~ "custom" ]]  && cat $customPwy >> allPwy
+    [[ "$pwyDatabase" =~ "all" ]]      && cat $metaPwy $keggPwy $seedPwy $customPwy > allPwy # not recommended
+    [[ "$pwyDatabase" =~ "metacyc" ]]  && cat $metaPwy >> allPwy
+    [[ "$pwyDatabase" =~ "kegg" ]]     && cat $keggPwy >> allPwy
+    [[ "$pwyDatabase" =~ "seed" ]]     && cat $seedPwy >> allPwy
+    [[ "$pwyDatabase" =~ "custom" ]]   && cat $customPwy >> allPwy
+    [[ "$pwyDatabase" =~ "plantcyc" ]] && cat $plantcycPwy >> allPwy
     dupli=$(cat allPwy | cut -f1 | sort | uniq -d | tr -d 'id' | sed '/^$/d')
     if [ -n "$dupli" ]; then
         [[ $verbose -ge 2 ]] && echo Duplicated pathway IDs found: $dupli. gapseq will only use $customPwy

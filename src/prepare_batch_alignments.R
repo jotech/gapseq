@@ -42,12 +42,12 @@ seqdb <- args[11]
 
 
 # some hard-coded correction of syntax errors in reaction names that would break string parsing (remove when meta_pwy.tbl is corrected/updated)
-pwyDB[V1 %in% c("|PWY18C3-10|","|PWY18C3-12|"), V9 := sub("sucrose-3-isobutanoyl-4-isovaleryl-3;-isovaleroyltransferase",
-                                                        "sucrose-3-isobutanoyl-4-isovaleryl-3'-isovaleroyltransferase",
-                                                        V9)]
-pwyDB[V1 == "|PWY-6024|", V9 := sub("vitexin 2;;-O-arabinoside 7-O-galactosyltransferase",
-                                    "vitexin 2''-O-arabinoside 7-O-galactosyltransferase",
-                                    V9)]
+pwyDB[V1 %in% c("PWY18C3-10","PWY18C3-12"), V9 := sub("sucrose-3-isobutanoyl-4-isovaleryl-3;-isovaleroyltransferase",
+                                                      "sucrose-3-isobutanoyl-4-isovaleryl-3'-isovaleroyltransferase",
+                                                      V9)]
+pwyDB[V1 == "PWY-6024", V9 := sub("vitexin 2;;-O-arabinoside 7-O-galactosyltransferase",
+                                  "vitexin 2''-O-arabinoside 7-O-galactosyltransferase",
+                                  V9)]
 
 # some reaction names contain HTML character entities such as "&pi;". In those cases, drop the "&" and ";"
 pwyDB[, V9 := gsub("&([a-zA-Z0-9#]+);", "\\1", V9)]

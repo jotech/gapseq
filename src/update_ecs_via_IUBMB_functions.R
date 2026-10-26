@@ -91,12 +91,14 @@ download_ecdb <- function() {
 }
 
 correctEC_pathways <- function(ecdb) {
-  message("Updating ECs in dat/meta_pwy.tbl and dat/custom_pwy.tbl ...")
+  message("Updating ECs in dat/meta_pwy.tbl, dat/custom_pwy.tbl, and dat/plantcyc_pwy.tbl ...")
   pwym <- fread("dat/meta_pwy.tbl"); pwym$source <- "metacyc"
   pwyc <- fread("dat/custom_pwy.tbl"); pwyc$source <- "custom"
+  pwyp <- fread("dat/plantcyc_pwy.tbl"); pwyp$source <- "plantcyc"
   pwym[, id := gsub("^\\||\\|$","", id)]
   pwyc[, id := gsub("^\\||\\|$","", id)]
-  pwy <- rbind(pwym, pwyc)
+  pwyp[, id := gsub("^\\||\\|$","", id)]
+  pwy <- rbindlist(list(pwym, pwyc, pwyp))
 
   # some hard-coded correction of syntax errors in reaction names that would break string parsing (remove when meta_pwy.tbl is corrected/updated)
   pwy[id %in% c("PWY18C3-10","PWY18C3-12"), reaName := sub("sucrose-3-isobutanoyl-4-isovaleryl-3;-isovaleroyltransferase",
@@ -171,6 +173,8 @@ correctEC_pathways <- function(ecdb) {
   fwrite(pwy_upd[source == "metacyc", -"source"], file = "dat/meta_pwy.tbl",
          sep = "\t", quote = FALSE)
   fwrite(pwy_upd[source == "custom", -"source"], file = "dat/custom_pwy.tbl",
+         sep = "\t", quote = FALSE)
+  fwrite(pwy_upd[source == "plantcyc", -"source"], file = "dat/plantcyc_pwy.tbl",
          sep = "\t", quote = FALSE)
 
   return(TRUE)

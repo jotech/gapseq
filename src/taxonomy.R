@@ -58,7 +58,7 @@ if(args[1] == "get_entry") {
       quit(save = "no", status = 1)
     }
     if(length(taxid) > 1) {
-      message("Error: Taxon name \"",args[2],"\" matches mor than 1 taxon ID in the database:\n",
+      message("Error: Taxon name \"",args[2],"\" matches more than 1 taxon ID in the database:\n",
               paste0("   ", taxid, collapse = "\n"),
               sep = "")
       quit(save = "no", status = 1)
