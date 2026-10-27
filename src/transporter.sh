@@ -175,7 +175,7 @@ if [[ $fasta == *.gz ]]; then # in case fasta is in an archive
     fasta=$tmp_fasta
 fi
 [[ ! -s $fasta ]] && { echo Invalid file: $1; exit 0; }
-tmpvar=$(basename "$fasta")
+tmpvar=$(basename "$1" .gz | tr ' ' '_')
 fastaID="${tmpvar%.*}"
 
 # Determine if fasta is nucl or prot
